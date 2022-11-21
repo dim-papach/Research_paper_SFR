@@ -1,0 +1,316 @@
+#+title: Reaserch Project Notes
+#+subtitle:Constraints on the star formation histories of galaxies in the Local Cosmological Volume
+#+PROPERTY: header-args:python :tangle main.py
+
+
+#+begin_src python :session foo
+import numpy as np
+import pandas as pd
+from scipy.optimize import fsolve
+import matplotlib.pyplot as plt
+#+end_src
+
+#+RESULTS:
+
+* Tasks
+** DONE Delete flags
+** DONE Calculate SFR_0
+** DONE Delete galaxies with $SFR_0<10^{-3}M_\odot yr^{-1}$
+** DONE Calculate Mass of galaxies
+** TODO Calculate $\overline{SFR}$
+** TODO for $t_{sf}=12.5 Gyr$ calculate A, τ
+** TODO for non constant t_sf try to find a relation t_sf=t_sf(Mass)
+
+
+
+* Introduction
+
+** The tension between the delayed-τ model and the obserations
+From the delayed-τ model we are expecting $Ds=\overline{SFR}/SFR_0>1$ and for the galaxies documented in the Catalogue of Neighouring Galaxies we are expecting $Ds\approx 2$ but we observe $Ds\approx 1$ and even $Ds=0.85<1$, for the plausible assumption that the galaxies have been forming stars for $t_{sf}=12$ Gyr
+
+We also expect by the model that the Star Formation Time-scale $\tau\approx 6.7$ Gyr, much longer than the 3.5-4.5 Gyr estimated by SP14.
+
+** What is the point of this project?
+
+I will try to calculate the values $A_{del},\ \tau,\ t_{sf}$, from the equations
+
+\begin{equation}
+    SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau}
+\end{equation}
+
+\begin{equation}
+    \overline{SFR_{del}}=\frac{A_{del}}{t_{sf}}[1-(1+x)e^{-x}]
+\end{equation}
+
+where
+
+$x\equiv\frac{t_{sf}}{\tau}$
+for the delayed τ model
+
+If we assume that SFH is a power law:
+
+
+
+* Data/Karachentsev list
+
+The data I will use for this project come from the Karachentsev catalogue (2022-06-30), which is an updated version of the list used in Kroupa et al. 2020
+
+#+begin_src sh :results output
+head Karachentsev_06_11_2022.txt
+#+end_src
+
+#+RESULTS:
+#+begin_example
+  99999   -3.07  6.43  7.05
+  -2.29   -2.03  7.58  7.92
+  99999 < -4.34  7.18  7.46
+  -2.68   -2.23  7.70  7.84
+< -5.97 < -5.84  6.44  6.65
+< -6.26 < -6.35  4.38 99999
+< -6.82   -5.67  5.59 99999
+< -6.47 < -6.38  4.75 99999
+  -1.47   -1.72  8.10  8.10
+  -4.64   -3.53  6.39  6.64
+#+end_example
+
+The columns are:
+1. column: Limit flag on $SFR_{Ha}$ (if "<" you can remove it)
+2. column: $\log(SFR_{Ha})$ $(M_\odot/yr)$, $H\alpha$ derived integral star formation rate (1)
+3. column: Limit flag on $SFR_{FUV}$ (if "<" you can remove it)
+4. column: $\log(SFR_{FUV}) (M_\odot/yr)$, FUV derived integral star formation rate
+5. column: Log K band luminosity, $\log(KLum)$ [solLum]
+6. column: Log hydrogen mass, $\log(MHI)$ [solMass]
+
+
+I created a Python script to delete the lines with "<"
+
+#+begin_src python :tangle delete_lines.py
+with open("Karachentsev_06_11_2022.txt", "r") as fp, open("Karachentsev_updated.txt","w") as new_fp:
+    for line in fp:
+        if "<"  not in line:
+            new_fp.write(line)
+#+end_src
+
+#+RESULTS:
+: None
+
+#+begin_src shell
+head Karachentsev_updated.txt
+#+end_src
+
+#+RESULTS:
+| 99999 | -3.07 | 6.43 | 7.05 |
+| -2.29 | -2.03 | 7.58 | 7.92 |
+| -2.68 | -2.23 |  7.7 | 7.84 |
+| -1.47 | -1.72 |  8.1 |  8.1 |
+| -4.64 | -3.53 | 6.39 | 6.64 |
+| -1.51 | -1.63 | 8.15 | 8.58 |
+| -4.03 | -3.02 | 7.12 | 7.13 |
+| -1.01 |  -0.6 | 9.48 | 8.64 |
+| -0.54 | -0.45 | 9.33 | 9.18 |
+| -3.67 | 99999 | 6.53 | 6.96 |
+
+That way we no longer have data with limit flags and we have less columns
+The columns are:
+1. column: $\log(SFR_{Ha})$ $(M_\odot/yr)$, $H\alpha$ derived integral star formation rate (1)
+2. column: $\log(SFR_{FUV}) (M_\odot/yr)$, FUV derived integral star formation rate
+3. column: Log K band luminosity, $\log(KLum)$ [solLum]
+4. column: Log hydrogen mass, $\log(MHI)$ [solMass]
+
+For the measurements with "99999", we don't have them, so we can replace them with NaN
+
+#+begin_src python :session foo :results output
+
+df = pd.read_csv('Karachentsev_updated.txt', delimiter= '\s+', header=None)
+df.columns=["log_SFR_Ha","log_SFR_FUV","log_K", "log_MHI"]
+
+print(df)
+
+df = df.replace(99999,np.nan)
+print(df)
+
+df['SFR_Ha']=10**df['log_SFR_Ha']
+
+df['SFR_FUV']=10**df['log_SFR_FUV']
+
+df['K']=10**df['log_K']
+
+df['MHI']=10**df['log_MHI']
+
+print(df)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI
+0      99999.00        -3.07   6.43     7.05
+1         -2.29        -2.03   7.58     7.92
+2         -2.68        -2.23   7.70     7.84
+3         -1.47        -1.72   8.10     8.10
+4         -4.64        -3.53   6.39     6.64
+..          ...          ...    ...      ...
+832       -2.18        -1.84   8.03     8.22
+833       -3.57        -3.27   6.63     6.49
+834       -2.06        -1.60   8.47     8.64
+835       -2.23        -1.79   7.95     7.90
+836       -0.45        -0.42   9.70     8.70
+
+[837 rows x 4 columns]
+     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI
+0           NaN        -3.07   6.43     7.05
+1         -2.29        -2.03   7.58     7.92
+2         -2.68        -2.23   7.70     7.84
+3         -1.47        -1.72   8.10     8.10
+4         -4.64        -3.53   6.39     6.64
+..          ...          ...    ...      ...
+832       -2.18        -1.84   8.03     8.22
+833       -3.57        -3.27   6.63     6.49
+834       -2.06        -1.60   8.47     8.64
+835       -2.23        -1.79   7.95     7.90
+836       -0.45        -0.42   9.70     8.70
+
+[837 rows x 4 columns]
+     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI    SFR_Ha   SFR_FUV             K           MHI
+0           NaN        -3.07   6.43     7.05       NaN  0.000851  2.691535e+06  1.122018e+07
+1         -2.29        -2.03   7.58     7.92  0.005129  0.009333  3.801894e+07  8.317638e+07
+2         -2.68        -2.23   7.70     7.84  0.002089  0.005888  5.011872e+07  6.918310e+07
+3         -1.47        -1.72   8.10     8.10  0.033884  0.019055  1.258925e+08  1.258925e+08
+4         -4.64        -3.53   6.39     6.64  0.000023  0.000295  2.454709e+06  4.365158e+06
+..          ...          ...    ...      ...       ...       ...           ...           ...
+832       -2.18        -1.84   8.03     8.22  0.006607  0.014454  1.071519e+08  1.659587e+08
+833       -3.57        -3.27   6.63     6.49  0.000269  0.000537  4.265795e+06  3.090295e+06
+834       -2.06        -1.60   8.47     8.64  0.008710  0.025119  2.951209e+08  4.365158e+08
+835       -2.23        -1.79   7.95     7.90  0.005888  0.016218  8.912509e+07  7.943282e+07
+836       -0.45        -0.42   9.70     8.70  0.354813  0.380189  5.011872e+09  5.011872e+08
+
+[837 rows x 8 columns]
+#+end_example
+
+Now we have to calculate the total SFR from the equation:
+
+\begin{equation}
+SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
+\end{equation}
+if we have both the SFR. If we only have one of them then:
+
+\begin{equation}
+    SFR_o=SFR_i,\ \text{if } SFR_j=0,\ i\neq j,\ i,j=SFR_{FUV},\, SFR_{Ha}
+\end{equation}
+
+For that we can use the .mean() function of Pandas which calculates the mean $\sum_0^N x_i/N$. We will not have a problem with the NaN values, since the function will ignore them.
+
+We can also calculate the Mass of each galaxy from the K-band luminosity using a mass-to-light ratio of 0.6 ($M_\odot/Lum$)
+
+#+begin_src python :session foo :results output
+df['SFR_0']=df[ ['SFR_Ha','SFR_FUV']].mean(axis=1, skipna=True)
+df['log_SFR_0']= np.log10(df['SFR_0'])
+print(df)
+
+df=df[(df.SFR_0>=10**(-3))]
+
+df['Mass']=0.6*df['K']
+df=df[ ['log_SFR_Ha', 'log_SFR_FUV', 'log_SFR_0', 'log_K', 'log_MHI', 'SFR_Ha', 'SFR_FUV','SFR_0', 'K', 'MHI', 'Mass']]
+print(df)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI    SFR_Ha   SFR_FUV             K           MHI     SFR_0  log_SFR_0
+0           NaN        -3.07   6.43     7.05       NaN  0.000851  2.691535e+06  1.122018e+07  0.000851  -3.070000
+1         -2.29        -2.03   7.58     7.92  0.005129  0.009333  3.801894e+07  8.317638e+07  0.007231  -2.140827
+2         -2.68        -2.23   7.70     7.84  0.002089  0.005888  5.011872e+07  6.918310e+07  0.003989  -2.399151
+3         -1.47        -1.72   8.10     8.10  0.033884  0.019055  1.258925e+08  1.258925e+08  0.026470  -1.577254
+4         -4.64        -3.53   6.39     6.64  0.000023  0.000295  2.454709e+06  4.365158e+06  0.000159  -3.798562
+..          ...          ...    ...      ...       ...       ...           ...           ...       ...        ...
+832       -2.18        -1.84   8.03     8.22  0.006607  0.014454  1.071519e+08  1.659587e+08  0.010531  -1.977544
+833       -3.57        -3.27   6.63     6.49  0.000269  0.000537  4.265795e+06  3.090295e+06  0.000403  -3.394595
+834       -2.06        -1.60   8.47     8.64  0.008710  0.025119  2.951209e+08  4.365158e+08  0.016914  -1.771747
+835       -2.23        -1.79   7.95     7.90  0.005888  0.016218  8.912509e+07  7.943282e+07  0.011053  -1.956509
+836       -0.45        -0.42   9.70     8.70  0.354813  0.380189  5.011872e+09  5.011872e+08  0.367501  -0.434741
+
+[837 rows x 10 columns]
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass
+1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07
+2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07
+3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07
+5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07
+7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09
+..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...
+831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06
+832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07
+834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08
+835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07
+836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09
+
+[586 rows x 11 columns]
+#+end_example
+
+To calculate the average Star Formation Rate $\overline{SFR}$ we can use the equation
+
+\begin{equation}
+    \overline{SFR}=\frac{\zeta M_*}{t_{sf}}
+\end{equation}
+where ζ is the mass-loss through stellar evolution and we assume that $\zeta\approx 1.3$ (see explanation in the paper`), M* is the mass of each galaxy and we assume that $t_{sf}=12.5\ Gyr$
+
+#+begin_src python :session foo :results output
+df['av_SFR']=df['Mass']*1.3/(12.5*10**9)
+df['ratio']=df['av_SFR']/df['SFR_0']
+df['log_ratio']=np.log10(df['ratio'])
+print(df)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio
+1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988
+2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665
+3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561
+5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947
+7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498
+..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...
+831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815
+832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271
+834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932
+835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306
+836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074
+
+[586 rows x 14 columns]
+#+end_example
+
+To calculate the variables A, τ we will use the equations, (i need to find the values of A, τ so i can create a plot A(τ))
+
+\begin{equation}
+    SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau}
+\end{equation}
+
+\begin{equation}
+    \overline{SFR_{del}}=\frac{A_{del}}{t_{sf}}[1-(1+x)e^{-x}]
+\end{equation}
+
+if we divide them we get:
+
+\begin{equation}
+    \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^x-x+1}{x^2}
+\end{equation}
+
+
+#+begin_src python :session foo :results output
+
+def func(zGuess,*Params):
+    A,t = zGuess
+    avS,S = Params
+    x=12.5*10**9/t
+
+    eq_1 = S-A*x*np.exp(-x)
+    eq_2 = avS-A*(1-(1+x)*np.exp(-x))/12.5*10**(-9)
+    return eq_1,eq_2
+
+
+zGuess = np.array([2.6,0.92])
+
+df['output_a'],df['output_b'] = zip(*df.apply(lambda df: fsolve(func,zGuess,args=(df['av_SFR'],df['SFR_0']))))
+
+
+#+end_src
+
+#+RESULTS:
