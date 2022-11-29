@@ -1,4 +1,4 @@
-# Research_paper_SFR
+# Research Paper SFR
 
 My research paper, during my stay in Bonn, about the SFR of Galaxies
 
