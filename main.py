@@ -36,16 +36,21 @@ df['ratio']=df['av_SFR']/df['SFR_0']
 df['log_ratio']=np.log10(df['ratio'])
 print(df)
 
-def func(zGuess,*Params):
-    A,t = zGuess
-    avS,S = Params
-    x=12.5*10**9/t
+for i in df.index:
+    def sfrx(z):
+        A = z[1]
+        x = z[0]
 
-    eq_1 = S-A*x*np.exp(-x)
-    eq_2 = avS-A*(1-(1+x)*np.exp(-x))/12.5*10**(-9)
-    return eq_1,eq_2
+        sfr=df.loc[i]['SFR_0']
+        ratio=df.loc[i]['ratio']
+        f=np.zeros(2)
+        f[0]=ratio-(np.exp(x)-x-1)/x**2
+        f[1]=sfr-A*x*np.exp(-x)/x
+        return f
 
+    #for i in df.index:
+    z = fsolve(sfrx,[2.0,1.0])
+    df.at[i,'A_del']=z[1]
+    df.at[i,'x']=z[0]
 
-zGuess = np.array([2.6,0.92])
-
-df['output_a'],df['output_b'] = zip(*df.apply(lambda df: fsolve(func,zGuess,args=(df['av_SFR'],df['SFR_0']))))
+print(df)
