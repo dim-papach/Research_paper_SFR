@@ -45,7 +45,9 @@ $$
 
 where
 
-$x\equiv\frac{t_{sf}}{\tau}$
+$$
+x\equiv\frac{t_{sf}}{\tau}
+$$
 
 for the delayed τ model
 
@@ -286,6 +288,7 @@ To calculate the variables A, τ we will use the equations, (i need to find the 
 $$
     SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau}=\frac{A_{del}x^2e^{-x}}{t_{sf}}
 $$
+
 $$
 \overline{SFR_{del}}=\frac{A_{del}}{t_{sf}}[1-(1+x)e^{-x}]
 $$
