@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from scipy.optimize import fsolve 
+from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 
 df = pd.read_csv('Karachentsev_updated.txt', delimiter= '\s+', header=None)
@@ -36,29 +36,37 @@ df['ratio']=df['av_SFR']/df['SFR_0']
 df['log_ratio']=np.log10(df['ratio'])
 print(df)
 
+
+
 for i in df.index:
     def sfrx(z):
         A = z[1]
         x = z[0]
+
         tsf=12.5*10**9
-        a=np.exp(np.log(A))
+
+        #a=np.exp(np.log(A))
+
         sfr=df.loc[i]['SFR_0']
         asfr=df.loc[i]['av_SFR']
         ratio=df.loc[i]['ratio']
+
         f=np.zeros(2)
 
-        f[0]=asfr-a*(1-(1+x))
+        f[0]=asfr-A*(1-(1+x))
         #f[0]=ratio-(np.exp(x)-x-1)/x**2
-        f[1]=sfr-a*x**2*np.exp(-x)/tsf
+        f[1]=sfr-A*x**2*np.exp(-x)/tsf
         return f
 
     #for i in df.index:
     z = fsolve(sfrx,[3.0,4.0])
-    df.at[i,'A_del']=np.exp(z[1])
-    df.at[i,'x']=np.exp(z[0])
-    
+    df.at[i,'A_del']=(z[1])
+    df.at[i,'x']=(z[0])
+
 
 print(df)
 
-plt.plot(df['x'], df['A_del'])
-plt.show
+df.plot(kind='scatter', x='x', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
