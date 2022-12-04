@@ -36,21 +36,37 @@ df['ratio']=df['av_SFR']/df['SFR_0']
 df['log_ratio']=np.log10(df['ratio'])
 print(df)
 
+
+
 for i in df.index:
     def sfrx(z):
         A = z[1]
         x = z[0]
 
+        tsf=12.5*10**9
+
+        #a=np.exp(np.log(A))
+
         sfr=df.loc[i]['SFR_0']
+        asfr=df.loc[i]['av_SFR']
         ratio=df.loc[i]['ratio']
+
         f=np.zeros(2)
-        f[0]=ratio-(np.exp(x)-x-1)/x**2
-        f[1]=sfr-A*x*np.exp(-x)/x
+
+        f[0]=asfr-A*(1-(1+x))
+        #f[0]=ratio-(np.exp(x)-x-1)/x**2
+        f[1]=sfr-A*x**2*np.exp(-x)/tsf
         return f
 
     #for i in df.index:
-    z = fsolve(sfrx,[2.0,1.0])
-    df.at[i,'A_del']=z[1]
-    df.at[i,'x']=z[0]
+    z = fsolve(sfrx,[3.0,4.0])
+    df.at[i,'A_del']=(z[1])
+    df.at[i,'x']=(z[0])
+
 
 print(df)
+
+df.plot(kind='scatter', x='x', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
