@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
+import seaborn as sns
 #+end_src
 
 #+RESULTS:
@@ -57,6 +58,8 @@ If we assume that SFH is a power law:
 
 * Data/Karachentsev list
 
+** Original data set
+
 The data I will use for this project come from the Karachentsev catalogue (2022-06-30), which is an updated version of the list used in Kroupa et al. 2020
 
 #+begin_src sh :results output
@@ -65,16 +68,16 @@ head Karachentsev_06_11_2022.txt
 
 #+RESULTS:
 #+begin_example
-  99999   -3.07  6.43  7.05 
-  -2.29   -2.03  7.58  7.92 
-  99999 < -4.34  7.18  7.46 
-  -2.68   -2.23  7.70  7.84 
-< -5.97 < -5.84  6.44  6.65 
-< -6.26 < -6.35  4.38 99999 
-< -6.82   -5.67  5.59 99999 
-< -6.47 < -6.38  4.75 99999 
-  -1.47   -1.72  8.10  8.10 
-  -4.64   -3.53  6.39  6.64 
+  99999   -3.07  6.43  7.05
+  -2.29   -2.03  7.58  7.92
+  99999 < -4.34  7.18  7.46
+  -2.68   -2.23  7.70  7.84
+< -5.97 < -5.84  6.44  6.65
+< -6.26 < -6.35  4.38 99999
+< -6.82   -5.67  5.59 99999
+< -6.47 < -6.38  4.75 99999
+  -1.47   -1.72  8.10  8.10
+  -4.64   -3.53  6.39  6.64
 #+end_example
 
 The columns are:
@@ -190,6 +193,7 @@ print(df)
 [837 rows x 8 columns]
 #+end_example
 
+** Calculations for values that we need
 Now we have to calculate the total SFR from the equation:
 
 $$
@@ -209,31 +213,17 @@ We can also calculate the Mass of each galaxy from the K-band luminosity using a
 #+begin_src python :session foo :results output
 df['SFR_0']=df[ ['SFR_Ha','SFR_FUV']].mean(axis=1, skipna=True)
 df['log_SFR_0']= np.log10(df['SFR_0'])
-print(df)
 
 df=df[(df.SFR_0>=10**(-3))]
 
 df['Mass']=0.6*df['K']
+#df['Mass']=df['MHI']
 df=df[ ['log_SFR_Ha', 'log_SFR_FUV', 'log_SFR_0', 'log_K', 'log_MHI', 'SFR_Ha', 'SFR_FUV','SFR_0', 'K', 'MHI', 'Mass']]
 print(df)
 #+end_src
 
 #+RESULTS:
 #+begin_example
-     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI    SFR_Ha   SFR_FUV             K           MHI     SFR_0  log_SFR_0
-0           NaN        -3.07   6.43     7.05       NaN  0.000851  2.691535e+06  1.122018e+07  0.000851  -3.070000
-1         -2.29        -2.03   7.58     7.92  0.005129  0.009333  3.801894e+07  8.317638e+07  0.007231  -2.140827
-2         -2.68        -2.23   7.70     7.84  0.002089  0.005888  5.011872e+07  6.918310e+07  0.003989  -2.399151
-3         -1.47        -1.72   8.10     8.10  0.033884  0.019055  1.258925e+08  1.258925e+08  0.026470  -1.577254
-4         -4.64        -3.53   6.39     6.64  0.000023  0.000295  2.454709e+06  4.365158e+06  0.000159  -3.798562
-..          ...          ...    ...      ...       ...       ...           ...           ...       ...        ...
-832       -2.18        -1.84   8.03     8.22  0.006607  0.014454  1.071519e+08  1.659587e+08  0.010531  -1.977544
-833       -3.57        -3.27   6.63     6.49  0.000269  0.000537  4.265795e+06  3.090295e+06  0.000403  -3.394595
-834       -2.06        -1.60   8.47     8.64  0.008710  0.025119  2.951209e+08  4.365158e+08  0.016914  -1.771747
-835       -2.23        -1.79   7.95     7.90  0.005888  0.016218  8.912509e+07  7.943282e+07  0.011053  -1.956509
-836       -0.45        -0.42   9.70     8.70  0.354813  0.380189  5.011872e+09  5.011872e+08  0.367501  -0.434741
-
-[837 rows x 10 columns]
      log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass
 1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07
 2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07
@@ -262,12 +252,15 @@ where ζ is the mass-loss through stellar evolution and we assume that $\zeta\ap
 df['av_SFR']=df['Mass']*1.3/(12.5*10**9)
 df['ratio']=df['av_SFR']/df['SFR_0']
 df['log_ratio']=np.log10(df['ratio'])
+
 print(df)
+print(df[ ["SFR_0","av_SFR"]].describe(include="all"))
+
 #+end_src
 
 #+RESULTS:
 #+begin_example
-     log_SFR_Ha  log_SFR_FUV  lo    g_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio
 1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988
 2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665
 3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561
@@ -281,30 +274,76 @@ print(df)
 836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074
 
 [586 rows x 14 columns]
+            SFR_0      av_SFR
+count  586.000000  586.000000
+mean     0.225557    0.389175
+std      1.891035    1.331698
+min      0.001000    0.000197
+25%      0.003638    0.003591
+50%      0.012589    0.012035
+75%      0.067549    0.070014
+max     44.668359   13.037208
 #+end_example
+
+*** Checking if the data are ok
 
 We do the plots $\overline{SFR}-SFR_o$ and Number of galaxies-$\log_{10}(\overline{SFR}/SFR_o)$
 #+begin_src python :session foo :results output
 df.plot(kind='scatter', y='av_SFR', x='SFR_0')
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig('av_SFR-SFR_0')
-print(df["log_ratio"].describe())
+plt.savefig('graphs/av_SFR-SFR_0')
+df.to_csv("out", sep="\t", columns=['SFR_0','av_SFR','Mass','ratio'])
+
+sns.lmplot(x='K',y='MHI',data=df,fit_reg=True).savefig("graphs/K_M.png")
+
+g=sns.lmplot(x='SFR_0',y='av_SFR',data=df,fit_reg=True)
+g.savefig("graphs/AAA.png")
 
 #+end_src
 
 #+RESULTS:
-: count    586.000000
-: mean       0.029051
-: std        0.492060
-: min       -1.183585
-: 25%       -0.266525
-: 50%       -0.040156
-: 75%        0.251173
-: max        2.255338
-: Name: log_ratio, dtype: float64
+: Qt: Session management error: Could not open network socket
 
-[[./av_SFR-SFR_0.png]]
+
+[[./graphs/av_SFR-SFR_0.png]]
+[[./graphs/K_M.png]]
+[[./graphs/AAA.png]]
+
+#+begin_src python :session foo :results output
+print(df[ ["ratio","log_ratio"]].describe(include="all"))
+
+#+end_src
+
+#+RESULTS:
+:             ratio   log_ratio
+: count  586.000000  586.000000
+: mean     3.590870    0.029051
+: std     14.455236    0.492060
+: min      0.065526   -1.183585
+: 25%      0.541347   -0.266525
+: 50%      0.911683   -0.040156
+: 75%      1.783091    0.251173
+: max    180.027326    2.255338
+
+#+begin_src python :session foo :results output
+
+#we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
+k=int(np.ceil(np.sqrt(df.shape[0])))
+
+plt.hist('log_ratio',bins='fd')
+plt.xlabel('ratio')
+plt.ylabel('# of event')
+
+plt.savefig('graphs/histogram.png')
+#+end_src
+
+#+RESULTS:
+
+[[./graphs/histogram.png]]
+
+
+* Calculate A and τ
 
 To calculate the variables A, τ we will use the equations, (i need to find the values of A, τ so i can create a plot A(τ))
 
@@ -318,8 +357,15 @@ $$
 
 if we divide them we get:
 
+
+
 $$
     \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^x-x-1}{x^2}
+$$
+
+since we know that x>0 we can write it as $x=e^\ln{x}$ to make sure that the given solutions are all positive
+$$
+    \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^{e^\ln{x}}-e^{\ln{x}}-1}{e^\ln{x}^2}
 $$
 
 #+begin_src python :session foo :results output
@@ -338,8 +384,8 @@ for i in df.index:
 
         f=np.zeros(2)
 
-        f[0]=asfr-A*(1-(1+x))
-        #f[0]=ratio-(np.exp(x)-x-1)/x**2
+       # f[0]=asfr-A*(1-(1+x)*np.exp(-x))/tsf
+        f[0]=ratio-(np.exp(np.exp(np.log(x)))-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
         f[1]=sfr-A*x**2*np.exp(-x)/tsf
         return f
 
@@ -349,36 +395,57 @@ for i in df.index:
     df.at[i,'x']=(z[0])
 
 
+df['tau']=12.5*10**9/df['x']
+
 print(df)
+print(df[ ["x", 'tau', 'A_del']].describe(include='all'), "\n")
 
 df.plot(kind='scatter', x='x', y='A_del')
 plt.xscale('log')
 plt.yscale('log')
-plt.show()
+plt.savefig("graphs/x-A")
+
+df.plot(kind='scatter', x='tau', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/T-A")
 #+end_src
 
 #+RESULTS:
 #+begin_example
-/home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
-  improvement from the last five Jacobian evaluations.
-  warnings.warn(msg, RuntimeWarning)
+/tmp/babel-PT2uMm/python-BZ0bCx:17: RuntimeWarning: invalid value encountered in log
+  f[0]=ratio-(np.exp(np.exp(np.log(x)))-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
 /home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
   improvement from the last ten iterations.
   warnings.warn(msg, RuntimeWarning)
-     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio     A_del         x
-1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988  0.029735 -0.079736
-2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665  0.036879 -0.084792
-3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561  0.067176 -0.117099
-5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947  0.220473 -0.039695
-7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498  3.958384  3.029696
-..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...       ...       ...
-831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815 -0.028400  0.031055
-832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271  0.047049 -0.142081
-834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932 -0.058901  0.312864
-835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306  0.053433 -0.104291
-836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074  3.957958  3.029998
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio         A_del         x           tau
+1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988  1.143505e+08  0.541977  2.306372e+10
+2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665  1.135049e+08  1.219512  1.025000e+10
+3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561  4.915357e+02  0.241930  5.166788e+10
+5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947  4.915356e+02  0.311265  4.015868e+10
+7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498  2.505965e+05  1.965489  6.359739e+09
+..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...           ...       ...           ...
+831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815  5.046527e+07  0.874837  1.428838e+10
+832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271  5.647589e+08  0.677404  1.845280e+10
+834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932  2.505965e+05  1.982903  6.303887e+09
+835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306  3.989123e+11  0.018786  6.653788e+11
+836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074  1.253002e+05  1.418358  8.813009e+09
 
-[586 rows x 16 columns]
+[586 rows x 17 columns]
+                x           tau         A_del
+count  586.000000  5.860000e+02  5.860000e+02
+mean     1.778164  4.608230e+10  1.799902e+09
+std      1.326847  3.782407e+11  2.062440e+10
+min      0.001408  1.975437e+09  4.000000e+00
+25%      0.568011  4.172960e+09  6.484602e+04
+50%      1.580993  7.906431e+09  6.405865e+07
+75%      2.995479  2.200662e+10  2.222939e+08
+max      6.327714  8.874876e+12  3.989123e+11
 #+end_example
 
-** *EDV EXEI GINEI MALAKIA KAI MPU BGAINOYN ARNTIKA PU DEN THE EPREPE. BALE TON ALLO TYPO ANTI GIA TO RATIO*
+
+[[./graphs/x-A.png]], [[./graphs/T-A.png]]
+
+
+
+* Find the t_sf-Mass relation
