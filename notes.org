@@ -129,12 +129,11 @@ For the measurements with "99999", we don't have them, so we can replace them wi
 #+begin_src python :session foo :results output
 
 df = pd.read_csv('Karachentsev_updated.txt', delimiter= '\s+', header=None)
+#name the columns
 df.columns=["log_SFR_Ha","log_SFR_FUV","log_K", "log_MHI"]
 
-print(df)
 
 df = df.replace(99999,np.nan)
-print(df)
 
 df['SFR_Ha']=10**df['log_SFR_Ha']
 
@@ -149,34 +148,6 @@ print(df)
 
 #+RESULTS:
 #+begin_example
-     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI
-0      99999.00        -3.07   6.43     7.05
-1         -2.29        -2.03   7.58     7.92
-2         -2.68        -2.23   7.70     7.84
-3         -1.47        -1.72   8.10     8.10
-4         -4.64        -3.53   6.39     6.64
-..          ...          ...    ...      ...
-832       -2.18        -1.84   8.03     8.22
-833       -3.57        -3.27   6.63     6.49
-834       -2.06        -1.60   8.47     8.64
-835       -2.23        -1.79   7.95     7.90
-836       -0.45        -0.42   9.70     8.70
-
-[837 rows x 4 columns]
-     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI
-0           NaN        -3.07   6.43     7.05
-1         -2.29        -2.03   7.58     7.92
-2         -2.68        -2.23   7.70     7.84
-3         -1.47        -1.72   8.10     8.10
-4         -4.64        -3.53   6.39     6.64
-..          ...          ...    ...      ...
-832       -2.18        -1.84   8.03     8.22
-833       -3.57        -3.27   6.63     6.49
-834       -2.06        -1.60   8.47     8.64
-835       -2.23        -1.79   7.95     7.90
-836       -0.45        -0.42   9.70     8.70
-
-[837 rows x 4 columns]
      log_SFR_Ha  log_SFR_FUV  log_K  log_MHI    SFR_Ha   SFR_FUV             K           MHI
 0           NaN        -3.07   6.43     7.05       NaN  0.000851  2.691535e+06  1.122018e+07
 1         -2.29        -2.03   7.58     7.92  0.005129  0.009333  3.801894e+07  8.317638e+07
@@ -219,26 +190,9 @@ df=df[(df.SFR_0>=10**(-3))]
 df['Mass']=0.6*df['K']
 #df['Mass']=df['MHI']
 df=df[ ['log_SFR_Ha', 'log_SFR_FUV', 'log_SFR_0', 'log_K', 'log_MHI', 'SFR_Ha', 'SFR_FUV','SFR_0', 'K', 'MHI', 'Mass']]
-print(df)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass
-1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07
-2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07
-3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07
-5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07
-7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09
-..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...
-831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06
-832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07
-834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08
-835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07
-836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09
-
-[586 rows x 11 columns]
-#+end_example
 
 To calculate the average Star Formation Rate $\overline{SFR}$ we can use the equation
 
@@ -254,7 +208,7 @@ df['ratio']=df['av_SFR']/df['SFR_0']
 df['log_ratio']=np.log10(df['ratio'])
 
 print(df)
-print(df[ ["SFR_0","av_SFR"]].describe(include="all"))
+print(df[ ["SFR_0","av_SFR",'MHI','Mass']].describe(include="all"))
 
 #+end_src
 
@@ -274,41 +228,49 @@ print(df[ ["SFR_0","av_SFR"]].describe(include="all"))
 836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074
 
 [586 rows x 14 columns]
-            SFR_0      av_SFR
-count  586.000000  586.000000
-mean     0.225557    0.389175
-std      1.891035    1.331698
-min      0.001000    0.000197
-25%      0.003638    0.003591
-50%      0.012589    0.012035
-75%      0.067549    0.070014
-max     44.668359   13.037208
+            SFR_0      av_SFR           MHI          Mass
+count  586.000000  586.000000  5.460000e+02  5.860000e+02
+mean     0.225557    0.389175  5.559003e+08  3.742067e+09
+std      1.891035    1.331698  1.438369e+09  1.280479e+10
+min      0.001000    0.000197  2.884032e+06  1.897367e+06
+25%      0.003638    0.003591  3.890451e+07  3.452640e+07
+50%      0.012589    0.012035  1.202264e+08  1.157205e+08
+75%      0.067549    0.070014  4.073803e+08  6.732111e+08
+max     44.668359   13.037208  2.041738e+10  1.253578e+11
 #+end_example
 
 *** Checking if the data are ok
 
 We do the plots $\overline{SFR}-SFR_o$ and Number of galaxies-$\log_{10}(\overline{SFR}/SFR_o)$
 #+begin_src python :session foo :results output
-df.plot(kind='scatter', y='av_SFR', x='SFR_0')
+df.plot(kind='scatter',y='av_SFR', x='SFR_0')
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig('graphs/av_SFR-SFR_0')
 df.to_csv("out", sep="\t", columns=['SFR_0','av_SFR','Mass','ratio'])
 
-sns.lmplot(x='K',y='MHI',data=df,fit_reg=True).savefig("graphs/K_M.png")
+#sns.lmplot(x='K',y='MHI',data=df,fit_reg=True).savefig("graphs/K_M.png")
 
 g=sns.lmplot(x='SFR_0',y='av_SFR',data=df,fit_reg=True)
+plt.xscale('log')
+plt.yscale('log')
+
 g.savefig("graphs/AAA.png")
 
+
+t=sns.lmplot(x='log_MHI',y='log_K',data=df,fit_reg=True)
+#df.plot(kind='scatter', y='K', x='MHI')
+#plt.xscale('log')
+#plt.yscale('log')
+#plt.savefig('graphs/K_M')
+
+t.savefig("graphs/bAA.png")
 #+end_src
 
-#+RESULTS:
-: Qt: Session management error: Could not open network socket
 
-
-[[./graphs/av_SFR-SFR_0.png]]
-[[./graphs/K_M.png]]
+[[./graphs/av_SFR-SFR_0.png]], [[./graphs/K_M.png]]
 [[./graphs/AAA.png]]
+
 
 #+begin_src python :session foo :results output
 print(df[ ["ratio","log_ratio"]].describe(include="all"))
@@ -331,21 +293,23 @@ print(df[ ["ratio","log_ratio"]].describe(include="all"))
 #we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
 k=int(np.ceil(np.sqrt(df.shape[0])))
 
-plt.hist('log_ratio',bins='fd')
-plt.xlabel('ratio')
+df.hist(column='log_ratio', bins=k)
+
+plt.xlabel('log_ratio')
 plt.ylabel('# of event')
 
-plt.savefig('graphs/histogram.png')
+
+plt.savefig('graphs/histogram_ratio.png')
 #+end_src
 
 #+RESULTS:
 
-[[./graphs/histogram.png]]
+[[./graphs/histogram_ratio.png]]
 
 
 * Calculate A and τ
 
-To calculate the variables A, τ we will use the equations, (i need to find the values of A, τ so i can create a plot A(τ))
+To calculate the variables A, τ we will use the equations, (i need to find the values of A, τ so i can create a plot A(τ)) ($x=\frac{t_{sf}}{\tau}$)
 
 $$
     SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau}=\frac{A_{del}x^2e^{-x}}{t_{sf}}
@@ -368,6 +332,116 @@ $$
     \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^{e^\ln{x}}-e^{\ln{x}}-1}{e^\ln{x}^2}
 $$
 
+*** try 1
+#+begin_src python :session foo :results output
+for i in df.index:
+    def sfrx(z):
+        A = z[1]
+        x = z[0]
+
+        tsf=12.5e09
+
+        #a=np.exp(np.log(A))
+
+        sfr=df.loc[i]['SFR_0']
+        asfr=df.loc[i]['av_SFR']
+        ratio=df.loc[i]['ratio']
+
+        f=np.zeros(2)
+
+        f[0]=asfr-A*(1-(1+np.exp(np.log(x)))*np.exp(-x))/tsf
+        #f[1]=ratio-(np.exp(np.exp(np.log(x)))-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
+        f[1]=sfr-A*x**2*np.exp(-x)/tsf
+        return f
+
+    #for i in df.index:
+    z = fsolve(sfrx,[3.0,4.0])
+    df.at[i,'A_del']=(z[1])
+    df.at[i,'x']=(z[0])
+
+
+df['tau']=12.5*10**9/df['x']
+
+print(df)
+print(df[ ["x", 'tau', 'A_del']].describe(include='all' ), "\n")
+
+df.plot(kind='scatter', x='x', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/x-A")
+
+df.plot(kind='scatter', x='tau', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/T-A")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/tmp/babel-NZGXwl/python-wLol9V:16: RuntimeWarning: invalid value encountered in log
+  f[0]=asfr-A*(1-(1+np.exp(np.log(x)))*np.exp(-x))/tsf
+/home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+/tmp/babel-NZGXwl/python-wLol9V:16: RuntimeWarning: invalid value encountered in log
+  f[0]=asfr-A*(1-(1+np.exp(np.log(x)))*np.exp(-x))/tsf
+/home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+/tmp/babel-NZGXwl/python-wLol9V:16: RuntimeWarning: overflow encountered in exp
+  f[0]=asfr-A*(1-(1+np.exp(np.log(x)))*np.exp(-x))/tsf
+/tmp/babel-NZGXwl/python-wLol9V:18: RuntimeWarning: overflow encountered in exp
+  f[1]=sfr-A*x**2*np.exp(-x)/tsf
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio         A_del             x           tau
+1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988  4.000000e+00  3.000000e+00  4.166667e+09
+2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665  4.000000e+00  3.000000e+00  4.166667e+09
+3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561  4.000000e+00  3.000000e+00  4.166667e+09
+5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947  4.000000e+00  3.000000e+00  4.166667e+09
+7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498  4.000000e+00  3.000000e+00  4.166667e+09
+..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...           ...           ...           ...
+831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815  4.000000e+00  3.000000e+00  4.166667e+09
+832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271  4.000000e+00  3.000000e+00  4.166667e+09
+834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932  2.301943e+08  8.603995e+07  1.452813e+02
+835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306  4.000000e+00  3.000000e+00  4.166667e+09
+836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074  4.000000e+00  3.000000e+00  4.166667e+09
+
+[586 rows x 17 columns]
+                  x           tau         A_del
+count  5.860000e+02  5.860000e+02  5.860000e+02
+mean   1.009953e+07  2.912100e+09  3.772824e+07
+std    2.720679e+07  1.910914e+09  8.494812e+07
+min    2.999990e+00  4.419495e+01  4.000000e+00
+25%    3.000000e+00  4.612366e+04  4.000000e+00
+50%    3.000000e+00  4.166667e+09  4.000000e+00
+75%    2.803328e+05  4.166667e+09  2.344897e+07
+max    2.828377e+08  4.166680e+09  4.676057e+08
+#+end_example
+
+
+
+[[./graphs/x-A.png]], [[./graphs/T-A.png]]
+
+
+#+begin_src python :session foo :results output
+
+#we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
+k=int(np.ceil(np.sqrt(df.shape[0])))
+
+df.hist(column='x', bins=k)
+
+plt.xlabel('x_1')
+plt.ylabel('# of event')
+
+
+plt.savefig('graphs/histogram_x.png')
+#+end_src
+
+#+RESULTS:
+
+[[./graphs/histogram_x.png]]
+
+*** try 2
+
 #+begin_src python :session foo :results output
 for i in df.index:
     def sfrx(z):
@@ -384,8 +458,8 @@ for i in df.index:
 
         f=np.zeros(2)
 
-       # f[0]=asfr-A*(1-(1+x)*np.exp(-x))/tsf
-        f[0]=ratio-(np.exp(np.exp(np.log(x)))-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
+        #f[0]=asfr-A*(1-(1+np.exp(np.log(x)))*np.exp(-np.exp(np.log(x))))/tsf
+        f[0]=ratio-(np.exp(x)-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
         f[1]=sfr-A*x**2*np.exp(-x)/tsf
         return f
 
@@ -398,54 +472,222 @@ for i in df.index:
 df['tau']=12.5*10**9/df['x']
 
 print(df)
-print(df[ ["x", 'tau', 'A_del']].describe(include='all'), "\n")
+print(df[ ["x", 'tau', 'A_del']].describe(include='all' ), "\n")
 
 df.plot(kind='scatter', x='x', y='A_del')
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig("graphs/x-A")
+plt.savefig("graphs/x-A_2")
 
 df.plot(kind='scatter', x='tau', y='A_del')
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig("graphs/T-A")
+plt.savefig("graphs/T-A_2")
 #+end_src
 
 #+RESULTS:
 #+begin_example
-/tmp/babel-PT2uMm/python-BZ0bCx:17: RuntimeWarning: invalid value encountered in log
-  f[0]=ratio-(np.exp(np.exp(np.log(x)))-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
+/tmp/babel-NZGXwl/python-8PaAiZ:17: RuntimeWarning: invalid value encountered in log
+  f[0]=ratio-(np.exp(x)-np.exp(np.log(x))-1)/np.exp(np.log(x))**2
 /home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
   improvement from the last ten iterations.
   warnings.warn(msg, RuntimeWarning)
-     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio         A_del         x           tau
-1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988  1.143505e+08  0.541977  2.306372e+10
-2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665  1.135049e+08  1.219512  1.025000e+10
-3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561  4.915357e+02  0.241930  5.166788e+10
-5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947  4.915356e+02  0.311265  4.015868e+10
-7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498  2.505965e+05  1.965489  6.359739e+09
-..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...           ...       ...           ...
-831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815  5.046527e+07  0.874837  1.428838e+10
-832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271  5.647589e+08  0.677404  1.845280e+10
-834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932  2.505965e+05  1.982903  6.303887e+09
-835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306  3.989123e+11  0.018786  6.653788e+11
-836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074  1.253002e+05  1.418358  8.813009e+09
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K  ...          Mass    av_SFR     ratio  log_ratio         A_del         x           tau       tsf          tsf1
+1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  ...  2.281136e+07  0.002372  0.328104  -0.483988  1.143505e+08  0.541977  2.306372e+10   76653.0  2.301175e+10
+2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  ...  3.007123e+07  0.003127  0.784034  -0.105665  1.135049e+08  1.219512  1.025000e+10   76653.0  1.250000e+10
+3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  ...  7.553552e+07  0.007856  0.296783  -0.527561  4.915357e+02  0.241930  5.166787e+10   76653.0  2.476590e+10
+5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  ...  8.475225e+07  0.008814  0.324379  -0.488947  4.915356e+02  0.311265  4.015867e+10   76653.0  2.320177e+10
+7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  ...  1.811971e+09  0.188445  1.080185   0.033498  2.505965e+05  1.965489  6.359739e+09   76653.0  1.250000e+10
+..          ...          ...        ...    ...      ...       ...       ...       ...           ...  ...           ...       ...       ...        ...           ...       ...           ...       ...           ...
+831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  ...  8.475225e+06  0.000881  0.684202  -0.164815  5.046527e+07  0.874837  1.428838e+10   76653.0  1.250000e+10
+832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  ...  6.429116e+07  0.006686  0.634934  -0.197271  5.647589e+08  0.677404  1.845280e+10   76653.0  1.250000e+10
+834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  ...  1.770726e+08  0.018416  1.088759   0.036932  2.505965e+05  1.982903  6.303887e+09  153603.0  1.250000e+10
+835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  ...  5.347506e+07  0.005561  0.503146  -0.298306  3.989123e+11  0.018786  6.653788e+11   76653.0  1.250000e+10
+836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  ...  3.007123e+09  0.312741  0.850992  -0.070074  1.253002e+05  1.418358  8.813009e+09   76653.0  1.250000e+10
 
-[586 rows x 17 columns]
+[586 rows x 19 columns]
                 x           tau         A_del
 count  586.000000  5.860000e+02  5.860000e+02
-mean     1.778164  4.608230e+10  1.799902e+09
-std      1.326847  3.782407e+11  2.062440e+10
+mean     1.778164  4.608222e+10  1.799902e+09
+std      1.326847  3.782371e+11  2.062440e+10
 min      0.001408  1.975437e+09  4.000000e+00
 25%      0.568011  4.172960e+09  6.484602e+04
 50%      1.580993  7.906431e+09  6.405865e+07
 75%      2.995479  2.200662e+10  2.222939e+08
-max      6.327714  8.874876e+12  3.989123e+11
+max      6.327714  8.874786e+12  3.989123e+11
 #+end_example
 
+[[./graphs/x-A_2.png]], [[./graphs/T-A_2.png]]
 
-[[./graphs/x-A.png]], [[./graphs/T-A.png]]
+#+begin_src python :session foo :results output
 
+#we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
+k=int(np.ceil(np.sqrt(df.shape[0])))
+
+df.hist(column='x', bins=k)
+
+plt.xlabel('x2')
+plt.ylabel('# of event')
+
+
+plt.savefig('graphs/histogram_x2.png')
+#+end_src
+
+#+RESULTS:
+
+[[./graphs/histogram_x2.png]]
+
+*** try 3
+#+begin_src python :session foo :results output
+for i in df.index:
+    def sfrx(z):
+        x = z
+
+        tsf=12.5*10**9
+
+
+        ratio=df.loc[i]['ratio']
+
+
+        #f=ratio-(np.exp(x)-x-1)/x**2
+        f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
+        return f
+
+    #for i in df.index:
+    z = fsolve(sfrx,3.0)
+    df.at[i,'x']=(z)
+
+
+df['tau']=12.5*10**9/df['x']
+
+df['A_del']=df['SFR_0']*df['tau']*np.exp(df['x'])/df['x']
+
+print(df)
+print(df[ ["x", 'tau', 'A_del']].describe(include='all' ), "\n")
+
+df.plot(kind='scatter', x='x', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/x-A_3")
+
+df.plot(kind='scatter', x='tau', y='A_del')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/T-A_3")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/tmp/babel-NZGXwl/python-oYt5M4:12: RuntimeWarning: invalid value encountered in log
+  f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
+/home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio         A_del         x           tau
+1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988  5.290872e+08  0.541953  2.306474e+10
+2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665  1.135049e+08  1.219512  1.025000e+10
+3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561  2.413848e+09  0.467792  2.672128e+10
+5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947  2.036319e+09  0.533184  2.344405e+10
+7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498  4.029546e+09  1.965489  6.359739e+09
+..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...           ...       ...           ...
+831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815  5.046527e+07  0.874837  1.428838e+10
+832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271  5.647589e+08  0.677404  1.845280e+10
+834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932  3.905923e+08  1.982903  6.303887e+09
+835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306  3.989123e+11  0.018786  6.653788e+11
+836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074  9.431535e+09  1.418358  8.813010e+09
+
+[586 rows x 17 columns]
+                x           tau         A_del
+count  586.000000  5.860000e+02  5.860000e+02
+mean     1.849322  1.099205e+11  2.715326e+12
+std      1.470768  1.039690e+12  4.725675e+13
+min      0.000559  1.932049e+09  2.477977e+07
+25%      0.566731  4.172960e+09  1.393952e+08
+50%      1.580993  7.906431e+09  6.707109e+08
+75%      2.995479  2.205636e+10  5.658202e+09
+max      6.469815  2.237735e+13  1.100078e+15
+#+end_example
+
+[[./graphs/x-A_3.png]], [[./graphs/T-A_3.png]]
+
+
+#+begin_src python :session foo :results output
+
+#we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
+k=int(np.ceil(np.sqrt(df.shape[0])))
+
+df.hist(column='x', bins=k)
+
+plt.xlabel('x3')
+plt.ylabel('# of event')
+
+
+plt.savefig('graphs/histogram_x3.png')
+#+end_src
+
+#+RESULTS:
+
+[[./graphs/histogram_x3.png]]
 
 
 * Find the t_sf-Mass relation
+
+#+begin_src python :session foo :results output
+
+for i in df.index:
+    def tsfs(z):
+        tsf = z
+
+        tau=df.loc[i]['tau']
+        ratio=df.loc[i]['ratio']
+        SFR=df.loc[i]['SFR_0']
+        A=df.loc[i]['A_del']
+        x=tsf/tau
+        asfr=df.loc[i]['av_SFR']
+
+        f=SFR-A*x*np.exp(-x)/tau
+
+        #f=asfr-A*(1-(1+np.exp(np.log(x)))*np.exp(-x))/tsf
+        #f=ratio-(np.exp(x)-x-1)/x**2
+        return f
+
+    #for i in df.index:
+    z = fsolve(tsfs,3.0)
+    df.at[i,'tsf']=(z)
+
+df['tsf1']=df['A_del']*(1-(1+df['x'])*np.exp(-df['x']))/df['av_SFR']
+
+print(df[ ['tsf','tsf1']].describe(include='all'))
+
+df.plot(kind='scatter', x='Mass', y='tsf')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/M-tsf")
+
+df.plot(kind='scatter', x='Mass', y='tsf1')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/M-tsf1")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+/home/dp/.local/lib/python3.9/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
+  improvement from the last ten iterations.
+  warnings.warn(msg, RuntimeWarning)
+                tsf          tsf1
+count  5.860000e+02  5.860000e+02
+mean   2.069092e+07  1.493475e+10
+std    6.309195e+07  8.883434e+09
+min    7.665300e+04  1.240980e+08
+25%    7.665300e+04  1.250000e+10
+50%    7.665300e+04  1.250000e+10
+75%    1.536030e+05  1.250000e+10
+max    3.295981e+08  1.027880e+11
+#+end_example
+
+[[./graphs/M-tsf.png]]
+[[./graphs/M-tsf1.png]]
