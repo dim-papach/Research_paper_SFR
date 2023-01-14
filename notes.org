@@ -11,7 +11,6 @@ from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import seaborn as sns
 #+end_src
-
 #+RESULTS:
 
 * Tasks
@@ -60,109 +59,127 @@ If we assume that SFH is a power law:
 
 ** Original data set
 
-The data I will use for this project come from the Karachentsev catalogue (2022-06-30), which is an updated version of the list used in Kroupa et al. 2020
+The data I will use for this project come from the Karachentsev  catalog (2022-12-02), which is an updated version of the list used in Kroupa et al. 2020
+From the list I use the tables "Catalog of Nearby Galaxies", "Global Parameters of the Nearby Galaxies" and "List of the nearby galaxies with measured SFR"
 
-#+begin_src sh :results output
-head Karachentsev_06_11_2022.txt
-#+end_src
-
-#+RESULTS:
-#+begin_example
-  99999   -3.07  6.43  7.05
-  -2.29   -2.03  7.58  7.92
-  99999 < -4.34  7.18  7.46
-  -2.68   -2.23  7.70  7.84
-< -5.97 < -5.84  6.44  6.65
-< -6.26 < -6.35  4.38 99999
-< -6.82   -5.67  5.59 99999
-< -6.47 < -6.38  4.75 99999
-  -1.47   -1.72  8.10  8.10
-  -4.64   -3.53  6.39  6.64
-#+end_example
-
-The columns are:
-1. column: Limit flag on $SFR_{Ha}$ (if "<" you can remove it)
-2. column: $\log(SFR_{Ha})$ $(M_\odot/yr)$, $H\alpha$ derived integral star formation rate (1)
-3. column: Limit flag on $SFR_{FUV}$ (if "<" you can remove it)
-4. column: $\log(SFR_{FUV}) (M_\odot/yr)$, FUV derived integral star formation rate
-5. column: Log K band luminosity, $\log(KLum)$ [solLum]
-6. column: Log hydrogen mass, $\log(MHI)$ [solMass]
-
-
-I created a Python script to delete the lines with "<"
-
-#+begin_src python :tangle delete_lines.py
-with open("Karachentsev_06_11_2022.txt", "r") as fp, open("Karachentsev_updated.txt","w") as new_fp:
-    for line in fp:
-        if "<"  not in line:
-            new_fp.write(line)
-#+end_src
-
-#+RESULTS:
-: None
+Because this files include text as well, I create a script to get rid of the text and only keep the data'
 
 #+begin_src shell
-head Karachentsev_updated.txt
+FIRST_GALAXY="AGC102728"
+cd ./list
+rm new_*.dat
+for f in lvg*.dat
+         do
+             sed $f -e/$FIRST_GALAXY/\{ -e:1 -en\;b1 -e\} -ed > "new_"$f
+         done
 #+end_src
 
 #+RESULTS:
-| 99999 | -3.07 | 6.43 | 7.05 |
-| -2.29 | -2.03 | 7.58 | 7.92 |
-| -2.68 | -2.23 |  7.7 | 7.84 |
-| -1.47 | -1.72 |  8.1 |  8.1 |
-| -4.64 | -3.53 | 6.39 | 6.64 |
-| -1.51 | -1.63 | 8.15 | 8.58 |
-| -4.03 | -3.02 | 7.12 | 7.13 |
-| -1.01 |  -0.6 | 9.48 | 8.64 |
-| -0.54 | -0.45 | 9.33 | 9.18 |
-| -3.67 | 99999 | 6.53 | 6.96 |
 
-That way we no longer have data with limit flags and we have less columns
-The columns are:
-1. column: $\log(SFR_{Ha})$ $(M_\odot/yr)$, $H\alpha$ derived integral star formation rate (1)
-2. column: $\log(SFR_{FUV}) (M_\odot/yr)$, FUV derived integral star formation rate
-3. column: Log K band luminosity, $\log(KLum)$ [solLum]
-4. column: Log hydrogen mass, $\log(MHI)$ [solMass]
+We also want to keep the labels
 
-For the measurements with "99999", we don't have them, so we can replace them with NaN
+#+begin_src shell
+ FIRST_GALAXY="AGC102728"
+ cd ./list
+ rm label_*.dat
+ for f in lvg*.dat
+          do
+              sed '/Note/Q' $f > "label_"$f
+              sed "label_"$f -i -e/'Bytes'/\{ -e:1 -en\;b1 -e\} -ed
+              sed '/--------/d' "label_"$f -i
+          done
+ #+end_src
 
-#+begin_src python :session foo :results output
-
-df = pd.read_csv('Karachentsev_updated.txt', delimiter= '\s+', header=None)
-#name the columns
-df.columns=["log_SFR_Ha","log_SFR_FUV","log_K", "log_MHI"]
+ #+RESULTS:
+Because we have a problem with the spaces I will create tabs between columns in VIM from the ~new_lvg*~ files to the ~newlist*~
 
 
-df = df.replace(99999,np.nan)
+After we have created the labels and tables files we want to put create a row with the labels and add it to the tables file.
 
-df['SFR_Ha']=10**df['log_SFR_Ha']
-
-df['SFR_FUV']=10**df['log_SFR_FUV']
-
-df['K']=10**df['log_K']
-
-df['MHI']=10**df['log_MHI']
-
-print(df)
+#+begin_src shell :results output
+cd ./list
+for f in labels_*.dat
+         do
+            file="new_"$f
+            touch $file
+            sed '/RAh/d' $f > $file
+            sed '/RAm/d' $f > $file
+            sed '/RAs/d' $f > $file
+            sed '/DE-/d' $f > $file
+            sed '/DEd/d' $f > $file
+            sed '/DEm/d' $f > $file
+            sed 's/DEs/time/g' $f > $file
+            sed '/_/d' $f > $file
+            awk -v RS= -v OFS="," -F'\n' '/----/{next}$1=$1' $f > $file
+         done
 #+end_src
 
 #+RESULTS:
-#+begin_example
-     log_SFR_Ha  log_SFR_FUV  log_K  log_MHI    SFR_Ha   SFR_FUV             K           MHI
-0           NaN        -3.07   6.43     7.05       NaN  0.000851  2.691535e+06  1.122018e+07
-1         -2.29        -2.03   7.58     7.92  0.005129  0.009333  3.801894e+07  8.317638e+07
-2         -2.68        -2.23   7.70     7.84  0.002089  0.005888  5.011872e+07  6.918310e+07
-3         -1.47        -1.72   8.10     8.10  0.033884  0.019055  1.258925e+08  1.258925e+08
-4         -4.64        -3.53   6.39     6.64  0.000023  0.000295  2.454709e+06  4.365158e+06
-..          ...          ...    ...      ...       ...       ...           ...           ...
-832       -2.18        -1.84   8.03     8.22  0.006607  0.014454  1.071519e+08  1.659587e+08
-833       -3.57        -3.27   6.63     6.49  0.000269  0.000537  4.265795e+06  3.090295e+06
-834       -2.06        -1.60   8.47     8.64  0.008710  0.025119  2.951209e+08  4.365158e+08
-835       -2.23        -1.79   7.95     7.90  0.005888  0.016218  8.912509e+07  7.943282e+07
-836       -0.45        -0.42   9.70     8.70  0.354813  0.380189  5.011872e+09  5.011872e+08
 
-[837 rows x 8 columns]
-#+end_example
+#+begin_src shell
+cd list
+#For list 1
+sed 's/\t/,/g' newlist1.dat > list1.dat
+paste -sd'\n' labels_1.dat list1.dat> final_list1.dat
+sed -i 's/\s//g' final_list1.dat
+
+sed 's/\t/,/g' newlist2.dat > list2.dat
+paste -sd'\n' labels_2.dat list2.dat> final_list2.dat
+sed -i 's/\s//g' final_list2.dat
+
+
+sed 's/\t/,/g' newlist7.dat > list7.dat
+paste -sd'\n' labels_7.dat list7.dat> final_list7.dat
+sed -i 's/\s//g' final_list7.dat
+
+#+end_src
+
+#+RESULTS:
+
+Now we clear the directory:
+
+#+begin_src shell
+cd ./list
+
+rm new_lvg*
+rm label_*
+rm list*.dat
+rm new_label*
+#+end_src
+
+#+RESULTS:
+
+We will now create the final list with only the columns we need, using python
+
+#+begin_src python :results output
+import numpy as np
+import pandas as pd
+
+df1= pd.read_csv("./list/final_list1.dat")
+df2= pd.read_csv("./list/final_list2.dat")
+df7= pd.read_csv("./list/final_list7.dat")
+
+#If we keep the Kmag of df1 when we apply the flags most of the rows get dropped
+
+df1=df1[["Name", "FUVmag", "Bmag", "TType", "Tdw1", "Tdw2", "Dis"]]
+df2=df2[["Name","AB","BMag","SBB", "logKLum","logM26", "logMHI"]]
+df7=df7[["Name","BMag","SFRHa","SFRFUV"]]
+
+df1.rename(columns = {"Bmag":"B1"}, inplace=True)
+df2.rename(columns = {"BMag":"B2"}, inplace=True)
+df7.rename(columns = {"BMag":"B7"}, inplace=True)
+
+df=pd.merge(pd.merge(df1,df2,on='Name'),df7, on='Name')
+
+#we put the astype, because some of the columns are not strings and this fixes the errors
+for col in df.columns:
+    df=df[df[col].astype(str).str.contains(">|<|\*")==False]
+
+df.to_csv("Karachentsev_list.csv",index=False)
+
+#+end_src
+
+#+RESULTS:
 
 ** Calculations for values that we need
 Now we have to calculate the total SFR from the equation:
@@ -211,33 +228,6 @@ print(df)
 print(df[ ["SFR_0","av_SFR",'MHI','Mass']].describe(include="all"))
 
 #+end_src
-
-#+RESULTS:
-#+begin_example
-     log_SFR_Ha  log_SFR_FUV  log_SFR_0  log_K  log_MHI    SFR_Ha   SFR_FUV     SFR_0             K           MHI          Mass    av_SFR     ratio  log_ratio
-1         -2.29        -2.03  -2.140827   7.58     7.92  0.005129  0.009333  0.007231  3.801894e+07  8.317638e+07  2.281136e+07  0.002372  0.328104  -0.483988
-2         -2.68        -2.23  -2.399151   7.70     7.84  0.002089  0.005888  0.003989  5.011872e+07  6.918310e+07  3.007123e+07  0.003127  0.784034  -0.105665
-3         -1.47        -1.72  -1.577254   8.10     8.10  0.033884  0.019055  0.026470  1.258925e+08  1.258925e+08  7.553552e+07  0.007856  0.296783  -0.527561
-5         -1.51        -1.63  -1.565868   8.15     8.58  0.030903  0.023442  0.027173  1.412538e+08  3.801894e+08  8.475225e+07  0.008814  0.324379  -0.488947
-7         -1.01        -0.60  -0.758314   9.48     8.64  0.097724  0.251189  0.174456  3.019952e+09  4.365158e+08  1.811971e+09  0.188445  1.080185   0.033498
-..          ...          ...        ...    ...      ...       ...       ...       ...           ...           ...           ...       ...       ...        ...
-831         NaN        -2.89  -2.890000   7.15     6.86       NaN  0.001288  0.001288  1.412538e+07  7.244360e+06  8.475225e+06  0.000881  0.684202  -0.164815
-832       -2.18        -1.84  -1.977544   8.03     8.22  0.006607  0.014454  0.010531  1.071519e+08  1.659587e+08  6.429116e+07  0.006686  0.634934  -0.197271
-834       -2.06        -1.60  -1.771747   8.47     8.64  0.008710  0.025119  0.016914  2.951209e+08  4.365158e+08  1.770726e+08  0.018416  1.088759   0.036932
-835       -2.23        -1.79  -1.956509   7.95     7.90  0.005888  0.016218  0.011053  8.912509e+07  7.943282e+07  5.347506e+07  0.005561  0.503146  -0.298306
-836       -0.45        -0.42  -0.434741   9.70     8.70  0.354813  0.380189  0.367501  5.011872e+09  5.011872e+08  3.007123e+09  0.312741  0.850992  -0.070074
-
-[586 rows x 14 columns]
-            SFR_0      av_SFR           MHI          Mass
-count  586.000000  586.000000  5.460000e+02  5.860000e+02
-mean     0.225557    0.389175  5.559003e+08  3.742067e+09
-std      1.891035    1.331698  1.438369e+09  1.280479e+10
-min      0.001000    0.000197  2.884032e+06  1.897367e+06
-25%      0.003638    0.003591  3.890451e+07  3.452640e+07
-50%      0.012589    0.012035  1.202264e+08  1.157205e+08
-75%      0.067549    0.070014  4.073803e+08  6.732111e+08
-max     44.668359   13.037208  2.041738e+10  1.253578e+11
-#+end_example
 
 *** Checking if the data are ok
 
