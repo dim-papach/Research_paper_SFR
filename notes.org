@@ -758,6 +758,7 @@ print(simple_regplot('logA','logAi').rsquared)
 
 [[./graphs/x-A_i.png]], [[./graphs/T-A_i.png]]
 
+
 * Type of Galaxies
 #+begin_src python :session foo :results output
 df['TType'].value_counts(sort=False).plot(kind='bar')
@@ -782,10 +783,7 @@ plt.show()
 
 #+begin_src python :session foo :results output
 
-#we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
-k=int(np.ceil(np.sqrt(df.shape[0])))
-
-df.hist(column='x', bins=k)
+df.hist(column='x', bins=fd_bins("x"))
 
 plt.xlabel('x3')
 plt.ylabel('# of event')
