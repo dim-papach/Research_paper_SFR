@@ -1,4 +1,4 @@
-#+title: Reaserch Project Notes
+#+title:Investigations of the galaxies of the LCV
 #+subtitle:Constraints on the star formation histories of galaxies in the Local Cosmological Volume
 #+PROPERTY: header-args:python :tangle main.py
 #+startup: preview
@@ -11,9 +11,12 @@ from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
+import statsmodels.formula.api as smf
 
-def simple_regplot(
+
+def simple_regplot(data ,
     X, Y, n_std=2, n_pts=100, ax=None, scatter_kws=None, line_kws=None, ci_kws=None):
+    df=data
     x=df[X]
     y=df[Y]
     """ Draw a regression line with error interval. """
@@ -49,9 +52,14 @@ def simple_regplot(
     ax.grid()
     ax.set_xlabel(X)
     ax.set_ylabel(Y)
-    ax.legend(loc= "best")
-    plt.savefig("graphs/"+X+"-"+Y)
-    plt.show()
+    ax.legend(loc = "best")
+    if scatter_kws == {}:
+        plt.show()
+    else:
+        PCM=ax.get_children()[2] #get the mappable, the 1st and the 2nd are the x and y axes
+        plt.colorbar(PCM, ax=ax).set_label(scatter_kws["c"].name)
+        plt.savefig("graphs/"+X+"-"+Y)
+        plt.show()
     return fit_results
 
 # Calculate the bin width using the Freedman-Diaconis rule
@@ -62,6 +70,7 @@ def fd_bins(x):
     # Calculate the number of bins using the bin width
     return int((df[x].max() - df[x].min()) / bin_width)
 #+end_src
+
 #+RESULTS:
 
 
@@ -75,15 +84,18 @@ def fd_bins(x):
 ** WAIT for $\tau=3.5 Gyr$ calculate A, tsf
 ** TODO for non constant t_sf try to find a relation t_sf=t_sf(Mass)
 
-** TODO Calculate t_g and compare it with t1 and tau
+** PROJ Calculate t_g and compare it with t1 and tau
 ** DONE Histograms of types of galaxies
-** IDEA Find relations between Masses
+** DONE Find relations between Masses
 *** There are some relations with a high $R^2$ -> ???
 
 ** [?] If I do many 2 sigma clippings then at one point it stops and we have some better results
 
 ** [?] I calculate the A_del with both equations and then I get the mean. It's not much different but maybe minimize the errors
 
+** TODO Plot x-x_i with Type
+** TODO Lelli McGaugh sparc data
+** TODO Stellar-Mt color with type and SFR and the timescale
 * Introduction
 
 ** The tension between the delayed-τ model and the obserations
@@ -238,7 +250,8 @@ df7=df7[["Name","SFRHa","SFRFUV"]]
 df7.rename(columns = {"SFRFUV":"log_SFR_FUV","SFRHa":"log_SFR_Ha"}, inplace=True)
 
 data=pd.merge(pd.merge(df1,df2,on='Name'),df7, on='Name')
-df=data
+df=data.copy()
+df.to_csv("Karachentsev_list_flags.csv",index=False)
 #we put the astype, because some of the columns are not strings and this fixes the errors
 for col in df.columns:
     df=df[df[col].astype(str).str.contains(">|<|\*")==False]
@@ -268,6 +281,7 @@ df['MHI']=10**df['logMHI']
 
 
 * Calculations for values that we need
+
 Now we have to calculate the total SFR from the equation:
 
 $$
@@ -341,15 +355,19 @@ print(df[ ["SFR_0","av_SFR","ratio","log_ratio",'Mt','MHI','StellarMass','Mg']].
 #+end_src
 
 #+RESULTS:
-:             SFR_0      av_SFR       ratio   log_ratio            Mt           MHI   StellarMass            Mg
-: count  579.000000  578.000000  578.000000  578.000000  5.370000e+02  5.380000e+02  5.780000e+02  5.380000e+02
-: mean     0.154407    0.392575    3.387887    0.024925  4.520226e+09  5.676207e+08  3.774758e+09  7.549356e+08
-: std      0.448072    1.340746   14.109888    0.477810  1.406087e+10  1.454783e+09  1.289179e+10  1.934862e+09
-: min      0.001023    0.000197    0.065526   -1.183585  1.521344e+07  2.884032e+06  1.897367e+06  3.835762e+06
-: 25%      0.003667    0.003529    0.542246   -0.265804  1.055205e+08  4.073803e+07  3.393696e+07  5.418158e+07
-: 50%      0.012803    0.012595    0.916552   -0.037847  3.499226e+08  1.258925e+08  1.211100e+08  1.674371e+08
-: 75%      0.069084    0.069616    1.770790    0.248157  1.483085e+09  4.241520e+08  6.693800e+08  5.641221e+08
-: max      4.387176   13.037208  180.027326    2.255338  1.256768e+11  2.041738e+10  1.253578e+11  2.715511e+10
+#+begin_example
+            SFR_0      av_SFR       ratio  ...           MHI   StellarMass            Mg
+count  579.000000  578.000000  578.000000  ...  5.380000e+02  5.780000e+02  5.380000e+02
+mean     0.154407    0.392575    3.387887  ...  5.676207e+08  3.774758e+09  7.549356e+08
+std      0.448072    1.340746   14.109888  ...  1.454783e+09  1.289179e+10  1.934862e+09
+min      0.001023    0.000197    0.065526  ...  2.884032e+06  1.897367e+06  3.835762e+06
+25%      0.003667    0.003529    0.542246  ...  4.073803e+07  3.393696e+07  5.418158e+07
+50%      0.012803    0.012595    0.916552  ...  1.258925e+08  1.211100e+08  1.674371e+08
+75%      0.069084    0.069616    1.770790  ...  4.241520e+08  6.693800e+08  5.641221e+08
+max      4.387176   13.037208  180.027326  ...  2.041738e+10  1.253578e+11  2.715511e+10
+
+[8 rows x 8 columns]
+#+end_example
 
 *** Checking if the data are ok
 
@@ -364,7 +382,9 @@ simple_regplot('log_SFR_0','log_av_SFR')
 #+end_src
 
 #+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: QSocketNotifier: Can only be used with threads started with QThread
+:
+: (python3:25173): Gtk-[1;33mWARNING[0m **: [34m11:42:14.199[0m: Theme parsing error: gtk.css:3932:55: Using one color stop with linear-gradient() is deprecated.
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 [[./graphs/av_SFR-SFR_0.png]]
@@ -386,7 +406,7 @@ lower = mean - 2*std
 upper = mean + 2*std
 
 # Filter out the values outside of the 2-sigma range
-da = da[(da >= lower) & (da <= upper)]
+df = df[(da >= lower) & (da <= upper)]
 print(da.describe())
 iqr = data['log_ratio'].quantile(0.75) - data['log_ratio'].quantile(0.25)
 bin_width = 2 * iqr / data['log_ratio'].count()**(1/3)
@@ -416,54 +436,16 @@ min       -1.183585
 75%        0.248157
 max        2.255338
 Name: log_ratio, dtype: float64
-count    550.000000
-mean      -0.032485
-std        0.350998
-min       -0.930220
-25%       -0.278810
-50%       -0.052727
-75%        0.205185
-max        0.949876
+count    578.000000
+mean       0.024925
+std        0.477810
+min       -1.183585
+25%       -0.265804
+50%       -0.037847
+75%        0.248157
+max        2.255338
 Name: log_ratio, dtype: float64
-qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-Name              550
-FUVmag            467
-TType             550
-Tdw1              365
-Tdw2              356
-logKLum           550
-logM26            518
-logMHI            516
-log_SFR_Ha        447
-log_SFR_FUV       468
-SFR_Ha            447
-SFR_FUV           468
-K                 550
-MHI               516
-SFR_0             550
-log_SFR_0         550
-StellarMass       550
-logStellarMass    550
-av_SFR            550
-log_av_SFR        550
-ratio             550
-log_ratio         550
-Mg                516
-logMg             516
-Mt                516
-logMt             516
-dtype: int64 count    550.000000
-mean       1.307024
-std        1.281785
-min        0.117430
-25%        0.526255
-50%        0.885672
-75%        1.603927
-max        8.909965
-Name: ratio, dtype: float64
 #+end_example
-
-[[./graphs/histogram_ratio.png]]
 
 
 * Calculate A and τ
@@ -508,18 +490,18 @@ for i in df.index:
 
 #+RESULTS:
 #+begin_example
-/tmp/babel-7Op9e9/python-0sLxEr:8: RuntimeWarning: invalid value encountered in log
+/tmp/babel-Z1YK67/python-QPKIS8:8: RuntimeWarning: invalid value encountered in log
   f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
 /usr/lib64/python3.11/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
   improvement from the last ten iterations.
   warnings.warn(msg, RuntimeWarning)
-/tmp/babel-7Op9e9/python-0sLxEr:13: SettingWithCopyWarning:
+/tmp/babel-Z1YK67/python-QPKIS8:13: SettingWithCopyWarning:
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   df.at[i,'x']=(z)
-/tmp/babel-7Op9e9/python-0sLxEr:8: RuntimeWarning: invalid value encountered in log
+/tmp/babel-Z1YK67/python-QPKIS8:8: RuntimeWarning: invalid value encountered in log
   f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
 /usr/lib64/python3.11/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
   improvement from the last ten iterations.
@@ -541,12 +523,6 @@ plt.show()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 [[./graphs/histogram_x3.png]]
-#+RESULTS:
-: /tmp/babel-7Op9e9/python-PLdaLu:8: RuntimeWarning: invalid value encountered in log
-:   f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
-: /usr/lib64/python3.11/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
-:   improvement from the last ten iterations.
-:   warnings.warn(msg, RuntimeWarning)
 
 *** Fixed tsf=12.5 Gyr
 
@@ -576,83 +552,42 @@ df["a"]=df["av_SFR"]*tsf/(1-(1+df["x"])*np.exp(-df['x']))
 df["A_del"]=df[ ["a","A"]].mean(axis=1, skipna=True)
 
 print(df[ ["x", 'tau','A', 'A_del','StellarMass','a']].describe(include='all' ), "\n")
+#+end_src
+
+#+begin_src python :session foo  :colnames no :results output
+print(df[ ["x", 'tau','A_del']].describe(include='all' ), "\n")
 
 #+end_src
 
 #+RESULTS:
-#+begin_example
-/tmp/babel-7Op9e9/python-ejVxtP:3: SettingWithCopyWarning:
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['tau']=tsf/df['x']
-/tmp/babel-7Op9e9/python-ejVxtP:4: SettingWithCopyWarning:
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df["log_tau"]=np.log10(df["tau"])
-/tmp/babel-7Op9e9/python-ejVxtP:6: SettingWithCopyWarning:
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df['A']=df['SFR_0']*df['tau']*np.exp(df['x'])/df['x']
-/tmp/babel-7Op9e9/python-ejVxtP:8: SettingWithCopyWarning:
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df["a"]=df["av_SFR"]*tsf/(1-(1+df["x"])*np.exp(-df['x']))
-/tmp/babel-7Op9e9/python-ejVxtP:10: SettingWithCopyWarning:
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df["A_del"]=df[ ["a","A"]].mean(axis=1, skipna=True)
-                x           tau             A         A_del   StellarMass             a
-count  550.000000  5.500000e+02  5.500000e+02  5.500000e+02  5.500000e+02  5.500000e+02
-mean     1.762321  1.126908e+11  2.844005e+12  2.600301e+12  2.627387e+09  2.356597e+12
-std      1.388768  1.067717e+12  4.877339e+13  4.456457e+13  9.697435e+09  4.035578e+13
-min      0.000559  2.198306e+09  2.477977e+07  2.477977e+07  1.897367e+06  2.477977e+07
-25%      0.558532  4.481783e+09  1.372292e+08  1.355973e+08  3.240954e+07  1.306782e+08
-50%      1.513139  8.260984e+09  6.837637e+08  6.446495e+08  1.042680e+08  5.687784e+08
-75%      2.789068  2.238008e+10  5.436999e+09  5.172220e+09  5.077767e+08  4.446257e+09
-max      5.686198  2.237735e+13  1.100078e+15  1.005083e+15  7.381613e+10  9.100885e+14
-#+end_example
+:                 x           tau         A_del
+: count  550.000000  5.500000e+02  5.500000e+02
+: mean     1.762321  1.126908e+11  2.600301e+12
+: std      1.388768  1.067717e+12  4.456457e+13
+: min      0.000559  2.198306e+09  2.477977e+07
+: 25%      0.558532  4.481783e+09  1.355973e+08
+: 50%      1.513139  8.260984e+09  6.446495e+08
+: 75%      2.789068  2.238008e+10  5.172220e+09
+: max      5.686198  2.237735e+13  1.005083e+15
 
 
 
 
 #+begin_src python :session foo :results output
-df.plot(kind='scatter', x='x', y='A_del',c= "logStellarMass")
+df.plot(kind='scatter', x='x', y='A_del',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig("graphs/x-A_3")
 
-df.plot(kind='scatter', x='tau', y="A_del", c= "logStellarMass")
+df.plot(kind='scatter', x='tau', y="A_del", c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig("graphs/T-A_3")
-
-df.plot(kind='scatter', x='tau', y='A_del', c= "TType")
-plt.xscale('log')
-plt.yscale('log')
-
-df.plot(kind='scatter', x='x', y='a',c= "logStellarMass")
-plt.xscale('log')
-plt.yscale('log')
-
-df.plot(kind='scatter', x='x', y='A',c= "logStellarMass")
-plt.xscale('log')
-plt.yscale('log')
 plt.show()
 
 #+end_src
 
 #+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
@@ -663,68 +598,127 @@ plt.show()
 
 
 
-*** TODO Fixed tau
-
-Having found the x from the above equation (the ratio does not change for the two calculations) we can now solve for a fixed tau
-
-Now we do the same for a fixed $\tau=3.5\cdot10^9$
+*** Fixed tau=3.5 Gyr
+We have a hidden tsf in the av_SFR so we cannot use the same av_SFR and ratio
 
 $$
-    x=\frac{t_{sf}}{\tau}\Rightarrow t_{sf}=x\cdot\tau
+\overline{SFR}=\frac{\zeta M_*}{x\tau}
 $$
 
+
 $$
-    SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau}\Rightarrow A_{del}= \frac{SFR_{0,del}\cdot \tau\cdot\exp{x}}{x}
+    \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^x-x-1}{x^2}\Leftrightarrow \frac{e^x-x-1}{x}=\frac{\zeta M_*}{SFR\cdot\tau}
 $$
 
 #+begin_src python :session foo :results output
-
+dp=df[["Name","TType","SFR_0","logMt","StellarMass","A_del","tau","x"]].copy()
+dp['log_tau'] = np.log10(dp.tau)
 tau=3.5*10**9
-df['tsf']=tau*df['x']
-df["log_tsf"]=np.log10(df["tsf"])
+dp["z"]=1.3*dp["StellarMass"]/tau
 
-df['A_i']=df['SFR_0']*tau*np.exp(df['x'])/df['x']
 
-df["a_i"]=df["av_SFR"]*df['tsf']/(1-(1+df["x"])*np.exp(-df['x']))
+for i in df.index:
+    def sfrx(z):
+        x = z
 
-df["A_del_i"]=df[ ["a_i","A_i"]].mean(axis=1, skipna=True)
+        cons=dp.loc[i]['z']
+        SFR=dp.loc[i]['SFR_0']
 
-print(df[ ["x", 'tsf', 'A_del_i','A_del','StellarMass']].describe(include='all' ), "\n")
+
+        #f=ratio-(np.exp(x)-np.abs(x)-1)/x**2
+        f=cons/SFR-(np.exp(x)-np.exp(np.log(x))-1)/x
+        return f
+
+    #for i in df.index:
+    z = fsolve(sfrx,3.0)
+    dp.at[i,'x_i']=(z)
+dp["tsf"]=dp['x_i']*tau
+dp["log_tsf"]=np.log10(dp.tsf)
+dp["av_SFR"]=dp.z/dp.x_i
+dp['ratio']=dp.av_SFR/dp.SFR_0
+dp['A']=tau*dp['SFR_0']*np.exp(dp.x_i)/dp.x_i
+
+print(dp[['A','tsf','x_i']].describe())
 
 #+end_src
 
 #+RESULTS:
-:                 x           tsf       A_del_i         A_del   StellarMass
-: count  550.000000  5.500000e+02  5.500000e+02  5.500000e+02  5.500000e+02
-: mean     1.762321  6.168122e+09  5.907424e+09  2.600301e+12  2.627387e+09
-: std      1.388768  4.860689e+09  2.284547e+10  4.456457e+13  9.697435e+09
-: min      0.000559  1.955102e+06  8.908260e+06  2.477977e+07  1.897367e+06
-: 25%      0.558532  1.954864e+09  5.952968e+07  1.355973e+08  3.240954e+07
-: 50%      1.513139  5.295987e+09  2.176498e+08  6.446495e+08  1.042680e+08
-: 75%      2.789068  9.761740e+09  1.182572e+09  5.172220e+09  5.077767e+08
-: max      5.686198  1.990169e+10  2.848380e+11  1.005083e+15  7.381613e+10
+:                   A           tsf         x_i
+: count  5.500000e+02  5.500000e+02  550.000000
+: mean   4.192335e+09  8.727310e+09    2.493517
+: std    1.432226e+10  3.097809e+09    0.885088
+: min    9.870027e+06  2.323533e+09    0.663867
+: 25%    6.466448e+07  6.441713e+09    1.840489
+: 50%    2.234694e+08  8.383763e+09    2.395361
+: 75%    1.034826e+09  1.077179e+10    3.077654
+: max    1.057699e+11  1.796414e+10    5.132611
+
+#+begin_src python :session foo :results output
+dp.plot(kind='scatter', x='x_i', y='A',c='logMt')
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig("graphs/x-A_tau")
+plt.show()
+
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+#+begin_src python :session foo :results output
+dp['af']=dp[["A_del","A"]].mean(axis=1, skipna=True)
+dp.plot(kind='scatter', x='x_i', y='af',c='logMt')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+#+begin_src python :session foo :results output
+dp['log_A_del']=np.log10(dp.A_del)
+dp['log_A']=np.log10(dp.A)
+print(dp[['A','A_del','af']].describe())
+
+#+end_src
+
+#+RESULTS:
+:                   A         A_del            af
+: count  5.500000e+02  5.500000e+02  5.500000e+02
+: mean   4.192335e+09  2.600301e+12  1.302247e+12
+: std    1.432226e+10  4.456457e+13  2.228220e+13
+: min    9.870027e+06  2.477977e+07  2.145044e+07
+: 25%    6.466448e+07  1.355973e+08  1.191973e+08
+: 50%    2.234694e+08  6.446495e+08  4.845113e+08
+: 75%    1.034826e+09  5.172220e+09  3.409221e+09
+: max    1.057699e+11  1.005083e+15  5.025416e+14
 
 
 #+begin_src python :session foo :results output
-df.plot(kind='scatter', x='x', y='A_del_i',c= "logStellarMass")
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig("graphs/x-A_i")
+print(dp[['x','x_i']].describe())
+#+end_src
 
-df.plot(kind='scatter', x='x', y='a_i',c= "logStellarMass")
-plt.xscale('log')
-plt.yscale('log')
+#+RESULTS:
+:                 x         x_i
+: count  550.000000  550.000000
+: mean     1.762321    2.493517
+: std      1.388768    0.885088
+: min      0.000559    0.663867
+: 25%      0.558532    1.840489
+: 50%      1.513139    2.395361
+: 75%      2.789068    3.077654
+: max      5.686198    5.132611
 
-df.plot(kind='scatter', x='x', y='A_i',c= "logStellarMass")
-plt.xscale('log')
-plt.yscale('log')
+#+begin_src python :session foo :results output
+simple_regplot(dp,'log_A_del','log_A',scatter_kws={"c":dp["logMt"]})
+#+end_src
 
-df.plot(kind='scatter', x='tsf', y="A_i", c= "logStellarMass")
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig("graphs/T-A_i")
+#+RESULTS:
 
-df.plot(kind='scatter', x='tsf', y='a_i', c= "TType")
+
+#+begin_src python :session foo :results output
+dp.plot(kind='scatter', x='log_tau', y='tsf',c='logMt')
 plt.xscale('log')
 plt.yscale('log')
 plt.show()
@@ -733,49 +727,141 @@ plt.show()
 
 #+RESULTS:
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-
 
 #+begin_src python :session foo :results output
-plt.scatter(df['x'],df['A_del'])
-plt.scatter(df['x'],df['A_del_i'])
-
-plt.xscale('log')
-plt.yscale('log')
-plt.show()
-df['logA']=np.log10(df['A_del'])
-df['logAi']=np.log10(df['A_del_i'])
-print(simple_regplot('logA','logAi').rsquared)
+x=simple_regplot(dp,'x','x_i',scatter_kws={"c":dp["logMt"]})
+x=simple_regplot(dp,'x','x_i',scatter_kws={"c":dp["TType"]})
 #+end_src
 
 #+RESULTS:
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: 0.76296879120933
 
-[[./graphs/x-A_i.png]], [[./graphs/T-A_i.png]]
-
-
-* Type of Galaxies
 #+begin_src python :session foo :results output
-df['TType'].value_counts(sort=False).plot(kind='bar')
+print(x.summary())
+#+end_src
+
+
+#+begin_src python :session foo :results output
+temp_dataf=dp[['Name','tsf']]
+df = pd.merge(df, temp_dataf , on = 'Name', how = 'outer')
+print(df['tsf'])
+#+end_src
+
+
+* Calculate the gas depletion timescale $\tau_g$
+
+The gas depletion timescale τg measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR (Pflamm-Altenburg & Kroupa 2009).
+$$
+\tau_g=\frac{M_g}{\dot{M_*}}=\frac{M_g}{SFR}
+$$
+
+#+begin_src python :session foo :results output
+
+df["tau_g"]=df["Mg"]/df["SFR_0"]
+df["log_tau_g"]=np.log10(df["tau_g"])
+print(df["tau_g"].describe())
+#+end_src
+
+#+RESULTS:
+: count    5.160000e+02
+: mean     1.532642e+10
+: std      2.526379e+10
+: min      2.149192e+08
+: 25%      5.279775e+09
+: 50%      1.030695e+10
+: 75%      1.766921e+10
+: max      4.611600e+11
+: Name: tau_g, dtype: float64
+
+#+begin_src python :session foo :results output
+df.plot(kind="scatter",x="Mg",y="tau_g", c = 'logStellarMass')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+Having calculated the gas timescale, we compare it with the $\tau$ and t1
+
+#+begin_src python :session foo :results output
+df.plot(kind="scatter",x="x",y="tau_g", c = 'logStellarMass')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
+#+end_src
+
+** TODO high protential low tau
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+#+begin_src python :session foo :results output
+df.plot(kind="scatter",x="tau",y="tau_g", c = 'logStellarMass')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+#+begin_src python :session foo :results output
+df.plot(kind="scatter",x="tsf",y="tau_g", c = 'logStellarMass')
+plt.xscale('log')
+plt.yscale('log')
+plt.show()
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+** TODO Check the data to see if it has the ages/color of the galaxies
+
+* DONE Type of Galaxies
+#+begin_src python :session foo :results output
+typ=pd.read_csv("Karachentsev_list_flags.csv")
+
+typ["TType"]=typ["TType"].astype('category')
+typ["Tdw1"]=typ["Tdw1"].astype('category')
+typ["Tdw2"]=typ["Tdw2"].astype('category')
+print(typ.count())
+typ['TType'].value_counts(sort=False).plot(kind='bar',logy=True,grid = 'True')
+plt.xlabel("Morphology")
+plt.ylabel("Number of Galaxies")
 plt.savefig("graphs/hist-Type")
 plt.show()
-df['Tdw1'].value_counts(sort=False).plot(kind='bar', logy=True)
+
+typ['Tdw1'].value_counts(sort=False).plot(kind='bar', logy=True,grid = 'True')
+plt.xlabel("Dwarf galaxy morphology")
+plt.ylabel("Number of Galaxies")
 plt.savefig("graphs/hist-Tdw1")
 plt.show()
-df['Tdw2'].value_counts(sort=False).plot(kind='bar')
+
+typ['Tdw2'].value_counts(sort=False).plot(kind='bar', logy=True,grid = 'True')
+plt.xlabel("Dwarf galaxy surface brightness morphology")
+plt.ylabel("Number of Galaxies")
 plt.savefig("graphs/hist-Tdw2")
 plt.show()
 #+end_src
 
 #+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+#+begin_example
+Name           1248
+FUVmag         1116
+TType          1248
+Tdw1           1022
+Tdw2           1009
+logKLum        1244
+logM26          748
+logMHI          875
+log_SFR_Ha      736
+log_SFR_FUV    1117
+dtype: int64
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+#+end_example
 
 [[./graphs/hist-Type.png]]
 [[./graphs/hist-Tdw1.png]]
@@ -783,7 +869,10 @@ plt.show()
 
 #+begin_src python :session foo :results output
 
-df.hist(column='x', bins=fd_bins("x"))
+#we can choose the number of bins acording to the Square-root choice (https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
+k=int(np.ceil(np.sqrt(df.shape[0])))
+
+df.hist(column='x', bins=k)
 
 plt.xlabel('x3')
 plt.ylabel('# of event')
@@ -800,51 +889,22 @@ plt.show()
 
 [[./graphs/histogram_x3.png]]
 
+
 * Mass relations
 We will check to see if there is a correlation between the masses
 
 ** Stellar Mass - Hydrogen Mass
 
 #+begin_src python :session foo :results output
-mhi_mass=simple_regplot("logStellarMass","logMHI")
+mhi_mass=simple_regplot(df,"logStellarMass","logMHI",scatter_kws={"c": df["log_tau_g"]})
 print(mhi_mass.summary())
 #+end_src
 
-#+RESULTS:
-#+begin_example
-qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-                            OLS Regression Results
-==============================================================================
-Dep. Variable:                 logMHI   R-squared:                       0.692
-Model:                            OLS   Adj. R-squared:                  0.692
-Method:                 Least Squares   F-statistic:                     1156.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          1.25e-133
-Time:                        00:04:35   Log-Likelihood:                -258.69
-No. Observations:                 516   AIC:                             521.4
-Df Residuals:                     514   BIC:                             529.9
-Df Model:                           1
-Covariance Type:            nonrobust
-==================================================================================
-                     coef    std err          t      P>|t|      [0.025      0.975]
-----------------------------------------------------------------------------------
-const              2.8377      0.157     18.094      0.000       2.530       3.146
-logStellarMass     0.6437      0.019     34.002      0.000       0.606       0.681
-==============================================================================
-Omnibus:                       21.922   Durbin-Watson:                   1.968
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               24.392
-Skew:                          -0.462   Prob(JB):                     5.05e-06
-Kurtosis:                       3.529   Cond. No.                         74.8
-==============================================================================
-
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-#+end_example
-
 
 ** Stellar Mass - Gas Mass
-
+** color with M*/sfr timescale
 #+begin_src python :session foo :results output
-mg_mass=simple_regplot("logMg","logStellarMass")
+mg_mass=simple_regplot(df,"logMg","logStellarMass")
 print(mg_mass.summary())
 #+end_src
 
@@ -856,8 +916,8 @@ qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 Dep. Variable:         logStellarMass   R-squared:                       0.692
 Model:                            OLS   Adj. R-squared:                  0.692
 Method:                 Least Squares   F-statistic:                     1156.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          1.25e-133
-Time:                        00:04:36   Log-Likelihood:                -391.11
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          1.25e-133
+Time:                        16:43:44   Log-Likelihood:                -391.11
 No. Observations:                 516   AIC:                             786.2
 Df Residuals:                     514   BIC:                             794.7
 Df Model:                           1
@@ -877,12 +937,12 @@ Kurtosis:                       3.918   Cond. No.                         96.9
 Notes:
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 #+end_example
-    
+
 
 ** Stellar Mass - Mass within Holmberg radius
 
 #+begin_src python :session foo :results output
-mass_m26=simple_regplot("logStellarMass","logM26")
+mass_m26=simple_regplot(df,"logStellarMass","logM26",scatter_kws={"c": df["log_tau_g"]})
 print(mass_m26.summary())
 #+end_src
 
@@ -894,8 +954,8 @@ qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 Dep. Variable:                 logM26   R-squared:                       0.795
 Model:                            OLS   Adj. R-squared:                  0.794
 Method:                 Least Squares   F-statistic:                     1999.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          1.29e-179
-Time:                        00:04:37   Log-Likelihood:                -399.03
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          1.29e-179
+Time:                        20:39:02   Log-Likelihood:                -399.03
 No. Observations:                 518   AIC:                             802.1
 Df Residuals:                     516   BIC:                             810.6
 Df Model:                           1
@@ -922,7 +982,7 @@ Notes:
 ** Gas Mass - Mass within Holmberg radius
 
 #+begin_src python :session foo :results output
-mg_m26=simple_regplot("logMg","logM26")
+mg_m26=simple_regplot(df,"logMg","logM26")
 print(mg_m26.summary())
 #+end_src
 
@@ -934,8 +994,8 @@ qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 Dep. Variable:                 logM26   R-squared:                       0.767
 Model:                            OLS   Adj. R-squared:                  0.767
 Method:                 Least Squares   F-statistic:                     1696.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          6.55e-165
-Time:                        00:04:38   Log-Likelihood:                -430.71
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.55e-165
+Time:                        11:42:57   Log-Likelihood:                -430.71
 No. Observations:                 516   AIC:                             865.4
 Df Residuals:                     514   BIC:                             873.9
 Df Model:                           1
@@ -964,7 +1024,7 @@ Notes:
 ** Mass within Holmberg radius - Hydrogen Mass
 
 #+begin_src python :session foo :results output
-mhi_m26=simple_regplot("logMHI","logM26")
+mhi_m26=simple_regplot(df,"logMHI","logM26")
 print(mhi_m26.summary())
 #+end_src
 
@@ -976,8 +1036,8 @@ qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 Dep. Variable:                 logM26   R-squared:                       0.767
 Model:                            OLS   Adj. R-squared:                  0.767
 Method:                 Least Squares   F-statistic:                     1696.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          6.55e-165
-Time:                        00:04:39   Log-Likelihood:                -430.71
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.55e-165
+Time:                        11:42:58   Log-Likelihood:                -430.71
 No. Observations:                 516   AIC:                             865.4
 Df Residuals:                     514   BIC:                             873.9
 Df Model:                           1
@@ -1006,20 +1066,22 @@ Notes:
 ** Total Mass - Stellar Mass
 
 #+begin_src python :session foo :results output
-mass_mt=simple_regplot("logStellarMass","logMt")
+mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["log_tau_g"]})
+mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["log_SFR_0"]})
 print(mass_mt.summary())
 #+end_src
 
 #+RESULTS:
 #+begin_example
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
 Dep. Variable:                  logMt   R-squared:                       0.935
 Model:                            OLS   Adj. R-squared:                  0.934
 Method:                 Least Squares   F-statistic:                     7348.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          1.32e-306
-Time:                        00:04:39   Log-Likelihood:                 79.340
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          1.32e-306
+Time:                        20:43:06   Log-Likelihood:                 79.340
 No. Observations:                 516   AIC:                            -154.7
 Df Residuals:                     514   BIC:                            -146.2
 Df Model:                           1
@@ -1044,20 +1106,22 @@ Notes:
 ** Total Mass - Gas Mass
 
 #+begin_src python :session foo :results output
-mg_mt=simple_regplot("logMg","logMt")
+mg_mt=simple_regplot(df,"logMg","logMt",scatter_kws={"c":df['log_SFR_0']})
+mg_mt=simple_regplot(df,"logMg","logMt",scatter_kws={"c":df['log_tau_g']})
 print(mg_mt.summary())
 #+end_src
 
 #+RESULTS:
 #+begin_example
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
 Dep. Variable:                  logMt   R-squared:                       0.868
 Model:                            OLS   Adj. R-squared:                  0.867
 Method:                 Least Squares   F-statistic:                     3371.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          6.54e-228
-Time:                        00:04:40   Log-Likelihood:                -102.53
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.54e-228
+Time:                        20:44:33   Log-Likelihood:                -102.53
 No. Observations:                 516   AIC:                             209.1
 Df Residuals:                     514   BIC:                             217.6
 Df Model:                           1
@@ -1083,7 +1147,7 @@ Notes:
 ** Total Mass - Hydrogen Mass
 
 #+begin_src python :session foo :results output
-mhi_mt=simple_regplot("logMHI","logMt")
+mhi_mt=simple_regplot(df,"logMHI","logMt")
 print(mhi_mt.summary())
 #+end_src
 
@@ -1095,8 +1159,8 @@ qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 Dep. Variable:                  logMt   R-squared:                       0.868
 Model:                            OLS   Adj. R-squared:                  0.867
 Method:                 Least Squares   F-statistic:                     3371.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          6.54e-228
-Time:                        00:04:41   Log-Likelihood:                -102.53
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.54e-228
+Time:                        11:43:00   Log-Likelihood:                -102.53
 No. Observations:                 516   AIC:                             209.1
 Df Residuals:                     514   BIC:                             217.6
 Df Model:                           1
@@ -1122,7 +1186,7 @@ Notes:
 ** Total Mass - Mass within Holmberg radius
 
 #+begin_src python :session foo :results output
-m26_mt=simple_regplot("logM26","logMt")
+m26_mt=simple_regplot(df,"logM26","logMt")
 print(m26_mt.summary())
 #+end_src
 
@@ -1134,8 +1198,8 @@ qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 Dep. Variable:                  logMt   R-squared:                       0.846
 Model:                            OLS   Adj. R-squared:                  0.846
 Method:                 Least Squares   F-statistic:                     2821.
-Date:                Fri, 10 Mar 2023   Prob (F-statistic):          7.21e-211
-Time:                        00:04:42   Log-Likelihood:                -141.91
+Date:                Wed, 15 Mar 2023   Prob (F-statistic):          7.21e-211
+Time:                        11:43:00   Log-Likelihood:                -141.91
 No. Observations:                 516   AIC:                             287.8
 Df Residuals:                     514   BIC:                             296.3
 Df Model:                           1
@@ -1180,48 +1244,3 @@ plt.show()
 [[./graphs/M-MHI-M26.png]]
 
 
-* Calculate the gas depletion timescale $\tau_g$
-The gas depletion timescale τg measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR (Pflamm-Altenburg & Kroupa 2009).
-$$
-\tau_g=\frac{M_g}{\dot{M_*}}=\frac{M_g}{SFR}
-$$
-
-#+begin_src python :session foo :results output
-
-df["tau_g"]=df["Mg"]/df["SFR_0"]
-df["log_tau_g"]=np.log10(df["tau_g"])
-print(df["tau_g"].describe())
-#+end_src
-
-#+RESULTS:
-: count    5.160000e+02
-: mean     1.532642e+10
-: std      2.526379e+10
-: min      2.149192e+08
-: 25%      5.279775e+09
-: 50%      1.030695e+10
-: 75%      1.766921e+10
-: max      4.611600e+11
-: Name: tau_g, dtype: float64
-
-Having calculated the gas timescale, we compare it with the $\tau$ and t1
-
-
-#+begin_src python :session foo :results output
-df.plot(kind="scatter",x="tau",y="tau_g")
-plt.xscale('log')
-plt.yscale('log')
-plt.show()
-#+end_src
-
-#+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-
-
-#+begin_src python :session foo :results output
-simple_regplot("log_tau","log_tsf")
-
-#+end_src
-
-#+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
