@@ -1,4 +1,4 @@
-#+title: Finding the normalization constant of $SFR_{del}$ and the relations between the various masses of the Galaxies
+#+title:Investigations of the galaxies of the LCV
 #+author: Dimitrios Papachistopoulos
 
 #+LaTeX_CLASS_OPTIONS: [a4paper]
@@ -11,9 +11,10 @@
 #+LaTeX_HEADER: \let\itemize\compactitem
 #+LaTeX_HEADER: \let\description\compactdesc
 #+LaTeX_HEADER: \let\enumerate\compactenum
-#+LaTeX_HEADER: \addbibresource{/bibl/bibliography/bibliography.bib}
 
 #+bibliography:./bibl/bibliography/bibliography.bib
+
+
 
 #+BEGIN_ABSTRACT
 
@@ -156,9 +157,11 @@ Comparing the two different results for x, we see that the $x_i$ from the second
 : max      5.686198    5.132611
 
 The $x_i$ results are more inline with the expected values from Kroupa et al. 2020 $2.7<x<3.4$
-[[./graphs/x-x_i.png]]
+[[./graphs/x-x_icolor_color.png]]
 
-[[./graphs/A-A_del.png]]
+The galaxies with low x and x_i, have a lower color index ($<B-V>$) then galaxies with higher x, which means that they are younger galaxies, as expected by the x values. For example, if x has a value of 1 $\Leftrightarrow x_i=2$ then
+
+[[./graphs/log_A_del-log_A.png]]
 
 The correlation between the 2 different $x$ is good with an R-squared of 94%
 
@@ -184,7 +187,9 @@ The below graphs show the correlation that the masses of the galaxies have. To c
 
 #+caption: Total Mass - Stellar Mass: $R^2=0.93$
 #+name: Total Mass - Stellar Mass
-[[./graphs/logStellarMass-logMt.png]]
+[[./graphs/logStellarMass-logMtcolor_log_Mass_ratio.png]]
+[[./graphs/logStellarMass-logMtcolor_log_SFR_0.png]]
+[[./graphs/logStellarMass-logMtcolor_log_tau_g.png]]
 
 #+caption: Total Mass - Gas Mass/Hydrogen Mass: $R^2=0.87$
 #+name: Total Mass - Gas Mass
@@ -206,3 +211,4 @@ The gas depletion timescale τg measures the time taken by a galaxy to exhaust i
 $$
 \tau_g=\frac{M_g}{\dot{M_*}}=\frac{M_g}{SFR}
 $$
+

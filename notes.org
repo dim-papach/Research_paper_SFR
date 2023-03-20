@@ -2,6 +2,7 @@
 #+subtitle:Constraints on the star formation histories of galaxies in the Local Cosmological Volume
 #+PROPERTY: header-args:python :tangle main.py
 #+startup: preview
+#+bibliography: ./bibl/bibliography/bibliography.bib
 
 * python preamble
 #+begin_src python :session foo
@@ -54,11 +55,13 @@ def simple_regplot(data ,
     ax.set_ylabel(Y)
     ax.legend(loc = "best")
     if scatter_kws == {}:
+        plt.savefig("graphs/"+X+"-"+Y)
         plt.show()
     else:
+        col = scatter_kws["c"].name
         PCM=ax.get_children()[2] #get the mappable, the 1st and the 2nd are the x and y axes
-        plt.colorbar(PCM, ax=ax).set_label(scatter_kws["c"].name)
-        plt.savefig("graphs/"+X+"-"+Y)
+        plt.colorbar(PCM, ax=ax).set_label(col)
+        plt.savefig("graphs/"+X+"-"+Y+"color_"+col)
         plt.show()
     return fit_results
 
@@ -96,6 +99,8 @@ def fd_bins(x):
 ** TODO Plot x-x_i with Type
 ** TODO Lelli McGaugh sparc data
 ** TODO Stellar-Mt color with type and SFR and the timescale
+
+** Take out satelite galaxies
 * Introduction
 
 ** The tension between the delayed-τ model and the obserations
@@ -237,7 +242,7 @@ df7= pd.read_csv("./list/final_list7.dat")
 
 #If we keep the Kmag of df1 when we apply the flags most of the rows get dropped
 
-df1=df1[["Name", "FUVmag", "TType", "Tdw1", "Tdw2"]]
+df1=df1[["Name", "FUVmag", "TType", "Tdw1", "Tdw2","Kmag","Bmag"]]
 df2=df2[["Name", "logKLum","logM26", "logMHI"]]
 df7=df7[["Name","SFRHa","SFRFUV"]]
 
@@ -251,15 +256,37 @@ df7.rename(columns = {"SFRFUV":"log_SFR_FUV","SFRHa":"log_SFR_Ha"}, inplace=True
 
 data=pd.merge(pd.merge(df1,df2,on='Name'),df7, on='Name')
 df=data.copy()
+print(df.describe())
 df.to_csv("Karachentsev_list_flags.csv",index=False)
 #we put the astype, because some of the columns are not strings and this fixes the errors
 for col in df.columns:
     df=df[df[col].astype(str).str.contains(">|<|\*")==False]
 
+print(df.describe())
 df.to_csv("Karachentsev_list.csv",index=False)
 #+end_src
 
 #+RESULTS:
+#+begin_example
+             TType         Bmag      logKLum      logM26
+count  1248.000000  1245.000000  1244.000000  748.000000
+mean      5.504808    16.124819     7.701656    8.176337
+std       5.290136     2.880548     1.232772    1.488724
+min      -3.000000    -4.600000     3.190000    3.850000
+25%      -1.000000    14.600000     6.977500    7.120000
+50%       9.000000    16.500000     7.610000    8.245000
+75%      10.000000    18.100000     8.390000    9.202500
+max      11.000000    22.700000    11.320000   11.770000
+            TType        Bmag     logKLum      logM26
+count  321.000000  321.000000  321.000000  304.000000
+mean     7.358255   13.097196    8.864735    9.092533
+std      3.112375    2.230434    1.087597    1.291652
+min     -3.000000    4.300000    6.180000    5.790000
+25%      7.000000   11.600000    8.160000    8.407500
+50%      8.000000   13.500000    8.720000    9.145000
+75%     10.000000   14.800000    9.520000   10.025000
+max     10.000000   18.000000   11.320000   11.770000
+#+end_example
 
 #+begin_src python :session foo :results output
 df=pd.read_csv("Karachentsev_list.csv")
@@ -275,10 +302,13 @@ df['SFR_FUV']=10**df['log_SFR_FUV']
 df['K']=10**df['logKLum']
 
 df['MHI']=10**df['logMHI']
+
+df["color"]=df['Bmag']-df['Kmag']
 #+end_src
 
 #+RESULTS:
 
+The average color index < B - K >
 
 * Calculations for values that we need
 
@@ -351,23 +381,22 @@ df["logMg"]=np.log10(df["Mg"])
 df["Mt"]=df["Mg"]+df["StellarMass"]
 df['logMt']=np.log10(df['Mt'])
 
+df["Mass_ratio"]=df["StellarMass"]/df["Mg"]
+df["log_Mass_ratio"]=np.log10(df["Mass_ratio"])
+
 print(df[ ["SFR_0","av_SFR","ratio","log_ratio",'Mt','MHI','StellarMass','Mg']].describe(include="all"))
 #+end_src
 
 #+RESULTS:
-#+begin_example
-            SFR_0      av_SFR       ratio  ...           MHI   StellarMass            Mg
-count  579.000000  578.000000  578.000000  ...  5.380000e+02  5.780000e+02  5.380000e+02
-mean     0.154407    0.392575    3.387887  ...  5.676207e+08  3.774758e+09  7.549356e+08
-std      0.448072    1.340746   14.109888  ...  1.454783e+09  1.289179e+10  1.934862e+09
-min      0.001023    0.000197    0.065526  ...  2.884032e+06  1.897367e+06  3.835762e+06
-25%      0.003667    0.003529    0.542246  ...  4.073803e+07  3.393696e+07  5.418158e+07
-50%      0.012803    0.012595    0.916552  ...  1.258925e+08  1.211100e+08  1.674371e+08
-75%      0.069084    0.069616    1.770790  ...  4.241520e+08  6.693800e+08  5.641221e+08
-max      4.387176   13.037208  180.027326  ...  2.041738e+10  1.253578e+11  2.715511e+10
-
-[8 rows x 8 columns]
-#+end_example
+:             SFR_0      av_SFR       ratio   log_ratio            Mt           MHI   StellarMass            Mg
+: count  291.000000  291.000000  291.000000  291.000000  2.820000e+02  2.820000e+02  2.910000e+02  2.820000e+02
+: mean     0.283072    0.718862    4.623845    0.085217  7.937309e+09  9.222052e+08  6.912138e+09  1.226533e+09
+: std      0.596327    1.774441   17.050650    0.544685  1.832275e+10  1.921454e+09  1.706193e+10  2.555533e+09
+: min      0.001072    0.000385    0.065526   -1.183585  1.521344e+07  2.884032e+06  3.699570e+06  3.835762e+06
+: 25%      0.011808    0.013037    0.569095   -0.244815  2.771905e+08  8.511380e+07  1.253578e+08  1.132014e+08
+: 50%      0.048022    0.041227    0.984793   -0.006655  8.248605e+08  2.484614e+08  3.964161e+08  3.304537e+08
+: 75%      0.243144    0.243022    2.163638    0.335185  4.012635e+09  8.861791e+08  2.336747e+09  1.178618e+09
+: max      4.387176   13.037208  180.027326    2.255338  1.256768e+11  2.041738e+10  1.253578e+11  2.715511e+10
 
 *** Checking if the data are ok
 
@@ -382,9 +411,6 @@ simple_regplot('log_SFR_0','log_av_SFR')
 #+end_src
 
 #+RESULTS:
-: QSocketNotifier: Can only be used with threads started with QThread
-:
-: (python3:25173): Gtk-[1;33mWARNING[0m **: [34m11:42:14.199[0m: Theme parsing error: gtk.css:3932:55: Using one color stop with linear-gradient() is deprecated.
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 [[./graphs/av_SFR-SFR_0.png]]
@@ -427,22 +453,22 @@ print(df.count() , df['ratio'].describe())
 
 #+RESULTS:
 #+begin_example
-count    578.000000
-mean       0.024925
-std        0.477810
+count    291.000000
+mean       0.085217
+std        0.544685
 min       -1.183585
-25%       -0.265804
-50%       -0.037847
-75%        0.248157
+25%       -0.244815
+50%       -0.006655
+75%        0.335185
 max        2.255338
 Name: log_ratio, dtype: float64
-count    578.000000
-mean       0.024925
-std        0.477810
+count    291.000000
+mean       0.085217
+std        0.544685
 min       -1.183585
-25%       -0.265804
-50%       -0.037847
-75%        0.248157
+25%       -0.244815
+50%       -0.006655
+75%        0.335185
 max        2.255338
 Name: log_ratio, dtype: float64
 #+end_example
@@ -490,18 +516,13 @@ for i in df.index:
 
 #+RESULTS:
 #+begin_example
-/tmp/babel-Z1YK67/python-QPKIS8:8: RuntimeWarning: invalid value encountered in log
-  f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
-/usr/lib64/python3.11/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
-  improvement from the last ten iterations.
-  warnings.warn(msg, RuntimeWarning)
-/tmp/babel-Z1YK67/python-QPKIS8:13: SettingWithCopyWarning:
+/tmp/babel-8IXpxN/python-5kkZKu:13: SettingWithCopyWarning:
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   df.at[i,'x']=(z)
-/tmp/babel-Z1YK67/python-QPKIS8:8: RuntimeWarning: invalid value encountered in log
+/tmp/babel-8IXpxN/python-5kkZKu:8: RuntimeWarning: invalid value encountered in log
   f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
 /usr/lib64/python3.11/site-packages/scipy/optimize/_minpack_py.py:175: RuntimeWarning: The iteration is not making good progress, as measured by the
   improvement from the last ten iterations.
@@ -554,6 +575,49 @@ df["A_del"]=df[ ["a","A"]].mean(axis=1, skipna=True)
 print(df[ ["x", 'tau','A', 'A_del','StellarMass','a']].describe(include='all' ), "\n")
 #+end_src
 
+#+RESULTS:
+#+begin_example
+/tmp/babel-8IXpxN/python-PlBg7D:3: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df['tau']=tsf/df['x']
+/tmp/babel-8IXpxN/python-PlBg7D:4: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df["log_tau"]=np.log10(df["tau"])
+/tmp/babel-8IXpxN/python-PlBg7D:6: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df['A']=df['SFR_0']*df['tau']*np.exp(df['x'])/df['x']
+/tmp/babel-8IXpxN/python-PlBg7D:8: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df["a"]=df["av_SFR"]*tsf/(1-(1+df["x"])*np.exp(-df['x']))
+/tmp/babel-8IXpxN/python-PlBg7D:10: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df["A_del"]=df[ ["a","A"]].mean(axis=1, skipna=True)
+                x           tau             A         A_del   StellarMass             a
+count  277.000000  2.770000e+02  2.770000e+02  2.770000e+02  2.770000e+02  2.770000e+02
+mean     1.976927  9.665497e+10  1.435412e+12  1.305919e+12  5.556690e+09  1.176425e+12
+std      1.590608  6.430183e+11  1.857431e+13  1.698317e+13  1.399074e+10  1.539332e+13
+min      0.001411  1.975437e+09  3.286376e+07  3.286376e+07  3.699570e+06  3.286376e+07
+25%      0.576680  3.864808e+09  4.755510e+08  4.698207e+08  1.066968e+08  4.646540e+08
+50%      1.651772  7.567631e+09  2.695485e+09  2.629596e+09  3.297245e+08  2.438392e+09
+75%      3.234313  2.167578e+10  2.485187e+10  2.137245e+10  1.941562e+09  2.137245e+10
+max      6.327714  8.857677e+12  3.068135e+14  2.805246e+14  7.553552e+10  2.542358e+14
+#+end_example
+
 #+begin_src python :session foo  :colnames no :results output
 print(df[ ["x", 'tau','A_del']].describe(include='all' ), "\n")
 
@@ -561,14 +625,14 @@ print(df[ ["x", 'tau','A_del']].describe(include='all' ), "\n")
 
 #+RESULTS:
 :                 x           tau         A_del
-: count  550.000000  5.500000e+02  5.500000e+02
-: mean     1.762321  1.126908e+11  2.600301e+12
-: std      1.388768  1.067717e+12  4.456457e+13
-: min      0.000559  2.198306e+09  2.477977e+07
-: 25%      0.558532  4.481783e+09  1.355973e+08
-: 50%      1.513139  8.260984e+09  6.446495e+08
-: 75%      2.789068  2.238008e+10  5.172220e+09
-: max      5.686198  2.237735e+13  1.005083e+15
+: count  277.000000  2.770000e+02  2.770000e+02
+: mean     1.976927  9.665497e+10  1.305919e+12
+: std      1.590608  6.430183e+11  1.698317e+13
+: min      0.001411  1.975437e+09  3.286376e+07
+: 25%      0.576680  3.864808e+09  4.698207e+08
+: 50%      1.651772  7.567631e+09  2.629596e+09
+: 75%      3.234313  2.167578e+10  2.137245e+10
+: max      6.327714  8.857677e+12  2.805246e+14
 
 
 
@@ -590,8 +654,6 @@ plt.show()
 #+RESULTS:
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 
 [[./graphs/x-A_3.png]], [[./graphs/T-A_3.png]]
@@ -611,7 +673,7 @@ $$
 $$
 
 #+begin_src python :session foo :results output
-dp=df[["Name","TType","SFR_0","logMt","StellarMass","A_del","tau","x"]].copy()
+dp=df[["Name","TType","SFR_0","logMt","StellarMass","A_del","tau","x","color","Mass_ratio","log_Mass_ratio"]].copy()
 dp['log_tau'] = np.log10(dp.tau)
 tau=3.5*10**9
 dp["z"]=1.3*dp["StellarMass"]/tau
@@ -644,14 +706,14 @@ print(dp[['A','tsf','x_i']].describe())
 
 #+RESULTS:
 :                   A           tsf         x_i
-: count  5.500000e+02  5.500000e+02  550.000000
-: mean   4.192335e+09  8.727310e+09    2.493517
-: std    1.432226e+10  3.097809e+09    0.885088
-: min    9.870027e+06  2.323533e+09    0.663867
-: 25%    6.466448e+07  6.441713e+09    1.840489
-: 50%    2.234694e+08  8.383763e+09    2.395361
-: 75%    1.034826e+09  1.077179e+10    3.077654
-: max    1.057699e+11  1.796414e+10    5.132611
+: count  2.770000e+02  2.770000e+02  277.000000
+: mean   8.669618e+09  9.175033e+09    2.621438
+: std    2.028966e+10  3.649200e+09    1.042629
+: min    2.159849e+07  2.261561e+09    0.646160
+: 25%    2.390994e+08  6.652566e+09    1.900733
+: 50%    7.419738e+08  8.616228e+09    2.461779
+: 75%    4.552165e+09  1.173230e+10    3.352087
+: max    1.057699e+11  1.978725e+10    5.653500
 
 #+begin_src python :session foo :results output
 dp.plot(kind='scatter', x='x_i', y='A',c='logMt')
@@ -685,14 +747,14 @@ print(dp[['A','A_del','af']].describe())
 
 #+RESULTS:
 :                   A         A_del            af
-: count  5.500000e+02  5.500000e+02  5.500000e+02
-: mean   4.192335e+09  2.600301e+12  1.302247e+12
-: std    1.432226e+10  4.456457e+13  2.228220e+13
-: min    9.870027e+06  2.477977e+07  2.145044e+07
-: 25%    6.466448e+07  1.355973e+08  1.191973e+08
-: 50%    2.234694e+08  6.446495e+08  4.845113e+08
-: 75%    1.034826e+09  5.172220e+09  3.409221e+09
-: max    1.057699e+11  1.005083e+15  5.025416e+14
+: count  2.770000e+02  2.770000e+02  2.770000e+02
+: mean   8.669618e+09  1.305919e+12  6.572942e+11
+: std    2.028966e+10  1.698317e+13  8.491430e+12
+: min    2.159849e+07  3.286376e+07  2.736401e+07
+: 25%    2.390994e+08  4.698207e+08  4.011129e+08
+: 50%    7.419738e+08  2.629596e+09  2.029910e+09
+: 75%    4.552165e+09  2.137245e+10  1.670025e+10
+: max    1.057699e+11  2.805246e+14  1.402641e+14
 
 
 #+begin_src python :session foo :results output
@@ -701,20 +763,21 @@ print(dp[['x','x_i']].describe())
 
 #+RESULTS:
 :                 x         x_i
-: count  550.000000  550.000000
-: mean     1.762321    2.493517
-: std      1.388768    0.885088
-: min      0.000559    0.663867
-: 25%      0.558532    1.840489
-: 50%      1.513139    2.395361
-: 75%      2.789068    3.077654
-: max      5.686198    5.132611
+: count  277.000000  277.000000
+: mean     1.976927    2.621438
+: std      1.590608    1.042629
+: min      0.001411    0.646160
+: 25%      0.576680    1.900733
+: 50%      1.651772    2.461779
+: 75%      3.234313    3.352087
+: max      6.327714    5.653500
 
 #+begin_src python :session foo :results output
 simple_regplot(dp,'log_A_del','log_A',scatter_kws={"c":dp["logMt"]})
 #+end_src
 
 #+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 
 #+begin_src python :session foo :results output
@@ -731,15 +794,53 @@ plt.show()
 #+begin_src python :session foo :results output
 x=simple_regplot(dp,'x','x_i',scatter_kws={"c":dp["logMt"]})
 x=simple_regplot(dp,'x','x_i',scatter_kws={"c":dp["TType"]})
+x=simple_regplot(dp,'x','x_i',scatter_kws={"c":dp["color"]})
 #+end_src
 
 #+RESULTS:
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+#+begin_src python :session foo :results output
+simple_regplot(dp,'logMt','x_i',scatter_kws={"c":dp["color"]})
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 #+begin_src python :session foo :results output
 print(x.summary())
 #+end_src
+
+#+RESULTS:
+#+begin_example
+                            OLS Regression Results
+==============================================================================
+Dep. Variable:                    x_i   R-squared:                       0.956
+Model:                            OLS   Adj. R-squared:                  0.955
+Method:                 Least Squares   F-statistic:                     5921.
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):          4.81e-188
+Time:                        18:19:57   Log-Likelihood:                 27.309
+No. Observations:                 277   AIC:                            -50.62
+Df Residuals:                     275   BIC:                            -43.37
+Df Model:                           1
+Covariance Type:            nonrobust
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          1.3547      0.021     64.158      0.000       1.313       1.396
+x              0.6408      0.008     76.949      0.000       0.624       0.657
+==============================================================================
+Omnibus:                       29.113   Durbin-Watson:                   1.866
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               36.125
+Skew:                          -0.773   Prob(JB):                     1.43e-08
+Kurtosis:                       3.861   Cond. No.                         4.45
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+#+end_example
 
 
 #+begin_src python :session foo :results output
@@ -747,6 +848,22 @@ temp_dataf=dp[['Name','tsf']]
 df = pd.merge(df, temp_dataf , on = 'Name', how = 'outer')
 print(df['tsf'])
 #+end_src
+
+#+RESULTS:
+#+begin_example
+0      7.913138e+09
+1      9.166735e+09
+2      5.624406e+09
+3      3.812075e+09
+4      1.415381e+10
+           ...
+272    7.572087e+09
+273    7.657719e+09
+274    1.152994e+10
+275    7.120391e+09
+276    8.228627e+09
+Name: tsf, Length: 277, dtype: float64
+#+end_example
 
 
 * Calculate the gas depletion timescale $\tau_g$
@@ -764,13 +881,13 @@ print(df["tau_g"].describe())
 #+end_src
 
 #+RESULTS:
-: count    5.160000e+02
-: mean     1.532642e+10
-: std      2.526379e+10
-: min      2.149192e+08
-: 25%      5.279775e+09
-: 50%      1.030695e+10
-: 75%      1.766921e+10
+: count    2.730000e+02
+: mean     1.075273e+10
+: std      2.867651e+10
+: min      4.016536e+08
+: 25%      3.439732e+09
+: 50%      6.345108e+09
+: 75%      1.185364e+10
 : max      4.611600e+11
 : Name: tau_g, dtype: float64
 
@@ -792,6 +909,9 @@ plt.xscale('log')
 plt.yscale('log')
 plt.show()
 #+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 
 ** TODO high protential low tau
 #+RESULTS:
@@ -852,6 +972,8 @@ FUVmag         1116
 TType          1248
 Tdw1           1022
 Tdw2           1009
+Kmag           1248
+Bmag           1245
 logKLum        1244
 logM26          748
 logMHI          875
@@ -893,6 +1015,8 @@ plt.show()
 * Mass relations
 We will check to see if there is a correlation between the masses
 
+_Definition_ *Holmberg radius*: =A convenient measure of the optical extent of a galaxy is the /Holmberg radius/ (Holmberg 1958), which is the major-axis radius at a surface brightness of 26.5 photographic mag arcsec-2=[cite:@MassesMasstoLightRatios]
+
 ** Stellar Mass - Hydrogen Mass
 
 #+begin_src python :session foo :results output
@@ -900,8 +1024,46 @@ mhi_mass=simple_regplot(df,"logStellarMass","logMHI",scatter_kws={"c": df["log_t
 print(mhi_mass.summary())
 #+end_src
 
+#+RESULTS:
+#+begin_example
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+                            OLS Regression Results
+==============================================================================
+Dep. Variable:                 logMHI   R-squared:                       0.616
+Model:                            OLS   Adj. R-squared:                  0.614
+Method:                 Least Squares   F-statistic:                     434.6
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           3.01e-58
+Time:                        18:20:15   Log-Likelihood:                -169.70
+No. Observations:                 273   AIC:                             343.4
+Df Residuals:                     271   BIC:                             350.6
+Df Model:                           1
+Covariance Type:            nonrobust
+==================================================================================
+                     coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------
+const              3.1841      0.252     12.616      0.000       2.687       3.681
+logStellarMass     0.5987      0.029     20.846      0.000       0.542       0.655
+==============================================================================
+Omnibus:                       17.480   Durbin-Watson:                   2.013
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               18.965
+Skew:                          -0.606   Prob(JB):                     7.62e-05
+Kurtosis:                       3.447   Cond. No.                         82.1
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+#+end_example
+
 
 ** Stellar Mass - Gas Mass
+
+#+begin_src python :session foo :results output
+simple_regplot(df,"logStellarMass","logMg",scatter_kws={"c": df["color"]})
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
 ** color with M*/sfr timescale
 #+begin_src python :session foo :results output
 mg_mass=simple_regplot(df,"logMg","logStellarMass")
@@ -913,25 +1075,25 @@ print(mg_mass.summary())
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:         logStellarMass   R-squared:                       0.692
-Model:                            OLS   Adj. R-squared:                  0.692
-Method:                 Least Squares   F-statistic:                     1156.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          1.25e-133
-Time:                        16:43:44   Log-Likelihood:                -391.11
-No. Observations:                 516   AIC:                             786.2
-Df Residuals:                     514   BIC:                             794.7
+Dep. Variable:         logStellarMass   R-squared:                       0.616
+Model:                            OLS   Adj. R-squared:                  0.614
+Method:                 Least Squares   F-statistic:                     434.6
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           3.01e-58
+Time:                        18:20:17   Log-Likelihood:                -243.59
+No. Observations:                 273   AIC:                             491.2
+Df Residuals:                     271   BIC:                             498.4
 Df Model:                           1
 Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const         -0.6515      0.262     -2.484      0.013      -1.167      -0.136
-logMg          1.0754      0.032     34.002      0.000       1.013       1.138
+const         -0.0478      0.423     -0.113      0.910      -0.880       0.785
+logMg          1.0288      0.049     20.846      0.000       0.932       1.126
 ==============================================================================
-Omnibus:                       33.431   Durbin-Watson:                   2.003
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               43.468
-Skew:                           0.543   Prob(JB):                     3.64e-10
-Kurtosis:                       3.918   Cond. No.                         96.9
+Omnibus:                       22.113   Durbin-Watson:                   2.035
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               26.288
+Skew:                           0.641   Prob(JB):                     1.96e-06
+Kurtosis:                       3.816   Cond. No.                         102.
 ==============================================================================
 
 Notes:
@@ -951,25 +1113,25 @@ print(mass_m26.summary())
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                 logM26   R-squared:                       0.795
-Model:                            OLS   Adj. R-squared:                  0.794
-Method:                 Least Squares   F-statistic:                     1999.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          1.29e-179
-Time:                        20:39:02   Log-Likelihood:                -399.03
-No. Observations:                 518   AIC:                             802.1
-Df Residuals:                     516   BIC:                             810.6
+Dep. Variable:                 logM26   R-squared:                       0.798
+Model:                            OLS   Adj. R-squared:                  0.797
+Method:                 Least Squares   F-statistic:                     1069.
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           4.79e-96
+Time:                        18:20:18   Log-Likelihood:                -194.44
+No. Observations:                 273   AIC:                             392.9
+Df Residuals:                     271   BIC:                             400.1
 Df Model:                           1
 Covariance Type:            nonrobust
 ==================================================================================
                      coef    std err          t      P>|t|      [0.025      0.975]
 ----------------------------------------------------------------------------------
-const             -0.4096      0.205     -1.998      0.046      -0.812      -0.007
-logStellarMass     1.1064      0.025     44.712      0.000       1.058       1.155
+const              0.2809      0.276      1.017      0.310      -0.263       0.825
+logStellarMass     1.0280      0.031     32.695      0.000       0.966       1.090
 ==============================================================================
-Omnibus:                       50.311   Durbin-Watson:                   1.869
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               68.467
-Skew:                          -0.723   Prob(JB):                     1.36e-15
-Kurtosis:                       4.039   Cond. No.                         74.9
+Omnibus:                       53.050   Durbin-Watson:                   2.046
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               92.825
+Skew:                          -1.056   Prob(JB):                     6.97e-21
+Kurtosis:                       4.924   Cond. No.                         82.1
 ==============================================================================
 
 Notes:
@@ -991,25 +1153,25 @@ print(mg_m26.summary())
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                 logM26   R-squared:                       0.767
-Model:                            OLS   Adj. R-squared:                  0.767
-Method:                 Least Squares   F-statistic:                     1696.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.55e-165
-Time:                        11:42:57   Log-Likelihood:                -430.71
-No. Observations:                 516   AIC:                             865.4
-Df Residuals:                     514   BIC:                             873.9
+Dep. Variable:                 logM26   R-squared:                       0.751
+Model:                            OLS   Adj. R-squared:                  0.750
+Method:                 Least Squares   F-statistic:                     815.9
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           1.03e-83
+Time:                        18:20:19   Log-Likelihood:                -223.01
+No. Observations:                 273   AIC:                             450.0
+Df Residuals:                     271   BIC:                             457.2
 Df Model:                           1
 Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const         -2.9195      0.283    -10.310      0.000      -3.476      -2.363
-logMg          1.4064      0.034     41.182      0.000       1.339       1.474
+const         -1.8995      0.392     -4.843      0.000      -2.672      -1.127
+logMg          1.3072      0.046     28.563      0.000       1.217       1.397
 ==============================================================================
-Omnibus:                       16.463   Durbin-Watson:                   1.992
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               36.296
-Skew:                           0.025   Prob(JB):                     1.31e-08
-Kurtosis:                       4.298   Cond. No.                         96.9
+Omnibus:                       28.521   Durbin-Watson:                   1.994
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               63.666
+Skew:                           0.511   Prob(JB):                     1.50e-14
+Kurtosis:                       5.133   Cond. No.                         102.
 ==============================================================================
 
 Notes:
@@ -1033,25 +1195,25 @@ print(mhi_m26.summary())
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                 logM26   R-squared:                       0.767
-Model:                            OLS   Adj. R-squared:                  0.767
-Method:                 Least Squares   F-statistic:                     1696.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.55e-165
-Time:                        11:42:58   Log-Likelihood:                -430.71
-No. Observations:                 516   AIC:                             865.4
-Df Residuals:                     514   BIC:                             873.9
+Dep. Variable:                 logM26   R-squared:                       0.751
+Model:                            OLS   Adj. R-squared:                  0.750
+Method:                 Least Squares   F-statistic:                     815.9
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           1.03e-83
+Time:                        18:20:19   Log-Likelihood:                -223.01
+No. Observations:                 273   AIC:                             450.0
+Df Residuals:                     271   BIC:                             457.2
 Df Model:                           1
 Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const         -2.7453      0.279     -9.841      0.000      -3.293      -2.197
-logMHI         1.4064      0.034     41.182      0.000       1.339       1.474
+const         -1.7376      0.387     -4.495      0.000      -2.499      -0.977
+logMHI         1.3072      0.046     28.563      0.000       1.217       1.397
 ==============================================================================
-Omnibus:                       16.463   Durbin-Watson:                   1.992
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               36.296
-Skew:                           0.025   Prob(JB):                     1.31e-08
-Kurtosis:                       4.298   Cond. No.                         94.0
+Omnibus:                       28.521   Durbin-Watson:                   1.994
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               63.666
+Skew:                           0.511   Prob(JB):                     1.50e-14
+Kurtosis:                       5.133   Cond. No.                         99.5
 ==============================================================================
 
 Notes:
@@ -1068,34 +1230,47 @@ Notes:
 #+begin_src python :session foo :results output
 mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["log_tau_g"]})
 mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["log_SFR_0"]})
+mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["logMg"]})
+mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["log_Mass_ratio"]})
+mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["log_Mass_ratio"]})
+mass_mt=simple_regplot(df,"logStellarMass","logMt",scatter_kws={"c": df["color"]})
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+#+begin_src python :session foo :results output
 print(mass_mt.summary())
 #+end_src
 
 #+RESULTS:
 #+begin_example
-qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                  logMt   R-squared:                       0.935
-Model:                            OLS   Adj. R-squared:                  0.934
-Method:                 Least Squares   F-statistic:                     7348.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          1.32e-306
-Time:                        20:43:06   Log-Likelihood:                 79.340
-No. Observations:                 516   AIC:                            -154.7
-Df Residuals:                     514   BIC:                            -146.2
+Dep. Variable:                  logMt   R-squared:                       0.950
+Model:                            OLS   Adj. R-squared:                  0.949
+Method:                 Least Squares   F-statistic:                     5098.
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):          9.11e-178
+Time:                        18:20:23   Log-Likelihood:                 68.305
+No. Observations:                 273   AIC:                            -132.6
+Df Residuals:                     271   BIC:                            -125.4
 Df Model:                           1
 Covariance Type:            nonrobust
 ==================================================================================
                      coef    std err          t      P>|t|      [0.025      0.975]
 ----------------------------------------------------------------------------------
-const              1.6751      0.081     20.565      0.000       1.515       1.835
-logStellarMass     0.8429      0.010     85.723      0.000       0.824       0.862
+const              1.5355      0.106     14.549      0.000       1.328       1.743
+logStellarMass     0.8576      0.012     71.402      0.000       0.834       0.881
 ==============================================================================
-Omnibus:                       61.904   Durbin-Watson:                   1.943
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              100.723
-Skew:                           0.770   Prob(JB):                     1.34e-22
-Kurtosis:                       4.521   Cond. No.                         74.8
+Omnibus:                       49.326   Durbin-Watson:                   2.075
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              101.864
+Skew:                           0.911   Prob(JB):                     7.59e-23
+Kurtosis:                       5.374   Cond. No.                         82.1
 ==============================================================================
 
 Notes:
@@ -1108,6 +1283,7 @@ Notes:
 #+begin_src python :session foo :results output
 mg_mt=simple_regplot(df,"logMg","logMt",scatter_kws={"c":df['log_SFR_0']})
 mg_mt=simple_regplot(df,"logMg","logMt",scatter_kws={"c":df['log_tau_g']})
+mg_mt=simple_regplot(df,"logMg","logMt",scatter_kws={"c":df['logStellarMass']})
 print(mg_mt.summary())
 #+end_src
 
@@ -1115,27 +1291,28 @@ print(mg_mt.summary())
 #+begin_example
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                  logMt   R-squared:                       0.868
-Model:                            OLS   Adj. R-squared:                  0.867
-Method:                 Least Squares   F-statistic:                     3371.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.54e-228
-Time:                        20:44:33   Log-Likelihood:                -102.53
-No. Observations:                 516   AIC:                             209.1
-Df Residuals:                     514   BIC:                             217.6
+Dep. Variable:                  logMt   R-squared:                       0.776
+Model:                            OLS   Adj. R-squared:                  0.776
+Method:                 Least Squares   F-statistic:                     941.1
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           3.87e-90
+Time:                        18:20:25   Log-Likelihood:                -134.85
+No. Observations:                 273   AIC:                             273.7
+Df Residuals:                     271   BIC:                             280.9
 Df Model:                           1
 Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const         -0.0577      0.150     -0.385      0.701      -0.352       0.237
-logMg          1.0498      0.018     58.062      0.000       1.014       1.085
+const          0.3479      0.284      1.225      0.221      -0.211       0.907
+logMg          1.0165      0.033     30.677      0.000       0.951       1.082
 ==============================================================================
-Omnibus:                      231.406   Durbin-Watson:                   2.022
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1041.871
-Skew:                           2.014   Prob(JB):                    5.76e-227
-Kurtosis:                       8.678   Cond. No.                         96.9
+Omnibus:                      102.984   Durbin-Watson:                   1.912
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              281.062
+Skew:                           1.749   Prob(JB):                     9.29e-62
+Kurtosis:                       6.531   Cond. No.                         102.
 ==============================================================================
 
 Notes:
@@ -1156,25 +1333,25 @@ print(mhi_mt.summary())
 qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                  logMt   R-squared:                       0.868
-Model:                            OLS   Adj. R-squared:                  0.867
-Method:                 Least Squares   F-statistic:                     3371.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          6.54e-228
-Time:                        11:43:00   Log-Likelihood:                -102.53
-No. Observations:                 516   AIC:                             209.1
-Df Residuals:                     514   BIC:                             217.6
+Dep. Variable:                  logMt   R-squared:                       0.776
+Model:                            OLS   Adj. R-squared:                  0.776
+Method:                 Least Squares   F-statistic:                     941.1
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):           3.87e-90
+Time:                        18:20:25   Log-Likelihood:                -134.85
+No. Observations:                 273   AIC:                             273.7
+Df Residuals:                     271   BIC:                             280.9
 Df Model:                           1
 Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const          0.0723      0.148      0.490      0.625      -0.218       0.362
-logMHI         1.0498      0.018     58.062      0.000       1.014       1.085
+const          0.4738      0.280      1.693      0.092      -0.077       1.025
+logMHI         1.0165      0.033     30.677      0.000       0.951       1.082
 ==============================================================================
-Omnibus:                      231.406   Durbin-Watson:                   2.022
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1041.871
-Skew:                           2.014   Prob(JB):                    5.76e-227
-Kurtosis:                       8.678   Cond. No.                         94.0
+Omnibus:                      102.984   Durbin-Watson:                   1.912
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              281.062
+Skew:                           1.749   Prob(JB):                     9.29e-62
+Kurtosis:                       6.531   Cond. No.                         99.5
 ==============================================================================
 
 Notes:
@@ -1185,35 +1362,35 @@ Notes:
 
 ** Total Mass - Mass within Holmberg radius
 
-#+begin_src python :session foo :results output
+#+begin_src python :session foo :results value
 m26_mt=simple_regplot(df,"logM26","logMt")
-print(m26_mt.summary())
+m26_mt.summary()
 #+end_src
+
 
 #+RESULTS:
 #+begin_example
-qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
                             OLS Regression Results
 ==============================================================================
-Dep. Variable:                  logMt   R-squared:                       0.846
-Model:                            OLS   Adj. R-squared:                  0.846
-Method:                 Least Squares   F-statistic:                     2821.
-Date:                Wed, 15 Mar 2023   Prob (F-statistic):          7.21e-211
-Time:                        11:43:00   Log-Likelihood:                -141.91
-No. Observations:                 516   AIC:                             287.8
-Df Residuals:                     514   BIC:                             296.3
+Dep. Variable:                  logMt   R-squared:                       0.862
+Model:                            OLS   Adj. R-squared:                  0.862
+Method:                 Least Squares   F-statistic:                     1694.
+Date:                Mon, 20 Mar 2023   Prob (F-statistic):          1.35e-118
+Time:                        20:09:57   Log-Likelihood:                -68.895
+No. Observations:                 273   AIC:                             141.8
+Df Residuals:                     271   BIC:                             149.0
 Df Model:                           1
 Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------
-const          2.9983      0.107     28.113      0.000       2.789       3.208
-logM26         0.6456      0.012     53.115      0.000       0.622       0.669
+const          2.4519      0.161     15.242      0.000       2.135       2.769
+logM26         0.7099      0.017     41.160      0.000       0.676       0.744
 ==============================================================================
-Omnibus:                       10.154   Durbin-Watson:                   1.884
-Prob(Omnibus):                  0.006   Jarque-Bera (JB):               10.172
-Skew:                           0.331   Prob(JB):                      0.00618
-Kurtosis:                       3.185   Cond. No.                         67.4
+Omnibus:                       10.995   Durbin-Watson:                   1.911
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):               11.384
+Skew:                           0.498   Prob(JB):                      0.00337
+Kurtosis:                       3.095   Cond. No.                         80.2
 ==============================================================================
 
 Notes:
@@ -1244,3 +1421,14 @@ plt.show()
 [[./graphs/M-MHI-M26.png]]
 
 
+
+
+** Ratio- tsf
+#+begin_src python :session foo :results output
+simple_regplot(dp,"log_tsf","log_Mass_ratio",scatter_kws={"c": df["color"]})
+#+end_src
+
+#+RESULTS:
+: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+As expected, the older the galaxy the mass ratio is higher, and the color index agrees
