@@ -242,7 +242,7 @@ df7= pd.read_csv("./list/final_list7.dat")
 
 #If we keep the Kmag of df1 when we apply the flags most of the rows get dropped
 
-df1=df1[["Name", "FUVmag", "TType", "Tdw1", "Tdw2","Bmag","Kmag"]]
+df1=df1[["Name", "FUVmag", "TType", "Tdw1", "Tdw2","Bmag"]]
 df2=df2[["Name", "logKLum","logM26", "logMHI"]]
 df7=df7[["Name","SFRHa","SFRFUV"]]
 
@@ -260,7 +260,6 @@ df=data.copy()
 print(df.describe())
 df.to_csv("Karachentsev_list_flags.csv",index=False)
 #we put the astype, because some of the columns are not strings and this fixes the errors
-df=df.drop(["Kmag"],axis=1)
 for col in df.columns:
     df=df[df[col].astype(str).str.contains(">|<|\*")==False]
 

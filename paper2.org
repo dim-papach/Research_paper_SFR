@@ -18,7 +18,7 @@
 #+LaTeX_HEADER: \let\itemize\compactitem
 #+LaTeX_HEADER: \let\description\compactdesc
 #+LaTeX_HEADER: \let\enumerate\compactenum
-
+#+OPTIONS: tex:imagemagick
 #+bibliography:./bibl/bibliography/bibliography.bib
 
 #+begin_src python :results none
@@ -39,7 +39,7 @@ pd.set_option('display.float_format', lambda x: '%.2E' % x)
 def caption(fname,caption,name = None):
     if name == None:
         name = caption
-    return "#+caption:{} \n#+name: fig:{} \n#+label: fig:{} \n[[./{}.png]]".format(caption,name,name,fname)
+    return "#+name: fig:{} \n#+label: fig:{} \n#+caption:{} \n#+ATTR_LaTeX: :placement [!htpb]\n[[./{}.png]]".format(caption,name,name,fname)
 
 def simple_regplot(data ,
     X, Y, cap = None, name = None, n_std=2, n_pts=100, ax=None, scatter_kws=None, line_kws=None, ci_kws=None):
@@ -97,7 +97,7 @@ def simple_regplot(data ,
     if name == None:
         name = cap
 
-    Cap = "#+caption:{} \n#+name: fig:{} \n#+label: fig:{} \n[[./{}.png]]".format(cap,name,name,fname)
+    Cap = "#+name: fig:{} \n#+label: fig:{} \n#+caption:{}\n#+ATTR_LaTeX: :placement [!htpb] \n[[./{}.png]]".format(cap,name,name,fname)
     return fit_results, Cap , lab
 
 # Calculate the bin width using the Freedman-Diaconis rule
@@ -134,11 +134,7 @@ def eq_ols(y,x,ols):
 #+begin_src python :results none
 
 flag=pd.read_csv("Karachentsev_list_flags.csv")
-colorcol=flag[["Name","Kmag"]].copy()
 
-colorcol=colorcol[colorcol["Kmag"].astype(str).str.contains(">|<|\*")==False]
-
-colorcol["Kmag"] = colorcol["Kmag"].astype('float')
 
 data = pd.read_csv("Karachentsev_list.csv")
 data["TType"] = data["TType"].astype('category')
@@ -146,7 +142,6 @@ data["Tdw1"] = data["Tdw1"].astype('category')
 data["Tdw2"] = data["Tdw2"].astype('category')
 
 df = data.copy()
-df = pd.merge(colorcol[["Name", "Kmag"]], df, on = "Name", how = 'right')
 df['SFR_Ha']=10**df['log_SFR_Ha']
 
 df['SFR_FUV']=10**df['log_SFR_FUV']
@@ -155,14 +150,17 @@ df['K']=10**df['logKLum']
 
 df['MHI']=10**df['logMHI']
 
-df["color"] = df["Bmag"] - df['Kmag']
+df["color"] = df["Bmag"] - df['FUVmag']
 #+end_src
 
+#+begin_abstract
+The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies[cite:@karachentsevUPDATEDNEARBYGALAXY2013] and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]. The properties studied include the galaxy types, their various masses, the star formation rates (SFRs) and the star formation timescale $\tau$, gas depletion timescale $\tau_g$. The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories. Additionally, the paper discusses the conditions for star formation and the implications of the observed properties on galaxy evolution.
+#+end_abstract
 
 * The Galaxies in the Local Cosmological Volume (LCV)
 
-The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" databas[cite:@CatalogLVGalaxies]  are used to extract the K-band luminosities, the types of the galaxie[fn:1]s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of
-$\approx 11$ Mpc. The SFR and MHI values contain limit flags, which we exclude from our present analysis. This gives a sample of src_python[]{data.Name.count()} {{{results(793)}}} galaxies from src_python[]{flag.Name.count()} {{{results(1248)}}}. From the remaing galaxies we have
+The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]  are used to extract the B-band, FUV \& K-band luminosities[fn:2] , the types of the galaxie[fn:1]s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of
+$\approx 11$ Mpc. Some of those values contain limit flags, which we exclude from our present analysis. This gives a sample of src_python[]{data.Name.count()} {{{results(793)}}} galaxies from src_python[]{flag.Name.count()} {{{results(1248)}}}. From the remaing galaxies we have
 
 #+begin_src python
 no_col_str(df,'log').count().to_latex(position = "hc")
@@ -177,7 +175,6 @@ no_col_str(df,'log').count().to_latex(position = "hc")
 {} &    0 \\
 \midrule
 Name    &  793 \\
-Kmag    &  321 \\
 FUVmag  &  687 \\
 TType   &  793 \\
 Tdw1    &  580 \\
@@ -187,7 +184,7 @@ SFR\_Ha  &  566 \\
 SFR\_FUV &  688 \\
 K       &  789 \\
 MHI     &  643 \\
-color   &  321 \\
+color   &  686 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -233,7 +230,6 @@ df['logMt']=np.log10(df['Mt'])
 df["Mass_ratio"]=df["StellarMass"]/df["Mg"]
 df["log_Mass_ratio"]=np.log10(df["Mass_ratio"])
 
-df["logcolor"] = np.log10(df["color"])
 #+end_src
 
 The condition $SFR_o\geq 10^{-3}M_\odot yr^{-1}$ leaves src_python[]{df.Name.count()} {{{results(579)}}}
@@ -405,9 +401,10 @@ caption(fname,"$A_{del} = f(x)$ for constant t_{sf}")
 
 #+RESULTS:
 :results:
-#+caption:$A_{del} = f(x)$ for constant t_{sf}
 #+name: fig:$A_{del} = f(x)$ for constant t_{sf}
 #+label: fig:$A_{del} = f(x)$ for constant t_{sf}
+#+caption:$A_{del} = f(x)$ for constant t_{sf}
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x-A_tsf.png]]
 :end:
 
@@ -512,9 +509,10 @@ caption(fname,r"$A_{del} = f(x)$ for constant $\tau$")
 
 #+RESULTS:
 :results:
-#+caption:$A_{del} = f(x)$ for constant $\tau$
 #+name: fig:$A_{del} = f(x)$ for constant $\tau$
 #+label: fig:$A_{del} = f(x)$ for constant $\tau$
+#+caption:$A_{del} = f(x)$ for constant $\tau$
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x-A_tau.png]]
 :end:
 
@@ -597,16 +595,17 @@ caption(fname,"Comparing the two x's, According to their total masses")
 
 #+RESULTS:
 :results:
-#+caption:Comparing the two x's, According to their total masses
 #+name: fig:Comparing the two x's, According to their total masses
 #+label: fig:Comparing the two x's, According to their total masses
+#+caption:Comparing the two x's, According to their total masses
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/Comparing_the_x_Mt.png]]
 :end:
 #+begin_src python
 
 fname="figs/x_tau-Mt-color"
 
-dtau.plot.scatter(x = "Mt",y = "x_tau", c = "logcolor")
+dtau.plot.scatter(x = "Mt",y = "x_tau", c = "color")
 plt.xscale('log')
 plt.yscale('log')
 plt.grid()
@@ -617,9 +616,10 @@ caption(fname,r"$x|_\tau=f(M_t)$, with their color index")
 
 #+RESULTS:
 :results:
-#+caption:$x|_\tau=f(M_t)$, with their color index
 #+name: fig:$x|_\tau=f(M_t)$, with their color index
 #+label: fig:$x|_\tau=f(M_t)$, with their color index
+#+caption:$x|_\tau=f(M_t)$, with their color index
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x_tau-Mt-color.png]]
 :end:
 
@@ -627,7 +627,7 @@ caption(fname,r"$x|_\tau=f(M_t)$, with their color index")
 x_comp=simple_regplot(dp,'x_tsf','x_tau',cap = "Comparing the two x")
 x_comp_Mt=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["logMt"]},cap = "Comparing the two x, according to their total mass")
 x_comp_tt=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["TType"]},cap = "Comparing the two x, according to their type")
-x_comp_col=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["logcolor"]},cap = "Comparing the two x, according to their color index")
+x_comp_col=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["color"]},cap = "Comparing the two x, according to their color index")
 #+end_src
 
 #+begin_src python
@@ -636,9 +636,10 @@ x_comp_Mt[1]
 
 #+RESULTS:
 :results:
-#+caption:Comparing the two x, according to their total mass
 #+name: fig:Comparing the two x, according to their total mass
 #+label: fig:Comparing the two x, according to their total mass
+#+caption:Comparing the two x, according to their total mass
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x_tsf-x_tau-color_logMt.png]]
 :end:
 
@@ -648,9 +649,10 @@ x_comp_tt[1]
 
 #+RESULTS:
 :results:
-#+caption:Comparing the two x, according to their type
 #+name: fig:Comparing the two x, according to their type
 #+label: fig:Comparing the two x, according to their type
+#+caption:Comparing the two x, according to their type
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x_tsf-x_tau-color_TType.png]]
 :end:
 
@@ -660,10 +662,11 @@ x_comp_col[1]
 
 #+RESULTS:
 :results:
-#+caption:Comparing the two x, according to their color index
 #+name: fig:Comparing the two x, according to their color index
 #+label: fig:Comparing the two x, according to their color index
-[[./figs/x_tsf-x_tau-color_logcolor.png]]
+#+caption:Comparing the two x, according to their color index
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/x_tsf-x_tau-color_color.png]]
 :end:
 
 The two results are interrelated through the equation:
@@ -707,9 +710,10 @@ caption(fname,"Comparing the two A_{del}")
 
 #+RESULTS:
 :results:
-#+caption:Comparing the two A_{del}
 #+name: fig:Comparing the two A_{del}
 #+label: fig:Comparing the two A_{del}
+#+caption:Comparing the two A_{del}
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/Comparing_the_A_x.png]]
 :end:
 
@@ -729,9 +733,10 @@ caption(fname, "Comparison of the 2 A_{del}s according to their $x$")
 
 #+RESULTS:
 :results:
-#+caption:Comparison of the 2 A_{del}s according to their $x$
 #+name: fig:Comparison of the 2 A_{del}s according to their $x$
 #+label: fig:Comparison of the 2 A_{del}s according to their $x$
+#+caption:Comparison of the 2 A_{del}s according to their $x$
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/A_tau-A_tsf_colo_X.png]]
 :end:
 #+begin_src python
@@ -749,9 +754,10 @@ caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
 
 #+RESULTS:
 :results:
-#+caption:Comparison of the 2 A_{del}s according to their total masses
 #+name: fig:Comparison of the 2 A_{del}s according to their total masses
 #+label: fig:Comparison of the 2 A_{del}s according to their total masses
+#+caption:Comparison of the 2 A_{del}s according to their total masses
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/A_tau-A_tsf_Mt.png]]
 :end:
 
@@ -760,12 +766,14 @@ For high $x$ and high masses the two A_{del}s have a high correlation. Specifica
 1. The same is true for more massive galaxies, since they deviate less from the $y=x$ line
 
 
-* The gas depletion timescale $\tau_g$
+
+
+* The gas depletion timescale $\tau_g$ \label{SEC:tau_g}
 
 The gas depletion timescale $\tau_g$ measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR[cite:@nageshSimulationsStarformingMainsequence2023; @pflamm-altenburgFundamentalGasDepletion2009].
-$$
+\begin{equation}\label{eq:tau_g}
 \tau_g=\frac{M_g}{\dot{M_*}}=\frac{M_g}{SFR}
-$$
+\end{equation}
 
 #+begin_src python :results none
 cols_to_use = dp.columns.difference(df.columns)
@@ -776,64 +784,89 @@ dtg["log_tau_g"]=np.log10(dtg["tau_g"])
 
 #+end_src
 
+
 #+begin_src python
-fname = "figs/tau_g-Mg-color_StellarMass"
-dtg.plot(kind="scatter",x="Mg",y="tau_g", c = 'logStellarMass')
+fname = "figs/tau_g-Mg-color_SFR"
+dtg.plot(kind="scatter",x="Mg",y="tau_g", c = 'log_SFR_0')
 plt.xscale('log')
 plt.yscale('log')
 plt.grid()
+plt.title(r"$\tau_g=f(M_g$), with color= SFR")
 plt.savefig(fname)
 plt.close()
-caption(fname, r"$\tau_g = f(M_g)$, with the Stellar Mass of the galaxies")
+taug_cap = "[[./{}.png]]".format(fname)
 
+
+taug_SFR_Mg=simple_regplot(dtg,"log_SFR_0","log_tau_g",scatter_kws={"c":dtg["logMg"]}, cap = r"Correlation of the $\tau_g$ with the SFR and the gas mass")
+taug_cap + "\n" + taug_SFR_Mg[1]
 #+end_src
 
 #+RESULTS:
 :results:
-#+caption:$\tau_g = f(M_g)$, with the Stellar Mass of the galaxies
-#+name: fig:$\tau_g = f(M_g)$, with the Stellar Mass of the galaxies
-#+label: fig:$\tau_g = f(M_g)$, with the Stellar Mass of the galaxies
-[[./figs/tau_g-Mg-color_StellarMass.png]]
+[[./figs/tau_g-Mg-color_SFR.png]]
+#+name: fig:Correlation of the $\tau_g$ with the SFR and the gas mass
+#+label: fig:Correlation of the $\tau_g$ with the SFR and the gas mass
+#+caption:Correlation of the $\tau_g$ with the SFR and the gas mass
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_SFR_0-log_tau_g-color_logMg.png]]
 :end:
+
+Despite a weak logarithmic correlation (as indicated by src_python{inline_r2(taug_SFR_Mg)} {{{results($R^2 = 32\%$)}}}), there is a noticeable trend of decreasing $\tau_g$ with increasing SFR and $M_g$.
 
 #+begin_src python
 
-taug_StellarMass=simple_regplot(dtg,"logStellarMass","log_tau_g",scatter_kws={"c":dtg["log_SFR_0"]}, cap = r"Correlation of the $\tau_g$ with the SFR and the Stellar mass")
+taug_StellarMass=simple_regplot(dtg,"logStellarMass","log_tau_g",scatter_kws={"c":dtg["log_tau"]}, cap = r"Correlation of the $\tau_g$ with the SFR and the Stellar mass")
 taug_StellarMass[1]
 #+end_src
 
 #+RESULTS:
 :results:
-#+caption:Correlation of the $\tau_g$ with the SFR and the Stellar mass
 #+name: fig:Correlation of the $\tau_g$ with the SFR and the Stellar mass
 #+label: fig:Correlation of the $\tau_g$ with the SFR and the Stellar mass
-[[./figs/logStellarMass-log_tau_g-color_log_SFR_0.png]]
+#+caption:Correlation of the $\tau_g$ with the SFR and the Stellar mass
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logStellarMass-log_tau_g-color_log_tau.png]]
 :end:
 
-Even though the logarithmic correlation is low (src_python{inline_r2(taug_StellarMass)} {{{results($R^2 = 21\%$)}}}), there seems to be a pattern wherein the decrease of $\tau_g$ corresponds to an increase in the values of the Stellar Mass and the current star formation $SFR_0$.
+The logarithmic correlation between $\tau_g-M_*$ is low (src_python{inline_r2(taug_StellarMass)} {{{results($R^2 = 21\%$)}}}), there seems to be a pattern wherein the decrease of $\tau_g$ corresponds to an increase in the values of the Stellar Mass, but there does not seem to be one for $\tau_g-\tau$
 
 #+begin_src python
 
-taug_Mt=simple_regplot(dtg,"logMt","log_tau_g",scatter_kws={"c":dtg["logMg"]}, cap = r"Correlation of the $\tau_g$ with the total mass and the mass of the gas")
+taug_Mt=simple_regplot(dtg,"logMt","log_tau_g",scatter_kws={"c":dtg["log_tsf"]}, cap = r"Correlation of the $\tau_g$ with the total mass and the mass of the gas")
 taug_Mt[1]
 #+end_src
 
 #+RESULTS:
 :results:
-#+caption:Correlation of the $\tau_g$ with the total mass and the mass of the gas
 #+name: fig:Correlation of the $\tau_g$ with the total mass and the mass of the gas
 #+label: fig:Correlation of the $\tau_g$ with the total mass and the mass of the gas
-[[./figs/logMt-log_tau_g-color_logMg.png]]
+#+caption:Correlation of the $\tau_g$ with the total mass and the mass of the gas
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logMt-log_tau_g-color_log_tsf.png]]
 :end:
 
+#+begin_src python
 
-Again it can be observed that as the $\tau_g$ decreases, the corresponding values of $M_t$ and $M_g$ increase, but the logarithmic correlation is again low (src_python{inline_r2(taug_Mt)} {{{results($R^2 = 11\%$)}}}).
+taug_color=simple_regplot(dtg,"color","log_tau_g",scatter_kws={"c":dtg["log_Mass_ratio"]}, cap = r"Correlation of the $\tau_g$ with the color index")
+taug_color[1]
+#+end_src
 
-There is a notable trend, wherein for high masses we have a shorter timescale
+#+RESULTS:
+:results:
+#+name: fig:Correlation of the $\tau_g$ with the color index
+#+label: fig:Correlation of the $\tau_g$ with the color index
+#+caption:Correlation of the $\tau_g$ with the color index
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/color-log_tau_g-color_log_Mass_ratio.png]]
+:end:
+
+Again it can be observed that as the $\tau_g$ decreases, the corresponding values of $M_t$ increase, but the logarithmic correlation is again low (src_python{inline_r2(taug_Mt)} {{{results($R^2 = 11\%$)}}}), and there is no clear correlation between $\tau_g-t_{sf}$
+
+There is a notable trend, wherein for high masses we have a shorter timescale.
 
 * Mass relations
 
-Many of the galaxies masses have a high correlation with each other, and also help us undarstand the previous calculations.
+Many of the galaxies masses have a high correlation with each other, and also help us understand the previous calculations.
 
 #+begin_src python :results none
 cols_to_use = dtg.columns.difference(df.columns)
@@ -841,70 +874,330 @@ dm = pd.merge(df, dtg[cols_to_use], left_index=True, right_index=True, how='oute
 
 #+end_src
 
-#+begin_src python
-mhi_SMass = simple_regplot(dm,"logStellarMass","logMHI")
-mhi_SMass_ = simple_regplot(dm,"logStellarMass","logMHI",scatter_kws={"c": dm[""]})
-#+end_src
 
 #+begin_src python
-mg_SMass = simple_regplot(dm,"log_tsf","log_Mass_ratio")
-mg_SMass_ = simple_regplot(dm,"log_tsf","log_Mass_ratio",scatter_kws={"c": dm["log_tau_g"]})
+nam = "mg_SMass"
+cap = "Gas Mass-Stellar Mass plot"
+mg_SMass = simple_regplot(dm,"logMg","logStellarMass",cap=cap, name = nam)
+mg_SMass_tg = simple_regplot(dm,"logMg","logStellarMass",scatter_kws={"c": dm["log_tau_g"]},cap=cap, name = nam)
+mg_SMass_color = simple_regplot(dm,"logMg","logStellarMass",scatter_kws={"c": dm["color"]},cap=cap, name = nam)
+mg_SMass_color[1]
 #+end_src
 
 #+RESULTS:
 :results:
+#+name: fig:Gas Mass-Stellar Mass plot
+#+label: fig:mg_SMass
+#+caption:mg_SMass
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logMg-logStellarMass-color_color.png]]
+:end:
+
+For the plot [[fig:mg_SMass]]:
+#+begin_src python
+
+eq_ols("$M_g$","$M_*$", mg_SMass)
+
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logMg-logStellarMass}
+\begin{align}
+& $M_g$ = (1.098(35) \times 10^{0})\cdot $M_*$ + (-7.9(2.9) \times 10^{-1}) \\
+& \textrm{with correlation } R^2=64\%
+\end{align}
+\end{equation}
 :end:
 
 #+begin_src python
-
-SMass_m26 = simple_regplot(dm,"logStellarMass","logM26")
-SMass_m26_ = simple_regplot(dm,"logStellarMass","logM26",scatter_kws={"c": dm["log_tau_g"]})
+nam = "SMass_m26"
+cap = "Mass inside the Holmberg radius-Stellar Mass plot"
+SMass_m26 = simple_regplot(dm,"logStellarMass","logM26",cap=cap, name = nam)
+SMass_m26_tg = simple_regplot(dm,"logStellarMass","logM26",scatter_kws={"c": dm["log_tau_g"]},cap=cap, name = nam)
+SMass_m26_tg[1]
 #+end_src
 
+#+RESULTS:
+:results:
+#+name: fig:Mass inside the Holmberg radius-Stellar Mass plot
+#+label: fig:SMass_m26
+#+caption:SMass_m26
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logStellarMass-logM26-color_log_tau_g.png]]
+:end:
+
+For the plot [[fig:SMass_m26]]:
+
 #+begin_src python
-mg_m26 = simple_regplot(dm,"logMg","logM26")
+eq_ols("M26", "M*",SMass_m26)
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logStellarMass-logM26}
+\begin{align}
+& M26 = (1.076(23) \times 10^{0})\cdot M* + (-1.8(1.9) \times 10^{-1}) \\
+& \textrm{with correlation } R^2=80\%
+\end{align}
+\end{equation}
+:end:
+
+#+begin_src python
+nam = "mg_m26"
+cap = "Mass inside the Holmberg radius-Gas Mass plot"
+mg_m26 = simple_regplot(dm,"logMg","logM26",cap = cap, name = nam)
+mg_m26[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Mass inside the Holmberg radius-Gas Mass plot
+#+label: fig:mg_m26
+#+caption:mg_m26
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logMg-logM26.png]]
+:end:
+
+For the plot [[fig:mg_m26]]:
+
+#+begin_src python
+eq_ols("M26", "Mg",mg_m26)
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logMg-logM26}
+\begin{align}
+& M26 = (1.41(4) \times 10^{0})\cdot Mg + (-2.92(30) \times 10^{0}) \\
+& \textrm{with correlation } R^2=74\%
+\end{align}
+\end{equation}
+:end:
+
+#+begin_src python
+cap = "Stellar Mass-Total Mass plot"
+nam = "SMass_mt"
+SMass_mt = simple_regplot(dm,"logStellarMass","logMt",cap = cap, name = nam)
+SMass_mt_tg = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_tau_g"]},cap = cap, name = nam)
+SMass_mt_SFR = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_SFR_0"]},cap = cap, name = nam)
+SMass_mt_mg = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["logMg"]},cap = cap, name = nam)
+SMass_mt_ratio = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_Mass_ratio"]},cap = cap, name = nam)
+SMass_mt_color = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["color"]},cap = cap, name = nam)
+SMass_mt_SFR[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Stellar Mass-Total Mass plot
+#+label: fig:SMass_mt
+#+caption:SMass_mt
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logStellarMass-logMt-color_log_SFR_0.png]]
+:end:
+
+For the plot [[fig:SMass_mt]]:
+#+begin_src python
+eq_ols('$M_t$',"$M_*$", SMass_mt )
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logStellarMass-logMt}
+\begin{align}
+& $M_t$ = (8.41(9) \times 10^{-1})\cdot $M_*$ + (1.69(8) \times 10^{0}) \\
+& \textrm{with correlation } R^2=94\%
+\end{align}
+\end{equation}
+:end:
+
+
+#+begin_src python
+cap = "Total Mass - Gas Mass plot"
+nam = "mg_mt"
+mg_mt = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_SFR_0']},cap = cap, name = nam)
+mg_mt_SFR = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_SFR_0']},cap = cap, name = nam)
+mg_mt_tg = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_tau_g']},cap = cap, name = nam)
+mg_mt_SMass = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['logStellarMass']},cap = cap, name = nam)
+mg_mt_SFR[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Total Mass - Gas Mass plot
+#+label: fig:mg_mt
+#+caption:mg_mt
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logMg-logMt-color_log_SFR_0.png]]
+:end:
+
+For the plot [[fig:mg_mt]]:
+#+begin_src python
+eq_ols('$M_t$',"$M_g$", mg_mt )
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logMg-logMt-color_log_SFR_0}
+\begin{align}
+& $M_t$ = (1.065(23) \times 10^{0})\cdot $M_g$ + (-1.5(1.9) \times 10^{-1}) \\
+& \textrm{with correlation } R^2=81\%
+\end{align}
+\end{equation}
+:end:
+
+#+begin_src python :results none
+cap = "Mass inside the Holmberg radius-Total Mass plot"
+nam = "m26_mt"
+m26_mt = simple_regplot(dm,"logM26","logMt",cap = cap, name = nam)
+
 #+end_src
 
 #+begin_src python
-SMass_mt_tg = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_tau_g"]})
-SMass_mt_SFR = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_SFR_0"]})
-SMass_mt_mg = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["logMg"]})
-SMass_mt_ratio = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_Mass_ratio"]})
-SMass_mt_color = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["color"]})
-#+end_src
-#+begin_src python
-mg_mt = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_SFR_0']})
-mg_mt = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_tau_g']})
-mg_mt = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['logStellarMass']})
-#+end_src
-#+begin_src python
-m26_mt = simple_regplot(dm,"logM26","logMt")
+m26_mt[1]
 #+end_src
 
+#+RESULTS:
+:results:
+#+name: fig:Mass inside the Holmberg radius-Total Mass plot
+#+label: fig:m26_mt
+#+caption:m26_mt
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logM26-logMt.png]]
+:end:
+
 #+begin_src python
-simple_regplot(dm,"log_tsf","log_Mass_ratio",scatter_kws={"c": dm["color"]})[1]
+eq_ols("M26", "$M_t$", m26_mt)
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logM26-logMt}
+\begin{align}
+& M26 = (6.64(12) \times 10^{-1})\cdot $M_t$ + (2.85(11) \times 10^{0}) \\
+& \textrm{with correlation } R^2=85\%
+\end{align}
+\end{equation}
+:end:
+
+
+There are many plots exhibiting a correlation of $R^2>80%$, indicating that we can utilize those functions to estimate the masses of the galaxies in the LCV with a high degree of confidence.
+
+The $M_t-M_*$ (\ref{fig:SMass_mt}) plot is particularly noteworthy, displaying a correlation  of src_python{inline_r2(SMass_mt)} {{{results($R^2 = 94\%$)}}}. This plot also indicates that galaxies with greater total and stellar masses tend to have higher SFR, consistent with the findings in section \ref{SEC:tau_g} where $\tau_g$ decreases with increasing masses.
+
+This phenomenon is likely due to the fact that galaxies with higher masses possess greater potential energy, which accelerates the star formation process. The galaxies with a high Mass ratio $M_r$ could also help the process due to their dense regions and the resulting strong local gravitational potential.
+
+
+#+begin_src python
+cap = r"$\t_{sf}$-Mass ratio $\left(\frac{M_*}{M_g}\right)$ plot"
+nam = "tsf_mr"
+tsf_mr = simple_regplot(dm,"log_tsf","log_Mass_ratio",scatter_kws={"c": dm["color"]},cap = cap, name = nam)
+tsf_mr[1]
 
 #+end_src
 
 #+RESULTS:
 :results:
-#+caption:None
-#+name: fig:None
-#+label: fig:None
+#+name: fig:$\t_{sf}$-Mass ratio $\left(\frac{M_*}{M_g}\right)$ plot
+#+label: fig:tsf_mr
+#+caption:tsf_mr
+#+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_tsf-log_Mass_ratio-color_color.png]]
 :end:
 
-As expected, the older the galaxy the mass ratio is higher, and the color index agrees (\?)
+
+#+begin_src python
+col_Mr = simple_regplot(dm,"color","log_Mass_ratio", scatter_kws={"c":dm["logMt"]}, cap = r"Mass ratio $\frac{M_*}{M_g}$-Color index plot", name = "col_Mr")
+col_Mr[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Mass ratio $\frac{M_*}{M_g}$-Color index plot
+#+label: fig:col_Mr
+#+caption:col_Mr
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/color-log_Mass_ratio-color_logMt.png]]
+:end:
+
+From the \ref{fig:col_Mr}, we conclude that when the color index is higher the Mass ratio decreases, which is to be expected, since the higher the B-FUV the more active the star formation of the galaxy.
 
 
+
+* Variations in Star Formation Rate Across the Different Masses
+
+
+#+begin_src python :results none
+######### SFR ##########
+
+SFR_SMass_tg = simple_regplot(dm, "log_SFR_0", "logStellarMass", scatter_kws = {"c":dm["log_tau_g"]})
+
+SFR_tg_SMass = simple_regplot(dm, "log_SFR_0", "log_tau_g", scatter_kws = {"c":dm["logStellarMass"]})
+
+SFR_Mg_tg = simple_regplot(dm, "log_SFR_0", "logMg", scatter_kws = {"c":dm["log_tau_g"]})
+
+SFR_Mt_tg = simple_regplot(dm, "log_SFR_0", "logMt", scatter_kws = {"c":dm["log_tau_g"]})
+#+end_src
+
+
+#+begin_src python
+SFR_col = simple_regplot(dm, "log_SFR_0", "color")
+SFR_col[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:None
+#+label: fig:None
+#+caption:None
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_SFR_0-color.png]]
+:end:
+
+#+begin_src python
+SFR_SMass_tg[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:None
+#+label: fig:None
+#+caption:None
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_SFR_0-logStellarMass-color_log_tau_g.png]]
+:end:
+
+
+#+begin_src python
+SFR_tg_SMass[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:None
+#+label: fig:None
+#+caption:None
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_SFR_0-log_tau_g-color_logStellarMass.png]]
+:end:
+#+begin_src python
+SFR_Mt_tg[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:None
+#+label: fig:None
+#+caption:None
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_SFR_0-logMt-color_log_tau_g.png]]
+:end:
 
 
 \pagebreak
 #+print_bibliography:
-
-
-
 * Footnotes
+[fn:2] We use the FUV and B measurments to calculate the B-FUV color index.
 
 [fn:1] TType=Morphology type code according to the classification by de Vaucouleurs/ Tdw1=Dwarf galaxy morphology/ Tdw2=Dwarf galaxy surface brightness morphology
 
