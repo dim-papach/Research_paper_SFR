@@ -1,20 +1,18 @@
 #+title:Investigations of the galaxies of the LCV
 #+author: Dimitrios Papachistopoulos
 
+#+OPTIONS: toc:nil
 #+LaTeX_CLASS_OPTIONS: [a4paper]
-##+LaTeX_HEADER: \affiliation{Dr. Pavel Kroupa}
 #+LaTeX_HEADER: \usepackage{breakcites}
 #+LaTeX_HEADER: \usepackage{apacite}
 #+LaTeX_HEADER: \usepackage{paralist}
-#+LaTeX_HEADER: \usepackage{biblatex}
+#+LaTeX_HEADER: \usepackage[style=authoryear-icomp]{biblatex}
 #+LaTeX_HEADER: \usepackage{hyperref}
 #+LaTeX_HEADER: \let\itemize\compactitem
 #+LaTeX_HEADER: \let\description\compactdesc
 #+LaTeX_HEADER: \let\enumerate\compactenum
 
 #+bibliography:./bibl/bibliography/bibliography.bib
-
-
 
 #+BEGIN_ABSTRACT
 
@@ -23,7 +21,6 @@
 --------------
 
 #+END_ABSTRACT
-#+LaTeX: \tableofcontents
 
 
 * The Galaxies in the Local Cosmological Volume (LCV)
@@ -212,3 +209,4 @@ $$
 \tau_g=\frac{M_g}{\dot{M_*}}=\frac{M_g}{SFR}
 $$
 
+#+print_bibliography:

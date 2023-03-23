@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-03-23 Thu 01:41 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Investigations of the galaxies of the LCV</title>
+<meta name="author" content="Dimitrios Papachistopoulos" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Investigations of the galaxies of the LCV</h1>
+
+<div id="outline-container-org48805c6" class="outline-2">
+<h2 id="org48805c6"><span class="section-number-2">1.</span> The Galaxies in the Local Cosmological Volume (LCV)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013(<a href="#citeproc_bib_item_2">Karachentsev, Makarov, and Kaisina 2013</a>)) and its updated version from the &ldquo;Catalog &amp; Atlas of the LV galaxies&rdquo; databas(<a href="#citeproc_bib_item_1">“Catalog of the LV Galaxies” n.d.</a>)  are used to extract the K-band luminosities, the types of the galaxie<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies (\(M_{HI}\)) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of
+\(\approx 11\) Mpc. The SFR and MHI values contain limit flags, which we exclude from our present analysis. This gives a sample of 793 galaxies from 1248. From the remaing galaxies we have
+</p>
+
+\begin{table}[hc]
+\centering
+\begin{tabular}{lr}
+\toprule
+{} &    0 \\
+\midrule
+Name    &  793 \\
+Kmag    &  321 \\
+FUVmag  &  687 \\
+TType   &  793 \\
+Tdw1    &  580 \\
+Tdw2    &  568 \\
+Bmag    &  790 \\
+SFR\_Ha  &  566 \\
+SFR\_FUV &  688 \\
+K       &  789 \\
+MHI     &  643 \\
+color   &  321 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+<!-- This HTML table template is generated by emacs 28.2 -->
+<table border="1">
+  <tr>
+    <td align="left" valign="top">
+      Measurment&nbsp;&nbsp;&nbsp;
+    </td>
+    <td align="left" valign="top">
+      Number&nbsp;of&nbsp;Galaxies&nbsp;
+    </td>
+  </tr>
+</table>
+
+
+<p>
+The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 (\cite{lelliSPARCMASSMODELS2016}), and the \(M_{HI}\) can be converted to the total mass of the gas of the galaxy using the equation \(M_g=1.33\,M_{HI}\)
+</p>
+
+<p>
+The total SFR of each galaxy can be calcuated by
+</p>
+
+<p>
+\[
+    SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
+\]
+</p>
+
+<p>
+if both \(SFR_{H\alpha},SFR_{FUV}\) measurments are available. If only one only one of them is given, then the SFR is equal to the given SFR value
+</p>
+
+<p>
+\[
+    SFR_o=SFR_i,\ \text{if } SFR_j=0,i\neq j,\ i,j=FUV, H_a
+\]
+</p>
+
+<p>
+The condition \(SFR_o\geq 10^{-3}M_\odot yr^{-1}\) leaves 579
+galaxies. This condition is applied due to the reasons given in the P. Kroupa,M. Haslbauer, I. Banik, S. T. Nagesh and J. Pflamm-Altenburg et al. 2020 \cite{kroupaConstraintsStarFormation2020}
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc338058" class="outline-2">
+<h2 id="orgc338058"><span class="section-number-2">2.</span> Types of galaxies</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Using the dataset of 1248 galaxies, do before using the condition and removing the galaxies with the flags, the below histograms can be plotted.
+</p>
+
+<p>
+Most of the galaxies in the LCV are Higly Irregular galaxies followed by lenticular galaxies
+</p>
+
+<p>
+Out of the 1248 galaxies the 1022 are dwarf galaxies
+</p>
+
+
+<p>
+Most dwarf galaxies have low brightness and are irregulars followed by Dwarf spheroidal.
+</p>
+
+
+<div id="org7060f2a" class="figure">
+<p><img src="./figs/hist-Type.png" alt="hist-Type.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>The classification by de Vaucouleurs et al. (1991) is used for the morphology of the galaxies</p>
+</div>
+
+
+<div id="orgfb989a1" class="figure">
+<p><img src="./figs/hist-Tdw1.png" alt="hist-Tdw1.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Dwarf galaxy morphology</p>
+</div>
+
+
+<div id="orgc989f32" class="figure">
+<p><img src="./figs/hist-Tdw2.png" alt="hist-Tdw2.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>Dwarf galaxy surface brightness morphology, where: H = high; N = normal; L = low; X = extremely low.</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org63850fc" class="outline-2">
+<h2 id="org63850fc"><span class="section-number-2">3.</span> Delayed-\(\tau\) model</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+According to P. Kroupa et al. 2020(<a href="#citeproc_bib_item_4">Kroupa et al. 2020</a>) current star formation rates of galaxies can be described by the &rsquo;delayed-\(\tau\)&rsquo; mode as
+</p>
+
+
+\begin{equation} \label{eq:SFR}
+SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau},\text{ where } x=\frac{t_{sf}}{\tau}
+\end{equation}
+
+
+<p>
+where \(\tau\) is the star formation time-scale,  \(t_{sf}\) is the real time of star formation in a given galaxy and \(A_{del}\) a normalization constant.
+</p>
+
+<p>
+The average SFR is
+</p>
+
+\begin{equation}\label{eq:av_SFR-x}
+\overline{SFR_{del}}=\frac{A_{del}}{t_{sf}}[1-(1+x)e^{-x}]
+\end{equation}
+<p>
+and can also be defined by the present day stellar mass
+</p>
+
+\begin{equation}\label{eq:av_SFR M*}
+    \overline{SFR}=\frac{\zeta M_*}{t_{sf}}
+\end{equation}
+<p>
+where \(\zeta\) accommodates for mass-loss through stella evolution and \(\zeta\approx 1.3\)
+</p>
+
+<p>
+This is a system of 2 equations and 3 variables, since A<sub>del</sub> has never been calculated
+</p>
+</div>
+
+<div id="outline-container-orgad6660a" class="outline-3">
+<h3 id="orgad6660a"><span class="section-number-3">3.1.</span> Constant \(t_{sf}\)</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The observed ages of galactic discs are \(t_{sf}\approx 12\) Gyr(<a href="#citeproc_bib_item_3">Knox, Hawkins, and Hambly 1999</a>), so assuming an approximation of \(t_{sf}=12.5\) Gyr, the \(\overline{SFR_{del}}\) can be calcuated, from the equation (\ref{eq:av_SFR M*}).
+</p>
+
+<p>
+After that the equation of ratio
+</p>
+
+
+
+\begin{equation} \label{eq:ratio}
+    \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^x-x-1}{x^2}
+\end{equation}
+
+<p>
+can be solved numerically for \(x\) and using the equations (\Ref{eq:SFR}) and (\Ref{eq:av_SFR-x}) the \(A_{del}\) and \(\tau\) of each galaxy are found.
+</p>
+
+\begin{table}[hc]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+{} &    A\_tsf &      tau &    x\_tsf \\
+\midrule
+count & 5.78E+02 & 5.79E+02 & 5.79E+02 \\
+mean  & 2.25E+12 & 1.09E+11 & 1.85E+00 \\
+std   & 3.94E+13 & 1.04E+12 & 1.48E+00 \\
+min   & 2.48E+07 & 1.93E+09 & 5.59E-04 \\
+25\%   & 1.41E+08 & 4.18E+09 & 5.65E-01 \\
+50\%   & 6.84E+08 & 7.79E+09 & 1.60E+00 \\
+75\%   & 5.70E+09 & 2.21E+10 & 2.99E+00 \\
+max   & 9.10E+14 & 2.24E+13 & 6.47E+00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+<div id="org9740966" class="figure">
+<p><img src="./figs/x-A_tsf.png" alt="x-A_tsf.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span>\(A_{del} = f(x)\) for constant t<sub>sf</sub></p>
+</div>
+
+
+<div id="orgdf1b4cf" class="figure">
+<p><img src="figs/T-A_tsf.png" alt="T-A_tsf.png" />
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org5176f74" class="outline-3">
+<h3 id="org5176f74"><span class="section-number-3">3.2.</span> Constant \(\tau\)</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Assuming for an constant \(\tau=3.5\) Gyr, we cannot use the same \(\overline{SFR}\) since it depends on \(t_{sf}\). Using the equations~(\Ref{eq:av_SFR M*}) and (\Ref{eq:ratio})
+</p>
+
+<p>
+\[
+    \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^x-x-1}{x^2}\Leftrightarrow \frac{e^x-x-1}{x}=\frac{\zeta M_*}{SFR\cdot\tau}
+\]
+</p>
+
+<p>
+using this equation \(x\) and \(A_{del}\) can be calcuated numerically.
+</p>
+
+\begin{table}[hc]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+{} &    A\_tau &    x\_tau &      tsf \\
+\midrule
+count & 5.79E+02 & 5.79E+02 & 5.79E+02 \\
+mean  & 4.59E+09 & 2.54E+00 & 8.89E+09 \\
+std   & 1.50E+10 & 9.57E-01 & 3.35E+09 \\
+min   & 9.87E+06 & 4.07E-01 & 1.42E+09 \\
+25\%   & 6.50E+07 & 1.87E+00 & 6.55E+09 \\
+50\%   & 2.37E+08 & 2.44E+00 & 8.54E+09 \\
+75\%   & 1.12E+09 & 3.08E+00 & 1.08E+10 \\
+max   & 1.06E+11 & 5.77E+00 & 2.02E+10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+<div id="org907adf2" class="figure">
+<p><img src="./figs/x-A_tau.png" alt="x-A_tau.png" />
+</p>
+<p><span class="figure-number">Figure 5: </span>\(A_{del} = f(x)\) for constant \(\tau\)</p>
+</div>
+
+
+
+<div id="org22b27fe" class="figure">
+<p><img src="figs/T-A_tau.png" alt="T-A_tau.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc229ce8" class="outline-3">
+<h3 id="orgc229ce8"><span class="section-number-3">3.3.</span> Comparing the two results</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org0e14ca5" class="outline-4">
+<h4 id="org0e14ca5"><span class="section-number-4">3.3.1.</span> Comparing the \(x\)&rsquo;s</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+Comparing the two different results for x, we see that the \(x|_\tau\) has a lower \(\sigma\)
+</p>
+
+\begin{table}[hc]
+\centering
+\begin{tabular}{lrr}
+\toprule
+{} &    x\_tau &    x\_tsf \\
+\midrule
+count & 5.79E+02 & 5.79E+02 \\
+mean  & 2.54E+00 & 1.85E+00 \\
+std   & 9.57E-01 & 1.48E+00 \\
+min   & 4.07E-01 & 5.59E-04 \\
+25\%   & 1.87E+00 & 5.65E-01 \\
+50\%   & 2.44E+00 & 1.60E+00 \\
+75\%   & 3.08E+00 & 2.99E+00 \\
+max   & 5.77E+00 & 6.47E+00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+<div id="orgf1b75c4" class="figure">
+<p><img src="./figs/Comparing_the_x_Mt.png" alt="Comparing_the_x_Mt.png" />
+</p>
+<p><span class="figure-number">Figure 6: </span>Comparing the two x&rsquo;s, According to their total masses</p>
+</div>
+
+<div id="orgc59e1ab" class="figure">
+<p><img src="./figs/x_tau-Mt-color.png" alt="x_tau-Mt-color.png" />
+</p>
+<p><span class="figure-number">Figure 7: </span>\(x|_\tau=f(M_t)\), with their color index</p>
+</div>
+
+
+<div id="org7b66279" class="figure">
+<p><img src="./figs/x_tsf-x_tau-color_logMt.png" alt="x_tsf-x_tau-color_logMt.png" />
+</p>
+<p><span class="figure-number">Figure 8: </span>Comparing the two x, according to their total mass</p>
+</div>
+
+
+<div id="org3852299" class="figure">
+<p><img src="./figs/x_tsf-x_tau-color_TType.png" alt="x_tsf-x_tau-color_TType.png" />
+</p>
+<p><span class="figure-number">Figure 9: </span>Comparing the two x, according to their type</p>
+</div>
+
+
+<div id="orgf097b8a" class="figure">
+<p><img src="./figs/x_tsf-x_tau-color_logcolor.png" alt="x_tsf-x_tau-color_logcolor.png" />
+</p>
+<p><span class="figure-number">Figure 10: </span>Comparing the two x, according to their color index</p>
+</div>
+
+<p>
+The two results are interrelated through the equation:
+</p>
+\begin{equation}\label{eq:x_tsf-x_tau}
+\begin{align}
+& x|_\tau = (6.30(6) \times 10^{-1})\cdot x|_{tsf} + (1.374(15) \times 10^{0}) \\ 
+& \textrm{with correlation } R^2=94\%
+\end{align}
+\end{equation}
+
+<p>
+and from the plots the following conclusions can be drawn:
+</p>
+
+<ol class="org-ol">
+<li>The galaxies with a higher total mass deviate less from the linear fit and are older.</li>
+<li>The younger galaxies are mainly later types of galaxies</li>
+<li>For lower x&rsquo;s, the galaxies have a lower color index which indicates that they are younger. So the values are inline with the experimental values.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org432b738" class="outline-4">
+<h4 id="org432b738"><span class="section-number-4">3.3.2.</span> Comparing the normalization constants</h4>
+<div class="outline-text-4" id="text-3-3-2">
+
+<div id="org8ab2184" class="figure">
+<p><img src="./figs/Comparing_the_A_x.png" alt="Comparing_the_A_x.png" />
+</p>
+<p><span class="figure-number">Figure 11: </span>Comparing the two A<sub>del</sub></p>
+</div>
+
+
+
+<div id="org31b9084" class="figure">
+<p><img src="./figs/A_tau-A_tsf_colo_X.png" alt="A_tau-A_tsf_colo_X.png" />
+</p>
+<p><span class="figure-number">Figure 12: </span>Comparison of the 2 A<sub>del</sub>s according to their \(x\)</p>
+</div>
+
+<div id="org6fc36ba" class="figure">
+<p><img src="./figs/A_tau-A_tsf_Mt.png" alt="A_tau-A_tsf_Mt.png" />
+</p>
+<p><span class="figure-number">Figure 13: </span>Comparison of the 2 A<sub>del</sub>s according to their total masses</p>
+</div>
+
+<p>
+For high \(x\) and high masses the two A<sub>del</sub>s have a high correlation. Specifically:
+</p>
+<ol class="org-ol">
+<li>For high \(x\) the \(A_{del}|_{\tau}-A_{del}|_{t_{sf}}\) plot follows a \(y=x\) trend, which means that for older stars and stars with a low star formation timescale \(\tau\), the normalization constant is the same despite the method used to calculate it.</li>
+<li>The same is true for more massive galaxies, since they deviate less from the \(y=x\) line</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgff5eb2d" class="outline-2">
+<h2 id="orgff5eb2d"><span class="section-number-2">4.</span> The gas depletion timescale \(\tau_g\)</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+The gas depletion timescale \(\tau_g\) measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR(<a href="#citeproc_bib_item_5">Nagesh et al. 2023</a>; <a href="#citeproc_bib_item_6">Pflamm-Altenburg and Kroupa 2009</a>).
+\[
+\tau_g=\frac{M_g}{\dot{M_*}}=\frac{M_g}{SFR}
+\]
+</p>
+
+
+<div id="org5d643e4" class="figure">
+<p><img src="./figs/tau_g-Mg-color_StellarMass.png" alt="tau_g-Mg-color_StellarMass.png" />
+</p>
+<p><span class="figure-number">Figure 14: </span>\(\tau_g = f(M_g)\), with the Stellar Mass of the galaxies</p>
+</div>
+
+
+<div id="org59bc9d9" class="figure">
+<p><img src="./figs/logStellarMass-log_tau_g-color_log_SFR_0.png" alt="logStellarMass-log_tau_g-color_log_SFR_0.png" />
+</p>
+<p><span class="figure-number">Figure 15: </span>Correlation of the \(\tau_g\) with the SFR and the Stellar mass</p>
+</div>
+
+<p>
+Even though the logarithmic correlation is low (\(R^2 = 21\%\)), there seems to be a pattern wherein the decrease of \(\tau_g\) corresponds to an increase in the values of the Stellar Mass and the current star formation \(SFR_0\). 
+</p>
+
+
+<div id="org3689a15" class="figure">
+<p><img src="./figs/logMt-log_tau_g-color_logMg.png" alt="logMt-log_tau_g-color_logMg.png" />
+</p>
+<p><span class="figure-number">Figure 16: </span>Correlation of the \(\tau_g\) with the total mass and the mass of the gas</p>
+</div>
+
+
+
+<style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>“Catalog of the LV Galaxies.” n.d. https://www.sao.ru/lv/lvgdb/tables.php. Accessed March 13, 2023.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Karachentsev, Igor D., Dmitry I. Makarov, and Elena I. Kaisina. 2013. “UPDATED NEARBY GALAXY CATALOG.” <i>Aj</i> 145 (4): 101. <a href="https://doi.org/10.1088/0004-6256/145/4/101">https://doi.org/10.1088/0004-6256/145/4/101</a>.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_3"></a>Knox, R. A., M. R. S. Hawkins, and N. C. Hambly. 1999. “A Survey for Cool White Dwarfs and the Age of the Galactic Disc.” <i>Monthly Notices of the Royal Astronomical Society</i> 306 (3): 736–52. <a href="https://doi.org/10.1046/j.1365-8711.1999.02625.x">https://doi.org/10.1046/j.1365-8711.1999.02625.x</a>.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_4"></a>Kroupa, P, M Haslbauer, I Banik, S T Nagesh, and J Pflamm-Altenburg. 2020. “Constraints on the Star Formation Histories of Galaxies in the Local Cosmological Volume.” <i>Monthly Notices of the Royal Astronomical Society</i> 497 (1): 37–43. <a href="https://doi.org/10.1093/mnras/staa1851">https://doi.org/10.1093/mnras/staa1851</a>.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_5"></a>Nagesh, Srikanth T., Pavel Kroupa, Indranil Banik, Benoit Famaey, Neda Ghafourian, Mahmood Roshan, Ingo Thies, Hongsheng Zhao, and Nils Wittenburg. 2023. “Simulations of Star-Forming Main-Sequence Galaxies in Milgromian Gravity.” <i>Monthly Notices of the Royal Astronomical Society</i> 519 (March): 5128–48. <a href="https://doi.org/10.1093/mnras/stac3645">https://doi.org/10.1093/mnras/stac3645</a>.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_6"></a>Pflamm-Altenburg, Jan, and Pavel Kroupa. 2009. “The Fundamental Gas Depletion and Stellar-Mass Buildup Times of Star Forming Galaxies.” <i>Apj</i> 706 (1): 516–24. <a href="https://doi.org/10.1088/0004-637X/706/1/516">https://doi.org/10.1088/0004-637X/706/1/516</a>.</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+TType=Morphology type code according to the classification by de Vaucouleurs/ Tdw1=Dwarf galaxy morphology/ Tdw2=Dwarf galaxy surface brightness morphology
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: Dimitrios Papachistopoulos</p>
+<p class="date">Created: 2023-03-23 Thu 01:41</p>
+</div>
+</body>
+</html>
