@@ -97,7 +97,7 @@ def simple_regplot(data ,
     if name == None:
         name = cap
 
-    Cap = "#+name: fig:{} \n#+label: fig:{} \n#+caption:{}\n#+ATTR_LaTeX: :placement [!htpb] \n[[./{}.png]]".format(cap,name,name,fname)
+    Cap = "#+name: fig:{} \n#+caption:{}\n#+ATTR_LaTeX: :placement [!htpb] \n[[./{}.png]]".format(name,cap,fname)
     return fit_results, Cap , lab
 
 # Calculate the bin width using the Freedman-Diaconis rule
@@ -119,7 +119,7 @@ def inline_ols(y,x,ols):
         return "${} = ({:.ueSL})\cdot {} + ({:.ueSL})$".format(y, unc.ufloat(ols[0].params[1], ols[0].bse[1]), x, unc.ufloat(ols[0].params[0], ols[0].bse[0]))
 
 def inline_r2(ols):
-        return r"$R^2 = {}\%$".format(round(ols[0].rsquared*100))
+        return r"$R^2 = {}\%$ \noindent".format(round(ols[0].rsquared*100))
 
 def eq_ols(y,x,ols):
     return (r"\begin{"+"equation"+"}\label{eq:"+"{}".format(ols[2])+"}\n"+
@@ -127,7 +127,7 @@ def eq_ols(y,x,ols):
             "& {} = ({:.ueSL})\cdot {} + ({:.ueSL}) \\\ \n".format(y, unc.ufloat(ols[0].params[1], ols[0].bse[1]), x, unc.ufloat(ols[0].params[0], ols[0].bse[0]))+
             r"& \textrm"+"{"+"with correlation "+"}"+" R^2={}\%\n".format(round(ols[0].rsquared*100))+
             r"\end{"+"align"+"}\n"+
-            "\end{"+"equation"+"}\n")
+            "\end{"+"equation"+"}\n"+r"\noindent")
 #+end_src
 
 
@@ -152,15 +152,17 @@ df['MHI']=10**df['logMHI']
 
 df["color"] = df["Bmag"] - df['FUVmag']
 #+end_src
+** TODO no indent
+** TODO fullstops
+** TODO Units in the plots
 
 #+begin_abstract
-The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies[cite:@karachentsevUPDATEDNEARBYGALAXY2013] and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]. The properties studied include the galaxy types, their various masses, the star formation rates (SFRs) and the star formation timescale $\tau$, gas depletion timescale $\tau_g$. The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories. Additionally, the paper discusses the conditions for star formation and the implications of the observed properties on galaxy evolution.
+The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies[cite:@karachentsevUPDATEDNEARBYGALAXY2013] and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]. The properties studied include the galaxy types, their various masses, the star formation rates (SFRs) and the star formation timescale $\tau$, gas depletion timescale $\tau_g$ and the star formation time $t_{sf}$. The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories.
 #+end_abstract
 
 * The Galaxies in the Local Cosmological Volume (LCV)
 
-The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]  are used to extract the B-band, FUV \& K-band luminosities[fn:2] , the types of the galaxie[fn:1]s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of
-$\approx 11$ Mpc. Some of those values contain limit flags, which we exclude from our present analysis. This gives a sample of src_python[]{data.Name.count()} {{{results(793)}}} galaxies from src_python[]{flag.Name.count()} {{{results(1248)}}}. From the remaing galaxies we have
+The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]  are used to extract the B-band, FUV \& K-band luminosities[fn:2] , the types of the galaxie[fn:1]s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of $\approx 11$ Mpc. Some of those values contain limit flags, which we exclude from our present analysis. This gives a sample of src_python[]{data.Name.count()} {{{results(793)}}} galaxies from src_python[]{flag.Name.count()} {{{results(1248)}}}. From the remaing galaxies we have
 
 #+begin_src python
 no_col_str(df,'log').count().to_latex(position = "hc")
@@ -202,8 +204,9 @@ The total SFR of each galaxy can be calcuated by
 $$
     SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
 $$
-
+\noindent
 if both $SFR_{H\alpha},SFR_{FUV}$ measurments are available. If only one only one of them is given, then the SFR is equal to the given SFR value
+
 
 $$
     SFR_o=SFR_i,\ \text{if } SFR_j=0,i\neq j,\ i,j=FUV, H_a
@@ -239,10 +242,12 @@ galaxies. This condition is applied due to the reasons given in the P. Kroupa,M.
 
 Using the dataset of 1248 galaxies, do before using the condition and removing the galaxies with the flags, the below histograms can be plotted.
 
-Most of the galaxies in the LCV are Higly Irregular galaxies followed by lenticular galaxies
+Most of the galaxies in the LCV are Irregular galaxies followed by lenticular galaxies
 
 Out of the 1248 galaxies the 1022 are dwarf galaxies
+RODO
 
+** TODO write a table with the types
 
 Most dwarf galaxies have low brightness and are irregulars followed by Dwarf spheroidal.
 
@@ -289,14 +294,14 @@ plt.close()
 
 * Delayed-$\tau$ model
 
-According to P. Kroupa et al. 2020[cite:@kroupaConstraintsStarFormation2020] current star formation rates of galaxies can be described by the 'delayed-$\tau$' mode as
+According to P. Kroupa et al. 2020[cite:@kroupaConstraintsStarFormation2020] current star formation rates of galaxies can be described by the 'delayed-$\tau$' model as
 
 
 \begin{equation} \label{eq:SFR}
 SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau},\text{ where } x=\frac{t_{sf}}{\tau}
 \end{equation}
 
-
+\noindent
 where $\tau$ is the star formation time-scale,  $t_{sf}$ is the real time of star formation in a given galaxy and $A_{del}$ a normalization constant.
 
 The average SFR is
@@ -356,6 +361,7 @@ for i in dts.index:
     z = fsolve(sfrx,3.0)
     dts.at[i,'x_tsf']=(z)
 
+dts["log_x_tsf"]=np.log10(dts["x_tsf"])
 #+end_src
 
 #+begin_src python
@@ -363,7 +369,7 @@ dts['tau']=tsf/dts['x_tsf']
 dts["log_tau"]=np.log10(dts["tau"])
 
 dts["A_tsf"]=dts["av_SFR"]*tsf/(1-(1+dts["x_tsf"])*np.exp(-dts['x_tsf']))
-
+dts["log_A_tsf"] = np.log10(dts["A_tsf"])
 dts[["A_tsf","tau","x_tsf"]].describe(include='all').to_latex(position = "hc")
 
 #+end_src
@@ -408,21 +414,52 @@ caption(fname,"$A_{del} = f(x)$ for constant t_{sf}")
 [[./figs/x-A_tsf.png]]
 :end:
 
-#+begin_src python  :results file
+#+begin_src python
 fname = "figs/T-A_tsf"
 dts.plot(kind='scatter', x='tau', y="A_tsf", c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig(fname)
 plt.close()
-fname+'.png'
+caption(fname,r"$A_{del} = f(\tau)$ for constant t_{sf}")
 #+end_src
 
 #+RESULTS:
 :results:
-[[file:figs/T-A_tsf.png]]
+#+name: fig:$A_{del} = f(\tau)$ for constant t_{sf}
+#+label: fig:$A_{del} = f(\tau)$ for constant t_{sf}
+#+caption:$A_{del} = f(\tau)$ for constant t_{sf}
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/T-A_tsf.png]]
 :end:
 
+#+begin_src python
+A_tsf_Mt = simple_regplot(dts,"logMt","log_A_tsf",scatter_kws={"c": dts["x_tsf"]}, cap = r"Total Mass $M_t$ - $A_{del}|_{t_{sf}}$" ,name = "A_tsf_Mt")
+A_tsf_Mt[1]
+
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:A_tsf_Mt
+#+caption:Total Mass $M_t$ - $A_{del}|_{t_{sf}}$
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logMt-log_A_tsf-color_x_tsf.png]]
+:end:
+#+begin_src python
+eq_ols("$log(A_{del}|_t_{sf})","$log(M_t)$",  A_tsf_Mt)
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logMt-log_A_tsf-color_x_tsf}
+\begin{align}
+& $log(A_{del}|_t_{sf}) = (9.6(4) \times 10^{-1})\cdot $log(M_t)$ + (8(4) \times 10^{-1}) \\
+& \textrm{with correlation } R^2=48\%
+\end{align}
+\end{equation}
+\noindent
+:end:
 
 ** Constant $\tau$
 
@@ -442,7 +479,7 @@ $$
     \frac{\overline{SFR_{del}}}{SFR_{0,del}}=\frac{e^x-x-1}{x^2}\Leftrightarrow \frac{e^x-x-1}{x}=\frac{\zeta M_*}{SFR\cdot\tau}
 $$
 
-using this equation $x$ and $A_{del}$ can be calcuated numerically.
+using this equation $x$ and $A_{del}$ can be calculated numerically.
 
 #+begin_src python :results none
 for i in df.index:
@@ -460,6 +497,7 @@ for i in df.index:
     #for i in df.index:
     z = fsolve(sfrx,3.0)
     dtau.at[i,'x_tau']=(z)
+dtau["log_x_tau"]=np.log10(dtau.x_tau)
 #+end_src
 
 #+begin_src python :results none
@@ -468,33 +506,13 @@ dtau["log_tsf"]=np.log10(dtau.tsf)
 dtau["av_SFR"]=dtau.z/dtau.x_tau
 dtau['ratio']=dtau.av_SFR/dtau.SFR_0
 dtau['A_tau']=tau*dtau['SFR_0']*np.exp(dtau.x_tau)/dtau.x_tau
+dtau["log_A_tau"]=np.log10(dtau.A_tau)
 dtau=dtau.drop(["z"],axis=1)
 #+end_src
 
 #+begin_src python
 dtau[["A_tau","x_tau","tsf"]].describe(include='all').to_latex(position = "hc")
 #+end_src
-
-#+RESULTS:
-:results:
-\begin{table}[hc]
-\centering
-\begin{tabular}{lrrr}
-\toprule
-{} &    A\_tau &    x\_tau &      tsf \\
-\midrule
-count & 5.79E+02 & 5.79E+02 & 5.79E+02 \\
-mean  & 4.59E+09 & 2.54E+00 & 8.89E+09 \\
-std   & 1.50E+10 & 9.57E-01 & 3.35E+09 \\
-min   & 9.87E+06 & 4.07E-01 & 1.42E+09 \\
-25\%   & 6.50E+07 & 1.87E+00 & 6.55E+09 \\
-50\%   & 2.37E+08 & 2.44E+00 & 8.54E+09 \\
-75\%   & 1.12E+09 & 3.08E+00 & 1.08E+10 \\
-max   & 1.06E+11 & 5.77E+00 & 2.02E+10 \\
-\bottomrule
-\end{tabular}
-\end{table}
-:end:
 
 #+begin_src python  
 fname = "figs/x-A_tau"
@@ -517,20 +535,52 @@ caption(fname,r"$A_{del} = f(x)$ for constant $\tau$")
 :end:
 
 
-#+begin_src python  :results file
-fname = "figs/T-A_tau.png"
+#+begin_src python
+fname = "figs/T-A_tau"
 dtau.plot(kind='scatter', x='tsf', y='A_tau',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig(fname)
 plt.close()
 
-fname
+caption(fname,r"$A_{del} = f(t_{sf})$ for constant $\tau$")
 #+end_src
 
 #+RESULTS:
 :results:
-[[file:figs/T-A_tau.png]]
+#+name: fig:$A_{del} = f(t_{sf})$ for constant $\tau$
+#+label: fig:$A_{del} = f(t_{sf})$ for constant $\tau$
+#+caption:$A_{del} = f(t_{sf})$ for constant $\tau$
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/T-A_tau.png]]
+:end:
+
+#+begin_src python
+A_tau_Mt = simple_regplot(dtau,"logStellarMass","log_A_tau",scatter_kws={"c": dtau["x_tau"]}, cap = r"Total Mass $M_t$ - $A_{del}|_{\tau}$", name = "A_tau_Mt")
+A_tau_Mt[1]
+
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:A_tau_Mt
+#+caption:Total Mass $M_t$ - $A_{del}|_{\tau}$
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logStellarMass-log_A_tau-color_x_tau.png]]
+:end:
+#+begin_src python
+eq_ols(r"$log(A_{del}|_\tau)", "$log(M_t)$", A_tau_Mt)
+#+end_src
+
+#+RESULTS:
+:results:
+\begin{equation}\label{eq:logMt-log_A_tau-color_x_tau}
+\begin{align}
+& $log(A_{del}|_\tau) = (1.025(14) \times 10^{0})\cdot $log(M_t)$ + (-3.0(1.2) \times 10^{-1}) \\
+& \textrm{with correlation } R^2=91\%
+\end{align}
+\end{equation}
+\noindent
 :end:
 
 ** Comparing the two results
@@ -682,6 +732,7 @@ eq_ols(r"x|_\tau", "x|_{tsf}" , x_comp)
 & \textrm{with correlation } R^2=94\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 and from the plots the following conclusions can be drawn:
@@ -765,6 +816,34 @@ For high $x$ and high masses the two A_{del}s have a high correlation. Specifica
 1. For high $x$ the $A_{del}|_{\tau}-A_{del}|_{t_{sf}}$ plot follows a $y=x$ trend, which means that for older stars and stars with a low star formation timescale $\tau$, the normalization constant is the same despite the method used to calculate it.
 1. The same is true for more massive galaxies, since they deviate less from the $y=x$ line
 
+*** Trying to make the A_{del} cloud more compact
+
+Having found $x|_{t_sf}$ and $x|_{\tau}$ we can find a relation between these two values
+
+#+begin_src python
+dcl = dp.copy()
+
+fname = "figs/A_tau-A_tsf_Mt"
+dp.plot.scatter(x = "A_tsf",
+                y = "A_tau",
+                c = "logMt", grid = True)
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig(fname)
+plt.close()
+caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
+
+
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Comparison of the 2 A_{del}s according to their total masses
+#+label: fig:Comparison of the 2 A_{del}s according to their total masses
+#+caption:Comparison of the 2 A_{del}s according to their total masses
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/A_tau-A_tsf_Mt.png]]
+:end:
 
 
 
@@ -811,7 +890,7 @@ taug_cap + "\n" + taug_SFR_Mg[1]
 [[./figs/log_SFR_0-log_tau_g-color_logMg.png]]
 :end:
 
-Despite a weak logarithmic correlation (as indicated by src_python{inline_r2(taug_SFR_Mg)} {{{results($R^2 = 32\%$)}}}), there is a noticeable trend of decreasing $\tau_g$ with increasing SFR and $M_g$.
+Despite a weak logarithmic correlation (as indicated by src_python{inline_r2(taug_SFR_Mg)} {{{results($R^2 = 32\%$ \noindent)}}}), there is a noticeable trend of decreasing $\tau_g$ with increasing SFR and $M_g$.
 
 #+begin_src python
 
@@ -828,7 +907,7 @@ taug_StellarMass[1]
 [[./figs/logStellarMass-log_tau_g-color_log_tau.png]]
 :end:
 
-The logarithmic correlation between $\tau_g-M_*$ is low (src_python{inline_r2(taug_StellarMass)} {{{results($R^2 = 21\%$)}}}), there seems to be a pattern wherein the decrease of $\tau_g$ corresponds to an increase in the values of the Stellar Mass, but there does not seem to be one for $\tau_g-\tau$
+The logarithmic correlation between $\tau_g-M_*$ is low (src_python{inline_r2(taug_StellarMass)} {{{results($R^2 = 21\%$ \noindent)}}}), there seems to be a pattern wherein the decrease of $\tau_g$ corresponds to an increase in the values of the Stellar Mass, but there does not seem to be one for $\tau_g-\tau$
 
 #+begin_src python
 
@@ -860,7 +939,22 @@ taug_color[1]
 [[./figs/color-log_tau_g-color_log_Mass_ratio.png]]
 :end:
 
-Again it can be observed that as the $\tau_g$ decreases, the corresponding values of $M_t$ increase, but the logarithmic correlation is again low (src_python{inline_r2(taug_Mt)} {{{results($R^2 = 11\%$)}}}), and there is no clear correlation between $\tau_g-t_{sf}$
+#+begin_src python
+
+taug_tsf=simple_regplot(dtg,"log_tsf","log_tau_g",scatter_kws={"c":dtg["log_tau"]}, cap = r"Correlation of the $\tau_g$ with the color index")
+taug_tsf[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Correlation of the $\tau_g$ with the color index
+#+label: fig:Correlation of the $\tau_g$ with the color index
+#+caption:Correlation of the $\tau_g$ with the color index
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_tsf-log_tau_g-color_log_tau.png]]
+:end:
+
+Again it can be observed that as the $\tau_g$ decreases, the corresponding values of $M_t$ increase, but the logarithmic correlation is again low (src_python{inline_r2(taug_Mt)} {{{results($R^2 = 11\%$ \noindent)}}}), and there is no clear correlation between $\tau_g-t_{sf}$
 
 There is a notable trend, wherein for high masses we have a shorter timescale.
 
@@ -908,6 +1002,7 @@ eq_ols("$M_g$","$M_*$", mg_SMass)
 & \textrm{with correlation } R^2=64\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 #+begin_src python
@@ -941,6 +1036,7 @@ eq_ols("M26", "M*",SMass_m26)
 & \textrm{with correlation } R^2=80\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 #+begin_src python
@@ -973,6 +1069,7 @@ eq_ols("M26", "Mg",mg_m26)
 & \textrm{with correlation } R^2=74\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 #+begin_src python
@@ -1009,6 +1106,7 @@ eq_ols('$M_t$',"$M_*$", SMass_mt )
 & \textrm{with correlation } R^2=94\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 
@@ -1044,6 +1142,7 @@ eq_ols('$M_t$',"$M_g$", mg_mt )
 & \textrm{with correlation } R^2=81\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 #+begin_src python :results none
@@ -1078,12 +1177,13 @@ eq_ols("M26", "$M_t$", m26_mt)
 & \textrm{with correlation } R^2=85\%
 \end{align}
 \end{equation}
+\noindent
 :end:
 
 
 There are many plots exhibiting a correlation of $R^2>80%$, indicating that we can utilize those functions to estimate the masses of the galaxies in the LCV with a high degree of confidence.
 
-The $M_t-M_*$ (\ref{fig:SMass_mt}) plot is particularly noteworthy, displaying a correlation  of src_python{inline_r2(SMass_mt)} {{{results($R^2 = 94\%$)}}}. This plot also indicates that galaxies with greater total and stellar masses tend to have higher SFR, consistent with the findings in section \ref{SEC:tau_g} where $\tau_g$ decreases with increasing masses.
+The $M_t-M_*$ (\ref{fig:SMass_mt}) plot is particularly noteworthy, displaying a correlation  of src_python{inline_r2(SMass_mt)} {{{results($R^2 = 94\%$ \noindent)}}}. This plot also indicates that galaxies with greater total and stellar masses tend to have higher SFR, consistent with the findings in section \ref{SEC:tau_g} where $\tau_g$ decreases with increasing masses.
 
 This phenomenon is likely due to the fact that galaxies with higher masses possess greater potential energy, which accelerates the star formation process. The galaxies with a high Mass ratio $M_r$ could also help the process due to their dense regions and the resulting strong local gravitational potential.
 
@@ -1136,7 +1236,7 @@ SFR_tg_SMass = simple_regplot(dm, "log_SFR_0", "log_tau_g", scatter_kws = {"c":d
 
 SFR_Mg_tg = simple_regplot(dm, "log_SFR_0", "logMg", scatter_kws = {"c":dm["log_tau_g"]})
 
-SFR_Mt_tg = simple_regplot(dm, "log_SFR_0", "logMt", scatter_kws = {"c":dm["log_tau_g"]})
+SFR_Mt_tg = simple_regplot(dm, "logMt", "log_SFR_0", scatter_kws = {"c":dm["log_tau_g"]})
 #+end_src
 
 
@@ -1190,9 +1290,18 @@ SFR_Mt_tg[1]
 #+label: fig:None
 #+caption:None
 #+ATTR_LaTeX: :placement [!htpb]
-[[./figs/log_SFR_0-logMt-color_log_tau_g.png]]
+[[./figs/logMt-log_SFR_0-color_log_tau_g.png]]
+:end:
+#+begin_src python
+simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
+#+end_src
+
+#+RESULTS:
+:results:
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7f143c0b9990>, '#+name: fig:None \n#+label: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
 :end:
 
+** TODO  put that tau and tsf dont have a correlation with Mt
 
 \pagebreak
 #+print_bibliography:

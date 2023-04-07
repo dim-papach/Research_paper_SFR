@@ -6,6 +6,8 @@ import seaborn as sns
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from tabulate import tabulate
+import uncertainties as unc
+
 
 
 pd.set_option('display.float_format', lambda x: '%.2E' % x)
@@ -13,7 +15,7 @@ pd.set_option('display.float_format', lambda x: '%.2E' % x)
 def caption(fname,caption,name = None):
     if name == None:
         name = caption
-    return "#+caption:{} \n#+name: fig:{} \n#+label: fig:{} \n[[./{}]]".format(caption,name,name,fname)
+    return "#+name: fig:{} \n#+label: fig:{} \n#+caption:{} \n#+ATTR_LaTeX: :placement [!htpb]\n[[./{}.png]]".format(caption,name,name,fname)
 
 def simple_regplot(data ,
     X, Y, cap = None, name = None, n_std=2, n_pts=100, ax=None, scatter_kws=None, line_kws=None, ci_kws=None):
@@ -56,7 +58,7 @@ def simple_regplot(data ,
     ax.legend(loc = "best")
     if scatter_kws == {}:
         lab = X+"-"+Y
-        fname = "graphs/"+lab
+        fname = "figs/"+lab
         plt.savefig(fname)
         plt.close()
     else:
@@ -64,14 +66,14 @@ def simple_regplot(data ,
         PCM=ax.get_children()[2] #get the mappable, the 1st and the 2nd are the x and y axes
         plt.colorbar(PCM, ax=ax).set_label(col)
         lab = X+"-"+Y+"-color_"+col
-        fname = "graphs/"+lab
+        fname = "figs/"+lab
         plt.savefig(fname)
         plt.close()
 
     if name == None:
         name = cap
 
-    Cap = "#+caption:{} \n#+name: fig:{} \n#+label: fig:{} \n[[./{}]]".format(cap,name,name,fname)
+    Cap = "#+name: fig:{} \n#+label: fig:{} \n#+caption:{}\n#+ATTR_LaTeX: :placement [!htpb] \n[[./{}.png]]".format(cap,name,name,fname)
     return fit_results, Cap , lab
 
 # Calculate the bin width using the Freedman-Diaconis rule
@@ -90,25 +92,21 @@ def no_col_str(df,string):
 
 #### PRINTING THE OLS PARAMETERS AS LATEX
 def inline_ols(y,x,ols):
-        return "${} = ({:.2E}\pm {:.2E})\cdot {} + ({:.2E}\pm {:.2E})$".format(y, ols[0].params[1], ols[0].bse[1], x, ols[0].params[0], ols[0].bse[0])
+        return "${} = ({:.ueSL})\cdot {} + ({:.ueSL})$".format(y, unc.ufloat(ols[0].params[1], ols[0].bse[1]), x, unc.ufloat(ols[0].params[0], ols[0].bse[0]))
 
 def inline_r2(ols):
-        return r"$R^2 = {}\%$".format(round(x_comp[0].rsquared*100))
+        return r"$R^2 = {}\%$".format(round(ols[0].rsquared*100))
 
 def eq_ols(y,x,ols):
     return (r"\begin{"+"equation"+"}\label{eq:"+"{}".format(ols[2])+"}\n"+
             r"\begin{"+"align"+"}\n"+
-            "& {} = ({:.2E}\pm {:.2E})\cdot {} + ({:.2E}\pm {:.2E})\\\ \n".format(y, ols[0].params[1], ols[0].bse[1], x, ols[0].params[0], ols[0].bse[0])+
+            "& {} = ({:.ueSL})\cdot {} + ({:.ueSL}) \\\ \n".format(y, unc.ufloat(ols[0].params[1], ols[0].bse[1]), x, unc.ufloat(ols[0].params[0], ols[0].bse[0]))+
             r"& \textrm"+"{"+"with correlation "+"}"+" R^2={}\%\n".format(round(ols[0].rsquared*100))+
             r"\end{"+"align"+"}\n"+
             "\end{"+"equation"+"}\n")
 
 flag=pd.read_csv("Karachentsev_list_flags.csv")
-colorcol=flag[["Name","Kmag"]].copy()
 
-colorcol=colorcol[colorcol["Kmag"].astype(str).str.contains(">|<|\*")==False]
-
-colorcol["Kmag"] = colorcol["Kmag"].astype('float')
 
 data = pd.read_csv("Karachentsev_list.csv")
 data["TType"] = data["TType"].astype('category')
@@ -116,7 +114,6 @@ data["Tdw1"] = data["Tdw1"].astype('category')
 data["Tdw2"] = data["Tdw2"].astype('category')
 
 df = data.copy()
-df = pd.merge(colorcol[["Name", "Kmag"]], df, on = "Name", how = 'right')
 df['SFR_Ha']=10**df['log_SFR_Ha']
 
 df['SFR_FUV']=10**df['log_SFR_FUV']
@@ -125,7 +122,7 @@ df['K']=10**df['logKLum']
 
 df['MHI']=10**df['logMHI']
 
-df["color"] = df["Bmag"] - df['Kmag']
+df["color"] = df["Bmag"] - df['FUVmag']
 
 no_col_str(df,'log').count().to_latex(position = "hc")
 
@@ -148,8 +145,6 @@ df['logMt']=np.log10(df['Mt'])
 df["Mass_ratio"]=df["StellarMass"]/df["Mg"]
 df["log_Mass_ratio"]=np.log10(df["Mass_ratio"])
 
-df["logcolor"] = np.log10(df["color"])
-
 typ=pd.read_csv("Karachentsev_list_flags.csv")
 typ["TType"]=typ["TType"].astype('category')
 typ["Tdw1"]=typ["Tdw1"].astype('category')
@@ -158,19 +153,19 @@ print(typ.count())
 typ['TType'].value_counts(sort=False).plot(kind='bar',logy=True,grid = 'True')
 plt.xlabel("Morphology")
 plt.ylabel("Number of Galaxies")
-plt.savefig("graphs/hist-Type")
+plt.savefig("figs/hist-Type")
 plt.close()
 
 typ['Tdw1'].value_counts(sort=False).plot(kind='bar', logy=True,grid = 'True')
 plt.xlabel("Dwarf galaxy morphology")
 plt.ylabel("Number of Galaxies")
-plt.savefig("graphs/hist-Tdw1")
+plt.savefig("figs/hist-Tdw1")
 plt.close()
 
 typ['Tdw2'].value_counts(sort=False).plot(kind='bar', logy=True,grid = 'True')
 plt.xlabel("Dwarf galaxy surface brightness morphology")
 plt.ylabel("Number of Galaxies")
-plt.savefig("graphs/hist-Tdw2")
+plt.savefig("figs/hist-Tdw2")
 plt.close()
 
 ###Constant tsf
@@ -205,7 +200,7 @@ dts["A_tsf"]=dts["av_SFR"]*tsf/(1-(1+dts["x_tsf"])*np.exp(-dts['x_tsf']))
 
 dts[["A_tsf","tau","x_tsf"]].describe(include='all').to_latex(position = "hc")
 
-fname = "graphs/x-A_tsf.png"
+fname = "figs/x-A_tsf"
 dts.plot(kind='scatter', x='x_tsf', y='A_tsf',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
@@ -213,13 +208,13 @@ plt.savefig(fname)
 plt.close()
 caption(fname,"$A_{del} = f(x)$ for constant t_{sf}")
 
-fname = "graphs/T-A_tsf.png"
+fname = "figs/T-A_tsf"
 dts.plot(kind='scatter', x='tau', y="A_tsf", c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig(fname)
 plt.close()
-fname
+fname+'.png'
 
 ###Constant tau
 dtau=df.copy()
@@ -253,7 +248,7 @@ dtau=dtau.drop(["z"],axis=1)
 
 dtau[["A_tau","x_tau","tsf"]].describe(include='all').to_latex(position = "hc")
 
-fname = "graphs/x-A_tau.png"
+fname = "figs/x-A_tau"
 dtau.plot(kind='scatter', x='x_tau', y='A_tau',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
@@ -262,7 +257,7 @@ plt.close()
 
 caption(fname,r"$A_{del} = f(x)$ for constant $\tau$")
 
-fname = "graphs/T-A_tau.png"
+fname = "figs/T-A_tau.png"
 dtau.plot(kind='scatter', x='tsf', y='A_tau',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
@@ -272,13 +267,42 @@ plt.close()
 fname
 
 dp=pd.merge(dtau[["Name","A_tau", "x_tau", "tsf"]], dts, on = 'Name')
+dp["log_x_tau"]=np.log10(dp["x_tau"])
+dp["log_x_tsf"]=np.log10(dp["x_tsf"])
+dp["log_tau"]=np.log10(dp["tau"])
+dp["log_tsf"]=np.log10(dp["tsf"])
 
 dp[["x_tau","x_tsf"]].describe(include = 'all').to_latex(position = "hc")
 
-x_comp=simple_regplot(dp,'x_tsf','x_tau',caption = "Comparing the two x")
-x_comp_Mt=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["logMt"]},caption = "Comparing the two x, according to their total mass")
-x_comp_tt=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["TType"]},caption = "Comparing the two x, according to their type")
-x_comp_col=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["logcolor"]},caption = "Comparing the two x, according to their color index")
+fname="figs/Comparing_the_x_Mt"
+
+plt.scatter(data = dtau, y = "x_tau", x = "Mt", label=r"$\tau$=3.5 Gyr")
+plt.scatter(data = dts, y = "x_tsf", x = "Mt",alpha=0.5,label="$t_{sf}$=12.5 Gyr")
+
+plt.xscale('log')
+plt.yscale('log')
+plt.ylabel('x')
+plt.xlabel('Mt')
+plt.legend(loc='upper right')
+plt.grid()
+plt.savefig(fname)
+plt.close()
+caption(fname,"Comparing the two x's, According to their total masses")
+
+fname="figs/x_tau-Mt-color"
+
+dtau.plot.scatter(x = "Mt",y = "x_tau", c = "color")
+plt.xscale('log')
+plt.yscale('log')
+plt.grid()
+plt.savefig(fname)
+plt.close()
+caption(fname,r"$x|_\tau=f(M_t)$, with their color index")
+
+x_comp=simple_regplot(dp,'x_tsf','x_tau',cap = "Comparing the two x")
+x_comp_Mt=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["logMt"]},cap = "Comparing the two x, according to their total mass")
+x_comp_tt=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["TType"]},cap = "Comparing the two x, according to their type")
+x_comp_col=simple_regplot(dp,'x_tsf','x_tau',scatter_kws={"c":dp["color"]},cap = "Comparing the two x, according to their color index")
 
 x_comp_Mt[1]
 
@@ -289,7 +313,7 @@ x_comp_col[1]
 eq_ols(r"x|_\tau", "x|_{tsf}" , x_comp)
 
 #Comparing the 2 results
-fname="Comparing_the_A.png"
+fname="figs/Comparing_the_A_x"
 plt.scatter(data = dtau, x = "x_tau", y = "A_tau", label=r"$\tau$=3.5 Gyr")
 plt.scatter(data = dts, x = "x_tsf", y = "A_tsf",alpha=0.5,label="$t_{sf}$=12.5 Gyr")
 plt.xscale('log')
@@ -299,10 +323,10 @@ plt.ylabel('A_del')
 plt.legend(loc='upper right')
 plt.grid()
 plt.savefig(fname)
-plt.show()
+plt.close()
 caption(fname,"Comparing the two A_{del}")
 
-fname = "A_tau-A_tsf_X.png"
+fname = "figs/A_tau-A_tsf_colo_X"
 dp.plot.scatter(x = "A_tsf",
                 y = "A_tau",
                 c = "x_tsf", grid = True)
@@ -312,7 +336,7 @@ plt.savefig(fname)
 plt.close()
 caption(fname, "Comparison of the 2 A_{del}s according to their $x$")
 
-fname = "A_tau-A_tsf_Mt.png"
+fname = "figs/A_tau-A_tsf_Mt"
 dp.plot.scatter(x = "A_tsf",
                 y = "A_tau",
                 c = "logMt", grid = True)
@@ -321,3 +345,121 @@ plt.yscale('log')
 plt.savefig(fname)
 plt.close()
 caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
+
+cols_to_use = dp.columns.difference(df.columns)
+dtg = pd.merge(df, dp[cols_to_use], left_index=True, right_index=True, how='outer')
+
+dtg["tau_g"]=df["Mg"]/df["SFR_0"]
+dtg["log_tau_g"]=np.log10(dtg["tau_g"])
+
+fname = "figs/tau_g-Mg-color_SFR"
+dtg.plot(kind="scatter",x="Mg",y="tau_g", c = 'log_SFR_0')
+plt.xscale('log')
+plt.yscale('log')
+plt.grid()
+plt.title(r"$\tau_g=f(M_g$), with color= SFR")
+plt.savefig(fname)
+plt.close()
+taug_cap = "[[./{}.png]]".format(fname)
+
+
+taug_SFR_Mg=simple_regplot(dtg,"log_SFR_0","log_tau_g",scatter_kws={"c":dtg["logMg"]}, cap = r"Correlation of the $\tau_g$ with the SFR and the gas mass")
+taug_cap + "\n" + taug_SFR_Mg[1]
+
+taug_StellarMass=simple_regplot(dtg,"logStellarMass","log_tau_g",scatter_kws={"c":dtg["log_tau"]}, cap = r"Correlation of the $\tau_g$ with the SFR and the Stellar mass")
+taug_StellarMass[1]
+
+taug_Mt=simple_regplot(dtg,"logMt","log_tau_g",scatter_kws={"c":dtg["log_tsf"]}, cap = r"Correlation of the $\tau_g$ with the total mass and the mass of the gas")
+taug_Mt[1]
+
+taug_color=simple_regplot(dtg,"color","log_tau_g",scatter_kws={"c":dtg["log_Mass_ratio"]}, cap = r"Correlation of the $\tau_g$ with the color index")
+taug_color[1]
+
+taug_tsf=simple_regplot(dtg,"log_tsf","log_tau_g",scatter_kws={"c":dtg["log_tau"]}, cap = r"Correlation of the $\tau_g$ with the color index")
+taug_tsf[1]
+
+cols_to_use = dtg.columns.difference(df.columns)
+dm = pd.merge(df, dtg[cols_to_use], left_index=True, right_index=True, how='outer')
+
+nam = "mg_SMass"
+cap = "Gas Mass-Stellar Mass plot"
+mg_SMass = simple_regplot(dm,"logMg","logStellarMass",cap=cap, name = nam)
+mg_SMass_tg = simple_regplot(dm,"logMg","logStellarMass",scatter_kws={"c": dm["log_tau_g"]},cap=cap, name = nam)
+mg_SMass_color = simple_regplot(dm,"logMg","logStellarMass",scatter_kws={"c": dm["color"]},cap=cap, name = nam)
+mg_SMass_color[1]
+
+eq_ols("$M_g$","$M_*$", mg_SMass)
+
+nam = "SMass_m26"
+cap = "Mass inside the Holmberg radius-Stellar Mass plot"
+SMass_m26 = simple_regplot(dm,"logStellarMass","logM26",cap=cap, name = nam)
+SMass_m26_tg = simple_regplot(dm,"logStellarMass","logM26",scatter_kws={"c": dm["log_tau_g"]},cap=cap, name = nam)
+SMass_m26_tg[1]
+
+eq_ols("M26", "M*",SMass_m26)
+
+nam = "mg_m26"
+cap = "Mass inside the Holmberg radius-Gas Mass plot"
+mg_m26 = simple_regplot(dm,"logMg","logM26",cap = cap, name = nam)
+mg_m26[1]
+
+eq_ols("M26", "Mg",mg_m26)
+
+cap = "Stellar Mass-Total Mass plot"
+nam = "SMass_mt"
+SMass_mt = simple_regplot(dm,"logStellarMass","logMt",cap = cap, name = nam)
+SMass_mt_tg = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_tau_g"]},cap = cap, name = nam)
+SMass_mt_SFR = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_SFR_0"]},cap = cap, name = nam)
+SMass_mt_mg = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["logMg"]},cap = cap, name = nam)
+SMass_mt_ratio = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["log_Mass_ratio"]},cap = cap, name = nam)
+SMass_mt_color = simple_regplot(dm,"logStellarMass","logMt",scatter_kws = {"c": dm["color"]},cap = cap, name = nam)
+SMass_mt_SFR[1]
+
+eq_ols('$M_t$',"$M_*$", SMass_mt )
+
+cap = "Total Mass - Gas Mass plot"
+nam = "mg_mt"
+mg_mt = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_SFR_0']},cap = cap, name = nam)
+mg_mt_SFR = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_SFR_0']},cap = cap, name = nam)
+mg_mt_tg = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['log_tau_g']},cap = cap, name = nam)
+mg_mt_SMass = simple_regplot(dm,"logMg","logMt",scatter_kws = {"c":dm['logStellarMass']},cap = cap, name = nam)
+mg_mt_SFR[1]
+
+eq_ols('$M_t$',"$M_g$", mg_mt )
+
+cap = "Mass inside the Holmberg radius-Total Mass plot"
+nam = "m26_mt"
+m26_mt = simple_regplot(dm,"logM26","logMt",cap = cap, name = nam)
+
+m26_mt[1]
+
+eq_ols("M26", "$M_t$", m26_mt)
+
+cap = r"$\t_{sf}$-Mass ratio $\left(\frac{M_*}{M_g}\right)$ plot"
+nam = "tsf_mr"
+tsf_mr = simple_regplot(dm,"log_tsf","log_Mass_ratio",scatter_kws={"c": dm["color"]},cap = cap, name = nam)
+tsf_mr[1]
+
+col_Mr = simple_regplot(dm,"color","log_Mass_ratio", scatter_kws={"c":dm["logMt"]}, cap = r"Mass ratio $\frac{M_*}{M_g}$-Color index plot", name = "col_Mr")
+col_Mr[1]
+
+######### SFR ##########
+
+SFR_SMass_tg = simple_regplot(dm, "log_SFR_0", "logStellarMass", scatter_kws = {"c":dm["log_tau_g"]})
+
+SFR_tg_SMass = simple_regplot(dm, "log_SFR_0", "log_tau_g", scatter_kws = {"c":dm["logStellarMass"]})
+
+SFR_Mg_tg = simple_regplot(dm, "log_SFR_0", "logMg", scatter_kws = {"c":dm["log_tau_g"]})
+
+SFR_Mt_tg = simple_regplot(dm, "logMt", "log_SFR_0" scatter_kws = {"c":dm["log_tau_g"]})
+
+SFR_col = simple_regplot(dm, "log_SFR_0", "color")
+SFR_col[1]
+
+SFR_SMass_tg[1]
+
+SFR_tg_SMass[1]
+
+SFR_Mt_tg[1]
+
+simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
