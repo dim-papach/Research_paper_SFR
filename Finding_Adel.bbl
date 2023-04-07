@@ -1,0 +1,133 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{knoxSurveyCoolWhite1999}{article}{}
+      \name{author}{3}{}{%
+        {{hash=12d10cf58b58b14ecaf08fa98758cadb}{%
+           family={Knox},
+           familyi={K\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=f220707ef225a9fd61c24f916323fcfb}{%
+           family={Hawkins},
+           familyi={H\bibinitperiod},
+           given={M.\bibnamedelimi R.\bibnamedelimi S.},
+           giveni={M\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=9d53d2a0c4f2fd18cf8a73cf0f99fdf7}{%
+           family={Hambly},
+           familyi={H\bibinitperiod},
+           given={N.\bibnamedelimi C.},
+           giveni={N\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{fullhash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{bibnamehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{authorbibnamehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{authornamehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{authorfullhash}{8ec4fea42bdad35f229b5e6380373099}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We describe a new multicolour proper motion survey for cool white dwarfs (CWDs). The observational data base consists of {$\sim$} 300 digitally scanned Schmidt plates in ESO/SERC field 287. The entire survey procedure, from the raw Schmidt plate data to the final white dwarf luminosity function (WDLF), is described, with special emphasis on completeness concerns.We obtain a sample of 58 WDs, for which we have follow-up CCD photometry and spectroscopy of a representative subsample. Effective temperatures and luminosities of our sample objects are determined by comparing photometry with the model atmosphere predictions of Bergeron, Saumon \&amp; Wesemael. Space densities are calculated using an adaptation of Schmidt's (1/Vmax) method, from which a WDLF is constructed. Comparison of our observational LF with the models of both Wood and García-Berro et al. indicates an age for the local Galatic disc of 10-1+3 Gyr. Importantly, we find no evidence of incompleteness in our survey sample. Proper motion number counts imply the survey is complete, and the WD sample passes the (V/Vmax) completeness test.}
+      \field{issn}{0035-8711}
+      \field{journaltitle}{Monthly Notices of the Royal Astronomical Society}
+      \field{month}{7}
+      \field{number}{3}
+      \field{title}{A Survey for Cool White Dwarfs and the Age of the {{Galactic}} Disc}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{306}
+      \field{year}{1999}
+      \field{urldateera}{ce}
+      \field{pages}{736\bibrangedash 752}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1046/j.1365-8711.1999.02625.x
+      \endverb
+      \verb{file}
+      \verb files/17/Knox et al. - 1999 - A survey for cool white dwarfs and the age of the .pdf;files/18/1002381.html
+      \endverb
+    \endentry
+    \entry{kroupaConstraintsStarFormation2020}{article}{}
+      \name{author}{5}{}{%
+        {{hash=71d52607f2cc6bcd04e72c4151850923}{%
+           family={Kroupa},
+           familyi={K\bibinitperiod},
+           given={P},
+           giveni={P\bibinitperiod}}}%
+        {{hash=4ba20b44b5660da2d43a6885b5fc5081}{%
+           family={Haslbauer},
+           familyi={H\bibinitperiod},
+           given={M},
+           giveni={M\bibinitperiod}}}%
+        {{hash=88c0762090e528a5f6434b82cf641b25}{%
+           family={Banik},
+           familyi={B\bibinitperiod},
+           given={I},
+           giveni={I\bibinitperiod}}}%
+        {{hash=b7f998d25506eb2aa0b9bc7b377f35c5}{%
+           family={Nagesh},
+           familyi={N\bibinitperiod},
+           given={S\bibnamedelima T},
+           giveni={S\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=be797853336bb460855e8db9a05b7c69}{%
+           family={{Pflamm-Altenburg}},
+           familyi={P\bibinitperiod},
+           given={J},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{fullhash}{cef0cef3d9c03438ef1dc605d281bdaa}
+      \strng{bibnamehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{authorbibnamehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{authornamehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{authorfullhash}{cef0cef3d9c03438ef1dc605d281bdaa}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The majority of galaxies with current star formation rates (SFRs), \$\textbackslash rm SFR\_\{\textbackslash rm o\} \textbackslash ge 10\^\{-3\} \textbackslash, M\_\textbackslash odot\textbackslash,yr\^\{-1\}\$, in the Local Cosmological Volume, where observations should be reliable, have the property that their observed SFRo is larger than their average SFR. This is in tension with the evolution of galaxies described by delayed-{$\tau$} models, according to which the opposite would be expected. The tension is apparent in that local galaxies imply the star formation time-scale {$\tau~\approx$} 6.7~Gyr, much longer than the 3.5–4.5~Gyr obtained using an empirically determined main sequence at several redshifts. Using models where the SFR is a power law in time of the form {$\propto$}(t - t1){$\eta$} for t1~= 1.8~Gyr (with no stars forming prior to t1) implies that {$\eta~$}= 0.18~{$\pm~$}0.03. This suggested near-constancy of a galaxy's SFR over time raises non-trivial problems for the evolution and formation time of galaxies, but is broadly consistent with the observed decreasing main sequence with increasing age of the Universe.}
+      \field{issn}{0035-8711}
+      \field{journaltitle}{Monthly Notices of the Royal Astronomical Society}
+      \field{month}{9}
+      \field{number}{1}
+      \field{title}{Constraints on the Star Formation Histories of Galaxies in the {{Local Cosmological Volume}}}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{497}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \field{pages}{37\bibrangedash 43}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1093/mnras/staa1851
+      \endverb
+      \verb{file}
+      \verb files/5/Kroupa et al. - 2020 - Constraints on the star formation histories of gal.pdf;files/6/5874698.html
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
