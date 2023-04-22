@@ -921,9 +921,6 @@ plt.show()
 
 #+end_src
 
-#+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-
 [[./graphs/histogram_x3.png]]
 
 
