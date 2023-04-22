@@ -514,6 +514,27 @@ dtau=dtau.drop(["z"],axis=1)
 dtau[["A_tau","x_tau","tsf"]].describe(include='all').to_latex(position = "hc")
 #+end_src
 
+#+RESULTS:
+:results:
+\begin{table}[hc]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+{} &    A\_tau &    x\_tau &      tsf \\
+\midrule
+count & 5.79E+02 & 5.79E+02 & 5.79E+02 \\
+mean  & 4.59E+09 & 2.54E+00 & 8.89E+09 \\
+std   & 1.50E+10 & 9.57E-01 & 3.35E+09 \\
+min   & 9.87E+06 & 4.07E-01 & 1.42E+09 \\
+25\%   & 6.50E+07 & 1.87E+00 & 6.55E+09 \\
+50\%   & 2.37E+08 & 2.44E+00 & 8.54E+09 \\
+75\%   & 1.12E+09 & 3.08E+00 & 1.08E+10 \\
+max   & 1.06E+11 & 5.77E+00 & 2.02E+10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+:end:
+
 #+begin_src python  
 fname = "figs/x-A_tau"
 dtau.plot(kind='scatter', x='x_tau', y='A_tau',c= "logMt")
@@ -574,10 +595,10 @@ eq_ols(r"$log(A_{del}|_\tau)", "$log(M_t)$", A_tau_Mt)
 
 #+RESULTS:
 :results:
-\begin{equation}\label{eq:logMt-log_A_tau-color_x_tau}
+\begin{equation}\label{eq:logStellarMass-log_A_tau-color_x_tau}
 \begin{align}
-& $log(A_{del}|_\tau) = (1.025(14) \times 10^{0})\cdot $log(M_t)$ + (-3.0(1.2) \times 10^{-1}) \\
-& \textrm{with correlation } R^2=91\%
+& $log(A_{del}|_\tau) = (8.74(12) \times 10^{-1})\cdot $log(M_t)$ + (1.31(10) \times 10^{0}) \\
+& \textrm{with correlation } R^2=90\%
 \end{align}
 \end{equation}
 \noindent
@@ -687,7 +708,6 @@ x_comp_Mt[1]
 #+RESULTS:
 :results:
 #+name: fig:Comparing the two x, according to their total mass
-#+label: fig:Comparing the two x, according to their total mass
 #+caption:Comparing the two x, according to their total mass
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x_tsf-x_tau-color_logMt.png]]
@@ -700,7 +720,6 @@ x_comp_tt[1]
 #+RESULTS:
 :results:
 #+name: fig:Comparing the two x, according to their type
-#+label: fig:Comparing the two x, according to their type
 #+caption:Comparing the two x, according to their type
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x_tsf-x_tau-color_TType.png]]
@@ -713,7 +732,6 @@ x_comp_col[1]
 #+RESULTS:
 :results:
 #+name: fig:Comparing the two x, according to their color index
-#+label: fig:Comparing the two x, according to their color index
 #+caption:Comparing the two x, according to their color index
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/x_tsf-x_tau-color_color.png]]
@@ -846,6 +864,47 @@ caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
 :end:
 
 
+** Int SFR to find the A_del
+
+If we integrate equation (\ref{eq:SFR}) we get:
+
+
+\begin{equation}\label{eq:int SFR}
+\begin{align}
+\int^{t_{sf}}_0 SFR_{del} dt_{sf}&=\int^{t_{sf}}_0 \frac{A_{del}t_{sf}e^{-t_{sf}/\tau}}{\tau^2} dt_{sf}\\
+M_*&=-A_{del} \frac{{\left(t_{\mathit{sf}} \tau + \tau^{2}\right)} e^{\left(-\frac{t_{\mathit{sf}}}{\tau}\right)}}{\tau^{2}}+A_{del}\\
+M_*&=-A_{del}\frac{\tau^2(x+1)e^{-x}}{\tau^2}+A_{del}\\
+M_*& = A_{del}(1-(x+1)e^{-x})\\
+A_{del}&=M_*\frac{e^x}{e^x-x-1}
+\end{align}
+\end{equation}
+
+#+begin_src python
+dcl['const_tsf']=np.exp(dcl.x_tsf)/(np.exp(dcl.x_tsf)-dcl.x_tsf-1)
+dcl['const_tau']=np.exp(dcl.x_tau)/(np.exp(dcl.x_tau)-dcl.x_tsf-1)
+dcl['A_theor_tsf']=dcl['StellarMass']*dcl.const_tsf
+dcl['A_theor_tau']=dcl['StellarMass']*dcl.const_tau
+
+fname = "figs/A_theor-M*"
+dcl.plot.scatter(x = "A_theor_tau",
+                y = "StellarMass",
+                c = "x_tau",
+                grid = True)
+plt.xscale('log')
+plt.yscale('log')
+plt.savefig(fname)
+plt.close()
+caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Comparison of the 2 A_{del}s according to their total masses
+#+label: fig:Comparison of the 2 A_{del}s according to their total masses
+#+caption:Comparison of the 2 A_{del}s according to their total masses
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/A_theor-M*.png]]
+:end:
 
 * The gas depletion timescale $\tau_g$ \label{SEC:tau_g}
 
@@ -884,7 +943,6 @@ taug_cap + "\n" + taug_SFR_Mg[1]
 :results:
 [[./figs/tau_g-Mg-color_SFR.png]]
 #+name: fig:Correlation of the $\tau_g$ with the SFR and the gas mass
-#+label: fig:Correlation of the $\tau_g$ with the SFR and the gas mass
 #+caption:Correlation of the $\tau_g$ with the SFR and the gas mass
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_SFR_0-log_tau_g-color_logMg.png]]
@@ -901,7 +959,6 @@ taug_StellarMass[1]
 #+RESULTS:
 :results:
 #+name: fig:Correlation of the $\tau_g$ with the SFR and the Stellar mass
-#+label: fig:Correlation of the $\tau_g$ with the SFR and the Stellar mass
 #+caption:Correlation of the $\tau_g$ with the SFR and the Stellar mass
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logStellarMass-log_tau_g-color_log_tau.png]]
@@ -918,7 +975,6 @@ taug_Mt[1]
 #+RESULTS:
 :results:
 #+name: fig:Correlation of the $\tau_g$ with the total mass and the mass of the gas
-#+label: fig:Correlation of the $\tau_g$ with the total mass and the mass of the gas
 #+caption:Correlation of the $\tau_g$ with the total mass and the mass of the gas
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logMt-log_tau_g-color_log_tsf.png]]
@@ -933,7 +989,6 @@ taug_color[1]
 #+RESULTS:
 :results:
 #+name: fig:Correlation of the $\tau_g$ with the color index
-#+label: fig:Correlation of the $\tau_g$ with the color index
 #+caption:Correlation of the $\tau_g$ with the color index
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/color-log_tau_g-color_log_Mass_ratio.png]]
@@ -948,7 +1003,6 @@ taug_tsf[1]
 #+RESULTS:
 :results:
 #+name: fig:Correlation of the $\tau_g$ with the color index
-#+label: fig:Correlation of the $\tau_g$ with the color index
 #+caption:Correlation of the $\tau_g$ with the color index
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_tsf-log_tau_g-color_log_tau.png]]
@@ -980,9 +1034,8 @@ mg_SMass_color[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Gas Mass-Stellar Mass plot
-#+label: fig:mg_SMass
-#+caption:mg_SMass
+#+name: fig:mg_SMass
+#+caption:Gas Mass-Stellar Mass plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logMg-logStellarMass-color_color.png]]
 :end:
@@ -1015,9 +1068,8 @@ SMass_m26_tg[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Mass inside the Holmberg radius-Stellar Mass plot
-#+label: fig:SMass_m26
-#+caption:SMass_m26
+#+name: fig:SMass_m26
+#+caption:Mass inside the Holmberg radius-Stellar Mass plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logStellarMass-logM26-color_log_tau_g.png]]
 :end:
@@ -1048,9 +1100,8 @@ mg_m26[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Mass inside the Holmberg radius-Gas Mass plot
-#+label: fig:mg_m26
-#+caption:mg_m26
+#+name: fig:mg_m26
+#+caption:Mass inside the Holmberg radius-Gas Mass plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logMg-logM26.png]]
 :end:
@@ -1086,9 +1137,8 @@ SMass_mt_SFR[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Stellar Mass-Total Mass plot
-#+label: fig:SMass_mt
-#+caption:SMass_mt
+#+name: fig:SMass_mt
+#+caption:Stellar Mass-Total Mass plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logStellarMass-logMt-color_log_SFR_0.png]]
 :end:
@@ -1122,9 +1172,8 @@ mg_mt_SFR[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Total Mass - Gas Mass plot
-#+label: fig:mg_mt
-#+caption:mg_mt
+#+name: fig:mg_mt
+#+caption:Total Mass - Gas Mass plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logMg-logMt-color_log_SFR_0.png]]
 :end:
@@ -1158,9 +1207,8 @@ m26_mt[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Mass inside the Holmberg radius-Total Mass plot
-#+label: fig:m26_mt
-#+caption:m26_mt
+#+name: fig:m26_mt
+#+caption:Mass inside the Holmberg radius-Total Mass plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logM26-logMt.png]]
 :end:
@@ -1198,9 +1246,8 @@ tsf_mr[1]
 
 #+RESULTS:
 :results:
-#+name: fig:$\t_{sf}$-Mass ratio $\left(\frac{M_*}{M_g}\right)$ plot
-#+label: fig:tsf_mr
-#+caption:tsf_mr
+#+name: fig:tsf_mr
+#+caption:$\t_{sf}$-Mass ratio $\left(\frac{M_*}{M_g}\right)$ plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_tsf-log_Mass_ratio-color_color.png]]
 :end:
@@ -1213,9 +1260,8 @@ col_Mr[1]
 
 #+RESULTS:
 :results:
-#+name: fig:Mass ratio $\frac{M_*}{M_g}$-Color index plot
-#+label: fig:col_Mr
-#+caption:col_Mr
+#+name: fig:col_Mr
+#+caption:Mass ratio $\frac{M_*}{M_g}$-Color index plot
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/color-log_Mass_ratio-color_logMt.png]]
 :end:
@@ -1248,7 +1294,6 @@ SFR_col[1]
 #+RESULTS:
 :results:
 #+name: fig:None
-#+label: fig:None
 #+caption:None
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_SFR_0-color.png]]
@@ -1261,7 +1306,6 @@ SFR_SMass_tg[1]
 #+RESULTS:
 :results:
 #+name: fig:None
-#+label: fig:None
 #+caption:None
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_SFR_0-logStellarMass-color_log_tau_g.png]]
@@ -1275,7 +1319,6 @@ SFR_tg_SMass[1]
 #+RESULTS:
 :results:
 #+name: fig:None
-#+label: fig:None
 #+caption:None
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_SFR_0-log_tau_g-color_logStellarMass.png]]
@@ -1287,7 +1330,6 @@ SFR_Mt_tg[1]
 #+RESULTS:
 :results:
 #+name: fig:None
-#+label: fig:None
 #+caption:None
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/logMt-log_SFR_0-color_log_tau_g.png]]
@@ -1298,7 +1340,7 @@ simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
 
 #+RESULTS:
 :results:
-(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7f143c0b9990>, '#+name: fig:None \n#+label: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fd4429478d0>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
 :end:
 
 ** TODO  put that tau and tsf dont have a correlation with Mt
