@@ -43,9 +43,9 @@ def caption(fname,caption,name = None):
 
 def simple_regplot(data ,
     X, Y, cap = None, name = None, n_std=2, n_pts=100, ax=None, scatter_kws=None, line_kws=None, ci_kws=None):
-    df=data
-    x=df[X]
-    y=df[Y]
+    df_data=data
+    x=df_data[X]
+    y=df_data[Y]
     """ Draw a regression line with error interval. """
     ax = plt.gca() if ax is None else ax
 
@@ -165,36 +165,33 @@ The paper investigates the properties of galaxies in the Local Cosmological Volu
 The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]  are used to extract the B-band, FUV \& K-band luminosities[fn:2] , the types of the galaxie[fn:1]s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of $\approx 11$ Mpc. Some of those values contain limit flags, which we exclude from our present analysis. This gives a sample of src_python[]{data.Name.count()} {{{results(793)}}} galaxies from src_python[]{flag.Name.count()} {{{results(1248)}}}. From the remaing galaxies we have
 
 #+begin_src python
-no_col_str(df,'log').count().to_latex(position = "hc")
+temp_table = no_col_str(df,'log')
+temp_table = temp_table.count()
+temp_table.columns = ["sepal_length", "sepal_width"]
+temp_table.to_markdown(headers = ["Measurment","Number of Galaxies"] ,tablefmt= "orgtbl")
 #+end_src
 
 #+RESULTS:
 :results:
-\begin{table}[hc]
-\centering
-\begin{tabular}{lr}
-\toprule
-{} &    0 \\
-\midrule
-Name    &  793 \\
-FUVmag  &  687 \\
-TType   &  793 \\
-Tdw1    &  580 \\
-Tdw2    &  568 \\
-Bmag    &  790 \\
-SFR\_Ha  &  566 \\
-SFR\_FUV &  688 \\
-K       &  789 \\
-MHI     &  643 \\
-color   &  686 \\
-\bottomrule
-\end{tabular}
-\end{table}
+| Measurment  | Number of Galaxies |
+|-------------+--------------------|
+| Name        |                579 |
+| FUVmag      |                490 |
+| TType       |                579 |
+| Tdw1        |                373 |
+| Tdw2        |                364 |
+| Bmag        |                578 |
+| SFR_Ha      |                473 |
+| SFR_FUV     |                491 |
+| K           |                578 |
+| MHI         |                538 |
+| color       |                490 |
+| SFR_0       |                579 |
+| StellarMass |                578 |
+| Mg          |                538 |
+| Mt          |                537 |
+| Mass_ratio  |                537 |
 :end:
-
-+-------------+-------------------+
-|Measurment   |Number of Galaxies |
-+-------------+-------------------+
 
 
 The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 (\cite{lelliSPARCMASSMODELS2016}), and the $M_{HI}$ can be converted to the total mass of the gas of the galaxy using the equation $M_g=1.33\,M_{HI}$
@@ -884,8 +881,10 @@ dcl['const_tsf']=np.exp(dcl.x_tsf)/(np.exp(dcl.x_tsf)-dcl.x_tsf-1)
 dcl['const_tau']=np.exp(dcl.x_tau)/(np.exp(dcl.x_tau)-dcl.x_tsf-1)
 dcl['A_theor_tsf']=dcl['StellarMass']*dcl.const_tsf
 dcl['A_theor_tau']=dcl['StellarMass']*dcl.const_tau
+dcl["log_A_theor_tsf"]=np.log10(dcl["A_theor_tsf"])
+dcl["log_A_theor_tau"]=np.log10(dcl["A_theor_tau"])
 
-fname = "figs/A_theor-M*"
+fname = "figs/A_theor_tau-M*"
 dcl.plot.scatter(x = "A_theor_tau",
                 y = "StellarMass",
                 c = "x_tau",
@@ -903,8 +902,23 @@ caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
 #+label: fig:Comparison of the 2 A_{del}s according to their total masses
 #+caption:Comparison of the 2 A_{del}s according to their total masses
 #+ATTR_LaTeX: :placement [!htpb]
-[[./figs/A_theor-M*.png]]
+[[./figs/A_theor_tau-M*.png]]
 :end:
+
+#+begin_src python
+A_theor_tsf_StellarMass=simple_regplot(dcl,"log_A_theor_tau","logStellarMass",scatter_kws={"c":dcl["x_tsf"]}, cap = r"Comparison of the A_del according to their Stellar Mass")
+A_theor_tsf_StellarMass[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Comparison of the A_del according to their Stellar Mass
+#+caption:Comparison of the A_del according to their Stellar Mass
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_A_theor_tau-logStellarMass-color_x_tsf.png]]
+:end:
+
+
 
 * The gas depletion timescale $\tau_g$ \label{SEC:tau_g}
 
@@ -1340,7 +1354,7 @@ simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
 
 #+RESULTS:
 :results:
-(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fd4429478d0>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7f3d705bae50>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
 :end:
 
 ** TODO  put that tau and tsf dont have a correlation with Mt
