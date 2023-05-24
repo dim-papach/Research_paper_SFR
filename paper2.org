@@ -2,7 +2,7 @@
 #+author: Dimitrios Papachistopoulos
 #+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results value drawer :session main
 
-
+:latex_prop:
 #+OPTIONS: toc:nil
 #+LaTeX_CLASS_OPTIONS: [a4paper,twocolumn]
 #+LaTeX_HEADER: \usepackage{breakcites}
@@ -20,6 +20,7 @@
 #+LaTeX_HEADER: \let\enumerate\compactenum
 #+OPTIONS: tex:imagemagick
 #+bibliography:./bibl/bibliography/bibliography.bib
+:end:
 
 #+begin_src python :results none
 import numpy as np
@@ -79,6 +80,12 @@ def simple_regplot(data ,
     ax.grid()
     ax.set_xlabel(X)
     ax.set_ylabel(Y)
+    ############################
+    # if log == 1:             #
+    #     ax.set_yscale("log") #
+    #     ax.set_xscale("log") #
+    ############################
+
     ax.legend(loc = "best")
     if scatter_kws == {}:
         lab = X+"-"+Y
@@ -102,8 +109,8 @@ def simple_regplot(data ,
 
 # Calculate the bin width using the Freedman-Diaconis rule
 def fd_bins(x):
-    iqr = df[x].quantile(0.75) - df[x].quantile(0.25)
-    bin_width = 2 * iqr / df[x].count()**(1/3)
+    iqr = x.quantile(0.75) - x.quantile(0.25)
+    bin_width = 2 * iqr / x.count()**(1/3)
 
     # Calculate the number of bins using the bin width
     return int((df[x].max() - df[x].min()) / bin_width)
@@ -150,7 +157,7 @@ df['K']=10**df['logKLum']
 
 df['MHI']=10**df['logMHI']
 
-df["color"] = df["Bmag"] - df['FUVmag']
+df["color"] = -df["Bmag"] + df['FUVmag']
 #+end_src
 ** TODO no indent
 ** TODO fullstops
@@ -173,24 +180,19 @@ temp_table.to_markdown(headers = ["Measurment","Number of Galaxies"] ,tablefmt= 
 
 #+RESULTS:
 :results:
-| Measurment  | Number of Galaxies |
-|-------------+--------------------|
-| Name        |                579 |
-| FUVmag      |                490 |
-| TType       |                579 |
-| Tdw1        |                373 |
-| Tdw2        |                364 |
-| Bmag        |                578 |
-| SFR_Ha      |                473 |
-| SFR_FUV     |                491 |
-| K           |                578 |
-| MHI         |                538 |
-| color       |                490 |
-| SFR_0       |                579 |
-| StellarMass |                578 |
-| Mg          |                538 |
-| Mt          |                537 |
-| Mass_ratio  |                537 |
+| Measurment   |   Number of Galaxies |
+|--------------+----------------------|
+| Name         |                  793 |
+| FUVmag       |                  687 |
+| TType        |                  793 |
+| Tdw1         |                  580 |
+| Tdw2         |                  568 |
+| Bmag         |                  790 |
+| SFR_Ha       |                  566 |
+| SFR_FUV      |                  688 |
+| K            |                  789 |
+| MHI          |                  643 |
+| color        |                  686 |
 :end:
 
 
@@ -242,7 +244,6 @@ Using the dataset of 1248 galaxies, do before using the condition and removing t
 Most of the galaxies in the LCV are Irregular galaxies followed by lenticular galaxies
 
 Out of the 1248 galaxies the 1022 are dwarf galaxies
-RODO
 
 ** TODO write a table with the types
 
@@ -344,16 +345,17 @@ After that the equation of ratio
 can be solved numerically for $x$ and using the equations (\Ref{eq:SFR}) and (\Ref{eq:av_SFR-x}) the $A_{del}$ and $\tau$ of each galaxy are found.
 
 #+begin_src python :results none
+def sfrx(z):
+    x =max(0,z)
+
+    ratio=dts.loc[i]['ratio']
+
+    #f=ratio-(np.exp(x)-np.abs(x)-1)/x**2
+    f=ratio-(np.exp(x)-x-1)/x**2
+    return f
+
+
 for i in dts.index:
-    def sfrx(z):
-        x = z
-
-        ratio=dts.loc[i]['ratio']
-
-        #f=ratio-(np.exp(x)-np.abs(x)-1)/x**2
-        f=ratio-(np.exp(x)-np.exp(np.log(x))-1)/x**2
-        return f
-
     #for i in dts.index:
     z = fsolve(sfrx,3.0)
     dts.at[i,'x_tsf']=(z)
@@ -367,29 +369,22 @@ dts["log_tau"]=np.log10(dts["tau"])
 
 dts["A_tsf"]=dts["av_SFR"]*tsf/(1-(1+dts["x_tsf"])*np.exp(-dts['x_tsf']))
 dts["log_A_tsf"] = np.log10(dts["A_tsf"])
-dts[["A_tsf","tau","x_tsf"]].describe(include='all').to_latex(position = "hc")
+dts[["A_tsf","tau","x_tsf"]].describe(include='all').round(3).to_markdown(tablefmt= "orgtbl")
 
 #+end_src
 
 #+RESULTS:
 :results:
-\begin{table}[hc]
-\centering
-\begin{tabular}{lrrr}
-\toprule
-{} &    A\_tsf &      tau &    x\_tsf \\
-\midrule
-count & 5.78E+02 & 5.79E+02 & 5.79E+02 \\
-mean  & 2.25E+12 & 1.09E+11 & 1.85E+00 \\
-std   & 3.94E+13 & 1.04E+12 & 1.48E+00 \\
-min   & 2.48E+07 & 1.93E+09 & 5.59E-04 \\
-25\%   & 1.41E+08 & 4.18E+09 & 5.65E-01 \\
-50\%   & 6.84E+08 & 7.79E+09 & 1.60E+00 \\
-75\%   & 5.70E+09 & 2.21E+10 & 2.99E+00 \\
-max   & 9.10E+14 & 2.24E+13 & 6.47E+00 \\
-\bottomrule
-\end{tabular}
-\end{table}
+|       |         A_tsf |           tau |   x_tsf |
+|-------+---------------+---------------+---------|
+| count | 578           | 579           | 579     |
+| mean  |   2.24715e+12 |   1.08958e+11 |   1.853 |
+| std   |   3.93675e+13 |   1.04132e+12 |   1.476 |
+| min   |   2.47798e+07 |   1.93205e+09 |   0.001 |
+| 25%   |   1.40573e+08 |   4.18098e+09 |   0.565 |
+| 50%   |   6.83764e+08 |   7.79265e+09 |   1.604 |
+| 75%   |   5.70379e+09 |   2.21327e+10 |   2.99  |
+| max   |   9.10088e+14 |   2.23774e+13 |   6.47  |
 :end:
 
 #+begin_src python 
@@ -397,6 +392,7 @@ fname = "figs/x-A_tsf"
 dts.plot(kind='scatter', x='x_tsf', y='A_tsf',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
+plt.grid()
 plt.savefig(fname)
 plt.close()
 caption(fname,"$A_{del} = f(x)$ for constant t_{sf}")
@@ -479,21 +475,22 @@ $$
 using this equation $x$ and $A_{del}$ can be calculated numerically.
 
 #+begin_src python :results none
-for i in df.index:
-    def sfrx(z):
-        x = z
+def sfrx(var):
+    x = max(13e-9,var)
 
-        cons=dtau.loc[i]['z']
-        SFR=dtau.loc[i]['SFR_0']
+    cons=dtau.loc[i]["z"]
+    SFR=dtau.loc[i]['SFR_0']
 
 
-        #f=ratio-(np.exp(x)-np.abs(x)-1)/x**2
-        f=cons/SFR-(np.exp(x)-np.exp(np.log(x))-1)/x
-        return f
+    #f=ratio-(np.exp(x)-np.abs(x)-1)/x**2
+    f=cons/SFR-(np.exp(x)-x-1)/x
+    return f
+
+for i in dtau.index:
 
     #for i in df.index:
-    z = fsolve(sfrx,3.0)
-    dtau.at[i,'x_tau']=(z)
+    solution = fsolve(sfrx,3.0)
+    dtau.at[i,'x_tau']=solution
 dtau["log_x_tau"]=np.log10(dtau.x_tau)
 #+end_src
 
@@ -504,32 +501,24 @@ dtau["av_SFR"]=dtau.z/dtau.x_tau
 dtau['ratio']=dtau.av_SFR/dtau.SFR_0
 dtau['A_tau']=tau*dtau['SFR_0']*np.exp(dtau.x_tau)/dtau.x_tau
 dtau["log_A_tau"]=np.log10(dtau.A_tau)
-dtau=dtau.drop(["z"],axis=1)
 #+end_src
 
 #+begin_src python
-dtau[["A_tau","x_tau","tsf"]].describe(include='all').to_latex(position = "hc")
+dtau[["A_tau","x_tau","tsf"]].describe(include='all').to_markdown(tablefmt = "orgtbl")
 #+end_src
 
 #+RESULTS:
 :results:
-\begin{table}[hc]
-\centering
-\begin{tabular}{lrrr}
-\toprule
-{} &    A\_tau &    x\_tau &      tsf \\
-\midrule
-count & 5.79E+02 & 5.79E+02 & 5.79E+02 \\
-mean  & 4.59E+09 & 2.54E+00 & 8.89E+09 \\
-std   & 1.50E+10 & 9.57E-01 & 3.35E+09 \\
-min   & 9.87E+06 & 4.07E-01 & 1.42E+09 \\
-25\%   & 6.50E+07 & 1.87E+00 & 6.55E+09 \\
-50\%   & 2.37E+08 & 2.44E+00 & 8.54E+09 \\
-75\%   & 1.12E+09 & 3.08E+00 & 1.08E+10 \\
-max   & 1.06E+11 & 5.77E+00 & 2.02E+10 \\
-\bottomrule
-\end{tabular}
-\end{table}
+|       |         A_tau |      x_tau |           tsf |
+|-------+---------------+------------+---------------|
+| count | 579           | 579        | 579           |
+| mean  |   4.58667e+09 |   2.54057  |   8.89201e+09 |
+| std   |   1.49896e+10 |   0.956554 |   3.34794e+09 |
+| min   |   9.87003e+06 |   0.406787 |   1.42376e+09 |
+| 25%   |   6.50497e+07 |   1.87165  |   6.55079e+09 |
+| 50%   |   2.36667e+08 |   2.43871  |   8.5355e+09  |
+| 75%   |   1.11526e+09 |   3.07972  |   1.0779e+10  |
+| max   |   1.0577e+11  |   5.77102  |   2.01986e+10 |
 :end:
 
 #+begin_src python  
@@ -537,6 +526,7 @@ fname = "figs/x-A_tau"
 dtau.plot(kind='scatter', x='x_tau', y='A_tau',c= "logMt")
 plt.xscale('log')
 plt.yscale('log')
+plt.grid()
 plt.savefig(fname)
 plt.close()
 
@@ -604,7 +594,7 @@ eq_ols(r"$log(A_{del}|_\tau)", "$log(M_t)$", A_tau_Mt)
 ** Comparing the two results
 
 #+begin_src python :results none
-dp=pd.merge(dtau[["Name","A_tau", "x_tau", "tsf"]], dts, on = 'Name')
+dp=pd.merge(dtau[["Name","A_tau","log_A_tau", "x_tau", "tsf"]], dts, on = 'Name')
 dp["log_x_tau"]=np.log10(dp["x_tau"])
 dp["log_x_tsf"]=np.log10(dp["x_tsf"])
 dp["log_tau"]=np.log10(dp["tau"])
@@ -869,12 +859,16 @@ If we integrate equation (\ref{eq:SFR}) we get:
 \begin{equation}\label{eq:int SFR}
 \begin{align}
 \int^{t_{sf}}_0 SFR_{del} dt_{sf}&=\int^{t_{sf}}_0 \frac{A_{del}t_{sf}e^{-t_{sf}/\tau}}{\tau^2} dt_{sf}\\
-M_*&=-A_{del} \frac{{\left(t_{\mathit{sf}} \tau + \tau^{2}\right)} e^{\left(-\frac{t_{\mathit{sf}}}{\tau}\right)}}{\tau^{2}}+A_{del}\\
-M_*&=-A_{del}\frac{\tau^2(x+1)e^{-x}}{\tau^2}+A_{del}\\
-M_*& = A_{del}(1-(x+1)e^{-x})\\
-A_{del}&=M_*\frac{e^x}{e^x-x-1}
+\zeta\cdot M_*&=-A_{del} \frac{{\left(t_{\mathit{sf}} \tau + \tau^{2}\right)} e^{\left(-\frac{t_{\mathit{sf}}}{\tau}\right)}}{\tau^{2}}+A_{del}\\
+\zeta\cdot M_*&=-A_{del}\frac{\tau^2(x+1)e^{-x}}{\tau^2}+A_{del}\\
+\zeta\cdot M_*& = A_{del}(1-(x+1)e^{-x})\\
+A_{del}&=\zeta\cdot M_*\frac{e^x}{e^x-x-1}
 \end{align}
 \end{equation}
+
+The integral $\int SFR dt=$ The total mass that is turned into stars. But during the evolution of the stars, the stars spew mass to Interstellar space, so the galaxies lose mass during this process. So the observed Stellar Mass M_* is smaller than the total mass turned into Stellar Mass.
+
+The constant $\zeta$ accommodates for this mass-loss and, as discussed earlier, we can assume a conservative value of 1.3 for the galaxies in the LCV.
 
 #+begin_src python
 dcl['const_tsf']=np.exp(dcl.x_tsf)/(np.exp(dcl.x_tsf)-dcl.x_tsf-1)
@@ -885,8 +879,8 @@ dcl["log_A_theor_tsf"]=np.log10(dcl["A_theor_tsf"])
 dcl["log_A_theor_tau"]=np.log10(dcl["A_theor_tau"])
 
 fname = "figs/A_theor_tau-M*"
-dcl.plot.scatter(x = "A_theor_tau",
-                y = "StellarMass",
+dcl.plot.scatter(x = "A_theor_tsf",
+                y = "A_theor_tau",
                 c = "x_tau",
                 grid = True)
 plt.xscale('log')
@@ -906,8 +900,8 @@ caption(fname, "Comparison of the 2 A_{del}s according to their total masses")
 :end:
 
 #+begin_src python
-A_theor_tsf_StellarMass=simple_regplot(dcl,"log_A_theor_tau","logStellarMass",scatter_kws={"c":dcl["x_tsf"]}, cap = r"Comparison of the A_del according to their Stellar Mass")
-A_theor_tsf_StellarMass[1]
+A_theor_tau_StellarMass_log=simple_regplot(dcl,"log_A_theor_tau","logStellarMass",scatter_kws={"c":dcl["x_tsf"]}, cap = r"Comparison of the A_del according to their Stellar Mass")
+A_theor_tau_StellarMass_log[1]
 #+end_src
 
 #+RESULTS:
@@ -918,7 +912,302 @@ A_theor_tsf_StellarMass[1]
 [[./figs/log_A_theor_tau-logStellarMass-color_x_tsf.png]]
 :end:
 
+#+begin_src python
+A_theor_A_exp_tau=simple_regplot(dcl,"log_A_theor_tau","log_A_tau",scatter_kws={"c":dcl["x_tsf"]}, cap = r"Comparison of the 2 $A_{del}|_{\tau=const.}$s (theoretical and experimental)", name = "A_theor_A_exp_tau")
+A_theor_A_exp_tau[1]
+#+end_src
 
+#+RESULTS:
+:results:
+#+name: fig:A_theor_A_exp_tau
+#+caption:Comparison of the 2 $A_{del}|_{\tau=const.}$s (theoretical and experimental)
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_A_theor_tau-log_A_tau-color_x_tsf.png]]
+:end:
+
+#+begin_src python
+A_theor_A_exp_tsf=simple_regplot(dcl,"log_A_theor_tsf","log_A_tsf",scatter_kws={"c":dcl["x_tsf"]}, cap = r"Comparison of the 2 $A_{del}|_{tsf=const.}$s (theoretical and experimental)", name = "A_theor_A_exp_tsf")
+A_theor_A_exp_tsf[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:A_theor_A_exp_tsf
+#+caption:Comparison of the 2 $A_{del}|_{tsf=const.}$s (theoretical and experimental)
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/log_A_theor_tsf-log_A_tsf-color_x_tsf.png]]
+:end:
+
+
+From the plots \cite{fig:A_theor_A_exp_tau} and \cite{fig:A_theor_A_exp_tsf} we get correlations of src_python{inline_r2(A_theor_A_exp_tau)} {{{results($R^2 = 91\%$ \noindent)}}} and src_python{inline_ols("A_{tsf}","A_{tsf,theor}",A_theor_A_exp_tau)} {{{results($A_{tsf} = (8.97(12) \times 10^{-1})\cdot A_{tsf\,theor} + (1.02(10) \times 10^{0})$)}}}  so the theoretical values fit the experimental.
+
+From the equations (\ref{eq:SFR}), (\ref{eq:av_SFR-x}) and (\ref{eq:int SFR}), the $SFR_{0,del}$ and the $\overline{SFR_{del}}$ are given by the equations:
+
+\begin{equation} \label{eq:SFR final}
+\begin{align}
+SFR_{0,del}&=\zeta M_*\frac{e^x}{e^x-x-1}\frac{xe^{-x}}{\tau}\\
+          &=\zeta M_*\frac{x}{\tau(e^x-x-1)}
+\end{align}
+\end{equation}
+
+
+\begin{equation}\label{eq:av_SFR-x final}
+\begin{align}
+\overline{SFR_{del}}&=\zeta M_*\frac{e^x}{e^x-x-1}\frac{1}{t_{sf}}[1-(1+x)e^{-x}]\\
+                   &=\zeta M_*\frac{e^x}{e^x-x-1}\frac{1}{t_{sf}}\frac{e^x-x-1}{e^x}\\
+                   &=\zeta \frac{M_*}{t_{sf}}
+\end{align}
+\end{equation}
+
+The new $\overline{SFR_{del}}$ is the same with the $\overline{SFR}$ of the equation (\ref{eq:av_SFR M*}).
+
+#+begin_src python
+t = np.linspace(0.1, 5, 900)
+fname = "figs/SFR_avSFR"
+
+plt.plot(t, t/(np.exp(t)-t-1), label = "$SFR_{0,del}$")
+plt.plot(t, 1/t, label = "$\overline{SFR_{del}}$")
+plt.legend(loc ="upper right")
+plt.grid()
+plt.xlabel("$t_{sf}$")
+plt.ylabel("$SFR$")
+plt.savefig(fname)
+plt.close()
+
+caption(fname, r"The $SFR_{0,del}$ and $\overline{SFR_{del}}$ for constant $\tau=1$ and $\zeta M_*=1$")
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:The $SFR_{0,del}$ and $\overline{SFR_{del}}$ for constant $\tau=1$ and $\zeta M_*=1$
+#+label: fig:The $SFR_{0,del}$ and $\overline{SFR_{del}}$ for constant $\tau=1$ and $\zeta M_*=1$
+#+caption:The $SFR_{0,del}$ and $\overline{SFR_{del}}$ for constant $\tau=1$ and $\zeta M_*=1$
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/SFR_avSFR.png]]
+:end:
+
+
+
+** Calculating the $t_{sf}$ and $\tau$ for each galaxy
+
+Having found an expression for the $A_{del}$, we have eliminated on out of the 3 variables and now the $t_{sf}$ and $\tau$ of each galaxy can be calcuated.
+
+#+begin_src python :exports none
+dsol = df.copy()
+dsol.SFR_0.describe()
+#+end_src
+
+#+RESULTS:
+:results:
+count   5.79E+02
+mean    1.54E-01
+std     4.48E-01
+min     1.02E-03
+25%     3.67E-03
+50%     1.28E-02
+75%     6.91E-02
+max     4.39E+00
+Name: SFR_0, dtype: float64
+:end:
+
+#+begin_src python
+def positive_constraint(vars):
+    x = max(1e-11, vars[0])  # Ensures x is positive or zero
+    y = max(1e-11, vars[1])  # Ensures y is positive or zero
+    return x, y
+def solved(var):
+
+    cons = positive_constraint(var)
+    tsf = cons[0]
+    tau = cons[1]
+    x = tsf/tau
+
+    SFR=dsol.loc[i]["SFR_0"]
+    Mstellar=dsol.loc[i]["StellarMass"]
+
+    A = zeta*Mstellar*np.exp(x)/(np.exp(x)-(x)-1)
+
+    f = np.zeros(2)
+
+    #####################################################
+    # f[0] = tau*SFR-A*x*np.exp(-x)                     #
+    # f[1] = tsf*(np.exp(x)-x-1)*SFR-zeta*Mstellar*x**2 #
+    #####################################################
+
+    f[0] = SFR*tau*np.exp(x)-A*x
+    f[1] = zeta*Mstellar*x**2/tsf/SFR-(np.exp(x)-x-1)
+    return f
+
+for i in dsol.index:
+
+    #for i in dts.index:
+    z = fsolve(solved,[9.6*10**9,3.5*10**9])
+    dsol.at[i,'tsf']=z[0]
+    dsol.at[i,'tau']=z[1]
+
+dsol["x"]=dsol.tsf/dsol.tau
+
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+#+begin_src python
+def solved2(var):
+
+    cons = positive_constraint(var)
+    tsf = cons[0]
+    tau = cons[1]
+    x = tsf/tau
+
+    SFR=dsol.loc[i]["SFR_0"]
+    Mstellar=dsol.loc[i]["StellarMass"]
+
+    A = zeta*Mstellar*np.exp(x)/(np.exp(x)-(x)-1)
+
+    f = np.zeros(2)
+
+    f[0] = tau*SFR-A*x*np.exp(-x)
+    f[1] = tsf*(np.exp(x)-x-1)*SFR-zeta*Mstellar*x**2
+
+    #####################################################
+    # f[0] = SFR*tau*np.exp(x)-A*x                      #
+    # f[1] = zeta*Mstellar*x**2/tsf/SFR-(np.exp(x)-x-1) #
+    #####################################################
+    return f
+
+for i in dsol.index:
+
+    #for i in dts.index:
+    z = fsolve(solved2,[9.6*10**9,3.5*10**9])
+    dsol.at[i,'tsf2']=z[0]
+    dsol.at[i,'tau2']=z[1]
+
+dsol["x2"]=dsol.tsf2/dsol.tau2
+
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+#+begin_src python
+dsol['tsfG'] = dsol.tsf/10**9
+dsol['tauG'] = dsol.tau/10**9
+
+fname = "figs/tsf-hist"
+plt.hist(dsol["tsfG"],range=[0,20], bins =20)
+plt.grid(True)
+plt.xlabel("$t_{sf}$")
+plt.ylabel("Number of Galaxies")
+plt.savefig(fname)
+plt.close()
+
+caption(fname, "Histogram of t_{sf} from 0 to 20 Gyr")
+
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Histogram of t_{sf} from 0 to 20 Gyr
+#+label: fig:Histogram of t_{sf} from 0 to 20 Gyr
+#+caption:Histogram of t_{sf} from 0 to 20 Gyr
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/tsf-hist.png]]
+:end:
+
+#+begin_src python
+dsol[["tsfG","tauG","x"]].describe(include='all').round(3).to_markdown(tablefmt= "orgtbl")
+#+end_src
+
+#+RESULTS:
+:results:
+|       |   tsfG |   tauG |     x |
+|-------+--------+--------+-------|
+| count |    579 |    579 |   579 |
+| mean  |  9.047 |  3.429 | 2.548 |
+| std   |  4.637 |  1.197 | 0.849 |
+| min   |  1.307 |  1.262 | 0.642 |
+| 25%   |  6.066 |  2.954 |  1.99 |
+| 50%   |  8.238 |  3.297 | 2.467 |
+| 75%   | 11.007 |  3.691 | 2.962 |
+| max   | 62.635 | 27.605 | 9.487 |
+:end:
+
+#+begin_src python
+dsol['tsfG2'] = dsol.tsf2/10**9
+dsol['tauG2'] = dsol.tau2/10**9
+dsol[["tsfG2","tauG2", "x2"]].describe(include='all').round(3).to_markdown(tablefmt= "orgtbl")
+#+end_src
+
+#+RESULTS:
+:results:
+|       |   tsfG2 |   tauG2 |    x2 |
+|-------+---------+---------+-------|
+| count |     579 |     579 |   579 |
+| mean  |  27.005 |   9.848 | 2.743 |
+| std   | 112.566 |  41.066 |     0 |
+| min   |   0.523 |   0.191 | 2.738 |
+| 25%   |   4.329 |   1.578 | 2.743 |
+| 50%   |   7.345 |   2.678 | 2.743 |
+| 75%   |  14.071 |    5.13 | 2.743 |
+| max   | 1439.37 | 525.624 | 2.743 |
+:end:
+#+begin_src python
+fname = "figs/tsf2-hist"
+plt.hist(dsol["tsfG2"],range=[0,20], bins =20)
+plt.grid(True)
+plt.xlabel("$t_{sf}$")
+plt.ylabel("Number of Galaxies")
+plt.savefig(fname)
+plt.close()
+
+caption(fname, "Histogram of t_{sf} from 0 to 20 Gyr")
+
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Histogram of t_{sf} from 0 to 20 Gyr
+#+label: fig:Histogram of t_{sf} from 0 to 20 Gyr
+#+caption:Histogram of t_{sf} from 0 to 20 Gyr
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/tsf2-hist.png]]
+:end:
+
+#+begin_src python
+fname = "figs/tsf_tsf2"
+m = 1
+for i in ["tsfG","tsfG2"]:
+    plt.scatter(dsol[i], dsol["color"], label = "Method {}".format(m) )
+    m=m+1
+plt.xscale("log")
+plt.xlabel(r"$t_{sf}$ Gyr")
+plt.ylabel("Color index")
+plt.legend(loc = "upper right")
+plt.grid()
+plt.savefig(fname)
+plt.close()
+
+caption(fname, r"Comparing the two $t_{sf}$")
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Comparing the two $t_{sf}$
+#+label: fig:Comparing the two $t_{sf}$
+#+caption:Comparing the two $t_{sf}$
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/tsf_tsf2.png]]
+:end:
+
+
+
+*** [?]
++ Can we calculate/observe $\zeta$?
+  + If not: for galaxies with extreme star-bursting and low-metallicity galaxies $\zeta=2-3$. Can we find those galaxies and approximate the $\zeta$?
++ Why couldn't we use (\ref{eq:av_SFR M*}) to calculate $A_{del}$
++ While in the second method we see a better correlation between the age of the galaxy and the color index, we must have an older universe
 
 * The gas depletion timescale $\tau_g$ \label{SEC:tau_g}
 
@@ -1021,6 +1310,7 @@ taug_tsf[1]
 #+ATTR_LaTeX: :placement [!htpb]
 [[./figs/log_tsf-log_tau_g-color_log_tau.png]]
 :end:
+
 
 Again it can be observed that as the $\tau_g$ decreases, the corresponding values of $M_t$ increase, but the logarithmic correlation is again low (src_python{inline_r2(taug_Mt)} {{{results($R^2 = 11\%$ \noindent)}}}), and there is no clear correlation between $\tau_g-t_{sf}$
 
@@ -1354,7 +1644,16 @@ simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
 
 #+RESULTS:
 :results:
-(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7f3d705bae50>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fae4452b010>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
+:end:
+
+#+begin_src python
+simple_regplot(dm, "logMt", "log_tsf", scatter_kws = {"c":dm["log_tau_g"]})
+#+end_src
+
+#+RESULTS:
+:results:
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fae35b56ad0>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tsf-color_log_tau_g.png]]', 'logMt-log_tsf-color_log_tau_g')
 :end:
 
 ** TODO  put that tau and tsf dont have a correlation with Mt
@@ -1362,7 +1661,7 @@ simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
 \pagebreak
 #+print_bibliography:
 * Footnotes
-[fn:2] We use the FUV and B measurments to calculate the B-FUV color index.
+[fn:2] We use the FUV and B measurments to calculate the <FUV-B> color index.
 
 [fn:1] TType=Morphology type code according to the classification by de Vaucouleurs/ Tdw1=Dwarf galaxy morphology/ Tdw2=Dwarf galaxy surface brightness morphology
 
