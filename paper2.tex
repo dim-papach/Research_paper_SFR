@@ -1,4 +1,4 @@
-% Created 2023-05-18 Thu 17:00
+% Created 2023-06-10 Sat 19:05
 % Intended LaTeX compiler: pdflatex
 \documentclass[a4paper,twocolumn]{article}
 \usepackage[utf8]{inputenc}
@@ -41,20 +41,20 @@
 \maketitle
 
 \subsection{{\bfseries\sffamily TODO} no indent}
-\label{sec:org769d2b2}
+\label{sec:org4ae1c6d}
 \subsection{{\bfseries\sffamily TODO} fullstops}
-\label{sec:orgf5b7d37}
+\label{sec:orge244364}
 \subsection{{\bfseries\sffamily TODO} Units in the plots}
-\label{sec:org6fe77c9}
+\label{sec:orgaf69437}
 
 \begin{abstract}
 The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies\autocite{karachentsevUPDATEDNEARBYGALAXY2013} and its updated version from the ``Catalog \& Atlas of the LV galaxies'' database\autocite{CatalogLVGalaxies}. The properties studied include the galaxy types, their various masses, the star formation rates (SFRs) and the star formation timescale \(\tau\), gas depletion timescale \(\tau_g\) and the star formation time \(t_{sf}\). The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories.
 \end{abstract}
 
 \section{The Galaxies in the Local Cosmological Volume (LCV)}
-\label{sec:orgee6089e}
+\label{sec:org94f634b}
 
-The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013\autocite{karachentsevUPDATEDNEARBYGALAXY2013}) and its updated version from the ``Catalog \& Atlas of the LV galaxies'' database\autocite{CatalogLVGalaxies}  are used to extract the B-band, FUV $\backslash$& K-band luminosities\footnote{We use the FUV and B measurments to calculate the B-FUV color index.} , the types of the galaxie\footnote{TType=Morphology type code according to the classification by de Vaucouleurs/ Tdw1=Dwarf galaxy morphology/ Tdw2=Dwarf galaxy surface brightness morphology}s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies (\(M_{HI}\)) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of \(\approx 11\) Mpc. Some of those values contain limit flags, which we exclude from our present analysis. This gives a sample of 793 galaxies from 1248. From the remaing galaxies we have
+The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013\autocite{karachentsevUPDATEDNEARBYGALAXY2013}) and its updated version from the ``Catalog \& Atlas of the LV galaxies'' database\autocite{CatalogLVGalaxies}  are used to extract the B-band, FUV $\backslash$& K-band luminosities\footnote{We use the FUV and B measurments to calculate the <FUV-B> color index.} , the types of the galaxie\footnote{TType=Morphology type code according to the classification by de Vaucouleurs/ Tdw1=Dwarf galaxy morphology/ Tdw2=Dwarf galaxy surface brightness morphology}s, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies (\(M_{HI}\)) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of \(\approx 11\) Mpc. Some of those values contain limit flags, which we exclude from our present analysis. This gives a sample of 793 galaxies from 1248. From the remaing galaxies we have
 
 \begin{center}
 \begin{tabular}{lr}
@@ -94,17 +94,16 @@ The condition \(SFR_o\geq 10^{-3}M_\odot yr^{-1}\) leaves 579
 galaxies. This condition is applied due to the reasons given in the P. Kroupa,M. Haslbauer, I. Banik, S. T. Nagesh and J. Pflamm-Altenburg et al. 2020 \cite{kroupaConstraintsStarFormation2020}
 
 \section{Types of galaxies}
-\label{sec:orgab85b22}
+\label{sec:org1701b4d}
 
 Using the dataset of 1248 galaxies, do before using the condition and removing the galaxies with the flags, the below histograms can be plotted.
 
 Most of the galaxies in the LCV are Irregular galaxies followed by lenticular galaxies
 
 Out of the 1248 galaxies the 1022 are dwarf galaxies
-RODO
 
 \subsection{{\bfseries\sffamily TODO} write a table with the types}
-\label{sec:orge4edd96}
+\label{sec:org421f46e}
 
 Most dwarf galaxies have low brightness and are irregulars followed by Dwarf spheroidal.
 
@@ -128,7 +127,7 @@ Most dwarf galaxies have low brightness and are irregulars followed by Dwarf sph
 
 
 \section{Delayed-\(\tau\) model}
-\label{sec:org1a828eb}
+\label{sec:org57c1611}
 
 According to P. Kroupa et al. 2020\autocite{kroupaConstraintsStarFormation2020} current star formation rates of galaxies can be described by the 'delayed-\(\tau\)' model as
 
@@ -155,7 +154,7 @@ where \(\zeta\) accommodates for mass-loss through stella evolution and \(\zeta\
 This is a system of 2 equations and 3 variables, since A\textsubscript{del} has never been calculated
 
 \subsection{Constant \(t_{sf}\)}
-\label{sec:org15b4f9d}
+\label{sec:org4a83115}
 The observed ages of galactic discs are \(t_{sf}\approx 12\) Gyr\autocite{knoxSurveyCoolWhite1999}, so assuming an approximation of \(t_{sf}=12.5\) Gyr, the \(\overline{SFR_{del}}\) can be calcuated, from the equation (\ref{eq:av_SFR M*}).
 
 After that the equation of ratio
@@ -209,7 +208,7 @@ max & 9.10088e+14 & 2.23774e+13 & 6.47\\[0pt]
 \noindent
 
 \subsection{Constant \(\tau\)}
-\label{sec:orge759406}
+\label{sec:org7264b82}
 
 Assuming for an constant \(\tau=3.5\) Gyr, we cannot use the same \(\overline{SFR}\) since it depends on \(t_{sf}\). Using the equations\textasciitilde{}(\Ref{eq:av_SFR M*}) and (\Ref{eq:ratio})
 
@@ -261,10 +260,10 @@ max & 1.0577e+11 & 5.77102 & 2.01986e+10\\[0pt]
 \noindent
 
 \subsection{Comparing the two results}
-\label{sec:org2f6fd91}
+\label{sec:orgd5edef3}
 
 \subsubsection{Comparing the \(x\)'s}
-\label{sec:org83bf696}
+\label{sec:orgd408258}
 
 
 Comparing the two different results for x, we see that the \(x|_\tau\) has a lower \(\sigma\)
@@ -334,7 +333,7 @@ and from the plots the following conclusions can be drawn:
 \end{enumerate}
 
 \subsubsection{Comparing the normalization constants}
-\label{sec:org5608af3}
+\label{sec:org976880e}
 
 \begin{figure}[!htpb]
 \centering
@@ -361,7 +360,7 @@ For high \(x\) and high masses the two A\textsubscript{del}s have a high correla
 \end{enumerate}
 
 \subsubsection{Trying to make the A\textsubscript{del} cloud more compact}
-\label{sec:org28f13fa}
+\label{sec:orge02c923}
 
 Having found \(x|_{t_sf}\) and \(x|_{\tau}\) we can find a relation between these two values
 
@@ -373,7 +372,7 @@ Having found \(x|_{t_sf}\) and \(x|_{\tau}\) we can find a relation between thes
 
 
 \subsection{Int SFR to find the A\textsubscript{del}}
-\label{sec:org7d96484}
+\label{sec:org2f66940}
 
 If we integrate equation (\ref{eq:SFR}) we get:
 
@@ -381,12 +380,16 @@ If we integrate equation (\ref{eq:SFR}) we get:
 \begin{equation}\label{eq:int SFR}
 \begin{align}
 \int^{t_{sf}}_0 SFR_{del} dt_{sf}&=\int^{t_{sf}}_0 \frac{A_{del}t_{sf}e^{-t_{sf}/\tau}}{\tau^2} dt_{sf}\\
-M_*&=-A_{del} \frac{{\left(t_{\mathit{sf}} \tau + \tau^{2}\right)} e^{\left(-\frac{t_{\mathit{sf}}}{\tau}\right)}}{\tau^{2}}+A_{del}\\
-M_*&=-A_{del}\frac{\tau^2(x+1)e^{-x}}{\tau^2}+A_{del}\\
-M_*& = A_{del}(1-(x+1)e^{-x})\\
-A_{del}&=M_*\frac{e^x}{e^x-x-1}
+\zeta\cdot M_*&=-A_{del} \frac{{\left(t_{\mathit{sf}} \tau + \tau^{2}\right)} e^{\left(-\frac{t_{\mathit{sf}}}{\tau}\right)}}{\tau^{2}}+A_{del}\\
+\zeta\cdot M_*&=-A_{del}\frac{\tau^2(x+1)e^{-x}}{\tau^2}+A_{del}\\
+\zeta\cdot M_*& = A_{del}(1-(x+1)e^{-x})\\
+A_{del}&=\zeta\cdot M_*\frac{e^x}{e^x-x-1}
 \end{align}
 \end{equation}
+
+The integral \(\int SFR dt=\) The total mass that is turned into stars. But during the evolution of the stars, the stars spew mass to Interstellar space, so the galaxies lose mass during this process. So the observed Stellar Mass M\textsubscript{*} is smaller than the total mass turned into Stellar Mass.
+
+The constant \(\zeta\) accommodates for this mass-loss and, as discussed earlier, we can assume a conservative value of 1.3 for the galaxies in the LCV.
 
 \begin{figure}[!htpb]
 \centering
@@ -403,21 +406,124 @@ A_{del}&=M_*\frac{e^x}{e^x-x-1}
 \begin{figure}[!htpb]
 \centering
 \includegraphics[width=.9\linewidth]{./figs/log_A_theor_tau-log_A_tau-color_x_tsf.png}
-\caption{\label{fig:loooool}Comparison of the 2 \$A\textsubscript{del}|\textsubscript{\(\tau\)=const.}\$s (theoretical and experimental)}
+\caption{\label{fig:A_theor_A_exp_tau}Comparison of the 2 \$A\textsubscript{del}|\textsubscript{\(\tau\)=const.}\$s (theoretical and experimental)}
 \end{figure}
 
 \begin{figure}[!htpb]
 \centering
 \includegraphics[width=.9\linewidth]{./figs/log_A_theor_tsf-log_A_tsf-color_x_tsf.png}
-\caption{\label{fig:Comparison of the 2 $A_{del}|_{tsf=const.}$s (theoretical and experimental)}Comparison of the 2 \$A\textsubscript{del}|\textsubscript{tsf=const.}\$s (theoretical and experimental)}
+\caption{\label{fig:A_theor_A_exp_tsf}Comparison of the 2 \$A\textsubscript{del}|\textsubscript{tsf=const.}\$s (theoretical and experimental)}
 \end{figure}
 
 
-From the plots 
+From the plots \cite{fig:A_theor_A_exp_tau} and \cite{fig:A_theor_A_exp_tsf} we get correlations of \(R^2 = 91\%\) \noindent and \(A_{tsf} = (8.97(12) \times 10^{-1})\cdot A_{tsf,theor} + (1.02(10) \times 10^{0})\)  so the theoretical values fit the experimental.
+
+From the equations (\ref{eq:SFR}), (\ref{eq:av_SFR-x}) and (\ref{eq:int SFR}), the \(SFR_{0,del}\) and the \(\overline{SFR_{del}}\) are given by the equations:
+
+\begin{equation} \label{eq:SFR final}
+\begin{align}
+SFR_{0,del}&=\zeta M_*\frac{e^x}{e^x-x-1}\frac{xe^{-x}}{\tau}\\
+          &=\zeta M_*\frac{x}{\tau(e^x-x-1)}
+\end{align}
+\end{equation}
+
+
+\begin{equation}\label{eq:av_SFR-x final}
+\begin{align}
+\overline{SFR_{del}}&=\zeta M_*\frac{e^x}{e^x-x-1}\frac{1}{t_{sf}}[1-(1+x)e^{-x}]\\
+                   &=\zeta M_*\frac{e^x}{e^x-x-1}\frac{1}{t_{sf}}\frac{e^x-x-1}{e^x}\\
+                   &=\zeta \frac{M_*}{t_{sf}}
+\end{align}
+\end{equation}
+
+The new \(\overline{SFR_{del}}\) is the same with the \(\overline{SFR}\) of the equation (\ref{eq:av_SFR M*}).
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=.9\linewidth]{./figs/SFR_avSFR.png}
+\caption{\label{fig:The $SFR_{0,del}$ and $\overline{SFR_{del}}$ for constant $\tau=1$ and $\zeta M_*=1$}The \(SFR_{0,del}\) and \(\overline{SFR_{del}}\) for constant \(\tau=1\) and \(\zeta M_*=1\)}
+\end{figure}
+
+
+
+\subsection{Calculating the \(t_{sf}\) and \(\tau\) for each galaxy}
+\label{sec:org38a8c66}
+
+Having found an expression for the \(A_{del}\), we have eliminated on out of the 3 variables and now the \(t_{sf}\) and \(\tau\) of each galaxy can be calcuated.
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=.9\linewidth]{./figs/tsf-hist.png}
+\caption{\label{fig:Histogram of t_{sf} from 0 to 20 Gyr}Histogram of t\textsubscript{sf} from 0 to 20 Gyr}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{lrrr}
+ & tsfG & tauG & x\\[0pt]
+\hline
+count & 579 & 579 & 579\\[0pt]
+mean & 9.047 & 3.429 & 2.548\\[0pt]
+std & 4.637 & 1.197 & 0.849\\[0pt]
+min & 1.307 & 1.262 & 0.642\\[0pt]
+25\% & 6.066 & 2.954 & 1.99\\[0pt]
+50\% & 8.238 & 3.297 & 2.467\\[0pt]
+75\% & 11.007 & 3.691 & 2.962\\[0pt]
+max & 62.635 & 27.605 & 9.487\\[0pt]
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{lrrr}
+ & tsfG2 & tauG2 & x2\\[0pt]
+\hline
+count & 579 & 579 & 579\\[0pt]
+mean & 27.005 & 9.848 & 2.743\\[0pt]
+std & 112.566 & 41.066 & 0\\[0pt]
+min & 0.523 & 0.191 & 2.738\\[0pt]
+25\% & 4.329 & 1.578 & 2.743\\[0pt]
+50\% & 7.345 & 2.678 & 2.743\\[0pt]
+75\% & 14.071 & 5.13 & 2.743\\[0pt]
+max & 1439.37 & 525.624 & 2.743\\[0pt]
+\end{tabular}
+\end{center}
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=.9\linewidth]{./figs/tsf2-hist.png}
+\caption{\label{fig:Histogram of t_{sf} from 0 to 20 Gyr}Histogram of t\textsubscript{sf} from 0 to 20 Gyr}
+\end{figure}
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=.9\linewidth]{./figs/tsf_tsf2.png}
+\caption{\label{fig:Comparing the two $t_{sf}$}Comparing the two \(t_{sf}\)}
+\end{figure}
+
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=.9\linewidth]{./figs/tsf_tsf2.png}
+\caption{\label{fig:Comparing the two $t_{sf}$}Comparing the two \(t_{sf}\)}
+\end{figure}
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=.9\linewidth]{./figs/logMt-color-color_tsf.png}
+\caption{\label{fig:A_theor_A_exp_tsf}Comparison of the 2 \$A\textsubscript{del}|\textsubscript{tsf=const.}\$s (theoretical and experimental)}
+\end{figure}
+
+\subsubsection{[?]}
+\label{sec:org2822411}
+\begin{itemize}
+\item Can we calculate/observe \(\zeta\)?
+\begin{itemize}
+\item If not: for galaxies with extreme star-bursting and low-metallicity galaxies \(\zeta=2-3\). Can we find those galaxies and approximate the \(\zeta\)?
+\end{itemize}
+\item Why couldn't we use (\ref{eq:av_SFR M*}) to calculate \(A_{del}\)
+\item While in the second method we see a better correlation between the age of the galaxy and the color index, we must have an older universe
+\end{itemize}
 
 
 \section{The gas depletion timescale \(\tau_g\) \label{SEC:tau_g}}
-\label{sec:org6c40642}
+\label{sec:org873dcd6}
 
 The gas depletion timescale \(\tau_g\) measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR\autocites{nageshSimulationsStarformingMainsequence2023}[][]{pflamm-altenburgFundamentalGasDepletion2009}.
 \begin{equation}\label{eq:tau_g}
@@ -461,12 +567,13 @@ The logarithmic correlation between \(\tau_g-M_*\) is low (\(R^2 = 21\%\) \noind
 \caption{\label{fig:Correlation of the $\tau_g$ with the color index}Correlation of the \(\tau_g\) with the color index}
 \end{figure}
 
+
 Again it can be observed that as the \(\tau_g\) decreases, the corresponding values of \(M_t\) increase, but the logarithmic correlation is again low (\(R^2 = 11\%\) \noindent), and there is no clear correlation between \(\tau_g-t_{sf}\)
 
 There is a notable trend, wherein for high masses we have a shorter timescale.
 
 \section{Mass relations}
-\label{sec:org08af31e}
+\label{sec:org1e2130d}
 
 Many of the galaxies masses have a high correlation with each other, and also help us understand the previous calculations.
 
@@ -588,7 +695,7 @@ From the \ref{fig:col_Mr}, we conclude that when the color index is higher the M
 
 
 \section{Variations in Star Formation Rate Across the Different Masses}
-\label{sec:orga7b0801}
+\label{sec:org64de891}
 
 
 \begin{figure}[!htpb]
@@ -614,16 +721,16 @@ From the \ref{fig:col_Mr}, we conclude that when the color index is higher the M
 \includegraphics[width=.9\linewidth]{./figs/logMt-log_SFR_0-color_log_tau_g.png}
 \caption{\label{fig:None}None}
 \end{figure}
-(<statsmodels.regression.linear\textsubscript{model.RegressionResultsWrapper} object at 0x7f4ae2c70b50>, '\#+name: fig:None \n\#+caption:None\n\#+ATTR\textsubscript{\LaTeX{}}: :placement [!htpb] \n\begin{center}
+(<statsmodels.regression.linear\textsubscript{model.RegressionResultsWrapper} object at 0x7fbf61cc5a10>, '\#+name: fig:None \n\#+caption:None\n\#+ATTR\textsubscript{\LaTeX{}}: :placement [!htpb] \n\begin{center}
 \includegraphics[width=.9\linewidth]{./figs/logMt-log_tau-color_log_tau_g.png}
 \end{center}', 'logMt-log\textsubscript{tau}-color\textsubscript{log}\textsubscript{tau}\textsubscript{g}')
 
-(<statsmodels.regression.linear\textsubscript{model.RegressionResultsWrapper} object at 0x7f4adf0bd6d0>, '\#+name: fig:None \n\#+caption:None\n\#+ATTR\textsubscript{\LaTeX{}}: :placement [!htpb] \n\begin{center}
+(<statsmodels.regression.linear\textsubscript{model.RegressionResultsWrapper} object at 0x7fbf61ee6b10>, '\#+name: fig:None \n\#+caption:None\n\#+ATTR\textsubscript{\LaTeX{}}: :placement [!htpb] \n\begin{center}
 \includegraphics[width=.9\linewidth]{./figs/logMt-log_tsf-color_log_tau_g.png}
 \end{center}', 'logMt-log\textsubscript{tsf}-color\textsubscript{log}\textsubscript{tau}\textsubscript{g}')
 
 \subsection{{\bfseries\sffamily TODO} put that tau and tsf dont have a correlation with Mt}
-\label{sec:org72b9612}
+\label{sec:org9a06924}
 
 \pagebreak
 \printbibliography

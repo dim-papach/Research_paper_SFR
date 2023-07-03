@@ -32,6 +32,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from tabulate import tabulate
 import uncertainties as unc
+from astropy import units as u
 
 
 
@@ -180,19 +181,19 @@ temp_table.to_markdown(headers = ["Measurment","Number of Galaxies"] ,tablefmt= 
 
 #+RESULTS:
 :results:
-| Measurment   |   Number of Galaxies |
-|--------------+----------------------|
-| Name         |                  793 |
-| FUVmag       |                  687 |
-| TType        |                  793 |
-| Tdw1         |                  580 |
-| Tdw2         |                  568 |
-| Bmag         |                  790 |
-| SFR_Ha       |                  566 |
-| SFR_FUV      |                  688 |
-| K            |                  789 |
-| MHI          |                  643 |
-| color        |                  686 |
+| Measurment | Number of Galaxies |
+|------------+--------------------|
+| Name       |                793 |
+| FUVmag     |                687 |
+| TType      |                793 |
+| Tdw1       |                580 |
+| Tdw2       |                568 |
+| Bmag       |                790 |
+| SFR_Ha     |                566 |
+| SFR_FUV    |                688 |
+| K          |                789 |
+| MHI        |                643 |
+| color      |                686 |
 :end:
 
 
@@ -375,16 +376,16 @@ dts[["A_tsf","tau","x_tsf"]].describe(include='all').round(3).to_markdown(tablef
 
 #+RESULTS:
 :results:
-|       |         A_tsf |           tau |   x_tsf |
-|-------+---------------+---------------+---------|
-| count | 578           | 579           | 579     |
-| mean  |   2.24715e+12 |   1.08958e+11 |   1.853 |
-| std   |   3.93675e+13 |   1.04132e+12 |   1.476 |
-| min   |   2.47798e+07 |   1.93205e+09 |   0.001 |
-| 25%   |   1.40573e+08 |   4.18098e+09 |   0.565 |
-| 50%   |   6.83764e+08 |   7.79265e+09 |   1.604 |
-| 75%   |   5.70379e+09 |   2.21327e+10 |   2.99  |
-| max   |   9.10088e+14 |   2.23774e+13 |   6.47  |
+|       |       A_tsf |         tau | x_tsf |
+|-------+-------------+-------------+-------|
+| count |         578 |         579 |   579 |
+| mean  | 2.24715e+12 | 1.08958e+11 | 1.853 |
+| std   | 3.93675e+13 | 1.04132e+12 | 1.476 |
+| min   | 2.47798e+07 | 1.93205e+09 | 0.001 |
+| 25%   | 1.40573e+08 | 4.18098e+09 | 0.565 |
+| 50%   | 6.83764e+08 | 7.79265e+09 | 1.604 |
+| 75%   | 5.70379e+09 | 2.21327e+10 |  2.99 |
+| max   | 9.10088e+14 | 2.23774e+13 |  6.47 |
 :end:
 
 #+begin_src python 
@@ -509,16 +510,16 @@ dtau[["A_tau","x_tau","tsf"]].describe(include='all').to_markdown(tablefmt = "or
 
 #+RESULTS:
 :results:
-|       |         A_tau |      x_tau |           tsf |
-|-------+---------------+------------+---------------|
-| count | 579           | 579        | 579           |
-| mean  |   4.58667e+09 |   2.54057  |   8.89201e+09 |
-| std   |   1.49896e+10 |   0.956554 |   3.34794e+09 |
-| min   |   9.87003e+06 |   0.406787 |   1.42376e+09 |
-| 25%   |   6.50497e+07 |   1.87165  |   6.55079e+09 |
-| 50%   |   2.36667e+08 |   2.43871  |   8.5355e+09  |
-| 75%   |   1.11526e+09 |   3.07972  |   1.0779e+10  |
-| max   |   1.0577e+11  |   5.77102  |   2.01986e+10 |
+|       |       A_tau |    x_tau |         tsf |
+|-------+-------------+----------+-------------|
+| count |         579 |      579 |         579 |
+| mean  | 4.58667e+09 |  2.54057 | 8.89201e+09 |
+| std   | 1.49896e+10 | 0.956554 | 3.34794e+09 |
+| min   | 9.87003e+06 | 0.406787 | 1.42376e+09 |
+| 25%   | 6.50497e+07 |  1.87165 | 6.55079e+09 |
+| 50%   | 2.36667e+08 |  2.43871 |  8.5355e+09 |
+| 75%   | 1.11526e+09 |  3.07972 |  1.0779e+10 |
+| max   |  1.0577e+11 |  5.77102 | 2.01986e+10 |
 :end:
 
 #+begin_src python  
@@ -1202,12 +1203,50 @@ caption(fname, r"Comparing the two $t_{sf}$")
 :end:
 
 
+#+begin_src python
+fname = "figs/tsf_tsf2"
+m = 1
+for i in ["tsfG","tau"]:
+    plt.scatter(dsol[i], dsol["color"],label = "Method {}".format(m) )
+    m=m+1
+plt.xscale("log")
+plt.xlabel(r"$t_{sf}$ Gyr")
+plt.ylabel("Color index")
+plt.legend(loc = "upper right")
+plt.grid()
+plt.savefig(fname)
+plt.close()
+
+caption(fname, r"Comparing the two $t_{sf}$")
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:Comparing the two $t_{sf}$
+#+label: fig:Comparing the two $t_{sf}$
+#+caption:Comparing the two $t_{sf}$
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/tsf_tsf2.png]]
+:end:
+#+begin_src python
+color_mass=simple_regplot(dsol,"logMt","color",scatter_kws={"c":dcl["tsf"]}, cap = r"Comparison of the 2 $A_{del}|_{tsf=const.}$s (theoretical and experimental)", name = "A_theor_A_exp_tsf")
+color_mass[1]
+#+end_src
+
+#+RESULTS:
+:results:
+#+name: fig:A_theor_A_exp_tsf
+#+caption:Comparison of the 2 $A_{del}|_{tsf=const.}$s (theoretical and experimental)
+#+ATTR_LaTeX: :placement [!htpb]
+[[./figs/logMt-color-color_tsf.png]]
+:end:
 
 *** [?]
 + Can we calculate/observe $\zeta$?
   + If not: for galaxies with extreme star-bursting and low-metallicity galaxies $\zeta=2-3$. Can we find those galaxies and approximate the $\zeta$?
 + Why couldn't we use (\ref{eq:av_SFR M*}) to calculate $A_{del}$
 + While in the second method we see a better correlation between the age of the galaxy and the color index, we must have an older universe
+
 
 * The gas depletion timescale $\tau_g$ \label{SEC:tau_g}
 
@@ -1644,7 +1683,7 @@ simple_regplot(dm, "logMt", "log_tau", scatter_kws = {"c":dm["log_tau_g"]})
 
 #+RESULTS:
 :results:
-(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fae4452b010>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fbf6230c350>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tau-color_log_tau_g.png]]', 'logMt-log_tau-color_log_tau_g')
 :end:
 
 #+begin_src python
@@ -1653,7 +1692,7 @@ simple_regplot(dm, "logMt", "log_tsf", scatter_kws = {"c":dm["log_tau_g"]})
 
 #+RESULTS:
 :results:
-(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fae35b56ad0>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tsf-color_log_tau_g.png]]', 'logMt-log_tsf-color_log_tau_g')
+(<statsmodels.regression.linear_model.RegressionResultsWrapper object at 0x7fbf61bb8290>, '#+name: fig:None \n#+caption:None\n#+ATTR_LaTeX: :placement [!htpb] \n[[./figs/logMt-log_tsf-color_log_tau_g.png]]', 'logMt-log_tsf-color_log_tau_g')
 :end:
 
 ** TODO  put that tau and tsf dont have a correlation with Mt
