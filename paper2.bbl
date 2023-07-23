@@ -1,0 +1,385 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{CatalogLVGalaxies}{misc}{}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{https://www.sao.ru/lv/lvgdb/tables.php}
+      \field{title}{Catalog of the {{LV Galaxies}}}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb files/8/tables.html
+      \endverb
+    \endentry
+    \entry{karachentsevUPDATEDNEARBYGALAXY2013}{article}{}
+      \name{author}{3}{}{%
+        {{hash=7df534419f699fcc470f0841896dda0b}{%
+           family={Karachentsev},
+           familyi={K\bibinitperiod},
+           given={Igor\bibnamedelima D.},
+           giveni={I\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=319ee5b5cb5b3b51d3a3abec57c20663}{%
+           family={Makarov},
+           familyi={M\bibinitperiod},
+           given={Dmitry\bibnamedelima I.},
+           giveni={D\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+        {{hash=67c4807bb9ba5196c8a7ceff99074250}{%
+           family={Kaisina},
+           familyi={K\bibinitperiod},
+           given={Elena\bibnamedelima I.},
+           giveni={E\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+      }
+      \strng{namehash}{e1c97383380393213c76f8fa325dccb2}
+      \strng{fullhash}{e1c97383380393213c76f8fa325dccb2}
+      \strng{bibnamehash}{e1c97383380393213c76f8fa325dccb2}
+      \strng{authorbibnamehash}{e1c97383380393213c76f8fa325dccb2}
+      \strng{authornamehash}{e1c97383380393213c76f8fa325dccb2}
+      \strng{authorfullhash}{e1c97383380393213c76f8fa325dccb2}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We present an all-sky catalog of 869 nearby galaxies having individual distance estimates within 11 Mpc or corrected radial velocities VLG {$<$} 600 km s-1. The catalog is a renewed and expanded version of the Catalog of Neighboring Galaxies by Karachentsev et al. It collects data on the following galaxy observables: angular diameters, apparent magnitudes in far-UV, B, and Ks bands, H{$\alpha$} and H i fluxes, morphological types, H i-line widths, radial velocities, and distance estimates. In this Local Volume (LV) sample, 108 dwarf galaxies still remain without measured radial velocities. The catalog yields also calculated global galaxy parameters: linear Holmberg diameter, absolute B magnitude, surface brightness, H i mass, stellar mass estimated via K-band luminosity, H i rotational velocity corrected for galaxy inclination, indicative mass within the Holmberg radius, and three kinds of ``tidal index,'' which quantify the local density environment. The catalog is supplemented with data based on the local galaxies, which presents their optical and available H{$\alpha$} images, as well as other services. We briefly discuss the Hubble flow within the LV and different scaling relations that characterize galaxy structure and global star formation in them. We also trace the behavior of the mean stellar mass density, H i-mass density, and star formation rate density within the volume considered.}
+      \field{issn}{0004-6256, 1538-3881}
+      \field{journaltitle}{AJ}
+      \field{langid}{english}
+      \field{month}{3}
+      \field{number}{4}
+      \field{title}{{{UPDATED NEARBY GALAXY CATALOG}}}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{145}
+      \field{year}{2013}
+      \field{urldateera}{ce}
+      \field{pages}{101}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1088/0004-6256/145/4/101
+      \endverb
+      \verb{file}
+      \verb files/9/Karachentsev et al. - 2013 - UPDATED NEARBY GALAXY CATALOG.pdf
+      \endverb
+    \endentry
+    \entry{knoxSurveyCoolWhite1999}{article}{}
+      \name{author}{3}{}{%
+        {{hash=12d10cf58b58b14ecaf08fa98758cadb}{%
+           family={Knox},
+           familyi={K\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=f220707ef225a9fd61c24f916323fcfb}{%
+           family={Hawkins},
+           familyi={H\bibinitperiod},
+           given={M.\bibnamedelimi R.\bibnamedelimi S.},
+           giveni={M\bibinitperiod\bibinitdelim R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=9d53d2a0c4f2fd18cf8a73cf0f99fdf7}{%
+           family={Hambly},
+           familyi={H\bibinitperiod},
+           given={N.\bibnamedelimi C.},
+           giveni={N\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{fullhash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{bibnamehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{authorbibnamehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{authornamehash}{8ec4fea42bdad35f229b5e6380373099}
+      \strng{authorfullhash}{8ec4fea42bdad35f229b5e6380373099}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We describe a new multicolour proper motion survey for cool white dwarfs (CWDs). The observational data base consists of {$\sim$} 300 digitally scanned Schmidt plates in ESO/SERC field 287. The entire survey procedure, from the raw Schmidt plate data to the final white dwarf luminosity function (WDLF), is described, with special emphasis on completeness concerns.We obtain a sample of 58 WDs, for which we have follow-up CCD photometry and spectroscopy of a representative subsample. Effective temperatures and luminosities of our sample objects are determined by comparing photometry with the model atmosphere predictions of Bergeron, Saumon \&amp; Wesemael. Space densities are calculated using an adaptation of Schmidt's (1/Vmax) method, from which a WDLF is constructed. Comparison of our observational LF with the models of both Wood and García-Berro et al. indicates an age for the local Galatic disc of 10-1+3 Gyr. Importantly, we find no evidence of incompleteness in our survey sample. Proper motion number counts imply the survey is complete, and the WD sample passes the (V/Vmax) completeness test.}
+      \field{issn}{0035-8711}
+      \field{journaltitle}{Monthly Notices of the Royal Astronomical Society}
+      \field{month}{7}
+      \field{number}{3}
+      \field{title}{A Survey for Cool White Dwarfs and the Age of the {{Galactic}} Disc}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{306}
+      \field{year}{1999}
+      \field{urldateera}{ce}
+      \field{pages}{736\bibrangedash 752}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1046/j.1365-8711.1999.02625.x
+      \endverb
+      \verb{file}
+      \verb files/17/Knox et al. - 1999 - A survey for cool white dwarfs and the age of the .pdf;files/18/1002381.html
+      \endverb
+    \endentry
+    \entry{kroupaConstraintsStarFormation2020}{article}{}
+      \name{author}{5}{}{%
+        {{hash=71d52607f2cc6bcd04e72c4151850923}{%
+           family={Kroupa},
+           familyi={K\bibinitperiod},
+           given={P},
+           giveni={P\bibinitperiod}}}%
+        {{hash=4ba20b44b5660da2d43a6885b5fc5081}{%
+           family={Haslbauer},
+           familyi={H\bibinitperiod},
+           given={M},
+           giveni={M\bibinitperiod}}}%
+        {{hash=88c0762090e528a5f6434b82cf641b25}{%
+           family={Banik},
+           familyi={B\bibinitperiod},
+           given={I},
+           giveni={I\bibinitperiod}}}%
+        {{hash=b7f998d25506eb2aa0b9bc7b377f35c5}{%
+           family={Nagesh},
+           familyi={N\bibinitperiod},
+           given={S\bibnamedelima T},
+           giveni={S\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=be797853336bb460855e8db9a05b7c69}{%
+           family={{Pflamm-Altenburg}},
+           familyi={P\bibinitperiod},
+           given={J},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{fullhash}{cef0cef3d9c03438ef1dc605d281bdaa}
+      \strng{bibnamehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{authorbibnamehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{authornamehash}{f582e9f93b83441a47bd85f26dbeef8d}
+      \strng{authorfullhash}{cef0cef3d9c03438ef1dc605d281bdaa}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The majority of galaxies with current star formation rates (SFRs), \$\textbackslash rm SFR\_\{\textbackslash rm o\} \textbackslash ge 10\^\{-3\} \textbackslash, M\_\textbackslash odot\textbackslash,yr\^\{-1\}\$, in the Local Cosmological Volume, where observations should be reliable, have the property that their observed SFRo is larger than their average SFR. This is in tension with the evolution of galaxies described by delayed-{$\tau$} models, according to which the opposite would be expected. The tension is apparent in that local galaxies imply the star formation time-scale {$\tau~\approx$} 6.7~Gyr, much longer than the 3.5–4.5~Gyr obtained using an empirically determined main sequence at several redshifts. Using models where the SFR is a power law in time of the form {$\propto$}(t - t1){$\eta$} for t1~= 1.8~Gyr (with no stars forming prior to t1) implies that {$\eta~$}= 0.18~{$\pm~$}0.03. This suggested near-constancy of a galaxy's SFR over time raises non-trivial problems for the evolution and formation time of galaxies, but is broadly consistent with the observed decreasing main sequence with increasing age of the Universe.}
+      \field{issn}{0035-8711}
+      \field{journaltitle}{Monthly Notices of the Royal Astronomical Society}
+      \field{month}{9}
+      \field{number}{1}
+      \field{title}{Constraints on the Star Formation Histories of Galaxies in the {{Local Cosmological Volume}}}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{497}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \field{pages}{37\bibrangedash 43}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1093/mnras/staa1851
+      \endverb
+      \verb{file}
+      \verb files/5/Kroupa et al. - 2020 - Constraints on the star formation histories of gal.pdf;files/6/5874698.html
+      \endverb
+    \endentry
+    \entry{lelliSPARCMASSMODELS2016}{article}{}
+      \name{author}{3}{}{%
+        {{hash=b4f5421f4986425ed851ecb2d7ac7f2c}{%
+           family={Lelli},
+           familyi={L\bibinitperiod},
+           given={Federico},
+           giveni={F\bibinitperiod}}}%
+        {{hash=7b4d0dfabc055235b6e251879bad474f}{%
+           family={McGaugh},
+           familyi={M\bibinitperiod},
+           given={Stacy\bibnamedelima S.},
+           giveni={S\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=fd4d2b5191f506b0f9cf794de687effb}{%
+           family={Schombert},
+           familyi={S\bibinitperiod},
+           given={James\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The American Astronomical Society}%
+      }
+      \strng{namehash}{01a177d6a52abdcbe2d13798041012c3}
+      \strng{fullhash}{01a177d6a52abdcbe2d13798041012c3}
+      \strng{bibnamehash}{01a177d6a52abdcbe2d13798041012c3}
+      \strng{authorbibnamehash}{01a177d6a52abdcbe2d13798041012c3}
+      \strng{authornamehash}{01a177d6a52abdcbe2d13798041012c3}
+      \strng{authorfullhash}{01a177d6a52abdcbe2d13798041012c3}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We introduce SPARC (Spitzer Photometry and Accurate Rotation Curves): a sample of 175 nearby galaxies with new surface photometry at 3.6 {$\mu$}m and high-quality rotation curves from previous H i/H{$\alpha$} studies. SPARC spans a broad range of morphologies (S0 to Irr), luminosities ({$\sim$}5 dex), and surface brightnesses ({$\sim$}4 dex). We derive [3.6] surface photometry and study structural relations of stellar and gas disks. We find that both the stellar mass–H i mass relation and the stellar radius–H i radius relation have significant intrinsic scatter, while the H i mass–radius relation is extremely tight. We build detailed mass models and quantify the ratio of baryonic to observed velocity (Vbar/Vobs) for different characteristic radii and values of the stellar mass-to-light ratio ({$\Upsilon\star$}) at [3.6]. Assuming {$\Upsilon\star$} {$\simeq$} 0.5 M{$\odot$}/L{$\odot$} (as suggested by stellar population models), we find that (i) the gas fraction linearly correlates with total luminosity; (ii) the transition from star-dominated to gas-dominated galaxies roughly corresponds to the transition from spiral galaxies to dwarf irregulars, in line with density wave theory; and (iii) Vbar/Vobs varies with luminosity and surface brightness: high-mass, high-surface-brightness galaxies are nearly maximal, while low-mass, low-surface-brightness galaxies are submaximal. These basic properties are lost for low values of {$\Upsilon\star$} {$\simeq$} 0.2 M{$\odot$}/L{$\odot$} as suggested by the DiskMass survey. The mean maximum-disk limit in bright galaxies is {$\Upsilon\star$} {$\simeq$} 0.7 M{$\odot$}/L{$\odot$} at [3.6]. The SPARC data are publicly available and represent an ideal test bed for models of galaxy formation.}
+      \field{issn}{1538-3881}
+      \field{journaltitle}{AJ}
+      \field{langid}{english}
+      \field{month}{11}
+      \field{number}{6}
+      \field{shorttitle}{{{SPARC}}}
+      \field{title}{{{SPARC}}: {{MASS MODELS FOR}} 175 {{DISK GALAXIES WITH SPITZER PHOTOMETRY AND ACCURATE ROTATION CURVES}}}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{152}
+      \field{year}{2016}
+      \field{urldateera}{ce}
+      \field{pages}{157}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3847/0004-6256/152/6/157
+      \endverb
+      \verb{file}
+      \verb files/15/Lelli et al. - 2016 - SPARC MASS MODELS FOR 175 DISK GALAXIES WITH SPIT.pdf
+      \endverb
+    \endentry
+    \entry{nageshSimulationsStarformingMainsequence2023}{article}{}
+      \name{author}{9}{}{%
+        {{hash=2c1d933c2add11c67fe29269a1cda7df}{%
+           family={Nagesh},
+           familyi={N\bibinitperiod},
+           given={Srikanth\bibnamedelima T.},
+           giveni={S\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=4faf2fa8d19f1c9924866dac1e294fb9}{%
+           family={Kroupa},
+           familyi={K\bibinitperiod},
+           given={Pavel},
+           giveni={P\bibinitperiod}}}%
+        {{hash=7304cffa933c5e639c2ed069868c9313}{%
+           family={Banik},
+           familyi={B\bibinitperiod},
+           given={Indranil},
+           giveni={I\bibinitperiod}}}%
+        {{hash=8a293188206baadb492cb7f95a111e32}{%
+           family={Famaey},
+           familyi={F\bibinitperiod},
+           given={Benoit},
+           giveni={B\bibinitperiod}}}%
+        {{hash=ac50b2cd3cc9a9bedf45654669ff54e4}{%
+           family={Ghafourian},
+           familyi={G\bibinitperiod},
+           given={Neda},
+           giveni={N\bibinitperiod}}}%
+        {{hash=ee80decfe2eb5e934d8f270ac5460949}{%
+           family={Roshan},
+           familyi={R\bibinitperiod},
+           given={Mahmood},
+           giveni={M\bibinitperiod}}}%
+        {{hash=6feeb32b40d01ec39309c1b20ff6af52}{%
+           family={Thies},
+           familyi={T\bibinitperiod},
+           given={Ingo},
+           giveni={I\bibinitperiod}}}%
+        {{hash=a0cff734dd0b43bec2523dd3e5592e21}{%
+           family={Zhao},
+           familyi={Z\bibinitperiod},
+           given={Hongsheng},
+           giveni={H\bibinitperiod}}}%
+        {{hash=a4a46ba65b31045739cde9a2d8de9212}{%
+           family={Wittenburg},
+           familyi={W\bibinitperiod},
+           given={Nils},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{7a5e1ce4e07caec391b72ba1a13b7f7a}
+      \strng{fullhash}{c9bdec1aa244d2d274ba0f31e9d21a03}
+      \strng{bibnamehash}{7a5e1ce4e07caec391b72ba1a13b7f7a}
+      \strng{authorbibnamehash}{7a5e1ce4e07caec391b72ba1a13b7f7a}
+      \strng{authornamehash}{7a5e1ce4e07caec391b72ba1a13b7f7a}
+      \strng{authorfullhash}{c9bdec1aa244d2d274ba0f31e9d21a03}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We conduct hydrodynamical MOND simulations of isolated disc galaxies over the stellar mass range M{$\star$}/M{$\odot$} = 107-1011 using the adaptive mesh refinement code PHANTOM OF RAMSES (POR), an adaptation of the RAMSES code with a Milgromian gravity solver. The scale lengths and gas fractions are based on observed galaxies, and the simulations are run for 5 Gyr. The main aim is to see whether the existing sub-grid physics prescriptions for star formation and stellar feedback reproduce the observed main sequence and reasonably match the Kennicutt-Schmidt relation, which captures how the local and global star formation rates relate to other properties. Star formation in the models starts soon after initialization and continues as the models evolve. The initialized galaxies indeed evolve to a state which is on the observed main sequence and the Kennicutt-Schmidt relation. The available formulation of sub-grid physics is therefore adequate and leads to galaxies that largely behave like observed galaxies, grow in radius, and have flat rotation curves - provided we use Milgromian gravitation. Furthermore, the strength of the bars tends to be inversely correlated with the stellar mass of the galaxy, whereas the bar length strongly correlates with the stellar mass. Irrespective of the mass, the bar pattern speed stays constant with time, indicating that dynamical friction does not affect the bar dynamics. The models demonstrate Renzo's rule and form structures at large radii, much as in real galaxies. In this framework, baryonic physics is thus sufficiently understood to not pose major uncertainties in our modelling of global galaxy properties.}
+      \field{annotation}{ADS Bibcode: 2023MNRAS.519.5128N}
+      \field{issn}{0035-8711}
+      \field{journaltitle}{Monthly Notices of the Royal Astronomical Society}
+      \field{month}{3}
+      \field{title}{Simulations of Star-Forming Main-Sequence Galaxies in {{Milgromian}} Gravity}
+      \field{urlday}{13}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{519}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+      \field{pages}{5128\bibrangedash 5148}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1093/mnras/stac3645
+      \endverb
+      \verb{file}
+      \verb files/3/Nagesh et al. - 2023 - Simulations of star-forming main-sequence galaxies.pdf
+      \endverb
+      \keyw{Astrophysics - Astrophysics of Galaxies,galaxies: general,galaxies: star formation,galaxies: structure,gravitation,hydrodynamics,methods: numerical}
+    \endentry
+    \entry{pflamm-altenburgFundamentalGasDepletion2009}{article}{}
+      \name{author}{2}{}{%
+        {{hash=23460999d4a058980653e85b0541f93a}{%
+           family={{Pflamm-Altenburg}},
+           familyi={P\bibinitperiod},
+           given={Jan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=4faf2fa8d19f1c9924866dac1e294fb9}{%
+           family={Kroupa},
+           familyi={K\bibinitperiod},
+           given={Pavel},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{e2f4909647bd2be9ae8374bd00fd5353}
+      \strng{fullhash}{e2f4909647bd2be9ae8374bd00fd5353}
+      \strng{bibnamehash}{e2f4909647bd2be9ae8374bd00fd5353}
+      \strng{authorbibnamehash}{e2f4909647bd2be9ae8374bd00fd5353}
+      \strng{authornamehash}{e2f4909647bd2be9ae8374bd00fd5353}
+      \strng{authorfullhash}{e2f4909647bd2be9ae8374bd00fd5353}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Stars do not form continuously distributed over star forming galaxies. They form in star clusters of different masses. This nature of clustered star formation is taken into account in the theory of the integrated galactic stellar initial mass function (IGIMF) in which the galaxy-wide IMF (the IGIMF) is calculated by adding all IMFs of young star clusters. For massive stars the IGIMF is steeper than the universal IMF in star clusters and steepens with decreasing SFR which is called the IGIMF-effect. The current SFR and the total H{$\alpha$} luminosity of galaxies therefore scale non-linearly in the IGIMF theory compared to the classical case in which the galaxy-wide IMF is assumed to be constant and identical to the IMF in star clusters. We here apply for the first time the revised SFR-LH{$\alpha$} relation on a sample of local volume star forming galaxies with measured H{$\alpha$} luminosities. The fundamental results are: i) the SFRs of galaxies scale linearly with the total galaxy neutral gas mass, ii) the gas depletion time scales of dwarf irregular and large disk galaxies are about 3 Gyr implying that dwarf galaxies do not have lower star formation efficiencies than large disk galaxies, and iii) the stellar mass buildup times of dwarf and large galaxies are only in agreement with downsizing in the IGIMF context, but contradict downsizing within the traditional framework that assumes a constant galaxy-wide IMF.}
+      \field{eprintclass}{astro-ph}
+      \field{eprinttype}{arxiv}
+      \field{issn}{0004-637X, 1538-4357}
+      \field{journaltitle}{ApJ}
+      \field{langid}{english}
+      \field{month}{11}
+      \field{note}{Comment: accepted for publication in ApJ}
+      \field{number}{1}
+      \field{title}{The Fundamental Gas Depletion and Stellar-Mass Buildup Times of Star Forming Galaxies}
+      \field{urlday}{22}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{706}
+      \field{year}{2009}
+      \field{urldateera}{ce}
+      \field{pages}{516\bibrangedash 524}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1088/0004-637X/706/1/516
+      \endverb
+      \verb{eprint}
+      \verb 0910.1089
+      \endverb
+      \verb{file}
+      \verb files/25/Pflamm-Altenburg and Kroupa - 2009 - The fundamental gas depletion and stellar-mass bui.pdf
+      \endverb
+      \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics}
+    \endentry
+  \enddatalist
+  \missing{fig:A_theor_A_exp_tau}
+  \missing{fig:A_theor_A_exp_tsf}
+\endrefsection
+\endinput
+
