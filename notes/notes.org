@@ -1,0 +1,101 @@
+#+title: Karachentsev List
+#+bibliography: "../My Library/My Library.bib"
+
+
+This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on 2023-06-30. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
+
+** Original data set
+
+The data I will use for this project come from the Karachentsev  catalog (2022-12-02), which is an updated version of the list used in Kroupa et al. 2020
+From the list I use the tables "Catalog of Nearby Galaxies", "Global Parameters of the Nearby Galaxies" and "List of the nearby galaxies with measured SFR"
+
+Because this files include text as well, I create a script to get rid of the text and only keep the data'
+
+#+begin_src shell
+FIRST_GALAXY="AGC102728"
+cd ../list
+rm new_*.dat
+for f in lvg*.dat
+         do
+             sed $f -e/$FIRST_GALAXY/\{ -e:1 -en\;b1 -e\} -ed > "new_"$f
+         done
+#+end_src
+
+#+RESULTS:
+
+
+We also want to keep the labels
+
+#+begin_src shell
+ FIRST_GALAXY="AGC102728"
+ cd ../list
+ rm label_*.dat
+ for f in lvg*.dat
+          do
+              sed '/Note/Q' $f > "label_"$f
+              sed "label_"$f -i -e/'Bytes'/\{ -e:1 -en\;b1 -e\} -ed
+              sed '/--------/d' "label_"$f -i
+          done
+ #+end_src
+
+ #+RESULTS:
+
+Because we have a problem with the spaces I will create tabs between columns in *VIM* from the ~new_lvg*~ files to the ~newlist*~
+
+We will also use *VIM* to keep ONLY the labels
+
+*** TODO check to see if you can also keep the units from the files
+
+After we have created the labels and tables files we want to put create a row with the labels and add it to the tables file.
+
+#+begin_src shell :results output
+cd ../list
+for file in label_*.dat
+         do
+            f="new_"$file
+            cp $file $f
+            sed -i '/RAh/d' $f
+            sed -i '/RAm/d' $f
+            sed -i '/RAs/d' $f
+            sed -i '/DE-/d' $f
+            sed -i '/DEd/d' $f
+            sed -i '/DEm/d' $f
+            sed -i 's/DEs/time/g' $f
+            sed -i '/_/d' $f
+            sed -i -z 's/\n/,/g' $f
+         done
+sed -i ' 1 s/.*/& dis_flag/' new_label_lvg_table1.dat #because the flag gets deleted#+end_src
+#+RESULTS:
+
+#+begin_src shell
+cd ../list
+#For list 1
+sed 's/\t/,/g' newlist_table1.dat > list1.dat
+paste -sd'\n' new_label_lvg_table1.dat list1.dat> final_list1.dat
+sed -i 's/\s//g' final_list1.dat
+
+sed 's/\t/,/g' newlist_table2.dat > list2.dat
+paste -sd'\n' new_label_lvg_table2.dat list2.dat> final_list2.dat
+sed -i 's/\s//g' final_list2.dat
+
+
+sed 's/\t/,/g' newlist_table7.dat > list7.dat
+paste -sd'\n' new_label_lvg_table7.dat list7.dat> final_list7.dat
+sed -i 's/\s//g' final_list7.dat
+
+#+end_src
+
+#+RESULTS:
+
+Now we clear the directory:
+
+#+begin_src shell
+cd ../list
+
+rm new_lvg*
+rm label_*
+rm list*.dat
+rm new_label*
+#+end_src
+
+#+RESULTS:
