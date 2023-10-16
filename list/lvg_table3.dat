@@ -1030,6 +1030,9 @@ DDO046              14.40      B   2004AJ....127.2031K
 DDO046              19.01 0.17 Ha  2008ApJS..178..247K
 DDO046              12.20 0.50 Ks  2012LVG.Magnitude.K
 DDO046              14.46      HI  2011LVG.HI........K
+PGC21597            18.66 0.06 FUV 2012GASC..C...0000S
+PGC21597            16.70      B   2023LVG.Magnitude.K
+PGC21597            18.15 0.27 HI  2023AJ....165..263O
 DDO047              15.04 0.05 FUV 2011ApJS..192....6L
 DDO047              13.62 0.06 B   1999A&AS..139..491M
 DDO047              17.79 0.13 Ha  2010AJ....140.1241K
@@ -1105,6 +1108,7 @@ NGC2552             12.69      B   2011LVG.Magnitude.K
 NGC2552             16.41 0.13 Ha  2008ApJS..178..247K
 NGC2552             10.00 0.50 Ks  2012LVG.Magnitude.K
 NGC2552             14.11      HI  2011LVG.HI........K
+ESO006-001          15.41 0.15 B   2023ApJ...943..139M
 ESO006-001          12.97 0.18 Ks  2006AJ....131.1163S
 ESO006-001         >18.20      HI  2011LVG.HI........K
 ESO495-008          16.06      B   2011LVG.Magnitude.K
@@ -1245,7 +1249,7 @@ DDO056              16.13      HI  2011LVG.HI........K
 KSP-DW13           >23.00      FUV 2011GALEX.........0
 KSP-DW13            18.46      B   2017ApJ...848...19P
 Dw0910+7326        >23.50      FUV 2011GALEX.........0
-Dw0910+7326         17.00      B   2022AstBu..77..372K
+Dw0910+7326         15.96 0.06 B   2023MNRAS.520.4715C
 KSP-DW14           >23.00      FUV 2011GALEX.........0
 KSP-DW14            18.44      B   2017ApJ...848...19P
 Dw0910+6942        >23.50      FUV 2011GALEX.........0
@@ -1379,7 +1383,7 @@ NGC2915             12.38      HI  2011LVG.HI........K
 Dw0927+6818         19.60      B   2022AstBu..77..372K
 UGC05047            16.00      B   2012LVG.Magnitude.K
 UGC05047            20.92 0.07 Ha  2014AstBu..69..390K
-UGC05047            17.01      HI  2012LVG.HI........K
+UGC05047            17.40 0.20 HI  2023AJ....165..263O
 dw0929+2213         20.95      B   2022ApJ...933...47C
 KDG056              19.56 0.10 FUV 2012LVG.Magnitude.K
 KDG056              16.99      B   2022ApJ...933...47C
@@ -1520,7 +1524,7 @@ BK3N                18.78 0.06 B   1999A&AS..139..491M
 BK3N                25.17 0.55 Ha  2007AJ....133.1883K
 BK3N                15.70      HI  2001ApJ...560L.127B
 M81-dw J0954+6821  >23.50      FUV 2011GALEX.........0
-M81-dw J0954+6821   21.60      B   2023AA....tmp....1K
+M81-dw J0954+6821   21.60      B   2023A&A...678A..16K
 LV J0954+3620       19.82 0.15 FUV 2012LVG.Magnitude.K
 LV J0954+3620       17.93      B   2011LVG.Magnitude.K
 LV J0954+3620       18.78      HI  2011LVG.HI........K
@@ -1581,6 +1585,7 @@ HolmIX              19.04 0.35 Ha  2008ApJS..178..247K
 HolmIX              12.63      HI  2011LVG.HI........K
 PGC28789            17.43      FUV 2011GALEX.........0
 PGC28789            15.97 0.01 B   2015ApJS..219...12A
+PGC28789            15.84 0.07 HI  2023AJ....165..263O
 Dw0958-0834         19.60      B   2022AJ....163..234K
 AGC718245           18.89 0.08 FUV 2016LVG.Magnitude.K
 AGC718245           16.80      B   2016LVG.Magnitude.K
@@ -1991,6 +1996,7 @@ NGC3368             10.11      B   1991RC3.9.C...0000d
 NGC3368             15.03 0.15 Ha  2008ApJS..178..247K
 NGC3368              6.32 0.02 Ks  2012ApJS..199...26H
 NGC3368             12.98      HI  2011LVG.HI........K
+dw1046+1244         22.60      B   2023LVG.Magnitude.K
 LeG18               23.15 0.18 FUV 2012LVG.Magnitude.K
 LeG18               18.22      B   2022ApJ...933...47C
 LeG18               18.05      HI  2011LVG.HI........K
@@ -3862,7 +3868,7 @@ CenA-MM-Dw9        >17.40      HI  2015LVG.HIPASS....K
 [KK98]206           14.87      B   2022AstBu..77..372K
 [KK98]206           15.42      HI  2000A&AS..141..469H
 KK207               20.68      FUV 2011GALEX.........0
-KK207               18.70      B   2023AA....tmp....1K
+KK207               18.70      B   2023A&A...678A..16K
 CenA-MM-Dw8        >23.00      FUV 2012GASC..C...0000S
 CenA-MM-Dw8         17.86      B   2022ApJ...933...47C
 CenA-MM-Dw8        >17.40      HI  2015LVG.HIPASS....K
@@ -3982,7 +3988,7 @@ dw1341-43           17.51      B   2022ApJ...933...47C
 dw1341-43          >17.00      HI  2016LVG.HI........K
 [KK2000] 57         17.50      B   2017A&A...597A...7M
 [KK2000] 57        >17.80      HI  2011LVG.HI........K
-Dw1341+4204         20.04 0.08 B   2023AA....tmp....1K
+Dw1341+4204         20.04 0.08 B   2023A&A...678A..16K
 KK211              >23.00      FUV 2012LVG.Magnitude.K
 KK211               16.32 0.10 B   2000AJ....119..593J
 KK211              >25.37      Ha  2009AJ....137.3038B
@@ -4022,7 +4028,7 @@ KK218              >20.90      HI  2011LVG.HI........K
 [KK2000] 59         14.20      B   2004AJ....127.2031K
 [KK2000] 59         11.50 0.50 Ks  2012LVG.Magnitude.K
 [KK2000] 59         13.18 0.06 HI  2012MNRAS.420.2924K
-Dw1348+6004         19.92 0.08 B   2023AA....tmp....1K
+Dw1348+6004         19.92 0.08 B   2023A&A...678A..16K
 CenN                17.50      B   2004AJ....127.2031K
 CenN               >17.80      HI  2011LVG.HI........K
 HIPASS J1348-37     17.60      B   2011LVG.Magnitude.K
@@ -4044,7 +4050,7 @@ dw1350+5441         17.56      B   2022ApJ...933...47C
 HIPASS J1351-47     17.50      B   2004AJ....127.2031K
 HIPASS J1351-47     14.60 0.50 Ks  2012LVG.Magnitude.K
 HIPASS J1351-47     16.06      HI  2011LVG.HI........K
-Dw1351+5014         21.00      B   2023AA....tmp....1K
+Dw1351+5014         21.00      B   2023A&A...678A..16K
 HIZOA J1353-58      15.84 0.21 HI  2016AJ....151...52S
 KDG229              23.62 0.62 FUV 2012LVG.Magnitude.K
 KDG229              16.50      B   2011LVG.Magnitude.K
@@ -4084,7 +4090,7 @@ UGC08882            21.60 0.14 FUV 2012LVG.Magnitude.K
 UGC08882            15.42      B   2022ApJ...933...47C
 UGC08882            23.97 0.48 Ha  2008A&A...479..603K
 UGC08882            13.72      Ks  2000PASP..112.1008J
-Dw1358+5255         20.50      B   2023AA....tmp....1K
+Dw1358+5255         20.50      B   2023A&A...678A..16K
 BootesII            22.45 0.79 FUV 2012LVG.Magnitude.K
 BootesII            16.32 0.90 B   2008ApJ...684.1075M
 BootesII           >19.89      HI  2014ApJ...795L...5S
@@ -4164,7 +4170,7 @@ M101dwB             18.48 0.11 HI  2020AJ....159...37K
 dw1409-33          >23.00      FUV 2016LVG.Magnitude.K
 dw1409-33           18.87      B   2017A&A...597A...7M
 dw1409-33          >17.00      HI  2016LVG.HI........K
-Dw1409+5113         18.20      B   2023AA....tmp....1K
+Dw1409+5113         18.20      B   2023A&A...678A..16K
 M101Dw11           >23.00      FUV 2011GALEX.........0
 M101Dw11            21.00      B   2017ApJ...850..109B
 dw1410-34          >23.00      FUV 2016LVG.Magnitude.K
