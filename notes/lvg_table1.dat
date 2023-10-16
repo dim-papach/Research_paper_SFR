@@ -1,3 +1,114 @@
+Title: Catalog&Atlas of the LV galaxies (LVG)
+Table: Catalog of nearby galaxies
+================================================================================
+Byte-by-byte Description of file: lvg_table1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units  Label  Explanations
+--------------------------------------------------------------------------------
+   1- 18 A18    ---    Name   Galaxy name in well-known catalogs
+  20- 21 I2     h      RAh    Hour of Right Ascension (J2000)
+  22- 23 I2     min    RAm    Minute of Right Ascension (J2000)
+  24- 27 F4.1   s      RAs    Second of Right Ascension (J2000)
+      28 A1     ---    DE-    Sign of the Declination (J2000)
+  29- 30 I2     deg    DEd    Degree of Declination (J2000)
+  31- 32 I2     arcmin DEm    Arcminute of Declination (J2000)
+  33- 34 I2     arcsec DEs    Arcsecond of Declination (J2000)
+  36- 41 F6.2   arcmin a26    ? Major angular diameter (1)
+  43- 46 F4.2   ---    b/a    ? Apparent axial ratio (1)
+  48- 51 F4.2   mag    AB     ? Galactic extinction in B band (2)
+      53 A1     ---  l_FUVmag Limit flag on FUVmag
+  54- 58 F5.2   mag    FUVmag ? GALEX FUV band magnitude (3)
+  60- 64 F5.2   mag    Bmag   ? Integral B band magnitude (4)
+      66 A1     ---  l_Hamag  Limit flag on Hamag
+  67- 71 F5.2   mag    Hamag  ? Integral H{alpha} line emission magnitude (5)
+  73- 77 F5.2   mag    Kmag   ? 2MASS K_S_ band magnitude (6)
+      78 A1     ---  f_Kmag   [*] Flag on Kmag (7)
+      81 A1     ---  l_21mag  Limit flag on 21mag
+  82- 86 F5.2   mag    21mag  ? H I 21 cm line magnitude (8)
+  88- 90 I3     km/s   W50    ? H I line with at 50% level from maximum (9)
+  92- 93 I2     ---    TType  ? Morphology type code (10)
+  95- 99 A5     ---    Tdw1   Dwarf galaxy morphology (11)
+     101 A1     ---    Tdw2   Dwarf galaxy surface brightness morphology (12)
+ 103-106 I4     km/s   RVel   ? Heliocentric radial velocity (13)
+ 108-112 F5.2   Mpc    Dis    Distance
+ 114-117 A4     ---  f_Dis    Method flag used to obtain Dis (14)
+--------------------------------------------------------------------------------
+Note (1): Corresponding to the Holmberg isophote (~ 26.5 mag/arcsec^2^) 
+          in B band.  See text Section 3 for additional details.
+Note (2): According to Schlegel et al. (1998).
+Note (3): According to data on the UV-survey performed at the Galaxy Evolution 
+          Explorer (GALEX; Martin et al. 2005, Gil de Paz et al. 2007). For 
+          295 galaxies the asymptotic mFUV magnitudes were taken from 
+          Lee et al. (2011) and are presented in Table 3 without correction 
+          for Galactic extinction. For other galaxies, the GALEX data on the 
+          FUV-fluxes and FUV-magnitudes were extracted from the 
+          NASA Extragalactic Database (NED), summing fluxes from all structural
+          knots within the optical galaxy image.
+Note (4): Sources of which are listed in the LV database as well as in Table 3.
+          If a galaxy lacks the photometric Bmag, its apparent magnitude was 
+          estimated by eye comparing with images of other galaxies of similar 
+          structure with measured Bmag. In such cases, as a rule for objects of
+          low surface brightness, a typical error of BT estimate amounts 
+          to ~ 0.5 mag.
+Note (5): As seen in the Cousins R- band. Following the approach by 
+          Fukugita et al. (1995), we determined it as
+          Hamag = -2.5 log(FHa) - 13.64 where FHa is the integral flux in the 
+          H{alpha} line in units of [erg/cm^2^/sec].  See Section 3 
+          for additional details.
+Note (6): The source of Ks data is the 2MASS Sky Survey (Jarrett et al. 2000, 
+          2003) supplemented by photometric measurements from 
+          (Fingerhut et al. 2010, Vaduvescu et al. 2005, 2006). At the lack of 
+          accurate photometry, K-magnitudes were estimated by apparent 
+          magnitudes in the optical (B, V, R, I) or near-infrared (J, H) bands 
+          using synthetic color indices of galaxies from Buzzoni (2005) and 
+          Fukugita et al. (1995).
+Note (7): 
+    * = Galaxy has only a B magnitude and thus its K magnitude was determined 
+        by a relation between the average color index < B - K > and 
+        morphological type (Jarrett et al. 2003): < B - K >= 4.10 for 
+        early-types E, S0, Sa; <B-K> = 2.35 for late-types Sm, BCD, Ir; and
+        <B-K> = 4.60-0.25.T for intermediate types T = 3 - 8 by 
+        de Vaucouleurs scale.
+Note (8): Where 21mag = 17.4-2.5logFHI, where the integral H I-flux, FHI, is 
+          expressed in [Jy.km/s]. References to data sources on FHI are listed 
+          in the Table 3 and in the LV database.
+Note (9): The main source of W50 data was LEDA, as well as the HIPASS and 
+          ALFALFA surveys. The references to individual W50 measurements are 
+          presented in Table 5 and the LV database.
+Note (10): According to the classification by de Vaucouleurs et al. (1991).
+           See Section 3 for additional details.
+Note (11): Ir, Im, BCD - blue; Tr, dS0em, dEem - mixed; and Sph, dE - red.
+Note (12): See Section 3 for additional details.
+    H = high;
+    N = normal;
+    L = low;
+    X = extremely low.
+Note (13): References to them are given in Table 4. As a rule, we selected 
+           value of RVel having the smallest measurement error.
+Note (14): References to the distance estimation are presented in Table 6.
+    TRGB = by the tip of the red giant branch; 
+     Cep = from the Cepheid luminosity; 
+    geom = by a geometric determination of the distance; 
+      SN = from the Supernova luminosity; 
+     SBF = from galaxy surface brightness fluctuations; 
+     mem = from galaxy membership in known groups with measured distances of 
+           other members; 
+  TF, FP = by the Tully-Fisher relation or by the fundamental plane; 
+      BS = by luminosity of the brightest stars; 
+     CMD = by the color magnitude diagram using some prominent features or 
+           simultaneous distance and stellar population fitting; 
+      HB = by the horizontal branch; 
+      RR = from the luminosity of RR Lyrae stars; 
+    PNLF = by the planetary nebula luminosity function; 
+   h, h# = by the Hubble velocity-distance relation at H0 = 73 km/s/Mpc, not 
+           accounting for (h) or in view of (h#) a certain Virgocentric flow 
+           model. 
+     txt = One of a small number of dwarf galaxies (N = 11), which are missing 
+           the measurements of both optical and HI velocities due to their low 
+           surface brightness and HI deficiency. The texture of these objects 
+           indicates their likely proximity, which can be verified by future 
+           observations with HST.
+--------------------------------------------------------------------------------
 AGC102728          000021.4+310119   0.20 0.58 0.17  20.40  20.2         17.7*   18.70  21 10    Ir L  566 12.42 TRGB
 UGC12894           000022.5+392944   1.02 0.87 0.47  17.60  16.8  19.40  14.0*   15.70  34 10    Ir L  335  9.05 TRGB
 PGC000083          000106.5+322241   0.74 0.29 0.19 >23.00  17.7         15.2*   17.00  32 10    Ir L  542  9.29  BTF
@@ -594,6 +705,7 @@ KK93               104624.8+140130   0.58 0.94 0.13 >23.00  18.0         13.8*  
 LeG16              104630.0+114521   0.29 0.98 0.11 >23.00  18.4         14.2*             -2    Tr L      11.02  SBF
 LeG17              104641.5+121935   0.58 0.78 0.10         17.0         12.8*   17.20  37 -1   Sph N 1030 10.99  SBF
 NGC3368            104645.8+114911   8.91 0.68 0.11  14.20  10.1  15.00   6.3    13.00 343  3          893 10.42  Cep
+dw10461244         104646.0+124459             0.08                          *                                       
 LeG18              104653.3+124440   0.80 0.75 0.10  23.20  18.2         15.8*   18.10  38 10    Tr L  636 10.19 TRGB
 LeG19              104654.8+124717   0.37 0.70 0.10 >23.30  18.8 >24.70  14.6*             -1   Sph L      11.68  SBF
 KK94               104657.3+125954   0.58 0.85 0.13  23.10  17.5         15.0*   16.70  35 10    Tr L  832 10.19 TRGB
@@ -981,7 +1093,7 @@ Dw1241+4103        124101.0+410311   0.33 0.76 0.07  23.80  19.1         16.7*  
 dw1241-1131        124102.8-113144   0.30 1.00 0.17 >23.00  20.2         16.0*             -2   Sph L       7.25  SBF
 Sombrero DwB       124112.0-115333   0.44 0.90 0.23 >23.00  18.8         14.5*  >18.20     -3   Sph L      11.19  SBF
 KKSG34             124118.9-115539   0.69 0.88 0.23 >23.00  18.0         13.7*  >18.20     -3   Sph L       9.02  SBF
-Dw1241-0427        124122.3+042750   0.83 0.90 0.10         19.7         15.5*             -2   Sph L      10.10  mem
+Dw1241-0427        124122.3-042750   0.83 0.90 0.10         19.7         15.5*             -2   Sph L      10.10  mem
 dw1241-32          124127.0-425345   0.38 0.69 0.32 >23.00  19.5         15.1*  >17.00     -1   Sph L       3.60  mem
 NGC4618            124132.8+410903   4.17 0.76 0.10  13.00  11.3  14.80   8.7    13.10  90  6          536  7.66 TRGB
 AGC224291          124139.2+015017   0.50 0.71 0.08  18.80  16.2         13.8*   18.00  24  9   Im  N 1528  8.28   TF
