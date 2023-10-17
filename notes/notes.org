@@ -1,6 +1,6 @@
 #+title: Karachentsev List notes
 #+bibliography: "../My Library/My Library.bib"
-#+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py
+#+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results output drawer :session main
 
 This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on 2023-06-30. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
 
@@ -9,39 +9,76 @@ This list contains measurements from the galaxies in the Local Cosmological Volu
 The data I will use for this project come from the Karachentsev  catalog (2022-12-02), which is an updated version of the list used in Kroupa et al. 2020
 From the list I use the tables "Catalog of Nearby Galaxies", "Global Parameters of the Nearby Galaxies" and "List of the nearby galaxies with measured SFR"
 
-#+begin_src python :results output
+#+begin_src python :results value
 
 import numpy as np
 from astropy.io import ascii
 from astropy.coordinates import SkyCoord, ICRS, Galactic, FK4, FK5, Angle
-import astropy.table as Table
+from astropy.table import Table, QTable, join, hstack, unique, Column
+from astropy.time import Time
 import astropy.units as u
 from astropy.utils.diff import report_diff_values
-from tabulate import tabulate
+
+file_pattern = "../list/lvg_table*.dat"
+
+# Use glob to find all matching files
+file_paths = glob.glob(file_pattern)
+
+comb_data = None  # Initialize an empty table
+
+for file_path in file_paths:
+    data = QTable(ascii.read(file_path, format="mrt"))
+    if comb_data is None:
+        # Set the first data as comb_data if it's None
+        comb_data = data
+    else:
+        # Join subsequent data with comb_data based on 'Name'
+        comb_data = QTable(join(comb_data, data, keys="Name", join_type="outer" ))
+
+comb_data.info()
+#+end_src
+
+#+RESULTS:
+: None
 
 
+#+begin_src python
 
-table1 = ascii.read("../list/lvg_table1.dat", format = "mrt")
-table2 = ascii.read("../list/lvg_table2.dat", format = "mrt")
-table3 = ascii.read("../list/lvg_table3.dat", format = "mrt")
-table4 = ascii.read("../list/lvg_table4.dat", format = "mrt")
-table5 = ascii.read("../list/lvg_table5.dat", format = "mrt")
-table6 = ascii.read("../list/lvg_table6.dat", format = "mrt")
-table7 = ascii.read("../list/lvg_table7.dat", format = "mrt")
 
-# List of tables to be joined
-tables = [table1, table2, table3, table4, table5, table6, table7]  # Add your other tables to this list
+for table in file_paths:
+    data = ascii.read(table)
+    comb_data_1 = comb_data_1.add_column(data)
+
 
 #+end_src
 
 #+RESULTS:
 
+* IDEA
+if WARNING then compare
+    if same then merge
+        elif change units
+        else different columns
 
-*** IDEA I want to merge the coordinate columns into one
+#+begin_src python
+t = Table()
+t['index'] = [1, 2]
+t['time'] = Time(['2001-01-02T12:34:56', '2001-02-03T00:01:02'])
+t['velocity'] = [3, 4] * u.km / u.s
+
+qt = QTable(t)
+(qt["velocity"]**2).unit
+
+#+end_src
+
+#+RESULTS:
+: km2 / s2
+
+
 
 ** Join the tables
 
-#+begin_src python :results verbatim
+#+begin_src python
 
 # Find common columns among all tables
 common_columns = set(tables[0].colnames)
@@ -56,8 +93,12 @@ dt = tables[0]
 for column in common_columns:
     dt = Table.join(dt, tables[1], keys=column, join_type = "outer")
 
-# Print the table in Markdown format
+dt.info()
 
 #+end_src
 
 #+RESULTS:
+: None
+
+** IDEA mapping with Color, type of galaxy, SFR, Velocity
+** [?] What is the W50 velocity
