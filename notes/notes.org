@@ -9,96 +9,137 @@ This list contains measurements from the galaxies in the Local Cosmological Volu
 The data I will use for this project come from the Karachentsev  catalog (2022-12-02), which is an updated version of the list used in Kroupa et al. 2020
 From the list I use the tables "Catalog of Nearby Galaxies", "Global Parameters of the Nearby Galaxies" and "List of the nearby galaxies with measured SFR"
 
-#+begin_src python :results value
+#+begin_src python
 
 import numpy as np
 from astropy.io import ascii
 from astropy.coordinates import SkyCoord, ICRS, Galactic, FK4, FK5, Angle
-from astropy.table import Table, QTable, join, hstack, unique, Column
+from astropy.table import Table, QTable, join, hstack, unique, Column, MaskedColumn
 from astropy.time import Time
 import astropy.units as u
 from astropy.utils.diff import report_diff_values
+import glob as glob
 
 file_pattern = "../list/lvg_table*.dat"
 
 # Use glob to find all matching files
-file_paths = glob.glob(file_pattern)
+file_paths = sorted(glob.glob(file_pattern))
 
 comb_data = None  # Initialize an empty table
 
+dq = []  # Create an empty list to store QTables
+
 for file_path in file_paths:
-    data = QTable(ascii.read(file_path, format="mrt"))
-    if comb_data is None:
-        # Set the first data as comb_data if it's None
-        comb_data = data
-    else:
-        # Join subsequent data with comb_data based on 'Name'
-        comb_data = QTable(join(comb_data, data, keys="Name", join_type="outer" ))
-
-comb_data.info()
+    table = QTable(ascii.read(file_path, format="mrt"))
+    dq.append(table)
+dq[1].info()
 #+end_src
 
 #+RESULTS:
-: None
-
+:results:
+[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+<QTable length=1436>
+  name    dtype       unit                  description                  class      n_bad
+-------- ------- ------------- ------------------------------------- -------------- -----
+    Name   str18                  Galaxy name in well-known catalogs         Column     0
+     RAh float64             h       Hour of Right Ascension (J2000)       Quantity     0
+     RAm float64           min     Minute of Right Ascension (J2000)       Quantity     0
+     RAs float64             s     Second of Right Ascension (J2000)       Quantity     0
+     DE-    str1                     Sign of the Declination (J2000)         Column     0
+     DEd float64           deg         Degree of Declination (J2000)       Quantity     0
+     DEm float64        arcmin      Arcminute of Declination (J2000)       Quantity     0
+     DEs float64        arcsec      Arcsecond of Declination (J2000)       Quantity     0
+     a26 float64           kpc             Major linear diameter (1) MaskedQuantity    11
+     inc float64           deg                           Inclination MaskedQuantity    11
+      Vm float64        km / s  Amplitude of rotational velocity (2) MaskedQuantity   635
+      AB float64           mag        Internal B band extinction (3) MaskedQuantity    11
+    BMag float64           mag         Absolute B band magnitude (4) MaskedQuantity     8
+     SBB float64 mag / arcsec2 Average B band surface brightness (5) MaskedQuantity    11
+ logKLum float64     dex(Lsun)          Log K_S_ band luminosity (6)   MaskedColumn    10
+  logM26 float64     dex(Msun)   Log mass within Holmberg radius (7)   MaskedColumn   634
+l_logMHI    str1                                Limit flag on logMHI   MaskedColumn  1226
+  logMHI float64     dex(Msun)                 Log hydrogen mass (8)   MaskedColumn   494
+     VLG float64        km / s                   Radial velocity (9) MaskedQuantity   454
+  Theta1 float64                                    Tidal index (10)   MaskedColumn    76
+      MD   str19                            Main disturber name (11)   MaskedColumn    76
+  Theta5 float64                            Another tidal index (12)   MaskedColumn    76
+  Thetaj float64      dex(---)    Log K band luminosity density (13) MaskedQuantity   180
+:end:
 
 #+begin_src python
-
-
-for table in file_paths:
-    data = ascii.read(table)
-    comb_data_1 = comb_data_1.add_column(data)
-
+pa = QTable(join(dq[0],dq[1], keys = "Name", join_type = "outer", uniq_col_name ='{col_name}'))
+print(pa.info)
 
 #+end_src
 
 #+RESULTS:
-
-* IDEA
-if WARNING then compare
-    if same then merge
-        elif change units
-        else different columns
+:results:
+:end:
 
 #+begin_src python
-t = Table()
-t['index'] = [1, 2]
-t['time'] = Time(['2001-01-02T12:34:56', '2001-02-03T00:01:02'])
-t['velocity'] = [3, 4] * u.km / u.s
+ftab = dq[0]
 
-qt = QTable(t)
-(qt["velocity"]**2).unit
-
+for tab in dt:
+    ftab = join(ftab,tab, keys = "Name", join_type = "outer", uniq_col_name ='{col_name}')
 #+end_src
 
 #+RESULTS:
-: km2 / s2
-
-
-
-** Join the tables
+:results:
+:end:
 
 #+begin_src python
-
-# Find common columns among all tables
-common_columns = set(tables[0].colnames)
-
-for table in tables[1:]:
-    common_columns.intersection_update(table.colnames)
-
-# Initialize the result_table with the first table
-dt = tables[0]
-
-# Loop through the common columns and join tables
-for column in common_columns:
-    dt = Table.join(dt, tables[1], keys=column, join_type = "outer")
-
-dt.info()
-
+dt = ftab
+print(dt.info)
 #+end_src
 
 #+RESULTS:
-: None
+:results:
+<Table length=1436>
+  name    dtype   unit                    description                      class     n_bad
+-------- ------- ------ ----------------------------------------------- ------------ -----
+    Name   str18                     Galaxy name in well-known catalogs       Column     0
+     RAh   int64      h                 Hour of Right Ascension (J2000)       Column     0
+     RAm   int64    min               Minute of Right Ascension (J2000)       Column     0
+     RAs float64      s               Second of Right Ascension (J2000)       Column     0
+     DE-    str1                        Sign of the Declination (J2000)       Column     0
+     DEd   int64    deg                   Degree of Declination (J2000)       Column     0
+     DEm   int64 arcmin                Arcminute of Declination (J2000)       Column     0
+     DEs   int64 arcsec                Arcsecond of Declination (J2000)       Column     0
+     a26 float64 arcmin                      Major angular diameter (1) MaskedColumn    11
+     b/a float64                               Apparent axial ratio (1) MaskedColumn    11
+      AB float64    mag               Galactic extinction in B band (2) MaskedColumn     1
+l_FUVmag    str1                                   Limit flag on FUVmag MaskedColumn  1104
+  FUVmag float64    mag                    GALEX FUV band magnitude (3) MaskedColumn   311
+    Bmag float64    mag                   Integral B band magnitude (4) MaskedColumn     8
+ l_Hamag    str1                                    Limit flag on Hamag MaskedColumn  1306
+   Hamag float64    mag   Integral H{alpha} line emission magnitude (5) MaskedColumn   700
+    Kmag float64    mag                   2MASS K_S_ band magnitude (6) MaskedColumn    11
+  f_Kmag    str1                                   [*] Flag on Kmag (7) MaskedColumn   362
+ l_21mag    str1                                    Limit flag on 21mag MaskedColumn  1226
+   21mag float64    mag                    H I 21 cm line magnitude (8) MaskedColumn   494
+     W50   int64 km / s     H I line with at 50% level from maximum (9) MaskedColumn   623
+   TType   int64                              Morphology type code (10) MaskedColumn     4
+    Tdw1    str5                           Dwarf galaxy morphology (11) MaskedColumn   233
+    Tdw2    str1        Dwarf galaxy surface brightness morphology (12) MaskedColumn   250
+    RVel   int64 km / s               Heliocentric radial velocity (13) MaskedColumn   454
+     Dis float64    Mpc                                        Distance       Column     0
+   f_Dis    str4                    Method flag used to obtain Dis (14)       Column     0
+:end:
 
+
+astropy.table.np_utils.TableMergeError: Merging column names resulted in duplicates: ['RAh_1', 'RAm_1', 'RAs_1', 'DE-_1', 'DEd_1', 'DEm_1', 'DEs_1', 'RAh_2', 'RAm_2', 'RAs_2', 'DE-_2', 'DEd_2', 'DEm_2', 'DEs_2'].  Change uniq_col_name or table_names args to fix this.
 ** IDEA mapping with Color, type of galaxy, SFR, Velocity
+** IDEA machine learning
+*** Bands (FUV)
+*** missing SFR
+***
 ** [?] What is the W50 velocity
+
+
+
+astropy.table.np_utils.TableMergeError: Merging column names resulted in duplicates: ['RAh', 'RAm', 'RAs', 'DE-', 'DEd', 'DEm', 'DEs', 'a26', 'b/a', 'AB', 'l_FUVmag', 'FUVmag', 'Bmag', 'l_Hamag', 'Hamag', 'Kmag', 'f_Kmag', 'l_21mag', '21mag', 'W50', 'TType', 'Tdw1', 'Tdw2', 'RVel', 'Dis', 'f_Dis'].  Change uniq_col_name or table_names args to fix this.
