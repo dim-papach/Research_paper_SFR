@@ -87,17 +87,44 @@ for ind in indices[1:]:
     pain = ind
     n+=1
     dcolor.append(magn_table)
-
 colors = QTable(dcolor[0])
-for i in range(len(dcolor)):
-    colors = QTable(join(colors,dcolor[i],keys = "Name", join_type = "outer", unique_columns = True))
-    i=1+i
+
+for dcolor_item in dcolor[1:]:
+    colors = QTable(join(colors, dcolor_item, keys="Name", join_type="outer"))
 
 colors.info
 #+end_src
 
 #+RESULTS:
 :results:
+<QTable length=1436>
+   name    dtype  unit            description                 class      n_bad
+--------- ------- ---- ---------------------------------- -------------- -----
+     Name   str18      Galaxy name in well-known catalogs   MaskedColumn     0
+  l_mag_B    str1                       Limit flag on mag   MaskedColumn  1436
+    mag_B float64  mag   Apparent magnitude in Filter (1) MaskedQuantity     8
+  e_mag_B float64  mag                   Error in mag (2) MaskedQuantity  1244
+  r_mag_B   str19           Reference for mag observation   MaskedColumn     8
+ l_mag_FU    str1                       Limit flag on mag   MaskedColumn  1436
+   mag_FU float64  mag   Apparent magnitude in Filter (1) MaskedQuantity  1435
+ e_mag_FU float64  mag                   Error in mag (2) MaskedQuantity  1436
+ r_mag_FU   str19           Reference for mag observation   MaskedColumn  1435
+l_mag_FUV    str1                       Limit flag on mag   MaskedColumn  1104
+  mag_FUV float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   312
+e_mag_FUV float64  mag                   Error in mag (2) MaskedQuantity   732
+r_mag_FUV   str19           Reference for mag observation   MaskedColumn   312
+ l_mag_HI    str1                       Limit flag on mag   MaskedColumn  1226
+   mag_HI float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   493
+ e_mag_HI float64  mag                   Error in mag (2) MaskedQuantity  1290
+ r_mag_HI   str19           Reference for mag observation   MaskedColumn   493
+ l_mag_Ha    str1                       Limit flag on mag   MaskedColumn  1306
+   mag_Ha float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   700
+ e_mag_Ha float64  mag                   Error in mag (2) MaskedQuantity   762
+ r_mag_Ha   str19           Reference for mag observation   MaskedColumn   700
+ l_mag_Ks    str1                       Limit flag on mag   MaskedColumn  1436
+   mag_Ks float64  mag   Apparent magnitude in Filter (1) MaskedQuantity  1076
+ e_mag_Ks float64  mag                   Error in mag (2) MaskedQuantity  1090
+ r_mag_Ks   str19           Reference for mag observation   MaskedColumn  1076
 :end:
 
 
@@ -127,12 +154,6 @@ dt1.info()
 
 #+RESULTS:
 :results:
-[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
 <QTable length=1436>
   name    dtype       unit                       description                       class      n_bad
 -------- ------- ------------- ----------------------------------------------- -------------- -----
