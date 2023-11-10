@@ -2,7 +2,7 @@
 #+bibliography: "../My Library/My Library.bib"
 #+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results output drawer :session main
 
-This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on 2023-06-30. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
+This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on 2023-11-09. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
 
 * Original data set
 
@@ -97,34 +97,30 @@ colors.info
 
 #+RESULTS:
 :results:
-<QTable length=1436>
+<QTable length=1441>
    name    dtype  unit            description                 class      n_bad
 --------- ------- ---- ---------------------------------- -------------- -----
      Name   str18      Galaxy name in well-known catalogs   MaskedColumn     0
-  l_mag_B    str1                       Limit flag on mag   MaskedColumn  1436
-    mag_B float64  mag   Apparent magnitude in Filter (1) MaskedQuantity     8
-  e_mag_B float64  mag                   Error in mag (2) MaskedQuantity  1244
-  r_mag_B   str19           Reference for mag observation   MaskedColumn     8
- l_mag_FU    str1                       Limit flag on mag   MaskedColumn  1436
-   mag_FU float64  mag   Apparent magnitude in Filter (1) MaskedQuantity  1435
- e_mag_FU float64  mag                   Error in mag (2) MaskedQuantity  1436
- r_mag_FU   str19           Reference for mag observation   MaskedColumn  1435
-l_mag_FUV    str1                       Limit flag on mag   MaskedColumn  1104
-  mag_FUV float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   312
-e_mag_FUV float64  mag                   Error in mag (2) MaskedQuantity   732
-r_mag_FUV   str19           Reference for mag observation   MaskedColumn   312
- l_mag_HI    str1                       Limit flag on mag   MaskedColumn  1226
-   mag_HI float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   493
- e_mag_HI float64  mag                   Error in mag (2) MaskedQuantity  1290
- r_mag_HI   str19           Reference for mag observation   MaskedColumn   493
- l_mag_Ha    str1                       Limit flag on mag   MaskedColumn  1306
-   mag_Ha float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   700
- e_mag_Ha float64  mag                   Error in mag (2) MaskedQuantity   762
- r_mag_Ha   str19           Reference for mag observation   MaskedColumn   700
- l_mag_Ks    str1                       Limit flag on mag   MaskedColumn  1436
-   mag_Ks float64  mag   Apparent magnitude in Filter (1) MaskedQuantity  1076
- e_mag_Ks float64  mag                   Error in mag (2) MaskedQuantity  1090
- r_mag_Ks   str19           Reference for mag observation   MaskedColumn  1076
+  l_mag_B    str1                       Limit flag on mag   MaskedColumn  1441
+    mag_B float64  mag   Apparent magnitude in Filter (1) MaskedQuantity     9
+  e_mag_B float64  mag                   Error in mag (2) MaskedQuantity  1256
+  r_mag_B   str19           Reference for mag observation   MaskedColumn     9
+l_mag_FUV    str1                       Limit flag on mag   MaskedColumn  1109
+  mag_FUV float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   315
+e_mag_FUV float64  mag                   Error in mag (2) MaskedQuantity   737
+r_mag_FUV   str19           Reference for mag observation   MaskedColumn   315
+ l_mag_HI    str1                       Limit flag on mag   MaskedColumn  1231
+   mag_HI float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   496
+ e_mag_HI float64  mag                   Error in mag (2) MaskedQuantity  1293
+ r_mag_HI   str19           Reference for mag observation   MaskedColumn   496
+ l_mag_Ha    str1                       Limit flag on mag   MaskedColumn  1311
+   mag_Ha float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   705
+ e_mag_Ha float64  mag                   Error in mag (2) MaskedQuantity   767
+ r_mag_Ha   str19           Reference for mag observation   MaskedColumn   705
+ l_mag_Ks    str1                       Limit flag on mag   MaskedColumn  1441
+   mag_Ks float64  mag   Apparent magnitude in Filter (1) MaskedQuantity  1081
+ e_mag_Ks float64  mag                   Error in mag (2) MaskedQuantity  1095
+ r_mag_Ks   str19           Reference for mag observation   MaskedColumn  1081
 :end:
 
 
@@ -154,7 +150,13 @@ dt1.info()
 
 #+RESULTS:
 :results:
-<QTable length=1436>
+[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+<QTable length=1441>
   name    dtype       unit                       description                       class      n_bad
 -------- ------- ------------- ----------------------------------------------- -------------- -----
     Name   str18                            Galaxy name in well-known catalogs   MaskedColumn     0
@@ -165,40 +167,40 @@ dt1.info()
      DEd float64           deg                   Degree of Declination (J2000) MaskedQuantity     0
      DEm float64        arcmin                Arcminute of Declination (J2000) MaskedQuantity     0
      DEs float64        arcsec                Arcsecond of Declination (J2000) MaskedQuantity     0
-     a26 float64        arcmin                      Major angular diameter (1) MaskedQuantity    11
-     b/a float64                                      Apparent axial ratio (1)   MaskedColumn    11
+     a26 float64        arcmin                      Major angular diameter (1) MaskedQuantity    12
+     b/a float64                                      Apparent axial ratio (1)   MaskedColumn    12
       AB float64           mag               Galactic extinction in B band (2) MaskedQuantity     1
-l_FUVmag    str1                                          Limit flag on FUVmag   MaskedColumn  1104
-  FUVmag float64           mag                    GALEX FUV band magnitude (3) MaskedQuantity   311
-    Bmag float64           mag                   Integral B band magnitude (4) MaskedQuantity     8
- l_Hamag    str1                                           Limit flag on Hamag   MaskedColumn  1306
-   Hamag float64           mag   Integral H{alpha} line emission magnitude (5) MaskedQuantity   700
-    Kmag float64           mag                   2MASS K_S_ band magnitude (6) MaskedQuantity    11
+l_FUVmag    str1                                          Limit flag on FUVmag   MaskedColumn  1109
+  FUVmag float64           mag                    GALEX FUV band magnitude (3) MaskedQuantity   315
+    Bmag float64           mag                   Integral B band magnitude (4) MaskedQuantity     9
+ l_Hamag    str1                                           Limit flag on Hamag   MaskedColumn  1311
+   Hamag float64           mag   Integral H{alpha} line emission magnitude (5) MaskedQuantity   705
+    Kmag float64           mag                   2MASS K_S_ band magnitude (6) MaskedQuantity    12
   f_Kmag    str1                                          [*] Flag on Kmag (7)   MaskedColumn   362
- l_21mag    str1                                           Limit flag on 21mag   MaskedColumn  1226
-   21mag float64           mag                    H I 21 cm line magnitude (8) MaskedQuantity   494
-     W50 float64        km / s     H I line with at 50% level from maximum (9) MaskedQuantity   623
+ l_21mag    str1                                           Limit flag on 21mag   MaskedColumn  1230
+   21mag float64           mag                    H I 21 cm line magnitude (8) MaskedQuantity   496
+     W50 float64        km / s     H I line with at 50% level from maximum (9) MaskedQuantity   625
    TType   int64                                     Morphology type code (10)   MaskedColumn     4
     Tdw1    str5                                  Dwarf galaxy morphology (11)   MaskedColumn   233
     Tdw2    str1               Dwarf galaxy surface brightness morphology (12)   MaskedColumn   250
-    RVel float64        km / s               Heliocentric radial velocity (13) MaskedQuantity   454
+    RVel float64        km / s               Heliocentric radial velocity (13) MaskedQuantity   458
      Dis float64           Mpc                                        Distance MaskedQuantity     0
    f_Dis    str4                           Method flag used to obtain Dis (14)   MaskedColumn     0
-     A26 float64           kpc                       Major linear diameter (1) MaskedQuantity    11
-     inc float64           deg                                     Inclination MaskedQuantity    11
-      Vm float64        km / s            Amplitude of rotational velocity (2) MaskedQuantity   635
-  AB_int float64           mag                  Internal B band extinction (3) MaskedQuantity    11
-    BMag float64           mag                   Absolute B band magnitude (4) MaskedQuantity     8
-     SBB float64 mag / arcsec2           Average B band surface brightness (5) MaskedQuantity    11
- logKLum float64     dex(Lsun)                    Log K_S_ band luminosity (6)   MaskedColumn    10
-  logM26 float64     dex(Msun)             Log mass within Holmberg radius (7)   MaskedColumn   634
-l_logMHI    str1                                          Limit flag on logMHI   MaskedColumn  1226
-  logMHI float64     dex(Msun)                           Log hydrogen mass (8)   MaskedColumn   494
-     VLG float64        km / s                             Radial velocity (9) MaskedQuantity   454
-  Theta1 float64                                              Tidal index (10)   MaskedColumn    76
-      MD   str19                                      Main disturber name (11)   MaskedColumn    76
-  Theta5 float64                                      Another tidal index (12)   MaskedColumn    76
-  Thetaj float64      dex(---)              Log K band luminosity density (13) MaskedQuantity   180
+     A26 float64           kpc                       Major linear diameter (1) MaskedQuantity    12
+     inc float64           deg                                     Inclination MaskedQuantity    12
+      Vm float64        km / s            Amplitude of rotational velocity (2) MaskedQuantity   638
+  AB_int float64           mag                  Internal B band extinction (3) MaskedQuantity    12
+    BMag float64           mag                   Absolute B band magnitude (4) MaskedQuantity     9
+     SBB float64 mag / arcsec2           Average B band surface brightness (5) MaskedQuantity    12
+ logKLum float64     dex(Lsun)                    Log K_S_ band luminosity (6)   MaskedColumn    12
+  logM26 float64     dex(Msun)             Log mass within Holmberg radius (7)   MaskedColumn   637
+l_logMHI    str1                                          Limit flag on logMHI   MaskedColumn  1231
+  logMHI float64     dex(Msun)                           Log hydrogen mass (8)   MaskedColumn   496
+     VLG float64        km / s                             Radial velocity (9) MaskedQuantity   458
+  Theta1 float64                                              Tidal index (10)   MaskedColumn    81
+      MD   str19                                      Main disturber name (11)   MaskedColumn    81
+  Theta5 float64                                      Another tidal index (12)   MaskedColumn    81
+  Thetaj float64      dex(---)              Log K band luminosity density (13) MaskedQuantity   185
 :end:
 
 
