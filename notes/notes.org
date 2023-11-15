@@ -1,8 +1,36 @@
 #+title: Karachentsev List notes
+#+startup: preview
 #+bibliography: "../My Library/My Library.bib"
 #+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results output drawer :session main
 
-This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on 2023-11-09. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
+This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on 2023-11-14. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
+
+Because I have to download each tables seperately from the site, I use this script
+
+
+
+~wget --no-check-certificate -r -nH --cut-dirs=2 --accept="*.dat" --reject="*8.dat" -e robots=off -U mozilla https://www.sao.ru/lv/lvgdb/tables/~
+
+Let's break down the wget command and its various options:
+
++ --no-check-certificate: This option tells wget to not check SSL certificates. It's useful when dealing with websites that have self-signed or expired SSL certificates.
+
++ -r or --recursive: This option enables recursive downloading. It means that wget will follow links and download files from the specified URL as well as its subdirectories.
+
++ -nH or --no-host-directories: This option disables the creation of host directories. Without this option, wget would create a directory structure based on the hostname of the server.
+
++ --cut-dirs=2: This option instructs wget to ignore the first two directory components when creating the local directory structure. In this case, it helps to avoid creating unnecessary parent directories based on the server's directory structure.
+
++ --accept="*.dat": This option specifies the file types to accept during the download. In this case, only files with the extension ".dat" will be downloaded.
+
++ --reject="*8.dat": This option specifies the file types to reject during the download. Files with names containing "8.dat" will be excluded from the download.
+
++ -e robots=off: This option tells wget to ignore the robots.txt file, which is a file used by websites to communicate with web crawling and scraping bots about which parts of the site should not be crawled.
+
++ -U mozilla: This option sets the User-Agent header to "mozilla". The User-Agent header is used by the browser to identify itself to the server. In this case, it's set to mimic a Mozilla browser.
+
+Finally, the URL https://www.sao.ru/lv/lvgdb/tables/ is the starting point for the recursive download.
+
 
 * Original data set
 
@@ -22,7 +50,7 @@ from astropy.utils.diff import report_diff_values
 import glob as glob
 import sys
 
-file_pattern = "../list/lvg_table*.dat"
+file_pattern = "../tables/lvg_table*.dat"
 
 # Use glob to find all matching files
 file_paths = sorted(glob.glob(file_pattern))
@@ -36,6 +64,12 @@ for file_path in file_paths:
 
 #+RESULTS:
 :results:
+[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
 :end:
 
 
@@ -96,12 +130,16 @@ colors.info
      Name   str18      Galaxy name in well-known catalogs   MaskedColumn     0
   l_mag_B    str1                       Limit flag on mag   MaskedColumn  1441
     mag_B float64  mag   Apparent magnitude in Filter (1) MaskedQuantity     9
-  e_mag_B float64  mag                   Error in mag (2) MaskedQuantity  1256
+  e_mag_B float64  mag                   Error in mag (2) MaskedQuantity  1251
   r_mag_B   str19           Reference for mag observation   MaskedColumn     9
-l_mag_FUV    str1                       Limit flag on mag   MaskedColumn  1109
-  mag_FUV float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   315
+ l_mag_FU    str1                       Limit flag on mag   MaskedColumn  1441
+   mag_FU float64  mag   Apparent magnitude in Filter (1) MaskedQuantity  1440
+ e_mag_FU float64  mag                   Error in mag (2) MaskedQuantity  1441
+ r_mag_FU   str19           Reference for mag observation   MaskedColumn  1440
+l_mag_FUV    str1                       Limit flag on mag   MaskedColumn  1107
+  mag_FUV float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   314
 e_mag_FUV float64  mag                   Error in mag (2) MaskedQuantity   737
-r_mag_FUV   str19           Reference for mag observation   MaskedColumn   315
+r_mag_FUV   str19           Reference for mag observation   MaskedColumn   314
  l_mag_HI    str1                       Limit flag on mag   MaskedColumn  1231
    mag_HI float64  mag   Apparent magnitude in Filter (1) MaskedQuantity   496
  e_mag_HI float64  mag                   Error in mag (2) MaskedQuantity  1293
@@ -115,6 +153,7 @@ r_mag_FUV   str19           Reference for mag observation   MaskedColumn   315
  e_mag_Ks float64  mag                   Error in mag (2) MaskedQuantity  1095
  r_mag_Ks   str19           Reference for mag observation   MaskedColumn  1081
 :end:
+
 
 ** Merging the tables
 
@@ -214,12 +253,16 @@ So I can drop the column of table 1 and only keep the table 5 W50
 cat.remove_column("W50")
 #+end_src
 
+#+RESULTS:
+:results:
+:end:
+
 **** BMag
 
 
 #+begin_src python
 
-identical = report_diff_values(param["Name","BMag"], sfr["Name", "BMag"], rtol = 4.5, atol = 4.5)
+identical = report_diff_values(param["Name","BMag"], sfr["Name", "BMag"], rtol = 5*1e-1, atol = 5*1e-1)
 print(identical)
 #+end_src
 
@@ -389,7 +432,7 @@ print(identical)
    ?                    +
   a> Length = 1441 rows
    ?           ^^^
-  b> Length = 1257 rows
+  b> Length = 1259 rows
    ?           ^^^
 False
 :end:
