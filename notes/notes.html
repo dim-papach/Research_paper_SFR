@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-11-22 Wed 20:48 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Karachentsev List notes</title>
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Karachentsev List notes</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org50fd114">1. Original data set</a>
+<ul>
+<li><a href="#org3d2399e">1.1. Table 3</a></li>
+<li><a href="#orge62a0c6">1.2. Merging the tables</a>
+<ul>
+<li><a href="#orgf2a6864">1.2.1. Fixing the conflicts</a></li>
+<li><a href="#org18afe3f">1.2.2. Merging</a></li>
+</ul>
+</li>
+<li><a href="#org41ea03b">1.3. <span class="todo IDEA">IDEA</span> mapping with Color, type of galaxy, SFR, Velocity</a></li>
+<li><a href="#org15cbd04">1.4. <span class="todo IDEA">IDEA</span> machine learning</a>
+<ul>
+<li><a href="#org6bdf1dd">1.4.1. Bands (FUV)</a></li>
+<li><a href="#org6ed29f0">1.4.2. missing SFR</a></li>
+</ul>
+</li>
+<li><a href="#org657c943">1.5. <span class="todo ___">[?]</span> What is the W50 velocity</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on &lt;%t&gt; 2023-11-14. I downloaded the database from (Karachentsev, Makarov, and Kaisina 2013)
+</p>
+
+<p>
+Because I have to download each tables seperately from the site, I use this script
+</p>
+
+
+
+<p>
+<code>wget --no-check-certificate -r -nH --cut-dirs=2 --accept="*.dat" --reject="*8.dat" -e robots=off -U mozilla https://www.sao.ru/lv/lvgdb/tables/</code>
+</p>
+
+<p>
+Let&rsquo;s break down the wget command and its various options:
+</p>
+
+<ul class="org-ul">
+<li>&#x2013;no-check-certificate: This option tells wget to not check SSL certificates. It&rsquo;s useful when dealing with websites that have self-signed or expired SSL certificates.</li>
+
+<li>-r or &#x2013;recursive: This option enables recursive downloading. It means that wget will follow links and download files from the specified URL as well as its subdirectories.</li>
+
+<li>-nH or &#x2013;no-host-directories: This option disables the creation of host directories. Without this option, wget would create a directory structure based on the hostname of the server.</li>
+
+<li>&#x2013;cut-dirs=2: This option instructs wget to ignore the first two directory components when creating the local directory structure. In this case, it helps to avoid creating unnecessary parent directories based on the server&rsquo;s directory structure.</li>
+
+<li>&#x2013;accept=&ldquo;*.dat&rdquo;: This option specifies the file types to accept during the download. In this case, only files with the extension &ldquo;.dat&rdquo; will be downloaded.</li>
+
+<li>&#x2013;reject=&ldquo;*8.dat&rdquo;: This option specifies the file types to reject during the download. Files with names containing &ldquo;8.dat&rdquo; will be excluded from the download.</li>
+
+<li>-e robots=off: This option tells wget to ignore the robots.txt file, which is a file used by websites to communicate with web crawling and scraping bots about which parts of the site should not be crawled.</li>
+
+<li>-U mozilla: This option sets the User-Agent header to &ldquo;mozilla&rdquo;. The User-Agent header is used by the browser to identify itself to the server. In this case, it&rsquo;s set to mimic a Mozilla browser.</li>
+</ul>
+
+<p>
+Finally, the URL <a href="https://www.sao.ru/lv/lvgdb/tables/">https://www.sao.ru/lv/lvgdb/tables/</a> is the starting point for the recursive download.
+</p>
+<div id="outline-container-org50fd114" class="outline-2">
+<h2 id="org50fd114"><span class="section-number-2">1.</span> Original data set</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The data I will use for this project come from the Karachentsev  catalog (2022-12-02), which is an updated version of the list used in Kroupa et al. 2020
+From the list I use the tables &ldquo;Catalog of Nearby Galaxies&rdquo;, &ldquo;Global Parameters of the Nearby Galaxies&rdquo; and &ldquo;List of the nearby galaxies with measured SFR&rdquo;
+</p>
+</div>
+<div id="outline-container-org3d2399e" class="outline-3">
+<h3 id="org3d2399e"><span class="section-number-3">1.1.</span> Table 3</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+I will need the colors, so i think the best way is to create tables for each filter and then join them. I also delete the column r<sub>mag</sub> = Reference for mag observation
+</p>
+
+<p>
+&lt;Table length=1441&gt;
+   name    dtype  unit            description             n<sub>bad</sub>
+----&#x2013;&#x2014; --&#x2013;&#x2014; -&#x2014; -----------------------------&#x2013;&#x2014; &#x2013;&#x2014;
+     Name   str18      Galaxy name in well-known catalogs     0
+  l<sub>mag</sub><sub>B</sub>    str1                       Limit flag on mag  1441
+    mag<sub>B</sub> float64  mag   Apparent magnitude in Filter (1)     9
+  e<sub>mag</sub><sub>B</sub> float64  mag                   Error in mag (2)  1251
+ l<sub>mag</sub><sub>FU</sub>    str1                       Limit flag on mag  1441
+   mag<sub>FU</sub> float64  mag   Apparent magnitude in Filter (1)  1440
+ e<sub>mag</sub><sub>FU</sub> float64  mag                   Error in mag (2)  1441
+l<sub>mag</sub><sub>FUV</sub>    str1                       Limit flag on mag  1107
+  mag<sub>FUV</sub> float64  mag   Apparent magnitude in Filter (1)   314
+e<sub>mag</sub><sub>FUV</sub> float64  mag                   Error in mag (2)   737
+ l<sub>mag</sub><sub>HI</sub>    str1                       Limit flag on mag  1231
+   mag<sub>HI</sub> float64  mag   Apparent magnitude in Filter (1)   496
+ e<sub>mag</sub><sub>HI</sub> float64  mag                   Error in mag (2)  1293
+ l<sub>mag</sub><sub>Ha</sub>    str1                       Limit flag on mag  1311
+   mag<sub>Ha</sub> float64  mag   Apparent magnitude in Filter (1)   705
+ e<sub>mag</sub><sub>Ha</sub> float64  mag                   Error in mag (2)   767
+ l<sub>mag</sub><sub>Ks</sub>    str1                       Limit flag on mag  1441
+   mag<sub>Ks</sub> float64  mag   Apparent magnitude in Filter (1)  1081
+ e<sub>mag</sub><sub>Ks</sub> float64  mag                   Error in mag (2)  1095
+</p>
+</div>
+</div>
+<div id="outline-container-orge62a0c6" class="outline-3">
+<h3 id="orge62a0c6"><span class="section-number-3">1.2.</span> Merging the tables</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+<div id="outline-container-orgf2a6864" class="outline-4">
+<h4 id="orgf2a6864"><span class="section-number-4">1.2.1.</span> Fixing the conflicts</h4>
+<div class="outline-text-4" id="text-1-2-1">
+</div>
+<ol class="org-ol">
+<li><a id="org12028ee"></a>A26 and AB<br />
+<div class="outline-text-5" id="text-1-2-1-1">
+</div>
+</li>
+<li><a id="org0f067b9"></a>W50<br />
+<div class="outline-text-5" id="text-1-2-1-2">
+<p>
+        Name    W50  
+               km / s
+     ----&#x2013;&#x2014; -&#x2013;&#x2014;
+     AGC102728     21
+           &#x2026;    &#x2026;
+  a&gt; PGC704814     &#x2013;
+  b&gt;   NGC7793    172
+      And XXIX     13
+  a&gt; Length = 1441 rows
+   ?           ^^^
+  b&gt; Length = 816 rows
+   ?          + ^
+False
+</p>
+
+<p>
+But, according to the metadata of table 1 &ldquo;Note (9): The main source of W50 data was LEDA, as well as the HIPASS and ALFALFA surveys. The references to individual W50 measurements are presented in Table 5 and the LV database&rdquo;
+</p>
+
+<p>
+So I can drop the column of table 1 and only keep the table 5 W50
+</p>
+</div>
+</li>
+<li><a id="org03948a9"></a>BMag<br />
+<div class="outline-text-5" id="text-1-2-1-3">
+<p>
+The BMags of Table 2 and Table 7 have some differences (in the version of 14/11/2023).
+</p>
+<ul class="org-ul">
+<li>The SFR(BMag) has less values than CAT(BMag)</li>
+<li>The SFR(BMag) has better precision (.01)</li>
+</ul>
+
+<p>
+False
+</p>
+
+<p>
+To keep all the values and the high precision, I will join the tables so the SFR<sub>B</sub> will have masked values for the missing galaxies, and then I will replace the masks with the values of CAT<sub>B</sub>
+</p>
+
+<p>
+[0;33mWARNING[0m: MergeConflictWarning: In merged column &rsquo;Name&rsquo; the &rsquo;description&rsquo; attribute does not match (Galaxy name in well-known catalogs != Galaxy name).  Using Galaxy name for merged output [astropy.utils.metadata]
+</p>
+
+<p>
+&lt;QTable length=1441&gt;
+  name    dtype   unit                     description                        class      n<sub>bad</sub>
+---&#x2013;&#x2014; --&#x2013;&#x2014; -&#x2013;&#x2014; --------------------------------------------&#x2013;&#x2014; ---------&#x2013;&#x2014; &#x2013;&#x2014;
+    Name   str18                                              Galaxy name   MaskedColumn     0
+     RAh float64      h                   Hour of Right Ascension (J2000) MaskedQuantity   182
+     RAm float64    min                 Minute of Right Ascension (J2000) MaskedQuantity   182
+     RAs float64      s                 Second of Right Ascension (J2000) MaskedQuantity   182
+     DE-    str1                          Sign of the Declination (J2000)   MaskedColumn   182
+     DEd float64    deg                     Degree of Declination (J2000) MaskedQuantity   182
+     DEm float64 arcmin                  Arcminute of Declination (J2000) MaskedQuantity   182
+     DEs float64 arcsec                  Arcsecond of Declination (J2000) MaskedQuantity   182
+       T   int64                        de Vaucouleurs morphological type   MaskedColumn   183
+ l<sub>SFRHa</sub>    str1                                      Limit flag on SFRHa   MaskedColumn  1311
+   SFRHa float64        H{alpha} derived integral star formation rate (1)   MaskedColumn   705
+   l<sub>PHa</sub>    str1                                        Limit flag on PHa   MaskedColumn  1311
+     PHa float64            H{alpha} derived evolutionary P parameter (1)   MaskedColumn   708
+   l<sub>FHa</sub>    str1                                        Limit flag on FHa   MaskedColumn  1370
+     FHa float64            H{alpha} derived evolutionary F parameter (1)   MaskedColumn   822
+l<sub>SFRFUV</sub>    str1                                     Limit flag on SFRFUV   MaskedColumn  1107
+  SFRFUV float64             FUV derived integral star formation rate (1)   MaskedColumn   313
+  l<sub>PFUV</sub>    str1                                       Limit flag on PFUV   MaskedColumn  1107
+    PFUV float64                 FUV derived evolutionary P parameter (1)   MaskedColumn   314
+  l<sub>FFUV</sub>    str1                                       Limit flag on FFUV   MaskedColumn  1304
+    FFUV float64                 FUV derived evolutionary F parameter (1)   MaskedColumn   668
+  BMag<sub>1</sub> float64    mag                     Absolute B band magnitude (4) MaskedQuantity     9
+  BMag<sub>2</sub> float64    mag                     Absolute B band magnitude (1) MaskedQuantity   185
+</p>
+</div>
+</li>
+<li><a id="org991314a"></a>Right Ascension<br />
+<div class="outline-text-5" id="text-1-2-1-4">
+<p>
+False
+</p>
+
+<p>
+As I observe, the Right Ascension of CAT and PARAM are the same and the problem is with the SFR table. Plus, as I see from the file &ldquo;./diff<sub>report</sub><sub>RAh.txt</sub>&rdquo; the differences are marked as +,  indicating new rows in the table.
+</p>
+
+<p>
+So I can drop them in the table SFR.
+</p>
+</div>
+</li>
+<li><a id="orgf3793ff"></a>Types<br />
+<div class="outline-text-5" id="text-1-2-1-5">
+<p>
+The SFR and CAT tables have the same column, the de Vaucouleurs morphological type.
+</p>
+
+<p>
+ (Table) a&gt;    Name   TType
+(QTable) b&gt;        Name         T 
+ (Table) a&gt; ----&#x2013;&#x2014; &#x2013;&#x2014;
+          ?          -
+(QTable) b&gt; -------------&#x2013;&#x2014; &#x2014;
+          ?               <del><del><del>++</del></del></del>
+ (Table) a&gt; AGC102728    10
+ (Table) a&gt;  UGC12894    10
+ (Table) a&gt;       &#x2026;   &#x2026;
+ (Table) a&gt; PGC704814    10
+ (Table) a&gt;  And XXIX    -2
+(QTable) b&gt; 6dF J2218489-46130  &#x2013;
+(QTable) b&gt;           A0554+07  10
+(QTable) b&gt;                &#x2026; &#x2026;
+(QTable) b&gt;          dw1446+58  10
+(QTable) b&gt;        dw1907-6342  -1
+            Length = 1441 rows
+</p>
+
+<p>
+The problem is that the SFR table is smaller, so it cannot join. I will follow the same steps as in BMag.
+</p>
+
+<p>
+[0;33mWARNING[0m: MergeConflictWarning: In merged column &rsquo;Name&rsquo; the &rsquo;description&rsquo; attribute does not match (Galaxy name in well-known catalogs != Galaxy name).  Using Galaxy name for merged output [astropy.utils.metadata]
+&lt;Table length=1441&gt;
+ name dtype            description            n<sub>bad</sub>
+&#x2013;&#x2014; &#x2013;&#x2014; ----------------------------&#x2013;&#x2014; &#x2013;&#x2014;
+ Name str18                       Galaxy name     0
+TType int64         Morphology type code (10)     4
+    T int64 de Vaucouleurs morphological type   183
+</p>
+
+<p>
+Since each galaxy can have only one  morphological type and as I can see the only difference is that they have is the number of values, I will keep the longer column
+</p>
+</div>
+</li>
+<li><a id="org10eced2"></a>Remove References<br />
+<div class="outline-text-5" id="text-1-2-1-6">
+<p>
+I have already removed some references. Lets finish it
+</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org18afe3f" class="outline-4">
+<h4 id="org18afe3f"><span class="section-number-4">1.2.2.</span> Merging</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+[0;33mWARNING[0m: MergeConflictWarning: In merged column &rsquo;Name&rsquo; the &rsquo;description&rsquo; attribute does not match (Galaxy name in well-known catalogs != Galaxy name).  Using Galaxy name for merged output [astropy.utils.metadata]
+&lt;Table length=1441&gt;
+   name    dtype       unit                        description                    n<sub>bad</sub>
+----&#x2013;&#x2014; --&#x2013;&#x2014; --------&#x2013;&#x2014; --------------------------------------------&#x2013;&#x2014; &#x2013;&#x2014;
+     Name   str18                                                     Galaxy name     0
+      RAh   int64             h                   Hour of Right Ascension (J2000)     0
+      RAm   int64           min                 Minute of Right Ascension (J2000)     0
+      RAs float64             s                 Second of Right Ascension (J2000)     0
+      DE-    str1                                 Sign of the Declination (J2000)     0
+      DEd   int64           deg                     Degree of Declination (J2000)     0
+      DEm   int64        arcmin                  Arcminute of Declination (J2000)     0
+      DEs   int64        arcsec                  Arcsecond of Declination (J2000)     0
+      a26 float64        arcmin                        Major angular diameter (1)    12
+      b/a float64                                        Apparent axial ratio (1)    12
+       AB float64           mag                 Galactic extinction in B band (2)     1
+ l<sub>FUVmag</sub>    str1                                            Limit flag on FUVmag  1107
+   FUVmag float64           mag                      GALEX FUV band magnitude (3)   313
+     Bmag float64           mag                     Integral B band magnitude (4)     9
+  l<sub>Hamag</sub>    str1                                             Limit flag on Hamag  1311
+    Hamag float64           mag     Integral H{alpha} line emission magnitude (5)   705
+     Kmag float64           mag                     2MASS K<sub>S</sub>_ band magnitude (6)    12
+   f<sub>Kmag</sub>    str1                                            [*] Flag on Kmag (7)   362
+  l<sub>21mag</sub>    str1                                             Limit flag on 21mag  1230
+    21mag float64           mag                      H I 21 cm line magnitude (8)   496
+    TType   int64                                       Morphology type code (10)     4
+     Tdw1    str5                                    Dwarf galaxy morphology (11)   233
+     Tdw2    str1                 Dwarf galaxy surface brightness morphology (12)   250
+     RVel   int64        km / s                 Heliocentric radial velocity (13)   458
+      Dis float64           Mpc                                          Distance     0
+    f<sub>Dis</sub>    str4                             Method flag used to obtain Dis (14)     0
+      A26 float64           kpc                         Major linear diameter (1)    12
+      inc   int64           deg                                       Inclination    12
+       Vm   int64        km / s              Amplitude of rotational velocity (2)   638
+   AB<sub>int</sub> float64           mag                    Internal B band extinction (3)    12
+      SBB float64 mag / arcsec2             Average B band surface brightness (5)    12
+  logKLum float64     dex(Lsun)                      Log K<sub>S</sub>_ band luminosity (6)    12
+   logM26 float64     dex(Msun)               Log mass within Holmberg radius (7)   637
+ l<sub>logMHI</sub>    str1                                            Limit flag on logMHI  1231
+   logMHI float64     dex(Msun)                             Log hydrogen mass (8)   496
+      VLG   int64        km / s                               Radial velocity (9)   458
+   Theta1 float64                                                Tidal index (10)    81
+       MD   str19                                        Main disturber name (11)    81
+   Theta5 float64                                        Another tidal index (12)    81
+   Thetaj float64      dex(&#x2014;)                Log K band luminosity density (13)   185
+  l<sub>mag</sub><sub>B</sub>    str1                                               Limit flag on mag  1441
+    mag<sub>B</sub> float64           mag                  Apparent magnitude in Filter (1)     9
+  e<sub>mag</sub><sub>B</sub> float64           mag                                  Error in mag (2)  1251
+ l<sub>mag</sub><sub>FU</sub>    str1                                               Limit flag on mag  1441
+   mag<sub>FU</sub> float64           mag                  Apparent magnitude in Filter (1)  1440
+ e<sub>mag</sub><sub>FU</sub> float64           mag                                  Error in mag (2)  1441
+l<sub>mag</sub><sub>FUV</sub>    str1                                               Limit flag on mag  1107
+  mag<sub>FUV</sub> float64           mag                  Apparent magnitude in Filter (1)   314
+e<sub>mag</sub><sub>FUV</sub> float64           mag                                  Error in mag (2)   737
+ l<sub>mag</sub><sub>HI</sub>    str1                                               Limit flag on mag  1231
+   mag<sub>HI</sub> float64           mag                  Apparent magnitude in Filter (1)   496
+ e<sub>mag</sub><sub>HI</sub> float64           mag                                  Error in mag (2)  1293
+ l<sub>mag</sub><sub>Ha</sub>    str1                                               Limit flag on mag  1311
+   mag<sub>Ha</sub> float64           mag                  Apparent magnitude in Filter (1)   705
+ e<sub>mag</sub><sub>Ha</sub> float64           mag                                  Error in mag (2)   767
+ l<sub>mag</sub><sub>Ks</sub>    str1                                               Limit flag on mag  1441
+   mag<sub>Ks</sub> float64           mag                  Apparent magnitude in Filter (1)  1081
+ e<sub>mag</sub><sub>Ks</sub> float64           mag                                  Error in mag (2)  1095
+       cz   int64        km / s                             Heliocentric velocity   458
+     e<sub>cz</sub>   int64        km / s                                       Error in cz   517
+      W50   int64        km / s               Observed HI line width at 50% level   625
+    e<sub>W50</sub>   int64        km / s                                      Error in W50   894
+       DM float64           mag                                  Distance modulus     2
+     e<sub>DM</sub> float64           mag                                       Error in DM   836
+  l<sub>SFRHa</sub>    str1                                             Limit flag on SFRHa  1311
+    SFRHa float64               H{alpha} derived integral star formation rate (1)   705
+    l<sub>PHa</sub>    str1                                               Limit flag on PHa  1311
+      PHa float64                   H{alpha} derived evolutionary P parameter (1)   708
+    l<sub>FHa</sub>    str1                                               Limit flag on FHa  1370
+      FHa float64                   H{alpha} derived evolutionary F parameter (1)   822
+ l<sub>SFRFUV</sub>    str1                                            Limit flag on SFRFUV  1107
+   SFRFUV float64                    FUV derived integral star formation rate (1)   313
+   l<sub>PFUV</sub>    str1                                              Limit flag on PFUV  1107
+     PFUV float64                        FUV derived evolutionary P parameter (1)   314
+   l<sub>FFUV</sub>    str1                                              Limit flag on FFUV  1304
+     FFUV float64                        FUV derived evolutionary F parameter (1)   668
+   BMag<sub>1</sub> float64           mag                     Absolute B band magnitude (4)     9
+   BMag<sub>2</sub> float64           mag                     Absolute B band magnitude (1)   185
+</p>
+
+
+<p>
+[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError(&ldquo;MaskedQuantity instances require normal units, not &lt;class &lsquo;astropy.units.function.logarithmic.DexUnit&rsquo;&gt; instances.&rdquo;) [astropy.table.table]
+[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError(&ldquo;MaskedQuantity instances require normal units, not &lt;class &lsquo;astropy.units.function.logarithmic.DexUnit&rsquo;&gt; instances.&rdquo;) [astropy.table.table]
+[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError(&ldquo;MaskedQuantity instances require normal units, not &lt;class &lsquo;astropy.units.function.logarithmic.DexUnit&rsquo;&gt; instances.&rdquo;) [astropy.table.table]
+</p>
+
+<p>
+As we can see it works. FINALLY
+</p>
+
+<p>
+We use the <code>ecsv</code> format because I get errors with the <code>mrt</code>.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org41ea03b" class="outline-3">
+<h3 id="org41ea03b"><span class="section-number-3">1.3.</span> <span class="todo IDEA">IDEA</span> mapping with Color, type of galaxy, SFR, Velocity</h3>
+</div>
+<div id="outline-container-org15cbd04" class="outline-3">
+<h3 id="org15cbd04"><span class="section-number-3">1.4.</span> <span class="todo IDEA">IDEA</span> machine learning</h3>
+<div class="outline-text-3" id="text-1-4">
+</div>
+<div id="outline-container-org6bdf1dd" class="outline-4">
+<h4 id="org6bdf1dd"><span class="section-number-4">1.4.1.</span> Bands (FUV)</h4>
+</div>
+<div id="outline-container-org6ed29f0" class="outline-4">
+<h4 id="org6ed29f0"><span class="section-number-4">1.4.2.</span> missing SFR</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+<b>*</b>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org657c943" class="outline-3">
+<h3 id="org657c943"><span class="section-number-3">1.5.</span> <span class="todo ___">[?]</span> What is the W50 velocity</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2023-11-22 Wed 20:48</p>
+</div>
+</body>
+</html>
