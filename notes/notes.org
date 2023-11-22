@@ -259,184 +259,267 @@ cat.remove_column("W50")
 
 **** BMag
 
+The BMags of Table 2 and Table 7 have some differences (in the version of 14/11/2023).
++ The SFR(BMag) has less values than CAT(BMag)
++ The SFR(BMag) has better precision (.01)
 
 #+begin_src python
-
-identical = report_diff_values(param["Name","BMag"], sfr["Name", "BMag"], rtol = 5*1e-1, atol = 5*1e-1)
+# Open a file for writing
+with open('diff_report.txt', 'w') as file:
+    # Redirect the output to the file
+   identical = report_diff_values(param["Name","BMag"], sfr["Name", "BMag"], rtol=0.7, atol=0.7, fileobj=file)
 print(identical)
 #+end_src
 
 #+RESULTS:
 :results:
-  a>      Name      BMag
-  b>      Name      BMag
-   ?                    +
-  a>                mag
-  b>                mag
-   ?                    +
-  a> ------------- -----
-  b> ------------- ------
-   ?                    +
-  a>     AGC102728 -10.4
-  b>     AGC102728 -10.44
-   ?                    +
-  a>      UGC12894 -13.5
-  b>      UGC12894 -13.45
-   ?                   +
-  a>     PGC000083 -12.3
-  b>     PGC000083 -12.32
-   ?                    +
-  a>           WLM -14.1
-   ?                   ^
-  b>           WLM -14.09
-   ?                   ^^
-  a>     And XVIII  -8.7
-  b>     And XVIII  -8.73
-   ?                    +
-  a>     PAndAS-03  -3.6
-  b>     PAndAS-03  -3.56
-   ?                   +
-  a>     PAndAS-04  -6.6
-  b>     PAndAS-04  -6.61
-   ?                    +
-  a>     PAndAS-05  -4.5
-  b>     PAndAS-05   -4.5
-   ?                +
-  a>    ESO409-015 -14.6
-  b>    ESO409-015 -14.62
-   ?                    +
-  a>     AGC748778 -10.4
-   ?                   ^
-  b>     AGC748778 -10.35
-   ?                   ^^
-  a>        And XX  -5.8
-   ?                   ^
-  b>        And XX  -5.77
-   ?                   ^^
-  a>      UGC00064 -14.3
-   ?                   ^
-  b>      UGC00064 -14.25
-   ?                   ^^
-  a>    ESO349-031 -11.9
-   ?                   ^
-  b>    ESO349-031 -11.87
-   ?                   ^^
-  a>     dw0009-25  -7.7
-   ?                   ^
-  b>     dw0009-25  -7.69
-   ?                   ^^
-  a>       NGC0024 -17.7
-   ?                   ^
-  b>       NGC0024 -17.66
-   ?                   ^^
-  a>     dw0010-25 -11.2
-   ?                   ^
-  b>     dw0010-25 -11.15
-   ?                   ^^
-  a>       NGC0045 -17.8
-  b>       NGC0045 -17.82
-   ?                    +
-  a>       PiscesA -10.7
-  b>       PiscesA  -10.7
-   ?               +
-  a>       NGC0055 -18.8
-   ?                   ^
-  b>       NGC0055 -18.76
-   ?                   ^^
-  a>       NGC0059 -15.6
-   ?                   ^
-  b>       NGC0059 -15.57
-   ?                   ^^
-  a>    NGC 55-dw1  -7.4
-  a>    ESO410-005 -11.6
-   ?                   ^
-  b>    ESO410-005 -11.59
-   ?                   ^^
-  a> LV J0015-3825 -11.1
-   ?                   ^
-  b> LV J0015-3825 -11.08
-   ?                   ^^
-  b>       And XIX  -9.62
-  a>           ...   ...
-  b>           ...    ...
-   ?                 +
-  b>       NGC7462 -18.15
-  b>       ApplesI  -8.25
-  b>       NGC7640  -19.3
-  b>      UGC12588 -16.79
-  a>       UGCA438 -12.9
-  b>       UGCA438  -12.9
-   ?               +
-  a>      Cas dSph -11.8
-   ?                   ^
-  b>      Cas dSph -11.76
-   ?                   ^^
-  a>    ESO347-017 -15.5
-  b>    ESO347-017 -15.45
-   ?                   +
-  a>       Pegasus -12.0
-  b>       Pegasus  -12.0
-   ?               +
-  a>        DDO217 -17.7
-  b>        DDO217 -17.67
-   ?                   +
-  a>        IC5332 -18.9
-  b>        IC5332  -18.9
-   ?               +
-  a> LV J2335-3713 -12.8
-  a>       NGC7713 -18.5
-  b>       NGC7713 -18.45
-   ?                   +
-  a>      UGC12713 -16.0
-   ?                 ^ ^
-  b>      UGC12713 -15.95
-   ?                 ^ ^^
-  a>     Phoenix 2  -2.2
-  a>     PGC680341 -12.2
-  b>     PGC680341 -12.24
-   ?                    +
-  a>       UGCA442 -14.7
-  b>       UGCA442 -14.71
-   ?                    +
-  a>         KKH98 -10.9
-  b>         KKH98 -10.89
-   ?                   +
-  a>    ESO348-009 -15.6
-   ?                   ^
-  b>    ESO348-009 -15.55
-   ?                   ^^
-  a>      Peg dSph -10.7
-  b>      Peg dSph -10.67
-   ?                   +
-  a>    ESO149-003 -14.2
-  b>    ESO149-003 -14.24
-   ?                    +
-  a>       And XXI  -8.5
-   ?                   ^
-  b>       And XXI  -8.47
-   ?                   ^^
-  a>    Tucana III  -1.7
-  a>     PAndAS-01  -7.0
-   ?                  --
-  b>     PAndAS-01  -6.97
-   ?                 +++
-  a>       NGC7793 -18.3
-  b>       NGC7793 -18.34
-   ?                    +
-  a>     PAndAS-02  -6.2
-  b>     PAndAS-02  -6.24
-   ?                    +
-  a>     PGC704814 -11.4
-  a>      And XXIX  -7.5
-  b>      And XXIX  -7.52
-   ?                    +
-  a> Length = 1441 rows
-   ?           ^^^
-  b> Length = 1259 rows
-   ?           ^^^
 False
 :end:
 
+To keep all the values and the high precision, I will join the tables so the SFR_B will have masked values for the missing galaxies, and then I will replace the masks with the values of CAT_B
+
+#+begin_src python
+bmag = join(param["Name","BMag"], sfr["Name","BMag"], join_type='outer', keys = "Name")
+
+
+# Fill missing (masked) values in BMag_2 with corresponding values from BMag_1
+for i in range(len(bmag)):
+    if bmag["BMag_2"][i].mask == True:
+       bmag['BMag_2'][i] = bmag['BMag_1'][i]
+bmag.rename_column("BMag_2", "BMag")
+bmag.remove_column("BMag_1")
+
+print(bmag["BMag"])
+
+#+end_src
+
+#+RESULTS:
+:results:
+[0;33mWARNING[0m: MergeConflictWarning: In merged column 'Name' the 'description' attribute does not match (Galaxy name in well-known catalogs != Galaxy name).  Using Galaxy name for merged output [astropy.utils.metadata]
+[-14.   -14.1  -11.54 ...  -9.99 -10.59 -11.38] mag
+:end:
+
+#+begin_src python
+
+sfr.remove_column("BMag")
+param.remove_column("BMag")
+sfr = QTable(join(sfr,bmag, join_type = "outer"))
+
+sfr.info()
+#+end_src
+
+#+RESULTS:
+:results:
+<QTable length=1441>
+  name    dtype   unit                     description                        class      n_bad
+-------- ------- ------ ------------------------------------------------- -------------- -----
+    Name   str18                                              Galaxy name   MaskedColumn     0
+     RAh float64      h                   Hour of Right Ascension (J2000) MaskedQuantity   182
+     RAm float64    min                 Minute of Right Ascension (J2000) MaskedQuantity   182
+     RAs float64      s                 Second of Right Ascension (J2000) MaskedQuantity   182
+     DE-    str1                          Sign of the Declination (J2000)   MaskedColumn   182
+     DEd float64    deg                     Degree of Declination (J2000) MaskedQuantity   182
+     DEm float64 arcmin                  Arcminute of Declination (J2000) MaskedQuantity   182
+     DEs float64 arcsec                  Arcsecond of Declination (J2000) MaskedQuantity   182
+       T   int64                        de Vaucouleurs morphological type   MaskedColumn   183
+ l_SFRHa    str1                                      Limit flag on SFRHa   MaskedColumn  1311
+   SFRHa float64        H{alpha} derived integral star formation rate (1)   MaskedColumn   705
+   l_PHa    str1                                        Limit flag on PHa   MaskedColumn  1311
+     PHa float64            H{alpha} derived evolutionary P parameter (1)   MaskedColumn   708
+   l_FHa    str1                                        Limit flag on FHa   MaskedColumn  1370
+     FHa float64            H{alpha} derived evolutionary F parameter (1)   MaskedColumn   822
+l_SFRFUV    str1                                     Limit flag on SFRFUV   MaskedColumn  1107
+  SFRFUV float64             FUV derived integral star formation rate (1)   MaskedColumn   313
+  l_PFUV    str1                                       Limit flag on PFUV   MaskedColumn  1107
+    PFUV float64                 FUV derived evolutionary P parameter (1)   MaskedColumn   314
+  l_FFUV    str1                                       Limit flag on FFUV   MaskedColumn  1304
+    FFUV float64                 FUV derived evolutionary F parameter (1)   MaskedColumn   668
+    BMag float64    mag                     Absolute B band magnitude (1) MaskedQuantity     9
+:end:
+
+**** Right Ascension
+
+#+begin_src python
+with open('diff_report_RAh.txt', 'w') as file:
+    # Redirect the output to the file
+   identical = report_diff_values(param["Name","RAh"], sfr["Name", "RAh"], fileobj=file)
+print(identical)
+#+end_src
+
+#+RESULTS:
+:results:
+False
+:end:
+
+As I observe, the Right Ascension of CAT and PARAM are the same and the problem is with the SFR table. Plus, as I see from the file "./diff_report_RAh.txt" the differences are marked as +,  indicating new rows in the table.
+
+So I can drop them in the table SFR.
+
+#+begin_src python
+columns_to_remove = ["RAh", "RAm", "RAs", "DE-", "DEd","DEm", "DEs"]
+# Remove the identified columns
+for col in columns_to_remove:
+    sfr.remove_column(col)
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+**** Types
+
+The SFR and CAT tables have the same column, the de Vaucouleurs morphological type.
+
+#+begin_src python
+
+identical = report_diff_values(cat["Name","TType"], sfr["Name", "T"])
+
+#+end_src
+
+#+RESULTS:
+:results:
+  a>      Name     TType
+  b>        Name         T
+  a> ------------- -----
+   ?              -
+  b> ------------------ ---
+   ?                   ++++
+  b> 6dF J2218489-46130  --
+  b>           A0554+07  10
+  b>           A0952+69  10
+  a>     AGC102728    10
+   ?                --
+  b>          AGC102728  10
+   ? +++++
+  b>          AGC112454   9
+  b>          AGC112503   9
+  b>          AGC112521  10
+  b>          AGC114027  10
+  b>          AGC122226   9
+  b>          AGC123352  10
+  b>          AGC124056  10
+  b>          AGC124635  10
+  b>          AGC174585  10
+  b>          AGC174605  10
+  b>          AGC181604  10
+  b>          AGC182595   9
+  b>          AGC188955  10
+  b>          AGC191803   9
+  b>          AGC198507   9
+  b>         AGC198507A  --
+  b>          AGC198508  10
+  b>          AGC198691  10
+  b>          AGC198712  10
+  a>      UGC12894    10
+  a>     PGC000083    10
+  a>           WLM     9
+  a>     And XVIII    -3
+  a>     PAndAS-03    -3
+  a>     PAndAS-04    -3
+  a>     PAndAS-05    -3
+  a>    ESO409-015     9
+  a>     AGC748778    10
+  a>        And XX    -3
+  a>      UGC00064    10
+  a>    ESO349-031    10
+  a>     dw0009-25    -2
+  a>       NGC0024     5
+  a>     dw0010-25    -2
+  a>       NGC0045     8
+  a>       PiscesA    10
+  a>       NGC0055     8
+  a>       NGC0059    -3
+  a>    NGC 55-dw1    -2
+  a>    ESO410-005    10
+  a> LV J0015-3825    10
+  a>           ...   ...
+   ?               --
+  b>                ... ...
+   ? +++++
+  a>      UGC12588     8
+  a>       UGCA438    10
+  a>      Cas dSph    -3
+  a>    ESO347-017     9
+  a>       Pegasus    10
+  a>        DDO217     8
+  a>        IC5332     7
+  a> LV J2335-3713    10
+  a>       NGC7713     6
+  a>      UGC12713     7
+  a>     Phoenix 2    -3
+  a>     PGC680341    10
+  a>       UGCA442     8
+  a>         KKH98    10
+  a>    ESO348-009    10
+  a>      Peg dSph    -3
+  a>    ESO149-003    10
+  a>       And XXI    -3
+  a>    Tucana III    -2
+  a>     PAndAS-01    -3
+  a>       NGC7793     6
+  a>     PAndAS-02    -3
+  a>     PGC704814    10
+  a>      And XXIX    -2
+  b>          dw1337-41  -1
+  b>          dw1338+50  -1
+  b>          dw1340+45  10
+  b>          dw1340-30  -2
+  b>          dw1341-33  -2
+  b>          dw1341-43  -1
+  b>          dw1342-43  -1
+  b>          dw1343+58   9
+  b>          dw1343-34  -1
+  b>        dw1350+5441  -1
+  b>          dw1355+51  -1
+  b>          dw1357-28  -1
+  b>          dw1401-32  -1
+  b>          dw1403-33  -1
+  b>          dw1406-29  -1
+  b>          dw1408+56  10
+  b>          dw1409-33  -1
+  b>          dw1410-34  10
+  b>          dw1412+56  -1
+  b>          dw1413-34  -1
+  b>          dw1415-32  10
+  b>          dw1416+57  -1
+  b>          dw1446+58  10
+  b>        dw1907-6342  -1
+     Length = 1441 rows
+:end:
+
+The problem is that the SFR table is smaller, so it cannot join. I will follow the same steps as in BMag.
+
+#+begin_src python
+ttype = QTable(join(cat["Name","TType"], sfr["Name","T"], join_type='outer', keys = "Name"))
+print(ttype.info)
+#+end_src
+
+#+RESULTS:
+:results:
+[0;33mWARNING[0m: MergeConflictWarning: In merged column 'Name' the 'description' attribute does not match (Galaxy name in well-known catalogs != Galaxy name).  Using Galaxy name for merged output [astropy.utils.metadata]
+<QTable length=1441>
+ name dtype            description            n_bad
+----- ----- --------------------------------- -----
+ Name str18                       Galaxy name     0
+TType int64         Morphology type code (10)     4
+    T int64 de Vaucouleurs morphological type   183
+:end:
+
+#+begin_src python
+# Fill missing (masked) values in T with corresponding values from TType
+for i in range(len(ttype)):
+    if ttype["T"][i].mask == True:
+       ttype["T"][i] = ttype['TType'][i]
+ttype.remove_column("TType")
+ttype.rename_column("T", "TType")
+
+print(ttype["TType"])
+
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
 
 *** Merging
 
@@ -482,6 +565,123 @@ print(dt.info)
 
 #+RESULTS:
 :results:
+[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: MergeConflictWarning: In merged column 'Name' the 'description' attribute does not match (Galaxy name in well-known catalogs != Galaxy name).  Using Galaxy name for merged output [astropy.utils.metadata]
+<QTable length=1441>
+   name    dtype       unit                        description                        class      n_bad
+--------- ------- ------------- ------------------------------------------------- -------------- -----
+     Name   str18                                                     Galaxy name   MaskedColumn     0
+      RAh float64             h                   Hour of Right Ascension (J2000) MaskedQuantity     0
+      RAm float64           min                 Minute of Right Ascension (J2000) MaskedQuantity     0
+      RAs float64             s                 Second of Right Ascension (J2000) MaskedQuantity     0
+      DE-    str1                                 Sign of the Declination (J2000)   MaskedColumn     0
+      DEd float64           deg                     Degree of Declination (J2000) MaskedQuantity     0
+      DEm float64        arcmin                  Arcminute of Declination (J2000) MaskedQuantity     0
+      DEs float64        arcsec                  Arcsecond of Declination (J2000) MaskedQuantity     0
+      a26 float64        arcmin                        Major angular diameter (1) MaskedQuantity    12
+      b/a float64                                        Apparent axial ratio (1)   MaskedColumn    12
+       AB float64           mag                 Galactic extinction in B band (2) MaskedQuantity     1
+ l_FUVmag    str1                                            Limit flag on FUVmag   MaskedColumn  1107
+   FUVmag float64           mag                      GALEX FUV band magnitude (3) MaskedQuantity   313
+     Bmag float64           mag                     Integral B band magnitude (4) MaskedQuantity     9
+  l_Hamag    str1                                             Limit flag on Hamag   MaskedColumn  1311
+    Hamag float64           mag     Integral H{alpha} line emission magnitude (5) MaskedQuantity   705
+     Kmag float64           mag                     2MASS K_S_ band magnitude (6) MaskedQuantity    12
+   f_Kmag    str1                                            [*] Flag on Kmag (7)   MaskedColumn   362
+  l_21mag    str1                                             Limit flag on 21mag   MaskedColumn  1230
+    21mag float64           mag                      H I 21 cm line magnitude (8) MaskedQuantity   496
+    TType   int64                                       Morphology type code (10)   MaskedColumn     4
+     Tdw1    str5                                    Dwarf galaxy morphology (11)   MaskedColumn   233
+     Tdw2    str1                 Dwarf galaxy surface brightness morphology (12)   MaskedColumn   250
+     RVel float64        km / s                 Heliocentric radial velocity (13) MaskedQuantity   458
+      Dis float64           Mpc                                          Distance MaskedQuantity     0
+    f_Dis    str4                             Method flag used to obtain Dis (14)   MaskedColumn     0
+      A26 float64           kpc                         Major linear diameter (1) MaskedQuantity    12
+      inc float64           deg                                       Inclination MaskedQuantity    12
+       Vm float64        km / s              Amplitude of rotational velocity (2) MaskedQuantity   638
+   AB_int float64           mag                    Internal B band extinction (3) MaskedQuantity    12
+      SBB float64 mag / arcsec2             Average B band surface brightness (5) MaskedQuantity    12
+  logKLum float64     dex(Lsun)                      Log K_S_ band luminosity (6)   MaskedColumn    12
+   logM26 float64     dex(Msun)               Log mass within Holmberg radius (7)   MaskedColumn   637
+ l_logMHI    str1                                            Limit flag on logMHI   MaskedColumn  1231
+   logMHI float64     dex(Msun)                             Log hydrogen mass (8)   MaskedColumn   496
+      VLG float64        km / s                               Radial velocity (9) MaskedQuantity   458
+   Theta1 float64                                                Tidal index (10)   MaskedColumn    81
+       MD   str19                                        Main disturber name (11)   MaskedColumn    81
+   Theta5 float64                                        Another tidal index (12)   MaskedColumn    81
+   Thetaj float64      dex(---)                Log K band luminosity density (13) MaskedQuantity   185
+  l_mag_B    str1                                               Limit flag on mag   MaskedColumn  1441
+    mag_B float64           mag                  Apparent magnitude in Filter (1) MaskedQuantity     9
+  e_mag_B float64           mag                                  Error in mag (2) MaskedQuantity  1251
+  r_mag_B   str19                                   Reference for mag observation   MaskedColumn     9
+ l_mag_FU    str1                                               Limit flag on mag   MaskedColumn  1441
+   mag_FU float64           mag                  Apparent magnitude in Filter (1) MaskedQuantity  1440
+ e_mag_FU float64           mag                                  Error in mag (2) MaskedQuantity  1441
+ r_mag_FU   str19                                   Reference for mag observation   MaskedColumn  1440
+l_mag_FUV    str1                                               Limit flag on mag   MaskedColumn  1107
+  mag_FUV float64           mag                  Apparent magnitude in Filter (1) MaskedQuantity   314
+e_mag_FUV float64           mag                                  Error in mag (2) MaskedQuantity   737
+r_mag_FUV   str19                                   Reference for mag observation   MaskedColumn   314
+ l_mag_HI    str1                                               Limit flag on mag   MaskedColumn  1231
+   mag_HI float64           mag                  Apparent magnitude in Filter (1) MaskedQuantity   496
+ e_mag_HI float64           mag                                  Error in mag (2) MaskedQuantity  1293
+ r_mag_HI   str19                                   Reference for mag observation   MaskedColumn   496
+ l_mag_Ha    str1                                               Limit flag on mag   MaskedColumn  1311
+   mag_Ha float64           mag                  Apparent magnitude in Filter (1) MaskedQuantity   705
+ e_mag_Ha float64           mag                                  Error in mag (2) MaskedQuantity   767
+ r_mag_Ha   str19                                   Reference for mag observation   MaskedColumn   705
+ l_mag_Ks    str1                                               Limit flag on mag   MaskedColumn  1441
+   mag_Ks float64           mag                  Apparent magnitude in Filter (1) MaskedQuantity  1081
+ e_mag_Ks float64           mag                                  Error in mag (2) MaskedQuantity  1095
+ r_mag_Ks   str19                                   Reference for mag observation   MaskedColumn  1081
+       cz float64        km / s                             Heliocentric velocity MaskedQuantity   458
+     e_cz float64        km / s                                       Error in cz MaskedQuantity   517
+     r_cz   str19                                                Reference for cz   MaskedColumn   458
+      W50 float64        km / s               Observed HI line width at 50% level MaskedQuantity   625
+    e_W50 float64        km / s                                      Error in W50 MaskedQuantity   894
+    r_W50   str19                                               Reference for W50   MaskedColumn   625
+       DM float64           mag                                  Distance modulus MaskedQuantity     2
+     e_DM float64           mag                                       Error in DM MaskedQuantity   836
+     n_DM    str4                                 Method used to determine DM (1)   MaskedColumn     2
+     r_DM   str19                                                Reference for DM   MaskedColumn     2
+        T   int64                               de Vaucouleurs morphological type   MaskedColumn   183
+  l_SFRHa    str1                                             Limit flag on SFRHa   MaskedColumn  1311
+    SFRHa float64               H{alpha} derived integral star formation rate (1)   MaskedColumn   705
+    l_PHa    str1                                               Limit flag on PHa   MaskedColumn  1311
+      PHa float64                   H{alpha} derived evolutionary P parameter (1)   MaskedColumn   708
+    l_FHa    str1                                               Limit flag on FHa   MaskedColumn  1370
+      FHa float64                   H{alpha} derived evolutionary F parameter (1)   MaskedColumn   822
+ l_SFRFUV    str1                                            Limit flag on SFRFUV   MaskedColumn  1107
+   SFRFUV float64                    FUV derived integral star formation rate (1)   MaskedColumn   313
+   l_PFUV    str1                                              Limit flag on PFUV   MaskedColumn  1107
+     PFUV float64                        FUV derived evolutionary P parameter (1)   MaskedColumn   314
+   l_FFUV    str1                                              Limit flag on FFUV   MaskedColumn  1304
+     FFUV float64                        FUV derived evolutionary F parameter (1)   MaskedColumn   668
+     BMag float64           mag                     Absolute B band magnitude (1) MaskedQuantity     9
+:end:
+
+
+#+begin_src python
+dt.write('../tables/final_table.dat', format='ascii.mrt', overwrite=True)
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+#+begin_src python
+
+painf = QTable(ascii.read('../tables/final_table.dat', format="mrt"),masked=True)
+#+end_src
+
+#+RESULTS:
+:results:
+[0;33mWARNING[0m: UnitsWarning: 'dex(---)' did not parse as cds unit: At col 0, Unit 'dex' not supported by the CDS SAC standard. Did you mean de? If this is meant to be a custom unit, define it with 'u.def_unit'. To have it recognized inside a file reader or other code, enable it with 'u.add_enabled_units'. For details, see https://docs.astropy.org/en/latest/units/combining_and_defining.html [astropy.units.core]
 :end:
 
 ** IDEA mapping with Color, type of galaxy, SFR, Velocity
