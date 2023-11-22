@@ -653,7 +653,7 @@ ascii.write(dt, "../tables/final_table", format= "ecsv" , overwrite=True)
 
 #+begin_src python
 
-paint = QTable(ascii.read("../tables/final_table", format="ecsv"),masked=True)
+paint = QTable(ascii.read("../tables/final_table.ecsv", format="ecsv"),masked=True)
 
 paint.show_in_browser(jsviewer = True)
 #+end_src
