@@ -23,7 +23,7 @@
 #+bibliography:My Library.bib
 :end:
 
-#+begin_src python
+#+begin_src python :results none
 
 import numpy as np
 import pandas as pd
@@ -53,15 +53,10 @@ from plotnine import (
 dt = QTable.read("./tables/final_table.ecsv")
 #+end_src
 
-#+RESULTS:
-: [0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-: [0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-: [0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
 
-
+#+begin_abstract
+The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies[cite:@karachentsevUPDATEDNEARBYGALAXY2013] and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]. The properties studied include the galaxy types, their various masses, the star formation rates (SFRs) and the star formation timescale $\tau$, gas depletion timescale $\tau_g$ and the star formation time $t_{sf}$. The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories.
+#+end_abstract
 
 * The Galaxies in the Local Cosmological Volume (LCV)
 
