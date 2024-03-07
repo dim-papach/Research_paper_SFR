@@ -1,4 +1,5 @@
 #+title:Investigations of the galaxies of the LCV
+#+subtitle: Finding the normalization constant of $SFR_{del}$ and the relations between the various masses of the Galaxies
 #+author: Dimitrios Papachistopoulos
 #+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results output :session main
 
