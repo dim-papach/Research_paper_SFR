@@ -1,0 +1,857 @@
+#+title: Karachentsev List notes
+#+bibliography: "../My Library/My Library.bib"
+#+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results value  :session main
+
+
+This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on <2023-11-22 Wed>. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
+
+* Download Script
+
+Because I have to download each tables seperately from the site, I use this script
+
+
+
+#+begin_src sh :results none
+
+cd ~/Documents/Research_paper_SFR/
+wget --no-check-certificate -r -nH --cut-dirs=2 --accept="*.dat" --reject="*8.dat" -e robots=off -U mozilla https://www.sao.ru/lv/lvgdb/tables/
+
+#+end_src
+
+
+
+Let's break down the wget command and its various options:
+
++ --no-check-certificate: This option tells wget to not check SSL certificates. It's useful when dealing with websites that have self-signed or expired SSL certificates.
+
++ -r or --recursive: This option enables recursive downloading. It means that wget will follow links and download files from the specified URL as well as its subdirectories.
+
++ -nH or --no-host-directories: This option disables the creation of host directories. Without this option, wget would create a directory structure based on the hostname of the server.
+
++ --cut-dirs=2: This option instructs wget to ignore the first two directory components when creating the local directory structure. In this case, it helps to avoid creating unnecessary parent directories based on the server's directory structure.
+
++ --accept="*.dat": This option specifies the file types to accept during the download. In this case, only files with the extension ".dat" will be downloaded.
+
++ --reject="*8.dat": This option specifies the file types to reject during the download. Files with names containing "8.dat" will be excluded from the download.
+
++ -e robots=off: This option tells wget to ignore the robots.txt file, which is a file used by websites to communicate with web crawling and scraping bots about which parts of the site should not be crawled.
+
++ -U mozilla: This option sets the User-Agent header to "mozilla". The User-Agent header is used by the browser to identify itself to the server. In this case, it's set to mimic a Mozilla browser.
+
+Finally, the URL https://www.sao.ru/lv/lvgdb/tables/ is the starting point for the recursive download.
+
+
+* Original data set
+
+The data I will use for this project come from the Karachentsev  catalog (2022-12-02), which is an updated version of the list used in Kroupa et al. 2020
+From the list I use the tables "Catalog of Nearby Galaxies", "Global Parameters of the Nearby Galaxies" and "List of the nearby galaxies with measured SFR"
+
+#+begin_src python
+
+import numpy as np
+from astropy.io import ascii
+from astropy.coordinates import SkyCoord, ICRS, Galactic, FK4, FK5, Angle
+from astropy.table import Table, QTable, join, hstack, vstack, unique, Column, MaskedColumn, setdiff
+from astropy.utils.masked import Masked
+from astropy.coordinates import SkyCoord, Galactic, Angle
+from astropy.time import Time
+import astropy.units as u
+from astropy.utils.diff import report_diff_values
+import glob as glob
+import pandas as pd
+import h5py
+import sys
+import os
+
+os.chdir("/home/dp/Documents/Research_paper_SFR/notes")
+file_pattern = "../tables/lvg_table*.dat"
+
+# Use glob to find all matching files
+file_paths = sorted(glob.glob(file_pattern))
+
+dq = []  # Create an empty list to store Tables
+
+for file_path in file_paths:
+    table = Table(ascii.read(file_path, format="mrt"),masked=True)
+    dq.append(table)
+#+end_src
+
+#+RESULTS:
+: None
+
+
+#+begin_src python
+
+nm = []
+nm = ["cat", "param", "magn", "vel", "kin", "dist", "sfr"]
+
+# Automatically associate the names with the Tables
+for i in range(len(nm)):
+    globals()[nm[i]] = dq[i]
+#+end_src
+
+#+RESULTS:
+: None
+
+** Table 3
+
+I will need the colors, so i think the best way is to create tables for each filter and then join them. I also delete the column r_mag = Reference for mag observation
+
+#+begin_src python :results value
+
+magn.remove_column("r_mag")
+
+filters = magn.group_by("Filter")
+
+keys = filters.groups.keys["Filter"]
+indices = filters.groups.indices
+
+
+magn_table = Table()
+dcolor = []
+pain = 0
+n = 0
+print(indices,"\n", keys,"\n")
+for ind in indices[1:]:
+    magn_table = filters[pain:ind]
+    magn_table.rename_column("l_mag", f"l_mag_{keys[n]}")
+    magn_table.rename_column("mag", f"mag_{keys[n]}")
+    magn_table.rename_column("e_mag", f"e_mag_{keys[n]}")
+    magn_table.remove_column("Filter")
+    print("\n********************",keys[n],"********************\n",magn_table.info, )
+    pain = ind
+    n+=1
+    dcolor.append(magn_table)
+colors = Table(dcolor[0])
+
+for dcolor_item in dcolor[1:]:
+    colors = Table(join(colors, dcolor_item, keys="Name", join_type="outer"))
+
+colors.info
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<Table length=1441>
+   name    dtype  unit            description             n_bad
+--------- ------- ---- ---------------------------------- -----
+     Name   str18      Galaxy name in well-known catalogs     0
+  l_mag_B    str1                       Limit flag on mag  1441
+    mag_B float64  mag   Apparent magnitude in Filter (1)     9
+  e_mag_B float64  mag                   Error in mag (2)  1251
+ l_mag_FU    str1                       Limit flag on mag  1441
+   mag_FU float64  mag   Apparent magnitude in Filter (1)  1440
+ e_mag_FU float64  mag                   Error in mag (2)  1441
+l_mag_FUV    str1                       Limit flag on mag  1107
+  mag_FUV float64  mag   Apparent magnitude in Filter (1)   314
+e_mag_FUV float64  mag                   Error in mag (2)   737
+ l_mag_HI    str1                       Limit flag on mag  1231
+   mag_HI float64  mag   Apparent magnitude in Filter (1)   496
+ e_mag_HI float64  mag                   Error in mag (2)  1293
+ l_mag_Ha    str1                       Limit flag on mag  1311
+   mag_Ha float64  mag   Apparent magnitude in Filter (1)   705
+ e_mag_Ha float64  mag                   Error in mag (2)   767
+ l_mag_Ks    str1                       Limit flag on mag  1441
+   mag_Ks float64  mag   Apparent magnitude in Filter (1)  1081
+ e_mag_Ks float64  mag                   Error in mag (2)  1095
+#+end_example
+
+
+** Merging the tables
+
+*** Fixing the conflicts
+
+**** A26 and AB
+#+begin_src python
+param.rename_column("a26", "A26")
+param.rename_column("AB","AB_int")
+#+end_src
+
+#+RESULTS:
+: None
+
+**** W50
+#+begin_src python
+
+identical = report_diff_values(cat["Name","W50"], kin["Name", "W50"])
+print(identical)
+#+end_src
+
+#+RESULTS:
+: None
+
+But, according to the metadata of table 1 "Note (9): The main source of W50 data was LEDA, as well as the HIPASS and ALFALFA surveys. The references to individual W50 measurements are presented in Table 5 and the LV database"
+
+So I can drop the column of table 1 and only keep the table 5 W50
+
+#+begin_src python
+cat.remove_column("W50")
+kin.remove_column("r_W50")
+#+end_src
+
+#+RESULTS:
+: None
+
+**** BMag
+
+The BMags of Table 2 and Table 7 have some differences (in the version of 14/11/2023).
++ The SFR(BMag) has less values than CAT(BMag)
++ The SFR(BMag) has better precision (.01)
+
+#+begin_src python
+# Open a file for writing
+with open('diff_report.txt', 'w') as file:
+    # Redirect the output to the file
+   identical = report_diff_values(param["Name","BMag"], sfr["Name", "BMag"], rtol=0.7, atol=0.7, fileobj=file)
+identical
+#+end_src
+
+#+RESULTS:
+: False
+
+To keep all the values and the high precision, I will join the tables so the SFR_B will have masked values for the missing galaxies, and then I will replace the masks with the values of CAT_B
+
+#+begin_src python
+bmag = join(param["Name","BMag"], sfr["Name","BMag"], join_type='outer', keys = "Name")
+
+# Find indices where 'BMag_2' is NaN
+missing_indices = np.isnan(bmag['BMag_2'])
+
+# Replace NaN values in 'BMag_2' with corresponding values from 'BMag_1'
+bmag['BMag_2'][missing_indices] = bmag['BMag_1'][missing_indices]
+
+bmag.rename_column("BMag_2", "BMag")
+bmag.remove_column("BMag_1")
+
+print(bmag["BMag"])
+
+#+end_src
+
+#+RESULTS:
+: None
+
+#+begin_src python
+
+sfr.remove_column("BMag")
+param.remove_column("BMag")
+sfr = QTable(join(sfr,bmag, join_type = "outer"))
+
+sfr.info()
+#+end_src
+
+#+RESULTS:
+: None
+
+**** Right Ascension
+
+#+begin_src python
+with open('diff_report_RAh.txt', 'w') as file:
+    # Redirect the output to the file
+   identical = report_diff_values(param["Name","RAh"], sfr["Name", "RAh"], fileobj=file)
+print(identical)
+#+end_src
+
+#+RESULTS:
+: None
+
+As I observe, the Right Ascension of CAT and PARAM are the same and the problem is with the SFR table. Plus, as I see from the file "./diff_report_RAh.txt" the differences are marked as +,  indicating new rows in the table.
+
+So I can drop them in the table SFR.
+
+#+begin_src python
+columns_to_remove = ["RAh", "RAm", "RAs", "DE-", "DEd","DEm", "DEs"]
+# Remove the identified columns
+for col in columns_to_remove:
+    sfr.remove_column(col)
+#+end_src
+
+#+RESULTS:
+: None
+
+**** Types
+
+The SFR and CAT tables have the same column, the de Vaucouleurs morphological type.
+
+#+begin_src python
+
+identical = report_diff_values(cat["Name","TType"], sfr["Name", "T"])
+
+#+end_src
+
+#+RESULTS:
+: None
+
+The problem is that the SFR table is smaller, so it cannot join. I will follow the same steps as in BMag.
+
+#+begin_src python
+ttype = Table(join(cat["Name","TType"], sfr["Name","T"], join_type='outer', keys = "Name"))
+print(ttype.info)
+#+end_src
+
+#+RESULTS:
+: None
+
+Since each galaxy can have only one  morphological type and as I can see the only difference is that they have is the number of values, I will keep the longer column
+#+begin_src python
+sfr.remove_column("T")
+#+end_src
+
+#+RESULTS:
+: None
+
+**** Remove References
+I have already removed some references. Lets finish it
+
+#+begin_src python
+vel.remove_column("r_cz")
+dist.remove_column("r_DM")
+dist.remove_column("n_DM") # Method used to determine DM
+
+#+end_src
+
+#+RESULTS:
+: None
+
+*** Merging
+
+
+#+begin_src python
+# Find the index of "magn" in the list
+index_to_replace = nm.index("magn")
+
+# Replace "magn" with "color"
+nm[index_to_replace] = "colors"
+#+end_src
+
+#+RESULTS:
+: None
+
+#+begin_src python
+dtables = []
+
+
+for i in range(len(nm)):
+    lists = Table(globals()[nm[i]])
+    dtables.append(lists)
+#+end_src
+
+#+RESULTS:
+: None
+
+#+begin_src python
+
+dt = dtables[0]
+for data in dtables[1:]:
+    dt = Table(join(dt, data, join_type="outer"))
+print(dt.info)
+#+end_src
+
+#+RESULTS:
+: None
+
+
+
+** Tiny problem with the DE- of 6dF J2218489-46130
+
+I have noticed that the specific galaxy has a tiny problem
+
+#+begin_src python
+
+print(dt[dt["Name"] == "6dF J2218489-46130"])
+
+#+end_src
+
+#+RESULTS:
+: None
+
+Can you spot it? Indeed, the galaxy has such a big name that it moves the data. And that creates a lot of shenanigans in that row. So the fastest way to find the problem is to check if the DE- is a string or not and then, if it is not, delete it.
+
+#+begin_src python
+mask = ~((dt['DE-'] == '-') | (dt['DE-'] == '+'))
+
+# Get the rows to delete
+rows_to_delete = dt[mask]
+
+# Filter the table to keep only the rows where 'DE-' is either '+' or '-'
+dt = dt[~mask]
+
+# Print the rows to delete
+print("Rows to delete:", len(rows_to_delete))
+print(rows_to_delete)
+print("Remaining Galaxies:", len(dt))
+#+end_src
+
+#+RESULTS:
+: None
+
+But wont that create a *"stATIstIcaL PRoBlEM wiTh the Data sET"*? Lets see src_python[:results output]{print(len(rows_to_delete)/len(dt)*100,"%")} {{{results(=0.06944444444444445 %=)}}}
+
+* Fixing the units
+** Log (dex) units in linear
+
+Astropy doesn't fully support logarithmic units, so we have to turn them to linear!
+
+I get ~WARNINGS~ for "column logKLum", "column logM26" and "column logMHI". None of them has errors so we only have to change one column!
+
+#+begin_src python
+dt["KLum"] = (10**dt["logKLum"])
+dt["KLum"].units = u.Lsun
+dt["KLum"].description = "Linear K_S_ band luminosity"
+
+dt["M26"] = (10**dt["logM26"])
+dt["M26"].units = u.Msun
+dt["M26"].description = "Linear mass within Holmberg radius"
+
+dt["MHI"] = (10**dt["logMHI"])
+dt["MHI"].units = u.Msun
+dt["MHI"].description = "Linear hydrogen mass"
+dt[["KLum", "M26", "MHI"]].info
+#+end_src
+
+#+RESULTS:
+: <Table length=1440>
+: name  dtype             description             n_bad
+: ---- ------- ---------------------------------- -----
+: KLum float64        Linear K_S_ band luminosity    12
+:  M26 float64 Linear mass within Holmberg radius   637
+:  MHI float64               Linear hydrogen mass   496
+
+** SFR units
+#+begin_src python
+SFR_unit = u.Msun/u.year
+dt["SFRHa"].units = SFR_unit
+dt["SFRFUV"].units = SFR_unit
+#+end_src
+
+#+RESULTS:
+: None
+
+#+begin_src python
+dt.info
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<Table length=1440>
+   name    dtype       unit                        description                    n_bad
+--------- ------- ------------- ------------------------------------------------- -----
+     Name   str18                                                     Galaxy name     0
+      RAh   int64             h                   Hour of Right Ascension (J2000)     0
+      RAm   int64           min                 Minute of Right Ascension (J2000)     0
+      RAs float64             s                 Second of Right Ascension (J2000)     0
+      DE-    str1                                 Sign of the Declination (J2000)     0
+      DEd   int64           deg                     Degree of Declination (J2000)     0
+      DEm   int64        arcmin                  Arcminute of Declination (J2000)     0
+      DEs   int64        arcsec                  Arcsecond of Declination (J2000)     0
+      a26 float64        arcmin                        Major angular diameter (1)    12
+      b/a float64                                        Apparent axial ratio (1)    12
+       AB float64           mag                 Galactic extinction in B band (2)     1
+ l_FUVmag    str1                                            Limit flag on FUVmag  1106
+   FUVmag float64           mag                      GALEX FUV band magnitude (3)   313
+     Bmag float64           mag                     Integral B band magnitude (4)     9
+  l_Hamag    str1                                             Limit flag on Hamag  1310
+    Hamag float64           mag     Integral H{alpha} line emission magnitude (5)   704
+     Kmag float64           mag                     2MASS K_S_ band magnitude (6)    12
+   f_Kmag    str1                                            [*] Flag on Kmag (7)   362
+  l_21mag    str1                                             Limit flag on 21mag  1229
+    21mag float64           mag                      H I 21 cm line magnitude (8)   496
+    TType   int64                                       Morphology type code (10)     3
+     Tdw1    str5                                    Dwarf galaxy morphology (11)   233
+     Tdw2    str1                 Dwarf galaxy surface brightness morphology (12)   249
+     RVel   int64        km / s                 Heliocentric radial velocity (13)   458
+      Dis float64           Mpc                                          Distance     0
+    f_Dis    str4                             Method flag used to obtain Dis (14)     0
+      A26 float64           kpc                         Major linear diameter (1)    12
+      inc   int64           deg                                       Inclination    12
+       Vm   int64        km / s              Amplitude of rotational velocity (2)   637
+   AB_int float64           mag                    Internal B band extinction (3)    12
+      SBB float64 mag / arcsec2             Average B band surface brightness (5)    12
+  logKLum float64     dex(Lsun)                      Log K_S_ band luminosity (6)    12
+   logM26 float64     dex(Msun)               Log mass within Holmberg radius (7)   637
+ l_logMHI    str1                                            Limit flag on logMHI  1230
+   logMHI float64     dex(Msun)                             Log hydrogen mass (8)   496
+      VLG   int64        km / s                               Radial velocity (9)   458
+   Theta1 float64                                                Tidal index (10)    81
+       MD   str19                                        Main disturber name (11)    81
+   Theta5 float64                                        Another tidal index (12)    81
+   Thetaj float64      dex(---)                Log K band luminosity density (13)   185
+  l_mag_B    str1                                               Limit flag on mag  1440
+    mag_B float64           mag                  Apparent magnitude in Filter (1)     9
+  e_mag_B float64           mag                                  Error in mag (2)  1250
+ l_mag_FU    str1                                               Limit flag on mag  1440
+   mag_FU float64           mag                  Apparent magnitude in Filter (1)  1440
+ e_mag_FU float64           mag                                  Error in mag (2)  1440
+l_mag_FUV    str1                                               Limit flag on mag  1106
+  mag_FUV float64           mag                  Apparent magnitude in Filter (1)   313
+e_mag_FUV float64           mag                                  Error in mag (2)   736
+ l_mag_HI    str1                                               Limit flag on mag  1230
+   mag_HI float64           mag                  Apparent magnitude in Filter (1)   496
+ e_mag_HI float64           mag                                  Error in mag (2)  1293
+ l_mag_Ha    str1                                               Limit flag on mag  1310
+   mag_Ha float64           mag                  Apparent magnitude in Filter (1)   704
+ e_mag_Ha float64           mag                                  Error in mag (2)   766
+ l_mag_Ks    str1                                               Limit flag on mag  1440
+   mag_Ks float64           mag                  Apparent magnitude in Filter (1)  1080
+ e_mag_Ks float64           mag                                  Error in mag (2)  1094
+       cz   int64        km / s                             Heliocentric velocity   458
+     e_cz   int64        km / s                                       Error in cz   516
+      W50   int64        km / s               Observed HI line width at 50% level   625
+    e_W50   int64        km / s                                      Error in W50   893
+       DM float64           mag                                  Distance modulus     2
+     e_DM float64           mag                                       Error in DM   835
+  l_SFRHa    str1                                             Limit flag on SFRHa  1310
+    SFRHa float64               H{alpha} derived integral star formation rate (1)   704
+    l_PHa    str1                                               Limit flag on PHa  1310
+      PHa float64                   H{alpha} derived evolutionary P parameter (1)   707
+    l_FHa    str1                                               Limit flag on FHa  1369
+      FHa float64                   H{alpha} derived evolutionary F parameter (1)   821
+ l_SFRFUV    str1                                            Limit flag on SFRFUV  1106
+   SFRFUV float64                    FUV derived integral star formation rate (1)   313
+   l_PFUV    str1                                              Limit flag on PFUV  1106
+     PFUV float64                        FUV derived evolutionary P parameter (1)   314
+   l_FFUV    str1                                              Limit flag on FFUV  1303
+     FFUV float64                        FUV derived evolutionary F parameter (1)   668
+     BMag float64           mag                     Absolute B band magnitude (1)   185
+     KLum float64                                     Linear K_S_ band luminosity    12
+      M26 float64                              Linear mass within Holmberg radius   637
+      MHI float64                                            Linear hydrogen mass   496
+#+end_example
+
+
+* Calculations for values that we need
+** SFR_0
+Now we have to calculate the total SFR from the equation:
+
+$$
+    SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
+$$
+
+if we have both the SFR. If we only have one of them then:
+
+$$
+    SFR_{0}=SFR_{i},\ \text{if } SFR_{j}=0,\ i\neq j,\ i,j=SFR_{FUV},\, SFR_{Ha}
+$$
+
+#+begin_src python
+dt["SFR_0"] = np.ma.mean([dt["SFRHa"].data,dt["SFRFUV"].data], axis = 0)
+dt["SFR_0"].units = SFR_unit
+#+end_src
+
+#+RESULTS:
+: None
+
+** Stellar Mass of the galaxies
+We can also calculate the StellarMass of each galaxy from the K-band luminosity using a mass-to-light ratio of 0.6 ($M_\odot/Lum$)
+
+#+begin_src python
+dt["StellarMass"] = 0.6 * dt["KLum"]
+dt["StellarMass"].units = dt["KLum"].units * u.Msun/u.solLum
+dt["StellarMass"].description = "K-band luminosity using a mass-to-light ratio of 0.6"
+dt["StellarMass"].info
+#+end_src
+
+#+RESULTS:
+: name = StellarMass
+: dtype = float64
+: description = K-band luminosity using a mass-to-light ratio of 0.6
+: class = MaskedColumn
+: n_bad = 12
+: length = 1440
+
+** Theoretical Average SFR
+
+To calculate the average Star Formation Rate $\overline{SFR}$ we can use the equation
+
+$$
+    \overline{SFR}=\frac{\zeta M_*}{t_{sf}}
+$$
+
+where ζ is the mass-loss through stellar evolution and we assume that $\zeta\approx 1.3$ (see explanation in the paper`), M* is the stellar mass of each galaxy and we assume that  i$t_{sf}=12.5\ Gyr$
+
+#+begin_src python
+dt["av_SFR_theor"] = 1.3 * dt["StellarMass"] /12.5
+dt["av_SFR_theor"].units = dt["StellarMass"].units/u.Gyr
+dt["av_SFR_theor"].description = "The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr"
+dt["av_SFR_theor"].info
+#+end_src
+
+#+RESULTS:
+: name = av_SFR_theor
+: dtype = float64
+: description = The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr
+: class = MaskedColumn
+: n_bad = 12
+: length = 1440
+
+#+begin_src python
+dt.info
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<Table length=1440>
+    name      dtype       unit                              description                          n_bad
+------------ ------- ------------- ------------------------------------------------------------- -----
+        Name   str18                                                                 Galaxy name     0
+         RAh   int64             h                               Hour of Right Ascension (J2000)     0
+         RAm   int64           min                             Minute of Right Ascension (J2000)     0
+         RAs float64             s                             Second of Right Ascension (J2000)     0
+         DE-    str1                                             Sign of the Declination (J2000)     0
+         DEd   int64           deg                                 Degree of Declination (J2000)     0
+         DEm   int64        arcmin                              Arcminute of Declination (J2000)     0
+         DEs   int64        arcsec                              Arcsecond of Declination (J2000)     0
+         a26 float64        arcmin                                    Major angular diameter (1)    12
+         b/a float64                                                    Apparent axial ratio (1)    12
+          AB float64           mag                             Galactic extinction in B band (2)     1
+    l_FUVmag    str1                                                        Limit flag on FUVmag  1106
+      FUVmag float64           mag                                  GALEX FUV band magnitude (3)   313
+        Bmag float64           mag                                 Integral B band magnitude (4)     9
+     l_Hamag    str1                                                         Limit flag on Hamag  1310
+       Hamag float64           mag                 Integral H{alpha} line emission magnitude (5)   704
+        Kmag float64           mag                                 2MASS K_S_ band magnitude (6)    12
+      f_Kmag    str1                                                        [*] Flag on Kmag (7)   362
+     l_21mag    str1                                                         Limit flag on 21mag  1229
+       21mag float64           mag                                  H I 21 cm line magnitude (8)   496
+       TType   int64                                                   Morphology type code (10)     3
+        Tdw1    str5                                                Dwarf galaxy morphology (11)   233
+        Tdw2    str1                             Dwarf galaxy surface brightness morphology (12)   249
+        RVel   int64        km / s                             Heliocentric radial velocity (13)   458
+         Dis float64           Mpc                                                      Distance     0
+       f_Dis    str4                                         Method flag used to obtain Dis (14)     0
+         A26 float64           kpc                                     Major linear diameter (1)    12
+         inc   int64           deg                                                   Inclination    12
+          Vm   int64        km / s                          Amplitude of rotational velocity (2)   637
+      AB_int float64           mag                                Internal B band extinction (3)    12
+         SBB float64 mag / arcsec2                         Average B band surface brightness (5)    12
+     logKLum float64     dex(Lsun)                                  Log K_S_ band luminosity (6)    12
+      logM26 float64     dex(Msun)                           Log mass within Holmberg radius (7)   637
+    l_logMHI    str1                                                        Limit flag on logMHI  1230
+      logMHI float64     dex(Msun)                                         Log hydrogen mass (8)   496
+         VLG   int64        km / s                                           Radial velocity (9)   458
+      Theta1 float64                                                            Tidal index (10)    81
+          MD   str19                                                    Main disturber name (11)    81
+      Theta5 float64                                                    Another tidal index (12)    81
+      Thetaj float64      dex(---)                            Log K band luminosity density (13)   185
+     l_mag_B    str1                                                           Limit flag on mag  1440
+       mag_B float64           mag                              Apparent magnitude in Filter (1)     9
+     e_mag_B float64           mag                                              Error in mag (2)  1250
+    l_mag_FU    str1                                                           Limit flag on mag  1440
+      mag_FU float64           mag                              Apparent magnitude in Filter (1)  1440
+    e_mag_FU float64           mag                                              Error in mag (2)  1440
+   l_mag_FUV    str1                                                           Limit flag on mag  1106
+     mag_FUV float64           mag                              Apparent magnitude in Filter (1)   313
+   e_mag_FUV float64           mag                                              Error in mag (2)   736
+    l_mag_HI    str1                                                           Limit flag on mag  1230
+      mag_HI float64           mag                              Apparent magnitude in Filter (1)   496
+    e_mag_HI float64           mag                                              Error in mag (2)  1293
+    l_mag_Ha    str1                                                           Limit flag on mag  1310
+      mag_Ha float64           mag                              Apparent magnitude in Filter (1)   704
+    e_mag_Ha float64           mag                                              Error in mag (2)   766
+    l_mag_Ks    str1                                                           Limit flag on mag  1440
+      mag_Ks float64           mag                              Apparent magnitude in Filter (1)  1080
+    e_mag_Ks float64           mag                                              Error in mag (2)  1094
+          cz   int64        km / s                                         Heliocentric velocity   458
+        e_cz   int64        km / s                                                   Error in cz   516
+         W50   int64        km / s                           Observed HI line width at 50% level   625
+       e_W50   int64        km / s                                                  Error in W50   893
+          DM float64           mag                                              Distance modulus     2
+        e_DM float64           mag                                                   Error in DM   835
+     l_SFRHa    str1                                                         Limit flag on SFRHa  1310
+       SFRHa float64                           H{alpha} derived integral star formation rate (1)   704
+       l_PHa    str1                                                           Limit flag on PHa  1310
+         PHa float64                               H{alpha} derived evolutionary P parameter (1)   707
+       l_FHa    str1                                                           Limit flag on FHa  1369
+         FHa float64                               H{alpha} derived evolutionary F parameter (1)   821
+    l_SFRFUV    str1                                                        Limit flag on SFRFUV  1106
+      SFRFUV float64                                FUV derived integral star formation rate (1)   313
+      l_PFUV    str1                                                          Limit flag on PFUV  1106
+        PFUV float64                                    FUV derived evolutionary P parameter (1)   314
+      l_FFUV    str1                                                          Limit flag on FFUV  1303
+        FFUV float64                                    FUV derived evolutionary F parameter (1)   668
+        BMag float64           mag                                 Absolute B band magnitude (1)   185
+        KLum float64                                                 Linear K_S_ band luminosity    12
+         M26 float64                                          Linear mass within Holmberg radius   637
+         MHI float64                                                        Linear hydrogen mass   496
+       SFR_0 float64                                                                               182
+ StellarMass float64                        K-band luminosity using a mass-to-light ratio of 0.6    12
+av_SFR_theor float64               The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr    12
+#+end_example
+
+
+* Using Skycoord
+
+
+I can use skycoord to merge the coordinates.
+
+#+begin_src python
+data_table = dt.copy() # At first I was afraid, I was petrified, that this would break everything so I did it after I saved the file. Now I put it here and we will see (:
+
+ra_hour_column = data_table['RAh']
+ra_minute_column = data_table['RAm']
+ra_second_column = data_table['RAs']
+dec_sign_column = data_table['DE-']
+dec_degree_column = data_table['DEd']
+dec_minute_column = data_table['DEm']
+dec_second_column = data_table['DEs']
+
+# Create SkyCoord objects with strings
+ra_str = [f"{hour}:{minute}:{second:.1f}" for hour, minute, second in zip(ra_hour_column, ra_minute_column, ra_second_column)]
+dec_str = [f"{sign}{degree}:{minute}:{second:.1f}" for sign,degree, minute, second in zip(dec_sign_column, dec_degree_column, dec_minute_column, dec_second_column)]
+
+# Create SkyCoord objects in the Galactic coordinate system
+galactic_coords = data_table['Coordinates'] = SkyCoord(ra_str, dec_str, obstime = "J2000", unit=(u.hourangle, u.deg))
+# Print the Galactic coordinates
+print(galactic_coords)
+data_table.remove_column('RAh')
+data_table.remove_column('RAm')
+data_table.remove_column('RAs')
+data_table.remove_column('DE-')
+data_table.remove_column('DEd')
+data_table.remove_column('DEm')
+data_table.remove_column('DEs')
+
+column_order = ["Name","Coordinates"] + [col for col in data_table.colnames if col not in ["Name","Coordinates"]]
+
+# Reorder columns
+data_table = data_table[column_order]
+data_table.info
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<Table length=1440>
+    name      dtype       unit                              description                             class     n_bad
+------------ ------- ------------- ------------------------------------------------------------- ------------ -----
+        Name   str18                                                                 Galaxy name MaskedColumn     0
+ Coordinates  object       deg,deg                                                                   SkyCoord     0
+         a26 float64        arcmin                                    Major angular diameter (1) MaskedColumn    12
+         b/a float64                                                    Apparent axial ratio (1) MaskedColumn    12
+          AB float64           mag                             Galactic extinction in B band (2) MaskedColumn     1
+    l_FUVmag    str1                                                        Limit flag on FUVmag MaskedColumn  1106
+      FUVmag float64           mag                                  GALEX FUV band magnitude (3) MaskedColumn   313
+        Bmag float64           mag                                 Integral B band magnitude (4) MaskedColumn     9
+     l_Hamag    str1                                                         Limit flag on Hamag MaskedColumn  1310
+       Hamag float64           mag                 Integral H{alpha} line emission magnitude (5) MaskedColumn   704
+        Kmag float64           mag                                 2MASS K_S_ band magnitude (6) MaskedColumn    12
+      f_Kmag    str1                                                        [*] Flag on Kmag (7) MaskedColumn   362
+     l_21mag    str1                                                         Limit flag on 21mag MaskedColumn  1229
+       21mag float64           mag                                  H I 21 cm line magnitude (8) MaskedColumn   496
+       TType   int64                                                   Morphology type code (10) MaskedColumn     3
+        Tdw1    str5                                                Dwarf galaxy morphology (11) MaskedColumn   233
+        Tdw2    str1                             Dwarf galaxy surface brightness morphology (12) MaskedColumn   249
+        RVel   int64        km / s                             Heliocentric radial velocity (13) MaskedColumn   458
+         Dis float64           Mpc                                                      Distance MaskedColumn     0
+       f_Dis    str4                                         Method flag used to obtain Dis (14) MaskedColumn     0
+         A26 float64           kpc                                     Major linear diameter (1) MaskedColumn    12
+         inc   int64           deg                                                   Inclination MaskedColumn    12
+          Vm   int64        km / s                          Amplitude of rotational velocity (2) MaskedColumn   637
+      AB_int float64           mag                                Internal B band extinction (3) MaskedColumn    12
+         SBB float64 mag / arcsec2                         Average B band surface brightness (5) MaskedColumn    12
+     logKLum float64     dex(Lsun)                                  Log K_S_ band luminosity (6) MaskedColumn    12
+      logM26 float64     dex(Msun)                           Log mass within Holmberg radius (7) MaskedColumn   637
+    l_logMHI    str1                                                        Limit flag on logMHI MaskedColumn  1230
+      logMHI float64     dex(Msun)                                         Log hydrogen mass (8) MaskedColumn   496
+         VLG   int64        km / s                                           Radial velocity (9) MaskedColumn   458
+      Theta1 float64                                                            Tidal index (10) MaskedColumn    81
+          MD   str19                                                    Main disturber name (11) MaskedColumn    81
+      Theta5 float64                                                    Another tidal index (12) MaskedColumn    81
+      Thetaj float64      dex(---)                            Log K band luminosity density (13) MaskedColumn   185
+     l_mag_B    str1                                                           Limit flag on mag MaskedColumn  1440
+       mag_B float64           mag                              Apparent magnitude in Filter (1) MaskedColumn     9
+     e_mag_B float64           mag                                              Error in mag (2) MaskedColumn  1250
+    l_mag_FU    str1                                                           Limit flag on mag MaskedColumn  1440
+      mag_FU float64           mag                              Apparent magnitude in Filter (1) MaskedColumn  1440
+    e_mag_FU float64           mag                                              Error in mag (2) MaskedColumn  1440
+   l_mag_FUV    str1                                                           Limit flag on mag MaskedColumn  1106
+     mag_FUV float64           mag                              Apparent magnitude in Filter (1) MaskedColumn   313
+   e_mag_FUV float64           mag                                              Error in mag (2) MaskedColumn   736
+    l_mag_HI    str1                                                           Limit flag on mag MaskedColumn  1230
+      mag_HI float64           mag                              Apparent magnitude in Filter (1) MaskedColumn   496
+    e_mag_HI float64           mag                                              Error in mag (2) MaskedColumn  1293
+    l_mag_Ha    str1                                                           Limit flag on mag MaskedColumn  1310
+      mag_Ha float64           mag                              Apparent magnitude in Filter (1) MaskedColumn   704
+    e_mag_Ha float64           mag                                              Error in mag (2) MaskedColumn   766
+    l_mag_Ks    str1                                                           Limit flag on mag MaskedColumn  1440
+      mag_Ks float64           mag                              Apparent magnitude in Filter (1) MaskedColumn  1080
+    e_mag_Ks float64           mag                                              Error in mag (2) MaskedColumn  1094
+          cz   int64        km / s                                         Heliocentric velocity MaskedColumn   458
+        e_cz   int64        km / s                                                   Error in cz MaskedColumn   516
+         W50   int64        km / s                           Observed HI line width at 50% level MaskedColumn   625
+       e_W50   int64        km / s                                                  Error in W50 MaskedColumn   893
+          DM float64           mag                                              Distance modulus MaskedColumn     2
+        e_DM float64           mag                                                   Error in DM MaskedColumn   835
+     l_SFRHa    str1                                                         Limit flag on SFRHa MaskedColumn  1310
+       SFRHa float64                           H{alpha} derived integral star formation rate (1) MaskedColumn   704
+       l_PHa    str1                                                           Limit flag on PHa MaskedColumn  1310
+         PHa float64                               H{alpha} derived evolutionary P parameter (1) MaskedColumn   707
+       l_FHa    str1                                                           Limit flag on FHa MaskedColumn  1369
+         FHa float64                               H{alpha} derived evolutionary F parameter (1) MaskedColumn   821
+    l_SFRFUV    str1                                                        Limit flag on SFRFUV MaskedColumn  1106
+      SFRFUV float64                                FUV derived integral star formation rate (1) MaskedColumn   313
+      l_PFUV    str1                                                          Limit flag on PFUV MaskedColumn  1106
+        PFUV float64                                    FUV derived evolutionary P parameter (1) MaskedColumn   314
+      l_FFUV    str1                                                          Limit flag on FFUV MaskedColumn  1303
+        FFUV float64                                    FUV derived evolutionary F parameter (1) MaskedColumn   668
+        BMag float64           mag                                 Absolute B band magnitude (1) MaskedColumn   185
+        KLum float64                                                 Linear K_S_ band luminosity MaskedColumn    12
+         M26 float64                                          Linear mass within Holmberg radius MaskedColumn   637
+         MHI float64                                                        Linear hydrogen mass MaskedColumn   496
+       SFR_0 float64                                                                             MaskedColumn   182
+ StellarMass float64                        K-band luminosity using a mass-to-light ratio of 0.6 MaskedColumn    12
+av_SFR_theor float64               The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr MaskedColumn    12
+#+end_example
+
+
+
+* Writing
+#+begin_src python
+ascii.write(data_table, "../tables/final_table.ecsv", format= "ecsv" , overwrite=True)
+ascii.write(data_table, "../tables/final_table.csv", format= "csv" , overwrite=True)
+#+end_src
+
+#+RESULTS:
+: None
+
+
+#+begin_src python
+
+paint = QTable(ascii.read("../tables/final_table.ecsv", format="ecsv"),masked=True)
+
+paint.show_in_browser(jsviewer = True)
+#+end_src
+
+#+RESULTS:
+: None
+
+
+As we can see it works. FINALLY
+
+We use the ~ecsv~ format because I get errors with the ~mrt~.
+
+
+#+begin_src python
+paint.info()
+#+end_src
+
+#+RESULTS:
+: None
+
+
+
+* IDEAS
+** IDEA mapping with Color, type of galaxy, SFR, Velocity
+** IDEA machine learning
+*** Bands (FUV)
+*** missing SFR
+** use the limit flags as a comparison
+
+** IDEA for graphs
+[[./idea_for_graphs.jpg]]
+
+** I have to use an xml file to communicate between python and R, but skycoord doesnt play nice. Just turn the coordinates back.
+
+
+
+* Questions
+** [X] What is the W50 velocity = Observed HI line width at 50% level
+** [?] What are the P and F evolutionary parameters
