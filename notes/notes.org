@@ -97,13 +97,20 @@ for i in range(len(nm)):
 
 I will need the colors, so i think the best way is to create tables for each filter and then join them. I also delete the column r_mag = Reference for mag observation
 
-#+begin_src python :results value
+#+begin_src python :results none
 
 magn.remove_column("r_mag")
+
+#+end_src
+
+#+begin_src python :results value
+
+magn["Filter"][magn["Filter"] == "FU"] = "FUV"
 
 filters = magn.group_by("Filter")
 
 keys = filters.groups.keys["Filter"]
+keys[keys == "FU"] = "FUV"
 indices = filters.groups.indices
 
 
@@ -139,11 +146,8 @@ colors.info
   l_mag_B    str1                       Limit flag on mag  1441
     mag_B float64  mag   Apparent magnitude in Filter (1)     9
   e_mag_B float64  mag                   Error in mag (2)  1251
- l_mag_FU    str1                       Limit flag on mag  1441
-   mag_FU float64  mag   Apparent magnitude in Filter (1)  1440
- e_mag_FU float64  mag                   Error in mag (2)  1441
 l_mag_FUV    str1                       Limit flag on mag  1107
-  mag_FUV float64  mag   Apparent magnitude in Filter (1)   314
+  mag_FUV float64  mag   Apparent magnitude in Filter (1)   313
 e_mag_FUV float64  mag                   Error in mag (2)   737
  l_mag_HI    str1                       Limit flag on mag  1231
    mag_HI float64  mag   Apparent magnitude in Filter (1)   496
@@ -395,32 +399,32 @@ I get ~WARNINGS~ for "column logKLum", "column logM26" and "column logMHI". None
 
 #+begin_src python
 dt["KLum"] = (10**dt["logKLum"])
-dt["KLum"].units = u.Lsun
+dt["KLum"].unit = u.Lsun
 dt["KLum"].description = "Linear K_S_ band luminosity"
 
 dt["M26"] = (10**dt["logM26"])
-dt["M26"].units = u.Msun
+dt["M26"].unit = u.Msun
 dt["M26"].description = "Linear mass within Holmberg radius"
 
 dt["MHI"] = (10**dt["logMHI"])
-dt["MHI"].units = u.Msun
+dt["MHI"].unit = u.Msun
 dt["MHI"].description = "Linear hydrogen mass"
 dt[["KLum", "M26", "MHI"]].info
 #+end_src
 
 #+RESULTS:
 : <Table length=1440>
-: name  dtype             description             n_bad
-: ---- ------- ---------------------------------- -----
-: KLum float64        Linear K_S_ band luminosity    12
-:  M26 float64 Linear mass within Holmberg radius   637
-:  MHI float64               Linear hydrogen mass   496
+: name  dtype    unit             description             n_bad
+: ---- ------- ------- ---------------------------------- -----
+: KLum float64  solLum        Linear K_S_ band luminosity    12
+:  M26 float64 solMass Linear mass within Holmberg radius   637
+:  MHI float64 solMass               Linear hydrogen mass   496
 
 ** SFR units
 #+begin_src python
 SFR_unit = u.Msun/u.year
-dt["SFRHa"].units = SFR_unit
-dt["SFRFUV"].units = SFR_unit
+dt["SFRHa"].unit = SFR_unit
+dt["SFRFUV"].unit = SFR_unit
 #+end_src
 
 #+RESULTS:
@@ -478,9 +482,6 @@ dt.info
   l_mag_B    str1                                               Limit flag on mag  1440
     mag_B float64           mag                  Apparent magnitude in Filter (1)     9
   e_mag_B float64           mag                                  Error in mag (2)  1250
- l_mag_FU    str1                                               Limit flag on mag  1440
-   mag_FU float64           mag                  Apparent magnitude in Filter (1)  1440
- e_mag_FU float64           mag                                  Error in mag (2)  1440
 l_mag_FUV    str1                                               Limit flag on mag  1106
   mag_FUV float64           mag                  Apparent magnitude in Filter (1)   313
 e_mag_FUV float64           mag                                  Error in mag (2)   736
@@ -500,21 +501,21 @@ e_mag_FUV float64           mag                                  Error in mag (2
        DM float64           mag                                  Distance modulus     2
      e_DM float64           mag                                       Error in DM   835
   l_SFRHa    str1                                             Limit flag on SFRHa  1310
-    SFRHa float64               H{alpha} derived integral star formation rate (1)   704
+    SFRHa float64  solMass / yr H{alpha} derived integral star formation rate (1)   704
     l_PHa    str1                                               Limit flag on PHa  1310
       PHa float64                   H{alpha} derived evolutionary P parameter (1)   707
     l_FHa    str1                                               Limit flag on FHa  1369
       FHa float64                   H{alpha} derived evolutionary F parameter (1)   821
  l_SFRFUV    str1                                            Limit flag on SFRFUV  1106
-   SFRFUV float64                    FUV derived integral star formation rate (1)   313
+   SFRFUV float64  solMass / yr      FUV derived integral star formation rate (1)   313
    l_PFUV    str1                                              Limit flag on PFUV  1106
      PFUV float64                        FUV derived evolutionary P parameter (1)   314
    l_FFUV    str1                                              Limit flag on FFUV  1303
      FFUV float64                        FUV derived evolutionary F parameter (1)   668
      BMag float64           mag                     Absolute B band magnitude (1)   185
-     KLum float64                                     Linear K_S_ band luminosity    12
-      M26 float64                              Linear mass within Holmberg radius   637
-      MHI float64                                            Linear hydrogen mass   496
+     KLum float64        solLum                       Linear K_S_ band luminosity    12
+      M26 float64       solMass                Linear mass within Holmberg radius   637
+      MHI float64       solMass                              Linear hydrogen mass   496
 #+end_example
 
 
@@ -534,7 +535,7 @@ $$
 
 #+begin_src python
 dt["SFR_0"] = np.ma.mean([dt["SFRHa"].data,dt["SFRFUV"].data], axis = 0)
-dt["SFR_0"].units = SFR_unit
+dt["SFR_0"].unit = SFR_unit
 #+end_src
 
 #+RESULTS:
@@ -545,7 +546,7 @@ We can also calculate the StellarMass of each galaxy from the K-band luminosity 
 
 #+begin_src python
 dt["StellarMass"] = 0.6 * dt["KLum"]
-dt["StellarMass"].units = dt["KLum"].units * u.Msun/u.solLum
+dt["StellarMass"].unit = dt["KLum"].unit * u.Msun/u.solLum
 dt["StellarMass"].description = "K-band luminosity using a mass-to-light ratio of 0.6"
 dt["StellarMass"].info
 #+end_src
@@ -553,6 +554,7 @@ dt["StellarMass"].info
 #+RESULTS:
 : name = StellarMass
 : dtype = float64
+: unit = solMass
 : description = K-band luminosity using a mass-to-light ratio of 0.6
 : class = MaskedColumn
 : n_bad = 12
@@ -570,7 +572,7 @@ where ζ is the mass-loss through stellar evolution and we assume that $\zeta\ap
 
 #+begin_src python
 dt["av_SFR_theor"] = 1.3 * dt["StellarMass"] /12.5
-dt["av_SFR_theor"].units = dt["StellarMass"].units/u.Gyr
+dt["av_SFR_theor"].unit = dt["StellarMass"].unit/u.Gyr
 dt["av_SFR_theor"].description = "The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr"
 dt["av_SFR_theor"].info
 #+end_src
@@ -578,6 +580,7 @@ dt["av_SFR_theor"].info
 #+RESULTS:
 : name = av_SFR_theor
 : dtype = float64
+: unit = solMass / Gyr
 : description = The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr
 : class = MaskedColumn
 : n_bad = 12
@@ -635,9 +638,6 @@ dt.info
      l_mag_B    str1                                                           Limit flag on mag  1440
        mag_B float64           mag                              Apparent magnitude in Filter (1)     9
      e_mag_B float64           mag                                              Error in mag (2)  1250
-    l_mag_FU    str1                                                           Limit flag on mag  1440
-      mag_FU float64           mag                              Apparent magnitude in Filter (1)  1440
-    e_mag_FU float64           mag                                              Error in mag (2)  1440
    l_mag_FUV    str1                                                           Limit flag on mag  1106
      mag_FUV float64           mag                              Apparent magnitude in Filter (1)   313
    e_mag_FUV float64           mag                                              Error in mag (2)   736
@@ -657,24 +657,24 @@ dt.info
           DM float64           mag                                              Distance modulus     2
         e_DM float64           mag                                                   Error in DM   835
      l_SFRHa    str1                                                         Limit flag on SFRHa  1310
-       SFRHa float64                           H{alpha} derived integral star formation rate (1)   704
+       SFRHa float64  solMass / yr             H{alpha} derived integral star formation rate (1)   704
        l_PHa    str1                                                           Limit flag on PHa  1310
          PHa float64                               H{alpha} derived evolutionary P parameter (1)   707
        l_FHa    str1                                                           Limit flag on FHa  1369
          FHa float64                               H{alpha} derived evolutionary F parameter (1)   821
     l_SFRFUV    str1                                                        Limit flag on SFRFUV  1106
-      SFRFUV float64                                FUV derived integral star formation rate (1)   313
+      SFRFUV float64  solMass / yr                  FUV derived integral star formation rate (1)   313
       l_PFUV    str1                                                          Limit flag on PFUV  1106
         PFUV float64                                    FUV derived evolutionary P parameter (1)   314
       l_FFUV    str1                                                          Limit flag on FFUV  1303
         FFUV float64                                    FUV derived evolutionary F parameter (1)   668
         BMag float64           mag                                 Absolute B band magnitude (1)   185
-        KLum float64                                                 Linear K_S_ band luminosity    12
-         M26 float64                                          Linear mass within Holmberg radius   637
-         MHI float64                                                        Linear hydrogen mass   496
-       SFR_0 float64                                                                               182
- StellarMass float64                        K-band luminosity using a mass-to-light ratio of 0.6    12
-av_SFR_theor float64               The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr    12
+        KLum float64        solLum                                   Linear K_S_ band luminosity    12
+         M26 float64       solMass                            Linear mass within Holmberg radius   637
+         MHI float64       solMass                                          Linear hydrogen mass   496
+       SFR_0 float64  solMass / yr                                                                 182
+ StellarMass float64       solMass          K-band luminosity using a mass-to-light ratio of 0.6    12
+av_SFR_theor float64 solMass / Gyr The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr    12
 #+end_example
 
 
@@ -759,9 +759,6 @@ data_table.info
      l_mag_B    str1                                                           Limit flag on mag MaskedColumn  1440
        mag_B float64           mag                              Apparent magnitude in Filter (1) MaskedColumn     9
      e_mag_B float64           mag                                              Error in mag (2) MaskedColumn  1250
-    l_mag_FU    str1                                                           Limit flag on mag MaskedColumn  1440
-      mag_FU float64           mag                              Apparent magnitude in Filter (1) MaskedColumn  1440
-    e_mag_FU float64           mag                                              Error in mag (2) MaskedColumn  1440
    l_mag_FUV    str1                                                           Limit flag on mag MaskedColumn  1106
      mag_FUV float64           mag                              Apparent magnitude in Filter (1) MaskedColumn   313
    e_mag_FUV float64           mag                                              Error in mag (2) MaskedColumn   736
@@ -781,24 +778,24 @@ data_table.info
           DM float64           mag                                              Distance modulus MaskedColumn     2
         e_DM float64           mag                                                   Error in DM MaskedColumn   835
      l_SFRHa    str1                                                         Limit flag on SFRHa MaskedColumn  1310
-       SFRHa float64                           H{alpha} derived integral star formation rate (1) MaskedColumn   704
+       SFRHa float64  solMass / yr             H{alpha} derived integral star formation rate (1) MaskedColumn   704
        l_PHa    str1                                                           Limit flag on PHa MaskedColumn  1310
          PHa float64                               H{alpha} derived evolutionary P parameter (1) MaskedColumn   707
        l_FHa    str1                                                           Limit flag on FHa MaskedColumn  1369
          FHa float64                               H{alpha} derived evolutionary F parameter (1) MaskedColumn   821
     l_SFRFUV    str1                                                        Limit flag on SFRFUV MaskedColumn  1106
-      SFRFUV float64                                FUV derived integral star formation rate (1) MaskedColumn   313
+      SFRFUV float64  solMass / yr                  FUV derived integral star formation rate (1) MaskedColumn   313
       l_PFUV    str1                                                          Limit flag on PFUV MaskedColumn  1106
         PFUV float64                                    FUV derived evolutionary P parameter (1) MaskedColumn   314
       l_FFUV    str1                                                          Limit flag on FFUV MaskedColumn  1303
         FFUV float64                                    FUV derived evolutionary F parameter (1) MaskedColumn   668
         BMag float64           mag                                 Absolute B band magnitude (1) MaskedColumn   185
-        KLum float64                                                 Linear K_S_ band luminosity MaskedColumn    12
-         M26 float64                                          Linear mass within Holmberg radius MaskedColumn   637
-         MHI float64                                                        Linear hydrogen mass MaskedColumn   496
-       SFR_0 float64                                                                             MaskedColumn   182
- StellarMass float64                        K-band luminosity using a mass-to-light ratio of 0.6 MaskedColumn    12
-av_SFR_theor float64               The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr MaskedColumn    12
+        KLum float64        solLum                                   Linear K_S_ band luminosity MaskedColumn    12
+         M26 float64       solMass                            Linear mass within Holmberg radius MaskedColumn   637
+         MHI float64       solMass                                          Linear hydrogen mass MaskedColumn   496
+       SFR_0 float64  solMass / yr                                                               MaskedColumn   182
+ StellarMass float64       solMass          K-band luminosity using a mass-to-light ratio of 0.6 MaskedColumn    12
+av_SFR_theor float64 solMass / Gyr The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr MaskedColumn    12
 #+end_example
 
 
