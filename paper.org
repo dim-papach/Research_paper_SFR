@@ -34,11 +34,12 @@ from astropy.coordinates import SkyCoord, Galactic, Angle
 from astropy.time import Time
 import astropy.units as u
 from astropy.utils.diff import report_diff_values
+from astropy.visualization import quantity_support
 import glob as glob
 import sys
 import matplotlib.pyplot as plt
 from plotnine import (
-    ggplot,ggsave, aes, geom_point,
+    ggplot,qplot, ggsave, aes, geom_point, geom_smooth,
     after_stat,
     stage,
     geom_bar,
@@ -133,24 +134,24 @@ dt.info()
           DM float64           mag                                              Distance modulus MaskedQuantity     2
         e_DM float64           mag                                                   Error in DM MaskedQuantity   835
      l_SFRHa    str1                                                         Limit flag on SFRHa   MaskedColumn  1310
-       SFRHa float64                           H{alpha} derived integral star formation rate (1)   MaskedColumn   704
+       SFRHa float64  solMass / yr             H{alpha} derived integral star formation rate (1) MaskedQuantity   704
        l_PHa    str1                                                           Limit flag on PHa   MaskedColumn  1310
          PHa float64                               H{alpha} derived evolutionary P parameter (1)   MaskedColumn   707
        l_FHa    str1                                                           Limit flag on FHa   MaskedColumn  1369
          FHa float64                               H{alpha} derived evolutionary F parameter (1)   MaskedColumn   821
     l_SFRFUV    str1                                                        Limit flag on SFRFUV   MaskedColumn  1106
-      SFRFUV float64                                FUV derived integral star formation rate (1)   MaskedColumn   313
+      SFRFUV float64  solMass / yr                  FUV derived integral star formation rate (1) MaskedQuantity   313
       l_PFUV    str1                                                          Limit flag on PFUV   MaskedColumn  1106
         PFUV float64                                    FUV derived evolutionary P parameter (1)   MaskedColumn   314
       l_FFUV    str1                                                          Limit flag on FFUV   MaskedColumn  1303
         FFUV float64                                    FUV derived evolutionary F parameter (1)   MaskedColumn   668
         BMag float64           mag                                 Absolute B band magnitude (1) MaskedQuantity   185
-        KLum float64                                                 Linear K_S_ band luminosity   MaskedColumn    12
-         M26 float64                                          Linear mass within Holmberg radius   MaskedColumn   637
-         MHI float64                                                        Linear hydrogen mass   MaskedColumn   496
-       SFR_0 float64                                                                               MaskedColumn   182
- StellarMass float64                        K-band luminosity using a mass-to-light ratio of 0.6   MaskedColumn    12
-av_SFR_theor float64               The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr   MaskedColumn    12
+        KLum float64        solLum                                   Linear K_S_ band luminosity MaskedQuantity    12
+         M26 float64       solMass                            Linear mass within Holmberg radius MaskedQuantity   637
+         MHI float64       solMass                                          Linear hydrogen mass MaskedQuantity   496
+       SFR_0 float64  solMass / yr                                                               MaskedQuantity   182
+ StellarMass float64       solMass          K-band luminosity using a mass-to-light ratio of 0.6 MaskedQuantity    12
+av_SFR_theor float64 solMass / Gyr The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr MaskedQuantity    12
 #+end_example
 
 ** Mapping the galaxies
@@ -158,7 +159,7 @@ av_SFR_theor float64               The theoretical average SFR with zeta=1.3 and
 Because matplotlib needs the coordinates in radians and between $-\pi$ and $\pi$
 and, not 0 and $2\pi$, we have to convert coordinates.
 
-#+begin_src python :results file
+#+begin_src python :results value file drawer
 
 filename = "figure/mapping"
 
@@ -199,14 +200,13 @@ plt.tight_layout()  # Adjust spacing between subplots
 plt.savefig(filename)
 plt.close()
 
-print(filename+".png")
+filename+".png"
 #+end_src
 
 #+RESULTS:
-[[file:QSocketNotifier: Can only be used with threads started with QThread
-qt.qpa.qgnomeplatform.theme: The desktop style for QtQuick Controls 2 applications is not available on the system (qqc2-desktop-style). The application may look broken.
-/home/dp/.local/lib/python3.11/site-packages/numpy/lib/function_base.py:3710: RuntimeWarning: invalid value encountered in divide
-figure/mapping.png]]
+:results:
+[[file:figure/mapping.png]]
+:end:
 
 ** Types of galaxies
 
@@ -275,24 +275,83 @@ morphology.save(fname)
 
 ** Understanding the limit flags
 
-Some of those values contain limit flags, which we exclude from our present analysis.
-From the remaing galaxies we have
+Some of those values contain limit flags, which we will mask for our present analysis. However, those values will be shown in the plots, and afterwards will be compared with the theoretical values.
 
+#+begin_src python
+for column in dt.columns:
+    if column.startswith("l_") or column.startswith("f_"):
+        if column.startswith("l_"):
+            corresponding_column_name = column[2:]  # Remove the 'l_' prefix
+        else:
+            corresponding_column_name = column[2:]  # Remove the 'f_' prefix
+
+        try:
+            all_masks_in_corresponding = all(mask in dt[corresponding_column_name].mask for mask in dt[column].mask)
+            if all_masks_in_corresponding:
+                print(f"All masks in {column} are also masks in {corresponding_column_name}")
+            else:
+                print(f"Not all masks in {column} are masks in {corresponding_column_name}")
+        except AttributeError:
+            print(f"We have no mask for {column}")
+#+end_src
 
 #+RESULTS:
-: None
+#+begin_example
+All masks in l_FUVmag are also masks in FUVmag
+All masks in l_Hamag are also masks in Hamag
+All masks in f_Kmag are also masks in Kmag
+All masks in l_21mag are also masks in 21mag
+We have no mask for f_Dis
+All masks in l_logMHI are also masks in logMHI
+All masks in l_mag_B are also masks in mag_B
+All masks in l_mag_FU are also masks in mag_FU
+All masks in l_mag_FUV are also masks in mag_FUV
+All masks in l_mag_HI are also masks in mag_HI
+All masks in l_mag_Ha are also masks in mag_Ha
+All masks in l_mag_Ks are also masks in mag_Ks
+All masks in l_SFRHa are also masks in SFRHa
+All masks in l_PHa are also masks in PHa
+All masks in l_FHa are also masks in FHa
+All masks in l_SFRFUV are also masks in SFRFUV
+All masks in l_PFUV are also masks in PFUV
+All masks in l_FFUV are also masks in FFUV
+#+end_example
 
-The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 (\cite{lelliSPARCMASSMODELS2016}), and the $MHI$ can be converted to the total mass of the gas of the galaxy using the equation $M_g=1.33\,MHI$
+
+
+
+** The K-band value
+The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 ($M_\odot/Lum$)(\cite{lelliSPARCMASSMODELS2016}), and the $MHI$ can be converted to the total mass of the gas of the galaxy using the equation $M_g=1.33\, MHI$
+
+#+begin_src python :exports none
+dt["M_g"] = 1.33 * dt["MHI"]
+dt["M_g"].unit = dt["MHI"].unit
+
+print(dt["MHI"].unit)
+#+end_src
+
+#+RESULTS:
 
 
 The total SFR of each galaxy can be calcuated by the mean values of SFR_{Ha} and SFR_{FUV}
 
-#+begin_src python
+#+begin_src python :results value drawer file
+sfrs = (ggplot(dt[["SFRFUV", "SFRHa"]].to_pandas())
+         + aes(x = "SFRFUV", y = "SFRHa")
+         + labs(x = "$SFR_{FUV}$"+f" [{dt['SFRFUV'].unit:latex}]",
+                y = "$SFR_{Hα}$"+f" [{dt['SFRHa'].unit:latex}]")
+         + geom_point())
 
-gplot = ggplot(dt) + aes(x = "SFRFUV", y = "SFRHa") + geom_point()
+fname = "figure/sfrs.png"
+sfrs.save(fname)
+
+fname
 #+end_src
 
 #+RESULTS:
+:results:
+[[file:figure/sfrs.png]]
+:end:
 
 #+begin_src python
 
@@ -306,8 +365,8 @@ pain
 #+RESULTS:
 
 #+begin_src python
-plt.scatter(dt['SFRFUV'], dt['SFRHa'])
-
+plt.scatter(dt['SFRFUV'].value, dt['SFRHa'].value)
+plt.xlabel("SFR_{FUV}"+" [{}]".format(dt["SFRFUV"].unit))
 # Add labels and title
 plt.title('Scatter Plot of SFRFUV vs SFRHa')
 
