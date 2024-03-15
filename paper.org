@@ -39,19 +39,19 @@ import glob as glob
 import sys
 import matplotlib.pyplot as plt
 from plotnine import (
-    ggplot,qplot, ggsave, aes, geom_point, geom_smooth,
+    ggplot,qplot, ggsave, aes,
     after_stat,
     stage,
-    geom_bar,
-    geom_text,
-    geom_label,
+    geom_point, geom_smooth, geom_qq, geom_bar, geom_text, geom_label,
     position_dodge2,
     facet_wrap,
     labs,
-    scale_x_continuous
+    scale_x_continuous, scale_x_log10, scale_y_log10,
+    xlim, ylim,
 )
 
 dt = QTable.read("./tables/final_table.ecsv")
+dt.info()
 #+end_src
 
 
@@ -61,98 +61,41 @@ The paper investigates the properties of galaxies in the Local Cosmological Volu
 
 * The Galaxies in the Local Cosmological Volume (LCV)
 
-The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" databas[cite:@CatalogLVGalaxies]  are used to extract the K-band luminosities, the types of the galaxies, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of
-$\approx 11$ Mpc.
+The Catalogue of Neigbouring Galaxies (Karachentsev, Igor D. and Makarov  et al. 2013[cite:@karachentsevUPDATEDNEARBYGALAXY2013]) and its updated version from the "Catalog & Atlas of the LV galaxies" databas[cite:@CatalogLVGalaxies]  are used to extract the K-band luminosities, the types of the galaxies, the mass within the Holmberg radius (M26), the Hydrogen masses of the galaxies ($M_{HI}$) and the SFRs based on integrated  H and far-ultraviolet (FUV) measurments for galaxies within a distance of $\approx 11$ Mpc.
 
+** How are the galaxies chosen
 
-#+begin_src python :results table
-dt.info()
+According to [cite:@kraan-kortewegCatalogueGalaxiesIo1979] the Local Cosmological Volume is defined as the galaxies inside the radius of 10 Mpc and having radial velocities with respect to centroid of the Local Group $V_{lg} \le 500 \, km \cdot s^{-1}$. However, this assumed a Hubble constant of $H_0 = 50\, km \cdot s^{-1}$.
 
-#+end_src
+1. *Initial Selection Criteria*: Galaxies within a 10 Mpc radius were initially selected based on a radial velocity limit (VLG) of 500 km/s, considering a Hubble parameter (H0) of 50 km/s/Mpc.
 
-#+RESULTS:
-#+begin_example
-<QTable length=1440>
-    name      dtype       unit                              description                              class      n_bad
------------- ------- ------------- ------------------------------------------------------------- -------------- -----
-        Name   str18                                                                 Galaxy name         Column     0
- Coordinates  object       deg,deg                                                                     SkyCoord     0
-         a26 float64        arcmin                                    Major angular diameter (1) MaskedQuantity    12
-         b/a float64                                                    Apparent axial ratio (1)   MaskedColumn    12
-          AB float64           mag                             Galactic extinction in B band (2) MaskedQuantity     1
-    l_FUVmag    str1                                                        Limit flag on FUVmag   MaskedColumn  1106
-      FUVmag float64           mag                                  GALEX FUV band magnitude (3) MaskedQuantity   313
-        Bmag float64           mag                                 Integral B band magnitude (4) MaskedQuantity     9
-     l_Hamag    str1                                                         Limit flag on Hamag   MaskedColumn  1310
-       Hamag float64           mag                 Integral H{alpha} line emission magnitude (5) MaskedQuantity   704
-        Kmag float64           mag                                 2MASS K_S_ band magnitude (6) MaskedQuantity    12
-      f_Kmag    str1                                                        [*] Flag on Kmag (7)   MaskedColumn   362
-     l_21mag    str1                                                         Limit flag on 21mag   MaskedColumn  1229
-       21mag float64           mag                                  H I 21 cm line magnitude (8) MaskedQuantity   496
-       TType   int64                                                   Morphology type code (10)   MaskedColumn     3
-        Tdw1    str5                                                Dwarf galaxy morphology (11)   MaskedColumn   233
-        Tdw2    str1                             Dwarf galaxy surface brightness morphology (12)   MaskedColumn   249
-        RVel float64        km / s                             Heliocentric radial velocity (13) MaskedQuantity   458
-         Dis float64           Mpc                                                      Distance       Quantity     0
-       f_Dis    str4                                         Method flag used to obtain Dis (14)         Column     0
-         A26 float64           kpc                                     Major linear diameter (1) MaskedQuantity    12
-         inc float64           deg                                                   Inclination MaskedQuantity    12
-          Vm float64        km / s                          Amplitude of rotational velocity (2) MaskedQuantity   637
-      AB_int float64           mag                                Internal B band extinction (3) MaskedQuantity    12
-         SBB float64 mag / arcsec2                         Average B band surface brightness (5) MaskedQuantity    12
-     logKLum float64   dex(solLum)                                  Log K_S_ band luminosity (6)   MaskedColumn    12
-      logM26 float64  dex(solMass)                           Log mass within Holmberg radius (7)   MaskedColumn   637
-    l_logMHI    str1                                                        Limit flag on logMHI   MaskedColumn  1230
-      logMHI float64  dex(solMass)                                         Log hydrogen mass (8)   MaskedColumn   496
-         VLG float64        km / s                                           Radial velocity (9) MaskedQuantity   458
-      Theta1 float64                                                            Tidal index (10)   MaskedColumn    81
-          MD   str19                                                    Main disturber name (11)   MaskedColumn    81
-      Theta5 float64                                                    Another tidal index (12)   MaskedColumn    81
-      Thetaj float64      dex(---)                            Log K band luminosity density (13) MaskedQuantity   185
-     l_mag_B    str1                                                           Limit flag on mag   MaskedColumn  1440
-       mag_B float64           mag                              Apparent magnitude in Filter (1) MaskedQuantity     9
-     e_mag_B float64           mag                                              Error in mag (2) MaskedQuantity  1250
-    l_mag_FU    str1                                                           Limit flag on mag   MaskedColumn  1440
-      mag_FU float64           mag                              Apparent magnitude in Filter (1) MaskedQuantity  1440
-    e_mag_FU float64           mag                                              Error in mag (2) MaskedQuantity  1440
-   l_mag_FUV    str1                                                           Limit flag on mag   MaskedColumn  1106
-     mag_FUV float64           mag                              Apparent magnitude in Filter (1) MaskedQuantity   313
-   e_mag_FUV float64           mag                                              Error in mag (2) MaskedQuantity   736
-    l_mag_HI    str1                                                           Limit flag on mag   MaskedColumn  1230
-      mag_HI float64           mag                              Apparent magnitude in Filter (1) MaskedQuantity   496
-    e_mag_HI float64           mag                                              Error in mag (2) MaskedQuantity  1293
-    l_mag_Ha    str1                                                           Limit flag on mag   MaskedColumn  1310
-      mag_Ha float64           mag                              Apparent magnitude in Filter (1) MaskedQuantity   704
-    e_mag_Ha float64           mag                                              Error in mag (2) MaskedQuantity   766
-    l_mag_Ks    str1                                                           Limit flag on mag   MaskedColumn  1440
-      mag_Ks float64           mag                              Apparent magnitude in Filter (1) MaskedQuantity  1080
-    e_mag_Ks float64           mag                                              Error in mag (2) MaskedQuantity  1094
-          cz float64        km / s                                         Heliocentric velocity MaskedQuantity   458
-        e_cz float64        km / s                                                   Error in cz MaskedQuantity   516
-         W50 float64        km / s                           Observed HI line width at 50% level MaskedQuantity   625
-       e_W50 float64        km / s                                                  Error in W50 MaskedQuantity   893
-          DM float64           mag                                              Distance modulus MaskedQuantity     2
-        e_DM float64           mag                                                   Error in DM MaskedQuantity   835
-     l_SFRHa    str1                                                         Limit flag on SFRHa   MaskedColumn  1310
-       SFRHa float64  solMass / yr             H{alpha} derived integral star formation rate (1) MaskedQuantity   704
-       l_PHa    str1                                                           Limit flag on PHa   MaskedColumn  1310
-         PHa float64                               H{alpha} derived evolutionary P parameter (1)   MaskedColumn   707
-       l_FHa    str1                                                           Limit flag on FHa   MaskedColumn  1369
-         FHa float64                               H{alpha} derived evolutionary F parameter (1)   MaskedColumn   821
-    l_SFRFUV    str1                                                        Limit flag on SFRFUV   MaskedColumn  1106
-      SFRFUV float64  solMass / yr                  FUV derived integral star formation rate (1) MaskedQuantity   313
-      l_PFUV    str1                                                          Limit flag on PFUV   MaskedColumn  1106
-        PFUV float64                                    FUV derived evolutionary P parameter (1)   MaskedColumn   314
-      l_FFUV    str1                                                          Limit flag on FFUV   MaskedColumn  1303
-        FFUV float64                                    FUV derived evolutionary F parameter (1)   MaskedColumn   668
-        BMag float64           mag                                 Absolute B band magnitude (1) MaskedQuantity   185
-        KLum float64        solLum                                   Linear K_S_ band luminosity MaskedQuantity    12
-         M26 float64       solMass                            Linear mass within Holmberg radius MaskedQuantity   637
-         MHI float64       solMass                                          Linear hydrogen mass MaskedQuantity   496
-       SFR_0 float64  solMass / yr                                                               MaskedQuantity   182
- StellarMass float64       solMass          K-band luminosity using a mass-to-light ratio of 0.6 MaskedQuantity    12
-av_SFR_theor float64 solMass / Gyr The theoretical average SFR with zeta=1.3 and t_sf = 12.5 Gyr MaskedQuantity    12
-#+end_example
+2. *Updated Criteria*: To accommodate the revised H0 value of 73 km/s/Mpc, the VLG limit needs to be raised to 730 km/s.
+
+3. *Local Velocity Field*: The presence of the Virgo cluster and the Local Void introduces additional velocity components, complicating distance estimation based solely on radial velocities.
+
+4. *Peculiar Motions*: Collective motions within large-scale structures can introduce peculiar velocities, complicating distance estimation.
+
+5. *Distance Measurement Methods*: Direct distance measurements using methods like the tip of the red giant branch (TRGB) provide accurate distances but are resource-intensive, requiring extensive observation time with instruments like the Hubble Space Telescope (HST).
+
+6. *Inclusion Criteria*: Galaxies are included based on either radial velocities or distance estimates, considering the limitations and uncertainties in both methods.
+
+7. *Extension to 11 Mpc*: Galaxies with distance estimates beyond 10 Mpc may still be included due to uncertainties in distance measurements and the potential influence of coherent motions and large-scale structures.
+
+8. *Sample Composition*: The LV sample comprises src_python[:results value org]{len(dt)} {{{results(src_org{1440})}}} galaxies, with considerations for galaxies near the boundaries of the selection criteria and the potential influence of measurement errors.
+
+   #+begin_src python :results file drawer value
+hubble = (ggplot(dt)
+          + aes( x = "Dis", y =  "VLG")
+          + labs( x = f"Distance [{dt['Dis'].unit}]" , y = "Radial velocities $V_{LG} $"+f"[{dt['VLG'].unit:latex}]" )
+          + xlim(0,11) + ylim(0,1200)
+          + geom_smooth(color = "red")
+          + geom_point()
+          )
+fname = "figure/hubble.png"
+hubble.save(fname)
+fname
+   #+end_src
+
 
 ** Mapping the galaxies
 
@@ -252,7 +195,7 @@ morphology.save(fname)
 
 
 
-*** Morphology of dwarf galaxies
+**** Morphology of dwarf galaxies
 
 
 #+call: morphology[:results value drawer](x = "Tdw1", file = "Tdw1", label = "Morphology of dwarf galaxies")
@@ -264,7 +207,7 @@ morphology.save(fname)
 
 
 
-*** Dwarf galaxy surface brightness morphology
+**** Dwarf galaxy surface brightness morphology
 
 #+call: morphology[:results value drawer](x = "Tdw2", file = "Tdw2", label = "Dwarf galaxy surface brightness morphology")
 
@@ -272,6 +215,24 @@ morphology.save(fname)
 :results:
 [[./figure/Tdw2.png]]
 :end:
+
+
+* Understanding the Data
+
+The catalog consists of 8 tables
+
+1. Catalog of Nearby Galaxies
+2. Global Parameters of the Nearby Galaxies
+3. List of Apparent Magnitudes
+4. List of Heliocentric Velocities
+5. List of Inner Kinematics
+6. List of Distances
+7. List of the nearby galaxies with measured SFR
+8. List of Bibliographic References
+
+We want several measurments from those lists so we will join them according to the name of the galaxy.
+
+This catalog consists of src_python[:results value org]{len(dt)+1} {{{results(src_org{1441})}}} galaxies
 
 ** Understanding the limit flags
 
@@ -304,7 +265,6 @@ All masks in l_21mag are also masks in 21mag
 We have no mask for f_Dis
 All masks in l_logMHI are also masks in logMHI
 All masks in l_mag_B are also masks in mag_B
-All masks in l_mag_FU are also masks in mag_FU
 All masks in l_mag_FUV are also masks in mag_FUV
 All masks in l_mag_HI are also masks in mag_HI
 All masks in l_mag_Ha are also masks in mag_Ha
@@ -317,21 +277,20 @@ All masks in l_PFUV are also masks in PFUV
 All masks in l_FFUV are also masks in FFUV
 #+end_example
 
+** Calculating various values
 
-
-
-** The K-band value
+*** Total stellar masses and the total gas mass of the galaxies
 The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 ($M_\odot/Lum$)(\cite{lelliSPARCMASSMODELS2016}), and the $MHI$ can be converted to the total mass of the gas of the galaxy using the equation $M_g=1.33\, MHI$
 
 #+begin_src python :exports none
 dt["M_g"] = 1.33 * dt["MHI"]
 dt["M_g"].unit = dt["MHI"].unit
 
-print(dt["MHI"].unit)
 #+end_src
 
 #+RESULTS:
 
+*** The total and the average SFR
 
 The total SFR of each galaxy can be calcuated by the mean values of SFR_{Ha} and SFR_{FUV}
 
@@ -340,7 +299,10 @@ sfrs = (ggplot(dt[["SFRFUV", "SFRHa"]].to_pandas())
          + aes(x = "SFRFUV", y = "SFRHa")
          + labs(x = "$SFR_{FUV}$"+f" [{dt['SFRFUV'].unit:latex}]",
                 y = "$SFR_{Hα}$"+f" [{dt['SFRHa'].unit:latex}]")
-         + geom_point())
+         + geom_point()
+         + geom_smooth(method = "lm")
+         + geom_qq())
+
 
 fname = "figure/sfrs.png"
 sfrs.save(fname)
@@ -350,19 +312,9 @@ fname
 
 #+RESULTS:
 :results:
-[[file:figure/sfrs.png]]
+[[file:]]
 :end:
 
-#+begin_src python
-
-pain = (ggplot(dt) +
-              aes(x='Bmag', y='Dis') +
-              geom_point() +
-              facet_wrap("Tdw1") )
-pain
-#+end_src
-
-#+RESULTS:
 
 #+begin_src python
 plt.scatter(dt['SFRFUV'].value, dt['SFRHa'].value)
@@ -376,3 +328,18 @@ plt.show()
 
 #+RESULTS:
 : qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
+
+
+* The Delayed-\tau model
+** Calculating the normalization constant A_{del}
+** Calculating the t_{sf} and \tau of the galaxies
+** The gas depletion timescale \tau_g
+** The theoretical SFR vs the observed
+
+
+* The relations of the Data
+** The relations of the Masses
+** Luminosity and Masses
+** Variations in Star Formation Rates across the different masses
+
+* Filling the Catalogue
