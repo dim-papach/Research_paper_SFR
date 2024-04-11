@@ -1,7 +1,7 @@
 #+title:Investigations of the galaxies of the LCV
 #+subtitle: Finding the normalization constant of $SFR_{del}$ and the relations between the various masses of the Galaxies
 #+author: Dimitrios Papachistopoulos
-#+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results output :session main
+#+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :comments both :results output :session main
 
 :latex_prop:
 #+OPTIONS: toc:nil
@@ -24,7 +24,6 @@
 :end:
 
 #+begin_src python :results none
-
 import numpy as np
 import pandas as pd
 from astropy.io import ascii
@@ -48,7 +47,30 @@ from plotnine import (
     labs,
     scale_x_continuous, scale_x_log10, scale_y_log10,
     xlim, ylim,
+    stat_qq
 )
+from scipy.optimize import fsolve
+from sympy import symbols, exp, log, lambdify
+
+class CustomQTable(QTable):
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        if isinstance(value, u.Quantity):
+            self.update_metadata(key, value.unit)
+
+    def add_column(self, column, index=None, name=None, copy=True):
+        super().add_column(column, index=index, name=name, copy=copy)
+        if isinstance(column, u.Quantity):
+            self.update_metadata(name, column.unit)
+
+    def update_metadata(self, column_name, unit):
+        if 'latex' not in self.meta:
+            self.meta['latex'] = {}
+        self.meta['latex'][column_name] = {
+            'latex_name': f'${column_name}$',
+            'latex_unit': str(unit)
+        }
+
 
 dt = QTable.read("./tables/final_table.ecsv")
 dt.info()
@@ -84,7 +106,7 @@ According to [cite:@kraan-kortewegCatalogueGalaxiesIo1979] the Local Cosmologica
 8. *Sample Composition*: The LV sample comprises src_python[:results value org]{len(dt)} {{{results(src_org{1440})}}} galaxies, with considerations for galaxies near the boundaries of the selection criteria and the potential influence of measurement errors.
 
    #+begin_src python :results file drawer value
-hubble = (ggplot(dt)
+hubble = (ggplot(dt[["Dis", "VLG"]].to_pandas())
           + aes( x = "Dis", y =  "VLG")
           + labs( x = f"Distance [{dt['Dis'].unit}]" , y = "Radial velocities $V_{LG} $"+f"[{dt['VLG'].unit:latex}]" )
           + xlim(0,11) + ylim(0,1200)
@@ -94,7 +116,12 @@ hubble = (ggplot(dt)
 fname = "figure/hubble.png"
 hubble.save(fname)
 fname
-   #+end_src
+#+end_src
+
+   #+RESULTS:
+   :results:
+   [[file:figure/hubble.png]]
+   :end:
 
 
 ** Mapping the galaxies
@@ -103,7 +130,6 @@ Because matplotlib needs the coordinates in radians and between $-\pi$ and $\pi$
 and, not 0 and $2\pi$, we have to convert coordinates.
 
 #+begin_src python :results value file drawer
-
 filename = "figure/mapping"
 
 # Assuming dt is your data table containing coordinates, mass, and distance
@@ -159,6 +185,9 @@ galaxies, we can study the morphology of the galaxies in the LCV
 *** Morphology
 #+name: morphology
 #+begin_src python :results value drawer :var x = "TType" file = "Types" label = "Morphology type code"
+x="TType"
+file="Types"
+label="Morphology type code"
 dttype = pd.DataFrame({"x": dt["{}".format(x)]}).dropna()
 morphology = (
     ggplot(dttype, aes("factor(x)"))
@@ -202,7 +231,7 @@ morphology.save(fname)
 
 #+RESULTS:
 :results:
-[[./figure/Tdw1.png]]
+[[./figure/Types.png]]
 :end:
 
 
@@ -213,7 +242,7 @@ morphology.save(fname)
 
 #+RESULTS:
 :results:
-[[./figure/Tdw2.png]]
+[[./figure/Types.png]]
 :end:
 
 
@@ -285,7 +314,6 @@ The K-band values are converted to the total Stellar Masses of each galaxy accor
 #+begin_src python :exports none
 dt["M_g"] = 1.33 * dt["MHI"]
 dt["M_g"].unit = dt["MHI"].unit
-
 #+end_src
 
 #+RESULTS:
@@ -301,7 +329,7 @@ sfrs = (ggplot(dt[["SFRFUV", "SFRHa"]].to_pandas())
                 y = "$SFR_{Hα}$"+f" [{dt['SFRHa'].unit:latex}]")
          + geom_point()
          + geom_smooth(method = "lm")
-         + geom_qq())
+)
 
 
 fname = "figure/sfrs.png"
@@ -312,34 +340,134 @@ fname
 
 #+RESULTS:
 :results:
-[[file:]]
+[[file:figure/sfrs.png]]
 :end:
 
+$$ SFR_0 = \frac{SFRFUV+SFRHa}{2} $$
+
+
+* The relations of the Masses
+Since the aim of the paper is to find the SFR lets first understand and calculate the masses of the galaxies and see if we can find any relation with the SFR.
 
 #+begin_src python
-plt.scatter(dt['SFRFUV'].value, dt['SFRHa'].value)
-plt.xlabel("SFR_{FUV}"+" [{}]".format(dt["SFRFUV"].unit))
-# Add labels and title
-plt.title('Scatter Plot of SFRFUV vs SFRHa')
+dt.info()
 
-# Show the plot
-plt.show()
 #+end_src
 
 #+RESULTS:
-: qt.qpa.wayland: Wayland does not support QWindow::requestActivate()
-
+: <CustomQTable length=3>
+:   name   dtype  unit  class
+: ------- ------- ---- --------
+: Column1 float64    m Quantity
+: Column2 float64 cm s Quantity
 
 * The Delayed-\tau model
+According to P. Kroupa et al. 2020[cite:@kroupaConstraintsStarFormation2020] current star formation rates of galaxies can be described by the ‘delayed-$τ$’ model as
+
+\begin{equation}
+        \label{eq:SFR} SFR0,del=\frac{Adelxe-x}{\tau},\text{ where } x=\frac{tsf}{\tau}
+\end{equation}
+
+\noindent where
+
+is the star formation time-scale, $tsf$ is the real time of star formation in a given galaxy and $Adel$ a normalization constant.
+
+The average SFR is
+
+\begin{equation}
+        \label{eq:av_SFR-x} \overline{SFRdel}=\frac{Adel}{tsf}[1-(1+x)e^{-x}]
+\end{equation}
+and can also be defined by the present day stellar mass
+
+\begin{equation}\label{eq:av_SFR M*}
+        \overline{SFR}=\frac{\zeta M_*}{tsf}
+\end{equation}
+
+where
+accommodates for mass-loss through stella evolution and This is a system of 2 equations and 3 variables, since Adel has never been calculated
 ** Calculating the normalization constant A_{del}
+*** Constant t_{sf}
+The observed ages of galactic discs are $tsf≈ 12$ Gyr[cite:@knoxSurveyCoolWhite1999], so assuming an approximation of $tsf=12.5$ Gyr, the $\overline{SFRdel}$ can be calcuated, from the equation (\ref{eq:av_SFR M*}).
+
+#+begin_src python
+###Constant tsf
+dts=dt.copy()
+tsf=12.5*10**9
+zeta=1.3
+
+dts['av_SFR']=dts['StellarMass']*1.3/(12.5*10**9)
+dts['log_av_SFR']=np.log10(dts['av_SFR'].data)
+adsf
+dts['ratio']=dts['av_SFR']/dts['SFR_0']
+#+end_src
+
+#+RESULTS:
+: [0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+: [0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+: [0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+: /tmp/babel-Txj4W5/python-b4CoEJ:7: RuntimeWarning: divide by zero encountered in log10
+
+After that the equation of ratio
+
+\begin{equation} \label{eq:ratio}                                        \frac{\overline{SFRdel}}{SFR0,del}=\frac{e^x-x-1}{x^2}
+\end{equation}
+
+can be solved numerically for x and using the equations (\Ref{eq:SFR}) and (\Ref{eq:av_SFR-x}) the $Adel$ and of each galaxy are found.
+
+#+begin_src python
+# Define symbols
+x_sym = symbols('x')
+
+# Define the function
+def sfrx(x, ratio):
+    x = max(0, x)
+    return ratio - (exp(x) - x - 1) / x**2
+
+# Convert the function to a callable function using lambdify
+x_ratio = symbols('x_ratio')
+sfrx_callable = lambdify([x_sym, x_ratio], sfrx(x_sym, x_ratio), modules='numpy')
+
+# Assuming you have your data in an Astropy Table (similar to pandas DataFrame)
+
+# Define a function to be solved
+def solve_z(ratio):
+    # Define a modified function with x shifted by 1 to ensure initial guess is positive
+    def modified_sfrx(x):
+        return sfrx_callable(x + 1, ratio)
+
+    # Solve the modified function starting from initial guess of 2
+    return fsolve(modified_sfrx, 2.0)[0] - 1  # Shift back by 1 to get original solution
+
+# Use Astropy's Table functionality to iterate over rows efficiently
+z_values = np.zeros(len(dts))
+for i, ratio in enumerate(dts['ratio'].data):
+    z_values[i] = solve_z(ratio)
+
+# Convert the z values to dimensionless quantities
+z_values *= u.dimensionless_unscaled
+
+# Assign the result back to the table
+dts['x_tsf'] = z_values
+
+# Optionally, compute the log
+dts["log_x_tsf"] = np.log10(dts["x_tsf"])
+
+print(dts["x_tsf"])
+#+end_src
+
+#+RESULTS:
+
 ** Calculating the t_{sf} and \tau of the galaxies
 ** The gas depletion timescale \tau_g
 ** The theoretical SFR vs the observed
 
 
 * The relations of the Data
-** The relations of the Masses
 ** Luminosity and Masses
 ** Variations in Star Formation Rates across the different masses
 
 * Filling the Catalogue
+
