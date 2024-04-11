@@ -82,13 +82,13 @@
 #     Coordinates:
 #       __class__: astropy.coordinates.sky_coordinate.SkyCoord
 #       dec: !astropy.table.SerializedColumn
-#         __class__: astropy.coordinates.angles.Latitude
+#         __class__: astropy.coordinates.angles.core.Latitude
 #         unit: &id001 !astropy.units.Unit {unit: deg}
 #         value: !astropy.table.SerializedColumn {name: Coordinates.dec}
 #       frame: icrs
 #       obstime: !astropy.time.Time {format: jyear_str, in_subfmt: '*', jd1: 2451545.0, jd2: 0.0, out_subfmt: '*', precision: 3, scale: tt}
 #       ra: !astropy.table.SerializedColumn
-#         __class__: astropy.coordinates.angles.Longitude
+#         __class__: astropy.coordinates.angles.core.Longitude
 #         unit: *id001
 #         value: !astropy.table.SerializedColumn {name: Coordinates.ra}
 #         wrap_angle: !astropy.coordinates.Angle
