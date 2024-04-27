@@ -647,6 +647,9 @@ KKH18               18.43 0.40 FUV 2012LVG.Magnitude.K
 KKH18               16.70      B   2004AJ....127.2031K
 KKH18               20.69 0.04 Ha  2010AJ....140.1241K
 KKH18               16.39      HI  2011LVG.HI........K
+PGC1166738          19.71      FUV 2011GALEX.........0
+PGC1166738          18.41      B   2024MNRAS.527.11066
+PGC1166738          18.05 0.41 HI  2016A&A...595A.118V
 N1291-DW9          >23.00      FUV 2011GALEX.........0
 N1291-DW9           19.59      B   2022ApJ...933...47C
 ESO300-014          15.03 0.06 FUV 2011ApJS..192....6L
@@ -731,10 +734,13 @@ Reticulum 2        >17.82      HI  2015MNRAS.453..338W
 PGC013294           17.61 0.04 FUV 2012LVG.Magnitude.K
 PGC013294           16.13      B   2011LVG.Magnitude.K
 PGC013294          >17.40      HI  2011LVG.HI........K
+PGC712531           18.50      B   2024LVG.Magnitude.K
 NGC1400             17.50 0.01 FUV 2012LVG.Magnitude.K
 NGC1400             11.92      B   2011LVG.Magnitude.K
 NGC1400             17.58 0.01 Ha  2014AstBu..69..390K
 NGC1400              7.81 0.02 Ks  2006AJ....131.1163S
+PGC681755           19.87      FUV 2011GALEX.........0
+PGC681755           16.55      B   2024MNRAS.527.11066
 Eridanus 2          17.00      B   2015LVG.Magnitude.K
 Eridanus 2         >20.14      HI  2016ApJ...824L..14C
 KKH22              >23.00      FUV 2012LVG.Magnitude.K
@@ -766,6 +772,9 @@ NGC1533             11.79      B   2011LVG.Magnitude.K
 NGC1533             16.06 0.40 Ha  2006ApJS..165..307M
 NGC1533              7.63 0.02 Ks  2006AJ....131.1163S
 NGC1533             12.87      HI  2011LVG.HI........K
+ESO359-024          16.90      FUV 2011GALEX.........0
+ESO359-024          15.58      B   2024LVG.Magnitude.K
+ESO359-024          15.42      HI  2005MNRAS.361...34D
 ESO483-013          16.21 0.06 FUV 2011ApJS..192....6L
 ESO483-013          14.06      B   2011LVG.Magnitude.K
 ESO483-013          17.84 0.06 Ha  2012MNRAS.425.2083K
@@ -4309,6 +4318,9 @@ KDG235              16.28      HI  2011LVG.HI........K
 Draco              >23.00      FUV 2012LVG.Magnitude.K
 Draco               10.90      B   2004AJ....127.2031K
 Draco              >20.04      HI  2014ApJ...795L...5S
+HIPASS J1738-57     18.33      FUV 2011GALEX.........0
+HIPASS J1738-57     16.62      B   2005MNRAS.361...34D
+HIPASS J1738-57     15.77      HI  2005MNRAS.361...34D
 Milky Way           -4.60      B   2004AJ....127.2031K
 Milky Way           -3.35      HI  2004AJ....127.2031K
 IC4662              13.02 0.05 FUV 2011ApJS..192....6L
@@ -4405,6 +4417,7 @@ IC4951              15.55 0.05 FUV 2011ApJS..192....6L
 IC4951              13.97      B   2011LVG.Magnitude.K
 IC4951              17.48 0.12 Ha  2008ApJS..178..247K
 IC4951              13.91      HI  2011LVG.HI........K
+PGC408791           16.83      B   2024LVG.Magnitude.K
 UGC11583            15.90      B   1997AstL...23..373S
 UGC11583            20.20 0.14 Ha  2005A&A...434..935K
 UGC11583            14.00      HI  2011LVG.HI........K
@@ -4441,6 +4454,8 @@ KKR59               15.70      B   2000A&A...362..544K
 KKR59               18.25 0.13 Ha  2005A&A...434..935K
 KKR60               18.00      B   2004AJ....127.2031K
 KKR60               19.05 0.30 Ha  2005A&A...434..935K
+PGC129680           18.12      FUV 2011GALEX.........0
+PGC129680           15.95      B   2024LVG.Magnitude.K
 Kim2                17.20      B   2015LVG.Magnitude.K
 Kim2               >17.43      HI  2015MNRAS.453..338W
 EZOA J2120+45       16.30      B   2019LVG.Magnitude.K
@@ -4574,6 +4589,8 @@ UGC12713            11.50 0.50 Ks  2012LVG.Magnitude.K
 UGC12713            15.21      HI  2011LVG.HI........K
 Phoenix 2           17.50      B   2015LVG.Magnitude.K
 Phoenix 2          >17.58      HI  2015MNRAS.453..338W
+PGC3192333          20.48      FUV 2011GALEX.........0
+PGC3192333          18.92      B   2024LVG.Magnitude.K
 PGC680341           18.18      FUV 2011GALEX.........0
 PGC680341           16.72 0.12 B   1990MNRAS.243..692M
 PGC680341           17.60      HI  2017LVG.HIPASS....K

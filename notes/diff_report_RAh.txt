@@ -191,6 +191,7 @@
    (Table) a>          Perseus I   3
    (Table) a>        dw0301+2446   3
    (Table) a>              KKH18   3
+   (Table) a>         PGC1166738   3
    (Table) a>          N1291-DW9   3
    (Table) a>         ESO300-014   3
    (Table) a>         ESO300-016   3
@@ -220,7 +221,9 @@
    (Table) a>             IC1959   3
    (Table) a>        Reticulum 2   3
    (Table) a>          PGC013294   3
+   (Table) a>          PGC712531   3
    (Table) a>            NGC1400   3
+   (Table) a>          PGC681755   3
    (Table) a>         Eridanus 2   3
    (Table) a>              KKH22   3
    (Table) a>               KK35   3
@@ -229,6 +232,7 @@
    (Table) a>            UGCA086   3
    (Table) a>             IC2038   4
    (Table) a>            NGC1533   4
+   (Table) a>         ESO359-024   4
    (Table) a>         ESO483-013   4
    (Table) a>               CamA   4
    (Table) a>            NGC1592   4
@@ -1352,6 +1356,7 @@
    (Table) a>           Hercules  16
    (Table) a>             KDG235  17
    (Table) a>              Draco  17
+   (Table) a>    HIPASS J1738-57  17
    (Table) a>          Milky Way  17
    (Table) a>             IC4662  17
    (Table) a>            NGC6503  17
@@ -1381,6 +1386,7 @@
    (Table) a>               Pavo  19
    (Table) a>              KK246  20
    (Table) a>             IC4951  20
+   (Table) a>          PGC408791  20
    (Table) a>           UGC11583  20
    (Table) a>              KK251  20
    (Table) a>              KK252  20
@@ -1392,6 +1398,7 @@
    (Table) a>             IC5052  20
    (Table) a>              KKR59  21
    (Table) a>              KKR60  21
+   (Table) a>          PGC129680  21
    (Table) a>               Kim2  21
    (Table) a>      EZOA J2120+45  21
    (Table) a>            Segue 3  21
@@ -1494,6 +1501,7 @@
    (Table) a>            NGC7713  23
    (Table) a>           UGC12713  23
    (Table) a>          Phoenix 2  23
+   (Table) a>         PGC3192333  23
    (Table) a>          PGC680341  23
    (Table) a>            UGCA442  23
    (Table) a>              KKH98  23
@@ -1790,6 +1798,7 @@
   (QTable) b>         ESO347-017 23.0
   (QTable) b>         ESO348-009 23.0
   (QTable) b>         ESO349-031  0.0
+  (QTable) b>         ESO359-024  ———
   (QTable) b>         ESO364-029  6.0
   (QTable) b>         ESO373-007  9.0
   (QTable) b>         ESO373-008  ———
@@ -1858,6 +1867,7 @@
   (QTable) b>    HIPASS J1351-47  ———
   (QTable) b>    HIPASS J1441-62  ———
   (QTable) b>    HIPASS J1526-51  ———
+  (QTable) b>    HIPASS J1738-57  ———
   (QTable) b>     HIZOA J0800-36  ———
   (QTable) b>     HIZOA J1149-62  ———
   (QTable) b>     HIZOA J1353-58  ———
@@ -2471,6 +2481,8 @@
   (QTable) b>          PGC057323 16.0
   (QTable) b>         PGC1059300 13.0
   (QTable) b>         PGC1099440 10.0
+  (QTable) b>         PGC1166738  ———
+  (QTable) b>          PGC129680  ———
   (QTable) b>          PGC154449  9.0
   (QTable) b>          PGC170257 13.0
   (QTable) b>         PGC1853813 12.0
@@ -2482,11 +2494,13 @@
   (QTable) b>         PGC2807172  ———
   (QTable) b>           PGC28789  9.0
   (QTable) b>           PGC30114 10.0
+  (QTable) b>         PGC3192333  ———
   (QTable) b>         PGC3272767 12.0
   (QTable) b>         PGC3401153 11.0
   (QTable) b>           PGC39764 12.0
   (QTable) b>           PGC40195 12.0
   (QTable) b>         PGC4074723 12.0
+  (QTable) b>          PGC408791  ———
   (QTable) b>           PGC42772 12.0
   (QTable) b>         PGC4310323 12.0
   (QTable) b>         PGC4323538 12.0
@@ -2495,7 +2509,9 @@
   (QTable) b>         PGC4561602 11.0
   (QTable) b>         PGC5059199 12.0
   (QTable) b>          PGC680341 23.0
+  (QTable) b>          PGC681755  ———
   (QTable) b>          PGC704814  ———
+  (QTable) b>          PGC712531  ———
   (QTable) b>          PGC725719 13.0
   (QTable) b>               Pavo 19.0
   (QTable) b>           Peg dSph 23.0

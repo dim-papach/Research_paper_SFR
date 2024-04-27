@@ -218,6 +218,7 @@ LV J0300+2546      29.46       mem 2011LVG.Distance..K
 Perseus I          24.49 0.18 TRGB 2013ApJ...779L..10M
 dw0301+2446        29.46       mem 2019LVG.Distance..K
 KKH18              28.40 0.13 TRGB 2016EDD...........S
+PGC1166738         30.09       NAM 2020LVG.Distance..K
 N1291-DW9          29.71       SBF 2022ApJ...933...47C
 ESO300-014         29.96        TF 2011LVG.Distance..K
 ESO300-016         29.85      TRGB 2021AJ....162...80A
@@ -247,7 +248,9 @@ UGC02773           29.38       NAM 2018LVG.Distance..K
 IC1959             28.96 0.03 TRGB 2016EDD...........S
 Reticulum 2        17.40 0.15   HB 2015ApJ...805..130K
 PGC013294          29.31 0.08 TRGB 2016EDD...........S
+PGC712531          29.62       NAM 2020LVG.Distance..K
 NGC1400            31.98 0.10  SBF 2003ApJ...583..712J
+PGC681755          29.62       NAM 2020LVG.Distance..K
 Eridanus 2         22.80 0.10   HB 2016ApJ...824L..14C
 KKH22              27.47 0.13 TRGB 2020A&A...638A.111K
 KK35               28.06      TRGB 2021AJ....162...80A
@@ -256,6 +259,7 @@ UGC02905           28.83 0.40   BS 1997AstL...23..514G
 UGCA086            27.37 0.03 TRGB 2016EDD...........S
 IC2038             31.42        TF 2016LVG.Distance..K
 NGC1533            31.44 0.12  SBF 2007ApJ...671.1624D
+ESO359-024         29.93       NAM 2020LVG.Distance..K
 ESO483-013         29.35        TF 2011LVG.Distance..K
 CamA               27.76 0.13 TRGB 2016EDD...........S
 NGC1592            29.80        TF 2011LVG.Distance..K
@@ -1377,6 +1381,7 @@ ESO137-018         28.84 0.08 TRGB 2016EDD...........S
 Hercules           20.84 0.12   HB 2009A&A...506.1147A
 KDG235             30.13        TF 2011LVG.Distance..K
 Draco              19.52      TRGB 2000glg..book.....V
+HIPASS J1738-57    29.64       NAM 2020LVG.Distance..K
 Milky Way          14.50 0.11 geom 2003ApJ...597L.121E
 IC4662             27.03 0.02 TRGB 2016EDD...........S
 NGC6503            28.98 0.06 TRGB 2016EDD...........S
@@ -1406,6 +1411,7 @@ Sgr II             19.20 0.20   HB 2018LVG.Distance..K
 Pavo               26.49 0.23 TRGB 2023ApJ...957L...5J
 KK246              29.18 0.11 TRGB 2016EDD...........S
 IC4951             29.82      TRGB 2021AJ....162...80A
+PGC408791          29.62       NAM 2020LVG.Distance..K
 UGC11583           29.27      TRGB 2021AJ....162...80A
 KK251              29.44 0.13  mem 2018AJ....156..105A
 KK252              29.44 0.13  mem 2018AJ....156..105A
@@ -1417,6 +1423,7 @@ Cepheus1           29.44 0.13  mem 2018AJ....156..105A
 IC5052             28.70 0.06 TRGB 2016EDD...........S
 KKR59              29.44 0.13  mem 2018AJ....156..105A
 KKR60              29.44 0.13  mem 2018AJ....156..105A
+PGC129680          29.91       NAM 2020LVG.Distance..K
 Kim2               20.00 0.15   HB 2015ApJ...805..130K
 EZOA J2120+45      29.44       NAM 2019MNRAS.489.2907S
 Segue 3            16.10       CMD 2010ApJ...712L.103B
@@ -1460,6 +1467,7 @@ LV J2335-3713      29.40 0.15 TRGB 2016EDD...........S
 NGC7713            29.53 1.48 TRGB 2023Ap.....66....1K
 UGC12713           30.43        TF 2011LVG.Distance..K
 Phoenix 2          19.60 0.15   HB 2015ApJ...805..130K
+PGC3192333         29.09       NAM 2020LVG.Distance..K
 PGC680341          28.92       NAM 2018LVG.Distance..K
 UGCA442            28.20 0.07 TRGB 2016EDD...........S
 KKH98              27.06 0.09 TRGB 2016EDD...........S
