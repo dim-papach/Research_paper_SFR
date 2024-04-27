@@ -371,9 +371,10 @@ z = 5
 * Calculations for values that we need
 
 
-** Total stellar masses and the total gas mass of the galaxies
+** Total stellar masses, the total gas mass and total barionic of the galaxies
 
-The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 ($M_\odot/Lum$)(\cite{lelliSPARCMASSMODELS2016}), and the $MHI$ can be converted to the total mass of the gas of the galaxy using the equation $M_g=1.33\, MHI$
+The $MHI$ can be converted to the total mass of the gas of the galaxy using the equation $M_g=1.33\, MHI$
+
 
 #+begin_src python :exports none
 dt["M_g"] = 1.33 * dt["MHI"]
@@ -388,6 +389,8 @@ dt["M_g"].info()
 : class = MaskedQuantity
 : n_bad = 501
 : length = 1448
+
+The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 ($M_\odot/Lum$)[cite:@lelliSPARCMASSMODELS2016]
 
 #+begin_src python
 dt["StellarMass"] = 0.6 * dt["KLum"]* u.Msun/u.solLum
@@ -404,6 +407,15 @@ dt["StellarMass"].info()
 : n_bad = 12
 : length = 1448
 
+The total barionic mass can be calcuated as the sum of the total gas mass of the galaxy with the Stellar mass
+
+#+begin_src python
+dt["BarMass"] = dt["M_g"] + dt["StellarMass"]
+dt["BarMass"].meta["description"] = "Total barionic mass"
+dt["BarMass"].info()
+#+end_src
+
+#+RESULTS:
 
 
 ** Color index
@@ -629,7 +641,10 @@ dc["av_SFR_theor"].info()
 : length = 607
 
 #+begin_src python
-plt.scatter(y = dc["av_SFR_theor"],x = dc["SFR_0"])
+
+plt.scatter(y = dc["av_SFR_theor"],x = dc["SFR_0"], c = dc["color"].value)
+#colobar
+plt.colorbar()
 
 plt.xscale("log")
 plt.yscale("log")
@@ -664,7 +679,10 @@ dc[["ratio", "logratio"]].info(["attributes","stats"])
 log10 of ratio
 
 #+begin_src python
-plt.scatter(y = dc["ratio"],x = dc["SFR_0"])
+plt.scatter(y = dc["ratio"],x = dc["SFR_0"], c = dc["color"].value)
+#colobar
+plt.colorbar()
+
 plt.xscale("log")
 plt.yscale("log")
 plt.show()
@@ -672,14 +690,26 @@ plt.show()
 
 #+RESULTS:
 
-histogram for the log10 of the qtable column dc[ratio]
+Scatter color and ratio
 
-#+begin_src python
-hist(dc["logratio"], bins = 25, max_bins = 25)
-plt.show()
+#+begin_src python :results drawer file
+plt.scatter(y = dc["ratio"],x =dc["color"] )
+#title and labels with units in latex
+plt.yscale("log")
+plt.title("(ratio) vs color")
+plt.ylabel("(ratio)")
+plt.xlabel("color")
+#save in dir figure
+plt.savefig("figure/ratio_vs_color.png")
+plt.close()
+#print file
+print("figure/ratio_vs_color.png")
 #+end_src
 
 #+RESULTS:
+:results:
+[[file:figure/ratio_vs_color.png]]
+:end:
 
 
 * The Delayed-\tau model
@@ -726,6 +756,24 @@ dts['log_av_SFR']=np.log10(dts['av_SFR'].value)
 dts['ratio']=dts['av_SFR']/dts['SFR_0']
 dts['ratio'].info()
 #+end_src
+
+#+RESULTS:
+#+begin_example
+[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
+UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
+/home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in log10
+name = ratio
+dtype = float64
+unit = yr
+description = Linear K_S_ band luminosity
+class = MaskedQuantity
+n_bad = 12
+length = 1448
+#+end_example
 
 
 #+begin_src python
@@ -805,8 +853,8 @@ print("Mean:", mean)
 : length = 1448
 : None
 : Minimum: -30.97944093083795
-: Maximum: 16.589822964948624
-: Mean: 4.123168578253132
+: Maximum: 19415619.415777687
+: Mean: 15340.317019903438
 
 #+begin_src python :results value drawer
 
@@ -869,9 +917,9 @@ dts['x2'].mask = combined_mask
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-F0N363/python-3sUhxE:21: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-F0N363/python-jLxP94:21: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last ten iterations.
-: /tmp/babel-F0N363/python-3sUhxE:21: RuntimeWarning: The number of calls to function has reached maxfev = 600.
+: /tmp/babel-F0N363/python-jLxP94:21: RuntimeWarning: The number of calls to function has reached maxfev = 600.
 
 #+begin_src python
 data_column = dts["x2"]
@@ -931,6 +979,9 @@ print("Mean:", mean)
 
 #+end_src
 
+#+RESULTS:
+: /home/dp/.local/lib/python3.10/site-packages/numpy/ma/core.py:1163: RuntimeWarning: overflow encountered in divide
+
 #+begin_src python
 plt.scatter(dts["x2"], dts["A"], color='blue', alpha=0.5)
 plt.yscale("log")
@@ -942,12 +993,6 @@ plt.show()
 #+end_src
 
 #+RESULTS:
-: Traceback (most recent call last):
-:   File "<string>", line 3, in <module>
-:   File "/tmp/babel-F0N363/python-edUv0A", line 3, in <module>
-:     dts["tau"].mask = combined_mask
-: NameError: name 'combined_mask' is not defined
-: >>>
 
 #+begin_src python
 print(dts["A", "x2"].info())
