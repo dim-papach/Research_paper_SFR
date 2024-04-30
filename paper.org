@@ -58,7 +58,7 @@ from custom_table import CustomQTable
 
 #+end_src
 
-#+begin_src python
+#+begin_src python :results none
 dt = QTable.read("./tables/final_table.ecsv")
 
 ############################################################
@@ -98,27 +98,15 @@ dt = QTable.read("./tables/final_table.ecsv")
 
 #+end_src
 
-#+RESULTS:
-: [0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-: [0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-: [0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-: UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-
 set ggplot theme for matplotlib, seaborn
 
 
 #+begin_src python :results none
 
-plt.style.use("bmh")
+sns.set_theme(style="darkgrid")
 
+sns.set_palette("viridis", as_cmap = True)
 #+end_src
-
-
-
-
-
 
 #+begin_abstract
 The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies[cite:@karachentsevUPDATEDNEARBYGALAXY2013] and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies]. The properties studied include the galaxy types, their various masses, the star formation rates (SFRs) and the star formation timescale $\tau$, gas depletion timescale $\tau_g$ and the star formation time $t_{sf}$. The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories.
@@ -411,12 +399,50 @@ The total barionic mass can be calcuated as the sum of the total gas mass of the
 
 #+begin_src python
 dt["BarMass"] = dt["M_g"] + dt["StellarMass"]
-dt["BarMass"].meta["description"] = "Total barionic mass"
 dt["BarMass"].info()
 #+end_src
 
 #+RESULTS:
+: name = BarMass
+: dtype = float64
+: unit = solMass
+: description = Linear hydrogen mass
+: class = MaskedQuantity
+: n_bad = 513
+: length = 1448
 
+*** Ratio of M_g and StellarMass
+
+#+begin_src python
+dt["mass_ratio"] = dt["M_g"] / dt["StellarMass"]
+dt["mass_ratio"].info(["attributes", "stats"])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in divide
+name = mass_ratio
+dtype = float64
+description = Linear hydrogen mass
+class = MaskedQuantity
+mean = 2.13272
+std = 3.81136
+min = 7.51105e-05
+max = 58.3043
+n_bad = 513
+length = 1448
+#+end_example
+
+Histogram of dt["mass_ratio"]
+
+#+begin_src python
+#seaborn plot of mass_ratio
+sns.histplot(dt["mass_ratio"].value)
+plt.xscale("log")
+plt.show()
+#+end_src
+
+#+RESULTS:
 
 ** Color index
 
@@ -660,26 +686,26 @@ plt.show()
 Now we have to calculate the ratio $\frac{\overline{SFR}}{SFR_0}$
 
 #+begin_src python
-dc["ratio"] = dc["av_SFR_theor"] / dc["SFR_0"]
+dc["SFR_ratio"] = dc["av_SFR_theor"] / dc["SFR_0"]
 
 #log10 of ratio
-dc["logratio"] = np.log10(dc["ratio"])
+dc["logSFR_ratio"] = np.log10(dc["SFR_ratio"])
 
-dc[["ratio", "logratio"]].info(["attributes","stats"])
+dc[["SFR_ratio", "logSFR_ratio"]].info(["attributes","stats"])
 #+end_src
 
 #+RESULTS:
 : /home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in log10
 : <QTable length=607>
-:   name    dtype          description             class         mean     std       min      max   n_bad
-: -------- ------- --------------------------- -------------- --------- -------- --------- ------- -----
-:    ratio float64 Linear K_S_ band luminosity MaskedQuantity   5.77922  45.5965 0.0325391 1054.18     1
-: logratio float64 Linear K_S_ band luminosity MaskedQuantity 0.0646566 0.515905  -1.48759 3.02291     1
+:     name      dtype          description             class         mean     std       min      max   n_bad
+: ------------ ------- --------------------------- -------------- --------- -------- --------- ------- -----
+:    SFR_ratio float64 Linear K_S_ band luminosity MaskedQuantity   5.77922  45.5965 0.0325391 1054.18     1
+: logSFR_ratio float64 Linear K_S_ band luminosity MaskedQuantity 0.0646566 0.515905  -1.48759 3.02291     1
 
 log10 of ratio
 
 #+begin_src python
-plt.scatter(y = dc["ratio"],x = dc["SFR_0"], c = dc["color"].value)
+plt.scatter(y = dc["SFR_ratio"],x = dc["SFR_0"], c = dc["color"].value)
 #colobar
 plt.colorbar()
 
@@ -693,7 +719,7 @@ plt.show()
 Scatter color and ratio
 
 #+begin_src python :results drawer file
-plt.scatter(y = dc["ratio"],x =dc["color"] )
+plt.scatter(y = dc["SFR_ratio"],x =dc["color"] )
 #title and labels with units in latex
 plt.yscale("log")
 plt.title("(ratio) vs color")
@@ -737,54 +763,13 @@ and can also be defined by the present day stellar mass
 \end{equation}
 
 where
-accommodates for mass-loss through stella evolution and This is a system of 2 equations and 3 variables, since Adel has never been calculated
+accommodates for mass-loss through stella evolution and This is a system of 2 equations and 3 variables
 
-** Calculating the normalization constant A_{del}
+** Calculating A_{del}
 
 *** Constant t_{sf}
-The observed ages of galactic discs are $tsf≈ 12$ Gyr[cite:@knoxSurveyCoolWhite1999], so assuming an approximation of $tsf=12.5$ Gyr, the $\overline{SFRdel}$ can be calcuated, from the equation (\ref{eq:av_SFR M*}).
+The observed ages of galactic discs are $tsf≈ 12$ Gyr[cite:@knoxSurveyCoolWhite1999a], so assuming an approximation of $tsf=12$ Gyr, the $\overline{SFR_{del}}$ can be calcuated, from the equation (\ref{eq:av_SFR M*}).
 
-#+begin_src python
-###Constant tsf
-
-dts = QTable(dt.copy())
-tsf=12.5*10**9
-zeta=1.3
-
-dts['av_SFR']=dts['StellarMass']*1.3/(12.5*10**9)
-dts['log_av_SFR']=np.log10(dts['av_SFR'].value)
-dts['ratio']=dts['av_SFR']/dts['SFR_0']
-dts['ratio'].info()
-#+end_src
-
-#+RESULTS:
-#+begin_example
-[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-/home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in log10
-name = ratio
-dtype = float64
-unit = yr
-description = Linear K_S_ band luminosity
-class = MaskedQuantity
-n_bad = 12
-length = 1448
-#+end_example
-
-
-#+begin_src python
-sns.regplot(data=dts.to_pandas(), x="SFR_0", y="av_SFR", logx = True)
-plt.xscale("log")
-plt.yscale("log")
-plt.show()
-
-#+end_src
-
-#+RESULTS:
 
 After that the equation of ratio
 
@@ -794,67 +779,63 @@ After that the equation of ratio
 can be solved numerically for x and using the equations (\Ref{eq:SFR}) and (\Ref{eq:av_SFR-x}) the $Adel$ and of each galaxy are found.
 
 #+begin_src python
-ratio_array = np.array(dts["ratio"])
-sfr_array = np.array(dts["SFR_0"])
-mass_array = np.array(dts["StellarMass"])
-x = np.empty(len(dts))
+dc["SFR_0", "SFR_ratio", "StellarMass"].info()
+#+end_src
+
+#+RESULTS:
+: <QTable length=607>
+:     name     dtype      unit             description             class      n_bad
+: ----------- ------- ------------ --------------------------- -------------- -----
+:       SFR_0 float64 solMass / yr                                   Quantity     0
+:   SFR_ratio float64              Linear K_S_ band luminosity MaskedQuantity     1
+: StellarMass float64      solMass Linear K_S_ band luminosity MaskedQuantity     1
+
+#+begin_src python
+ratio_array = np.array(dc["SFR_ratio"])
+sfr_array = np.array(dc["SFR_0"])
+mass_array = np.array(dc["StellarMass"])
+tsf = t_sf/u.yr
+x2 = np.empty(len(dc))
 #+end_src
 
 #+RESULTS:
 
+*** Newton
+
 #+begin_src python
-tsf=12.5
-zeta=1.3
-for i in range(len(dts)-1):
+for i in range(len(dc)-1):
     ratio = ratio_array[i]
     mass = mass_array[i]
     sfr = sfr_array[i]
     def f(x):
-        return (-sfr*10**9 + zeta*mass*x**2/(np.exp(x)-1-x)/tsf )  # only one real root at x = 1
+        return (-sfr + zeta*mass*x**2/(np.exp(x)-1-x)/tsf )  # only one real root at x = 1
 
     def f_prime(x):
         return -zeta*mass*(x*(np.exp(x)*(x-2)+x+2)/(np.exp(x)-x-1)**2)/tsf
 
-    if np.isnan(ratio) & np.isnan(sfr) & np.isnan(mass) :
-        x[i] = np.nan
     sol = optimize.root_scalar(f, bracket=[0, 4], x0 = 3.4, fprime = f_prime, method="newton")
-    x[i] = sol.root
+    x2[i] = sol.root
 
-dts["x"] = x
+dc["x_n"] = x2
+dc["A_n"] = dc["SFR_0"]*t_sf.to(u.yr)*np.exp(dc["x_n"])/(dc["x_n"]**2)
+
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/scipy/optimize/_root_scalar.py:315: RuntimeWarning: Derivative was zero.
+: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
 
 #+begin_src python
-print(dts["x"].info())
-data_column = dts['x']
-data_column = data_column[~np.isnan(data_column)]
-
-
-
-
-# Calculate statistics
-minimum = np.min(data_column)
-maximum = np.max(data_column)
-mean = np.mean(data_column)
-
-# Print the statistics
-print("Minimum:", minimum)
-print("Maximum:", maximum)
-print("Mean:", mean)
+print(dc["x_n", "A_n"].info("stats"))
 #+end_src
 
 #+RESULTS:
-: name = x
-: dtype = float64
-: class = Column
-: n_bad = 182
-: length = 1448
+: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: invalid value encountered in subtract
+: <QTable length=607>
+: name     mean        std             min             max     n_bad
+: ---- ----------- ----------- ------------------- ----------- -----
+:  x_n     1.66244     2.91609            -29.6974     11.9164     0
+:  A_n inf solMass nan solMass 1.60997e-08 solMass inf solMass     1
 : None
-: Minimum: -30.97944093083795
-: Maximum: 19415619.415777687
-: Mean: 15340.317019903438
 
 #+begin_src python :results value drawer
 
@@ -862,7 +843,7 @@ print("Mean:", mean)
 # Replace 'x' with the name of the column you want to plot
 
 # Create a histogram
-plt.hist(data_column)  # Adjust the number of bins as needed
+hist(dc["x_n"], bins = "freedman")  # Adjust the number of bins as needed
 plt.xlabel('X values')
 plt.ylabel('Frequency')
 plt.title('Histogram of Astropy Column "x"')
@@ -875,13 +856,14 @@ plt.show()
 None
 :end:
 
+*** fsolve
+
 #+begin_src python
 from scipy.optimize import fsolve
 # Example loop
-
-x2 = np.empty(len(dts))
-A = np.empty(len(dts))
-for i in range(len(dts)-1):
+x = np.ma.empty(len(dc))
+A = np.ma.empty(len(dc))
+for i in range(len(dc)-1):
 
     ratio = ratio_array[i]
     mass = mass_array[i]
@@ -892,122 +874,209 @@ for i in range(len(dts)-1):
 
         f = np.zeros(2)
         f[0] = ratio - (np.exp(x) - x - 1) / x**2
-        f[1] = sfr*10**9 - A * x * tsf * np.exp(-x) / x
+        f[1] = sfr - A * x * tsf * np.exp(-x) / x
         return f
 
     # Solve the equation
     z = fsolve(sfrx, [3, 10*9])
-    x2[i] = z[0]
+    x[i] = z[0]
     A[i] = z[1]
 
+    ## mask if sfr ratio or mass is nan
+    if np.isnan(ratio) or np.isnan(mass):
+        x[i] = np.nan
+        A[i] = np.nan
 
-# Create boolean masks for NaN values
-nan_mask_x = np.isnan(x2)
-nan_mask_A = np.isnan(A)
-
-# Apply masks to create masked arrays
-masked_x = np.ma.masked_array(x2, mask=nan_mask_x)
-masked_A = np.ma.masked_array(A, mask=nan_mask_A)
-
-dts["x2"] = masked_x
-dts["A"] = masked_A * u.solMass
-combined_mask = dts['ratio'].mask + dts["SFR_0"].mask
-dts['A'].mask = combined_mask
-dts['x2'].mask = combined_mask
+dc["x_f"] = MaskedColumn(x, name = "x")
+dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-F0N363/python-jLxP94:21: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-wAZr8q/python-hlC5MQ:20: RuntimeWarning: The iteration is not making good progress, as measured by the
+:   improvement from the last five Jacobian evaluations.
+: /tmp/babel-wAZr8q/python-hlC5MQ:20: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last ten iterations.
-: /tmp/babel-F0N363/python-jLxP94:21: RuntimeWarning: The number of calls to function has reached maxfev = 600.
 
 #+begin_src python
-data_column = dts["x2"]
-data_column = data_column[~np.isnan(data_column)]
-# Calculate statistics
-minimum = np.min(data_column)
-maximum = np.max(data_column)
-mean = np.median(data_column)
-
-# Print the statistics
-print("Minimum:", minimum)
-print("Maximum:", maximum)
-print("Mean:", mean)
-print(dts["x2"].info())
-
+print(dc["x_f","A_f"].info(["attributes" ,"stats"]))
 #+end_src
 
 #+RESULTS:
-#+begin_example
-/home/dp/.local/lib/python3.10/site-packages/numpy/core/fromnumeric.py:771: UserWarning: Warning: 'partition' will ignore the 'mask' of the MaskedColumn.
-Minimum: -1.118833529550422
-Maximum: 16.589822964948624
-Mean: 3.0
-name = x2
-dtype = float64
-class = MaskedColumn
-n_bad = 0
-length = 1448
-None
-#+end_example
+: <QTable length=607>
+: name  dtype    unit      class              mean                std                 min                  max
+: ---- ------- ------- -------------- ------------------- ------------------- -------------------- -------------------
+:  x_f float64           MaskedColumn             1.56101             2.88426             -29.6974             11.9164
+:  A_f float64 solMass MaskedQuantity 1.30513e-09 solMass 8.34887e-09 solMass -1.41404e-07 solMass 6.43452e-08 solMass
+: None
 
+scatter of x2 and A
+
+*** Compare the methods
+
+#+begin_src python
+plt.close()
+plt.scatter(dc["x_f"], dc["A_f"])
+plt.scatter(dc["x_n"], dc["A_n"], alpha = 0.7)
+plt.xlabel('x')
+plt.ylim(10e-6,10e+5)
+plt.yscale("log")
+plt.title('scatter of x and A')
+plt.show()
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src python :results value file drawer
+hist(dc["x_f"], bins = "knuth")
+hist(dc["x_n"], bins = "knuth", alpha = 0.7)
+plt.xlabel('x')
+plt.ylabel("Number of galaxies")
+plt.title('Hist of x solved with fsolve and Newton')
+#show the labels
+plt.legend(["fsolve", "Newton"])
+
+plt.savefig("figure/x-hist.png")
+plt.close()
+
+"figure/x-hist.png"
+#+end_src
+
+#+RESULTS:
+:results:
+[[file:figure/x-hist.png]]
+:end:
+
+#+begin_src python
+print(dc["x","x2"].info(["attributes" ,"stats"]))
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src python :results value file drawer
+plt.scatter(dc["x_f"], dc["x_n"])
+plt.xlabel('$x_{fsolve}$')
+plt.ylabel(r'$x_{Newton}$')
+plt.title('scatter of $x_{Newton}$ and $x_{fsolve}$')
+#savefig and print the file
+plt.savefig("figure/x-scatter.png")
+plt.close()
+
+"figure/x-scatter.png"
+#+end_src
+
+#+RESULTS:
+:results:
+[[file:figure/x-scatter.png]]
+:end:
+
+
+Since they are both prety much the same, we can assume that the more compact is better, ie fsolve.
+
+*** Hist of A
+
+#+begin_src python :results value file
+hist(dc["A_f"], bins = "blocks")
+hist(dc["A_n"], bins = "blocks")
+plt.xscale("log")
+plt.xlabel('$A_{del}$'+f'[{dc["A_n"].unit:latex}]')
+
+plt.legend(["fsolve", "Newton"])
+
+plt.ylabel("Number of galaxies")
+plt.title('Histogram of $A_{del}$')
+#save
+plt.savefig("figure/A-hist.png")
+plt.close()
+
+"figure/A-hist.png"
+#+end_src
+
+#+RESULTS:
+[[file:figure/A-hist.png]]
 
 
 ** Calculating the t_{sf} and \tau of the galaxies
 
 #+begin_src python
 
-dts['tau'] = tsf/dts["x2"] * u.Gyr
-dts["tau"].mask = combined_mask
+dc['tau'] = t_sf/dc["x_f"]
 
-print(dts["tau"].info())
-data_column = dts['tau']
-data_column = data_column[~np.isnan(data_column)]
-
-
-
-
-# Calculate statistics
-minimum = np.min(data_column)
-maximum = np.max(data_column)
-mean = np.mean(data_column)
-
-# Print the statistics
-print("Minimum:", minimum)
-print("Maximum:", maximum)
-print("Mean:", mean)
-
+print(dc["tau"].info(["attributes", "stats"]))
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/numpy/ma/core.py:1163: RuntimeWarning: overflow encountered in divide
+#+begin_example
+/home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: overflow encountered in divide
+name = tau
+dtype = float64
+unit = Gyr
+class = Quantity
+mean = 6.30189 Gyr
+std = 77.365 Gyr
+min = -1036.91 Gyr
+max = 988.964 Gyr
+n_bad = 0
+length = 607
+None
+#+end_example
 
 #+begin_src python
-plt.scatter(dts["x2"], dts["A"], color='blue', alpha=0.5)
-plt.yscale("log")
-plt.title('Scatter plot of A vs x')
-plt.ylabel('A')
-plt.xlabel('tau')
-plt.grid(True)
+hist(dc["tau"].data, bins = "freedman")
 plt.show()
 #+end_src
 
 #+RESULTS:
 
 #+begin_src python
-print(dts["A", "x2"].info())
+plt.scatter(dc["tau"], dc["A_f"], c=np.log10(dc["SFR_0"]/dc["SFR_0"].unit), cmap = "viridis")
+plt.title('Scatter plot of A vs x')
+plt.xlabel(r'$\tau$ '+ f'[{dc["tau"].unit:latex}]')
+plt.ylabel(r'$A$ '+ f'[{dc["A_f"].unit:latex}]')
+plt.yscale("log")
+
+plt.colorbar()
+plt.show()
 #+end_src
 
 #+RESULTS:
-: <QTable length=1448>
-: name  dtype    unit     class
-: ---- ------- ------- ------------
-:    A float64 solMass     Quantity
-:   x2 float64         MaskedColumn
+
+#+begin_src python
+print(dc["A_n", "x_n"].info())
+#+end_src
+
+#+RESULTS:
+: <QTable length=607>
+: name  dtype    unit   class   n_bad
+: ---- ------- ------- -------- -----
+:  A_n float64 solMass Quantity     1
+:  x_n float64           Column     0
 : None
 
 
+#+begin_src python :results value file drawer
+plt.scatter(dc["A_n"], dc["x_n"], c=np.log10(dc["StellarMass"]/dc["StellarMass"].unit), cmap = "viridis")
+plt.title('Scatter plot of A vs x')
+plt.xlabel(r'$\tau$ '+ f'[{dc["tau"].unit:latex}]')
+plt.ylabel(r'$A$ '+ f'[{dc["A_f"].unit:latex}]')
+plt.yscale("log")
+
+plt.colorbar()
+plt.show()
+#+end_src
+
+#+RESULTS:
+:results:
+[[file:None]]
+:end:
+
+*** IDEA Check to see if the almost inf points make any sense
+
 ** TODO The gas depletion timescale \tau_g
+What is the gas depletion timescale?
+
+
 
 ** TODO The theoretical SFR vs the observed
 
@@ -1017,7 +1086,7 @@ Since the aim of the paper is to find the SFR lets first understand and calculat
 
 #+begin_src python
 
-df = dts.to_pandas()
+df = dc.to_pandas()
 # Assuming df is your DataFrame
 # Step 1: Identify non-numeric columns
 non_numeric_columns = df.select_dtypes(exclude=['float', 'int']).columns
@@ -1105,3 +1174,4 @@ print(df[["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A
 
 
 * TODO Filling the Catalogue
+
