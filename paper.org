@@ -5,7 +5,7 @@
 
 :latex_prop:
 #+OPTIONS: toc:nil
-#+LaTeX_CLASS_OPTIONS: [a4paper,twocolumn]
+#+LaTeX_CLASS_OPTIONS: [a4paper]
 #+LaTeX_HEADER: \usepackage{breakcites}
 #+LaTeX_HEADER: \usepackage{paralist}
 #+LaTeX_HEADER: \usepackage{amsmath}
@@ -54,58 +54,17 @@ from plotnine import (
 from scipy import optimize, stats
 from sympy import symbols, exp, log, lambdify
 import seaborn as sns
-from custom_table import CustomQTable
 
 #+end_src
 
 #+begin_src python :results none
 dt = QTable.read("./tables/final_table.ecsv")
 
-############################################################
-# dt.update_metadata("Coordinates", unit = "deg, deg")     #
-#                                                          #
-# for col_name in dt.columns:                              #
-#     if col_name != "Coordinates":                        #
-#         dt.update_metadata(col_name)                     #
-#                                                          #
-#                                                          #
-# dt.change_latex_name("a26", r"$a_{26}$")                 #
-#                                                          #
-# dt.change_latex_name("FUVmag", r"$FUV_{mag}$")           #
-# dt.change_latex_name("Bmag", r"$B_{mag}$")               #
-# dt.change_latex_name("Hamag", r"$H\alpha_{mag}$")        #
-# dt.change_latex_name("Kmag", r"$K_{mag}$")               #
-# dt.change_latex_name("21mag", r"${HI_{mag}}^{21\. cm}$") #
-# dt.change_latex_name("TType", r"Galaxy Type")            #
-# dt.change_latex_name("Dis", r"Distance")                 #
-# dt.change_latex_name("A26", r"$A_{26}$")                 #
-# dt.change_latex_name("inc", r"inclination")              #
-# dt.change_latex_name("AB_int", r"$AB_{int}$")            #
-# dt.change_latex_name("logKLum", r"$\log{K_{Lum}}$")      #
-# dt.change_latex_name("logM26", r"$\log{M_{26}}$")        #
-# dt.change_latex_name("logMHI", r"$\log{M_{HI}}$")        #
-# dt.change_latex_name("Theta1", r"$\Theta_1$")            #
-# dt.change_latex_name("Theta5", r"$\Theta_5$")            #
-# dt.change_latex_name("Thetaj", r"$\Theta_j$")            #
-#                                                          #
-# dt.change_latex_name("SFRFUV", r"$SFR_{FUV}$")           #
-# dt.change_latex_name("PFUV", r"$P_{FUV}$")               #
-# dt.change_latex_name("FFUV", r"$F_{FUV}$")               #
-# dt.change_latex_name("SFRHa", r"$SFR_{H\alpha}$")        #
-# dt.change_latex_name("PHa", r"$P_{H\alpha}$")            #
-# dt.change_latex_name("FHa", r"$F_{H\alpha}$")            #
-############################################################
-
 #+end_src
-
-set ggplot theme for matplotlib, seaborn
-
 
 #+begin_src python :results none
 
-sns.set_theme(style="darkgrid")
-
-sns.set_palette("viridis", as_cmap = True)
+sns.set_theme(style="darkgrid",context = "notebook", palette="deep")
 #+end_src
 
 #+begin_abstract
@@ -299,7 +258,9 @@ This catalog consists of src_python[:results value org]{len(dt)+1} {{{results(sr
 
 Some of those values contain limit flags, which we will mask for our present analysis. However, those values will be shown in the plots, and afterwards will be compared with the theoretical values.
 
-#+begin_src python
+The limit flags are placed in values, were the uncertainty of the value is high, usualy because of how accurate the measurement is (way to high or low)
+
+#+begin_src python :exports none
 for column in dt.columns:
     if column.startswith("l_") or column.startswith("f_"):
         if column.startswith("l_"):
@@ -340,6 +301,16 @@ All masks in l_FFUV are also masks in FFUV
 
 
 
+
+
+** P and F evolutionary parameters
+
+"To characterize the evolutionary status of a sample of galaxies, Karachentsev & Kaisin (2007) proposed a diagnostic “past–future” (PF) diagram, where the dimensionless parameters
+
+$$ P = \log{(SFR\cdot T_0/L_K)}$$
+$$ F = \log{(1.85 M_{HI}/SFR\cdot T_0)}$$
+
+are independent from errors in finding distances to the galaxies. The parameter P is actually the sSFR over the entire age scale of the universe, T0 = 13.7 Gyr. The F parameter corresponds to the notion of gas depletion time, expressed in units of T0."[cite:@karachentsevSTARFORMATIONPROPERTIES2013a]
 
 * Standarized constants
 
@@ -796,6 +767,7 @@ sfr_array = np.array(dc["SFR_0"])
 mass_array = np.array(dc["StellarMass"])
 tsf = t_sf/u.yr
 x2 = np.empty(len(dc))
+
 #+end_src
 
 #+RESULTS:
@@ -822,7 +794,6 @@ dc["A_n"] = dc["SFR_0"]*t_sf.to(u.yr)*np.exp(dc["x_n"])/(dc["x_n"]**2)
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
 
 #+begin_src python
 print(dc["x_n", "A_n"].info("stats"))
@@ -842,12 +813,14 @@ print(dc["x_n", "A_n"].info("stats"))
 # Assuming you have already loaded your data into an Astropy table named 'dts'
 # Replace 'x' with the name of the column you want to plot
 
-# Create a histogram
-hist(dc["x_n"], bins = "freedman")  # Adjust the number of bins as needed
-plt.xlabel('X values')
-plt.ylabel('Frequency')
-plt.title('Histogram of Astropy Column "x"')
-plt.show()
+
+# Create a histogram                                                      #
+hist(dc["x_n"], bins = "freedman")  # Adjust the number of bins as needed #
+plt.xlabel('X values')                                                    #
+plt.ylabel('Frequency')                                                   #
+plt.title('Histogram of Astropy Column "x"')                              #
+plt.show()                                                                #
+
 
 #+end_src
 
@@ -882,7 +855,7 @@ for i in range(len(dc)-1):
     x[i] = z[0]
     A[i] = z[1]
 
-    ## mask if sfr ratio or mass is nan
+    ## mask If sfr ratio or mass is nan
     if np.isnan(ratio) or np.isnan(mass):
         x[i] = np.nan
         A[i] = np.nan
@@ -892,9 +865,9 @@ dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-wAZr8q/python-hlC5MQ:20: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-kO0xZX/python-Lr8ohf:20: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last five Jacobian evaluations.
-: /tmp/babel-wAZr8q/python-hlC5MQ:20: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-kO0xZX/python-Lr8ohf:20: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last ten iterations.
 
 #+begin_src python
@@ -914,11 +887,10 @@ scatter of x2 and A
 *** Compare the methods
 
 #+begin_src python
-plt.close()
 plt.scatter(dc["x_f"], dc["A_f"])
-plt.scatter(dc["x_n"], dc["A_n"], alpha = 0.7)
+#plt.scatter(dc["x_n"], dc["A_n"], alpha = 0.7)
+
 plt.xlabel('x')
-plt.ylim(10e-6,10e+5)
 plt.yscale("log")
 plt.title('scatter of x and A')
 plt.show()
@@ -928,18 +900,20 @@ plt.show()
 
 
 #+begin_src python :results value file drawer
-hist(dc["x_f"], bins = "knuth")
-hist(dc["x_n"], bins = "knuth", alpha = 0.7)
-plt.xlabel('x')
-plt.ylabel("Number of galaxies")
-plt.title('Hist of x solved with fsolve and Newton')
-#show the labels
-plt.legend(["fsolve", "Newton"])
 
-plt.savefig("figure/x-hist.png")
-plt.close()
+hist(dc["x_f"], bins = "freedman")                   #
+hist(dc["x_n"], bins = "freedman", alpha = 0.6)      #
+plt.xlabel('x')                                      #
+plt.ylabel("Number of galaxies")                     #
+plt.title('Hist of x solved with fsolve and Newton') #
+#show the labels                                     #
+plt.legend(["fsolve", "Newton"])                     #
+                                                     #
+plt.savefig("figure/x-hist.png")                     #
+plt.close()                                          #
+                                                     #
+"figure/x-hist.png"                                  #
 
-"figure/x-hist.png"
 #+end_src
 
 #+RESULTS:
@@ -947,11 +921,18 @@ plt.close()
 [[file:figure/x-hist.png]]
 :end:
 
+
 #+begin_src python
-print(dc["x","x2"].info(["attributes" ,"stats"]))
+print(dc["x_f","x_n"].info(["attributes" ,"stats"]))
 #+end_src
 
 #+RESULTS:
+: <QTable length=607>
+: name  dtype     class       mean    std     min      max
+: ---- ------- ------------ ------- ------- -------- -------
+:  x_f float64 MaskedColumn 1.56101 2.88426 -29.6974 11.9164
+:  x_n float64       Column 1.66244 2.91609 -29.6974 11.9164
+: None
 
 
 #+begin_src python :results value file drawer
@@ -972,7 +953,7 @@ plt.close()
 :end:
 
 
-Since they are both prety much the same, we can assume that the more compact is better, ie fsolve.
+Since they are both pretty much the same, we can assume that the more compact is better, ie fsolve.
 
 *** Hist of A
 
@@ -997,7 +978,7 @@ plt.close()
 [[file:figure/A-hist.png]]
 
 
-** Calculating the t_{sf} and \tau of the galaxies
+** Calculating and \tau of the galaxies
 
 #+begin_src python
 
@@ -1023,14 +1004,14 @@ None
 #+end_example
 
 #+begin_src python
-hist(dc["tau"].data, bins = "freedman")
+hist(dc["tau"], bins = "freedman")
 plt.show()
 #+end_src
 
 #+RESULTS:
 
 #+begin_src python
-plt.scatter(dc["tau"], dc["A_f"], c=np.log10(dc["SFR_0"]/dc["SFR_0"].unit), cmap = "viridis")
+plt.scatter(dc["x_f"], dc["A_f"], c=np.log10(dc["SFR_0"]/dc["SFR_0"].unit), cmap = "viridis")
 plt.title('Scatter plot of A vs x')
 plt.xlabel(r'$\tau$ '+ f'[{dc["tau"].unit:latex}]')
 plt.ylabel(r'$A$ '+ f'[{dc["A_f"].unit:latex}]')
@@ -1043,40 +1024,79 @@ plt.show()
 #+RESULTS:
 
 #+begin_src python
-print(dc["A_n", "x_n"].info())
+print(dc["A_n", "x_n"].info("stats"))
 #+end_src
 
 #+RESULTS:
 : <QTable length=607>
-: name  dtype    unit   class   n_bad
-: ---- ------- ------- -------- -----
-:  A_n float64 solMass Quantity     1
-:  x_n float64           Column     0
+: name         mean                std                 min                 max         n_bad
+: ---- ------------------- ------------------- ------------------- ------------------- -----
+:  A_n 5.27714e+10 solMass 5.20772e+11 solMass 1.60997e-08 solMass 8.60539e+12 solMass     1
+:  x_n             1.66518             2.91771            -29.6974             11.9164     1
 : None
 
 
 #+begin_src python :results value file drawer
-plt.scatter(dc["A_n"], dc["x_n"], c=np.log10(dc["StellarMass"]/dc["StellarMass"].unit), cmap = "viridis")
+
+filename = "figure/tau-A"
+
+plt.scatter(dc["tau"], dc["A_f"], c=np.log10(dc["StellarMass"]/dc["StellarMass"].unit), cmap = "viridis")
 plt.title('Scatter plot of A vs x')
 plt.xlabel(r'$\tau$ '+ f'[{dc["tau"].unit:latex}]')
 plt.ylabel(r'$A$ '+ f'[{dc["A_f"].unit:latex}]')
 plt.yscale("log")
 
 plt.colorbar()
+
+plt.savefig(filename+".png")
 plt.show()
+plt.close()
+
+filename + ".png"
 #+end_src
 
 #+RESULTS:
 :results:
-[[file:None]]
+[[file:figure/tau-A.png]]
 :end:
+
+*** TODO Add zoom and theoretical lines
+
+#+begin_src python
+import plotly.express as px
+tmp = dc.to_pandas()
+fig = px.scatter(tmp, "tau", "A_f", hover_data = ["Name", "TType"], log_y = False)
+fig.show()
+#+end_src
+
+#+RESULTS:
 
 *** IDEA Check to see if the almost inf points make any sense
 
 ** TODO The gas depletion timescale \tau_g
-What is the gas depletion timescale?
 
+"The gas depletion timescale τg measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR (Pflamm-Altenburg & Kroupa 2009). We employ two methods to determine τg. In the first method, we find
 
+$$
+\tau_g = \frac{M_g}{\dot{M_*}}
+$$
+
+where Mg is the neutral gas mass at the desired time and $\dot{M_*}$ is the SFR then."[cite:@nageshSimulationsStarformingMainsequence2023]
+
+#+begin_src python
+
+dc["tau_g"] = dc["M_g"]/dc["SFR_0"]
+dc["tau_g"].info("stats")
+#+end_src
+
+#+RESULTS:
+: name = tau_g
+: mean = 1.65347e+10 yr
+: std = 3.08891e+10 yr
+: min = 2.10766e+08 yr
+: max = 4.6116e+11 yr
+: n_bad = 41
+: length = 607
 
 ** TODO The theoretical SFR vs the observed
 
@@ -1148,6 +1168,13 @@ plt.close("all")
 
 #+RESULTS:
 
+#+begin_src python
+fig = px.imshow(correlation_matrix, text_auto = True, color_continuous_scale='RdBu_r')
+fig.show()
+
+#+end_src
+
+#+RESULTS:
 
 Pairplot with StellarMass, MHI, SFR_0 and av_SFR, M26
 
@@ -1159,19 +1186,92 @@ sns.pairplot(df, vars=["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26"], ki
 plt.savefig("figure/pairplot")
 plt.show()
 plt.close("all")
-print(df[["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A"]].corr())
+print(df[["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A_f"]].corr())
+#+end_src
+
+#+RESULTS:
+:               StellarMass       MHI     SFR_0  av_SFR_theor       M26       M_g       tau       A_f
+: StellarMass      1.000000  0.494516  0.575623      1.000000  0.829324  0.494516 -0.016920  0.331340
+: MHI              0.494516  1.000000  0.776005      0.494516  0.493378  1.000000 -0.026750  0.131383
+: SFR_0            0.575623  0.776005  1.000000      0.575623  0.517808  0.776005 -0.042928  0.120300
+: av_SFR_theor     1.000000  0.494516  0.575623      1.000000  0.829324  0.494516 -0.016920  0.331340
+: M26              0.829324  0.493378  0.517808      0.829324  1.000000  0.493378 -0.023265  0.276849
+: M_g              0.494516  1.000000  0.776005      0.494516  0.493378  1.000000 -0.026750  0.131383
+: tau             -0.016920 -0.026750 -0.042928     -0.016920 -0.023265 -0.026750  1.000000 -0.007275
+: A_f              0.331340  0.131383  0.120300      0.331340  0.276849  0.131383 -0.007275  1.000000
+
+#+begin_src python :exports none :results none
+#define a new dataframe
+df_log = pd.DataFrame()
+
+for i in ["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26", "tau", "A_f", "M_g", "tau_g"]:
+    temp [i] =df[i]
+    temp[i].loc[temp[i] == 0] = np.nan
+    df_log[i] = np.log(temp[i].dropna())
+
+for i in ["TType", "Tdw1", "Tdw2"]:
+    df_log[i] = df[i]
+#+end_src
+
+#+begin_src python
+#PairGrid with StellarMass, MHI, SFR_0 and av_SFR_theor, M26
+#log scale axes
+
+sns.pairplot(df_log, vars=["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26"], kind="reg", diag_kind="kde")
+plt.savefig("figure/pairplot")
+plt.show()
+plt.close("all")
+print(df_log[["MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "tau_g"]].corr())
+#+end_src
+
+#+begin_src python
+#heatmap of masses and luminosities
+sns.heatmap(df_log[["MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "tau_g"]])
+plt.savefig("figure/heatmap")
+plt.show()
+
 #+end_src
 
 #+RESULTS:
 
-
-
 * TODO The relations of the Data
 
+** Luminosities
+
+Let's find some relations between the magnitudes
+We will use the mags of table 3
+
+#+begin_src python :results file
+#find all the columns of df with mag_
+
+mag_cols = [col for col in df.columns if "mag_" in col]
+
+#drop the but the ones with l_mag
+mag_cols = [col for col in mag_cols if "l_mag" not in col]
+mag_cols = [col for col in mag_cols if "e_mag" not in col]
+
+#create a new dataframe
+df_mags = df[mag_cols]
+
+#heatmap
+filename = "figure/heatmap_mags"
+sns.heatmap(df_mags.corr(), annot = True)
+plt.savefig(filename)
+plt.show()
+plt.close("all")
+
+#print the file name
+print(filename+".png")
+#+end_src
+
+#+RESULTS:
+[[file:figure/heatmap_mags.png]]
+
 ** TODO Luminosity and Masses
+
+
 
 ** TODO Variations in Star Formation Rates across the different masses
 
 
 * TODO Filling the Catalogue
-
