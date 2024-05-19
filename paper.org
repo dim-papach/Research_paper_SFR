@@ -465,49 +465,70 @@ they are the power in logarithmic scale. SO lets fix them
 
 
 #+begin_src python
-
 dt.rename_column("SFRFUV", "logSFRFUV")
-dt["SFRFUV"] = 10**dt["logSFRFUV"].value * SFR_unit
-dt["SFRFUV"].mask = dt["logSFRFUV"].mask
-dt["SFRFUV"].description = dt["logSFRFUV"].description
+#+end_src
 
-dt["SFRFUV"].info()
+#+RESULTS:
+
+
+#+begin_src python
+# Calculate SFRFUV from logSFRFUV using np.power
+sfr_ha_values = np.power(10, dt["logSFRFUV"]) * SFR_unit
+
+# Create a MaskedColumn for SFRFUV, inheriting the mask and description from logSFRFUV
+dt["SFRFUV"] = MaskedColumn(sfr_ha_values, mask=dt["logSFRFUV"].mask, description=dt["logSFRFUV"].description)
+
+# Display statistical information about SFRFUV
+dt["SFRFUV"].info("stats")
+
 #+end_src
 
 #+RESULTS:
 : name = SFRFUV
-: dtype = float64
-: unit = solMass / yr
-: class = Quantity
+: mean = 0.0738724 solMass / yr
+: std = 0.349917 solMass / yr
+: min = 2.13796e-10 solMass / yr
+: max = 5.7544 solMass / yr
 : n_bad = 321
 : length = 1448
 
 #+begin_src python
 dt.rename_column("SFRHa", "logSFRHa")
-dt["SFRHa"] = 10**dt["logSFRHa"].value * SFR_unit
-dt["SFRHa"].mask = dt["logSFRHa"].mask
-dt["SFRHa"].description = dt["logSFRHa"].description
 #+end_src
 
 #+RESULTS:
 
 #+begin_src python
-plt.scatter(dt["SFRHa"],dt["SFRFUV"])
-plt.xscale("log")
-plt.show()
+# Calculate SFRHa from logSFRHa using np.power
+sfr_ha_values = np.power(10, dt["logSFRHa"]) * SFR_unit
+
+# Create a MaskedColumn for SFRHa, inheriting the mask and description from logSFRHa
+dt["SFRHa"] = MaskedColumn(sfr_ha_values, mask=dt["logSFRHa"].mask, description=dt["logSFRHa"].description)
+
+# Display statistical information about SFRHa
+dt["SFRHa"].info()
 #+end_src
+
+#+RESULTS:
+: name = SFRHa
+: dtype = float64
+: unit = solMass / yr
+: description = H{alpha} derived integral star formation rate (1)
+: class = MaskedQuantity
+: n_bad = 712
+: length = 1448
 
 #+begin_src python
 
-dt[["SFRFUV", 'SFRHa']].info("stats")
+dt[["SFRFUV", 'SFRHa']].info(["stats"])
 #+end_src
 
 #+RESULTS:
 : <QTable length=1448>
-:  name          mean                 std                    min                  max
-: ------ -------------------- -------------------- ------------------------ ---------------
-: SFRFUV 2.27435 solMass / yr 4.13466 solMass / yr 2.13796e-10 solMass / yr 10 solMass / yr
-:  SFRHa 4.97642 solMass / yr 4.94957 solMass / yr 1.38038e-10 solMass / yr 10 solMass / yr
+:  name           mean                   std                    min                    max         n_bad
+: ------ ---------------------- --------------------- ------------------------ ------------------- -----
+: SFRFUV 0.0738724 solMass / yr 0.349917 solMass / yr 2.13796e-10 solMass / yr 5.7544 solMass / yr   321
+:  SFRHa  0.116644 solMass / yr 0.408421 solMass / yr 1.38038e-10 solMass / yr 4.2658 solMass / yr   712
 
 
 ** SFR_0
@@ -526,60 +547,59 @@ $$
     SFR_{0}=SFR_{i},\ \text{if } SFR_{j}=0,\ i\neq j,\ i,j=SFR_{FUV},\, SFR_{Ha}
 $$
 
-#+begin_src python
+#+begin_src python :results drawer output
+sns.lmplot(data = dt.to_pandas(), x="SFRHa",y="SFRFUV")
+#labels in latex with units
+plt.xlabel(r"$SFR_{Ha}$"+r" [{}]".format(dt["SFRHa"].unit.to_string("latex")))
+plt.ylabel(r"$SFR_{FUV}$"+r" [{}]".format(dt["SFRHa"].unit.to_string("latex")))
+
+#save
+plt.savefig("figure/SFR_FUV-Ha.png")
+plt.close()
+
+
 sns.lmplot(data = dt.to_pandas(), x="logSFRHa",y="logSFRFUV")
 #labels in latex with units
-plt.xlabel(r"$\log_{10}(SFR_{Ha}$"+r"/ $\left[${}$ ]$)".format(dt["SFRHa"].unit.to_string("latex")))
-plt.ylabel(r"$\log_{10}(SFR_{FUV})$")
+plt.xlabel(r"$\log_{10}(SFR_{Ha}$"+r"/ [{}])".format(dt["SFRHa"].unit.to_string("latex")))
+plt.ylabel(r"$\log_{10}(SFR_{FUV}$"+r"/ [{}])".format(dt["SFRHa"].unit.to_string("latex")) )
 
-plt.show()
+#save
+plt.savefig("figure/log_SFR_FUV_Ha.png")
+plt.close()
+#print in org
+print("[[./figure/SFR_FUV-Ha.png]]")
+print("[[./figure/log_SFR_FUV_Ha.png]]")
 #+end_src
 
 #+RESULTS:
+:results:
+[[./figure/SFR_FUV-Ha.png]]
+[[./figure/log_SFR_FUV_Ha.png]]
+:end:
+
 
 create the average SFR_0 from SFRHa SFRFUV with np.ma.average
 
 #+begin_src python
-SFR_0 = np.mean([dt["SFRHa"], dt["SFRFUV"]], axis =0, where = [~dt["SFRHa"].mask, ~dt["SFRFUV"].mask])
+# Calculate the mean of SFRHa and SFRFUV, ignoring masked values
 
-dt["SFR_0"] = SFR_0 * SFR_unit
+SFR_0 = np.ma.mean(np.ma.array([dt["SFRHa"], dt["SFRFUV"]]), axis=0)
+# Store the result in the table, applying the SFR unit
+dt["SFR_0"] = MaskedColumn(SFR_0, unit = SFR_unit)
 
-dt[["SFR_0","SFRFUV", 'SFRHa']].info("stats")
-#+end_src
-
-#+RESULTS:
-#+begin_example
-/home/dp/.local/lib/python3.10/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning:
-
-Mean of empty slice.
-
-/home/dp/.local/lib/python3.10/site-packages/numpy/core/_methods.py:121: RuntimeWarning:
-
-invalid value encountered in divide
-
-<QTable length=1448>
- name           mean                   std                    min                    max          n_bad
------- ---------------------- --------------------- ------------------------ -------------------- -----
- SFR_0 0.0722542 solMass / yr 0.316258 solMass / yr 1.75917e-10 solMass / yr 4.38718 solMass / yr   190
-SFRFUV   2.27435 solMass / yr  4.13466 solMass / yr 2.13796e-10 solMass / yr      10 solMass / yr     0
- SFRHa   4.97642 solMass / yr  4.94957 solMass / yr 1.38038e-10 solMass / yr      10 solMass / yr     0
-#+end_example
-
-
-#+begin_src python
-print(dt["SFRHa"].info('stats'))
+# Display statistical information about SFR_0, SFRFUV, and SFRHa
+dt[["SFR_0", "SFRFUV", "SFRHa"]].info("stats")
 
 #+end_src
 
 #+RESULTS:
-: name = SFRHa
-: mean = 4.97642 solMass / yr
-: std = 4.94957 solMass / yr
-: min = 1.38038e-10 solMass / yr
-: max = 10 solMass / yr
-: n_bad = 712
-: length = 1448
-: None
+: <QTable length=1448>
+:  name           mean                   std                    min                    max          n_bad
+: ------ ---------------------- --------------------- ------------------------ -------------------- -----
+:  SFR_0 0.0722542 solMass / yr 0.316258 solMass / yr 1.75917e-10 solMass / yr 4.38718 solMass / yr   190
+: SFRFUV 0.0738724 solMass / yr 0.349917 solMass / yr 2.13796e-10 solMass / yr  5.7544 solMass / yr   321
+:  SFRHa  0.116644 solMass / yr 0.408421 solMass / yr 1.38038e-10 solMass / yr  4.2658 solMass / yr   712
+
 
 ** Applying the cut SFR_0 >= 1e-3 solMass/yr
 
@@ -603,7 +623,7 @@ UnitTypeError("MaskedQuantity instances require normal units, not <class 'astrop
 name = SFR_0
 dtype = float64
 unit = solMass / yr
-class = Quantity
+class = MaskedQuantity
 n_bad = 0
 length = 607
 None
@@ -616,20 +636,50 @@ dc[["SFR_0","SFRFUV", 'SFRHa']].info("stats")
 
 #+RESULTS:
 : <QTable length=607>
-:  name           mean                  std                    min                    max
-: ------ --------------------- --------------------- ------------------------ --------------------
-:  SFR_0 0.149597 solMass / yr 0.442412 solMass / yr  0.00102329 solMass / yr 4.38718 solMass / yr
-: SFRFUV  1.66911 solMass / yr   3.5739 solMass / yr 6.60693e-05 solMass / yr      10 solMass / yr
-:  SFRHa  1.95358 solMass / yr  3.81106 solMass / yr 2.04174e-05 solMass / yr      10 solMass / yr
+:  name           mean                  std                    min                    max          n_bad
+: ------ --------------------- --------------------- ------------------------ -------------------- -----
+:  SFR_0 0.149597 solMass / yr 0.442412 solMass / yr  0.00102329 solMass / yr 4.38718 solMass / yr     0
+: SFRFUV 0.161775 solMass / yr 0.504243 solMass / yr 6.60693e-05 solMass / yr  5.7544 solMass / yr    93
+:  SFRHa 0.172679 solMass / yr  0.48719 solMass / yr 2.04174e-05 solMass / yr  4.2658 solMass / yr   110
+
+
 
 Histogram of SFR_0
 
 #+begin_src python
-hist(dc["SFR_0"].value, bins = "scott")
-plt.show()
+#log of SFR_0
+dc["logSFR_0"] =MaskedColumn(np.log10(dc["SFR_0"].value),unit = SFR_unit)
+dc["logSFR_0"].info()
 #+end_src
 
 #+RESULTS:
+: name = logSFR_0
+: dtype = float64
+: unit = solMass / yr
+: class = MaskedQuantity
+: n_bad = 0
+: length = 607
+
+
+
+#+begin_src python :results value file
+
+hist(dc["logSFR_0"].value, bins = "freedman")
+
+plt.title("Histogram of $SFR_0$")
+plt.xlabel(r"$\log(SFR_0/[{}])$".format(dc["SFR_0"].unit.to_string("unicode")))
+plt.ylabel("Number of Galaxies")
+#save fig, plt close and print fig file name
+fname = "figure/log_SFR_0_hist.png"
+plt.savefig(fname)
+plt.close()
+fname
+#+end_src
+
+#+RESULTS:
+[[file:figure/log_SFR_0_hist.png]]
+
+
 
 ** Theoretical Average SFR
 
@@ -708,18 +758,20 @@ plt.show()
 
 Scatter color and ratio
 
-#+begin_src python :results drawer file
-plt.scatter(y = dc["SFR_ratio"],x =dc["color"] )
+#+begin_src python :results value drawer file
+plt.scatter(y = dc["SFR_ratio"],x =dc["color"], c = np.log10(dc["mass_ratio"].value), cmap = "viridis" )
 #title and labels with units in latex
 plt.yscale("log")
-plt.title("(ratio) vs color")
-plt.ylabel("(ratio)")
-plt.xlabel("color")
+plt.title(r"$\frac{\overline{SFR}}{SFR_0}$ - <FUV-B>")
+plt.ylabel(r"$\frac{\overline{SFR}}{SFR_0}$")
+plt.xlabel("<FUV-B>")
+plt.colorbar(label = r"$M_g/M_*$")
 #save in dir figure
+plt.tight_layout()
 plt.savefig("figure/ratio_vs_color.png")
 plt.close()
 #print file
-print("figure/ratio_vs_color.png")
+"figure/ratio_vs_color.png"
 #+end_src
 
 #+RESULTS:
@@ -776,7 +828,7 @@ dc["SFR_0", "SFR_ratio", "StellarMass"].info()
 : <QTable length=607>
 :     name     dtype      unit             description             class      n_bad
 : ----------- ------- ------------ --------------------------- -------------- -----
-:       SFR_0 float64 solMass / yr                                   Quantity     0
+:       SFR_0 float64 solMass / yr                             MaskedQuantity     0
 :   SFR_ratio float64              Linear K_S_ band luminosity MaskedQuantity     1
 : StellarMass float64      solMass Linear K_S_ band luminosity MaskedQuantity     1
 
@@ -814,19 +866,19 @@ dc["A_n"] = dc["SFR_0"]*t_sf.to(u.yr)*np.exp(dc["x_n"])/(dc["x_n"]**2)
 
 #+RESULTS:
 : /home/dp/.local/lib/python3.10/site-packages/scipy/optimize/_root_scalar.py:315: RuntimeWarning: Derivative was zero.
-: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
+: /home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in divide
 
 #+begin_src python
 print(dc["x_n", "A_n"].info("stats"))
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: invalid value encountered in subtract
+: /home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: invalid value encountered in subtract
 : <QTable length=607>
-: name     mean        std             min             max     n_bad
-: ---- ----------- ----------- ------------------- ----------- -----
-:  x_n     1.66244     2.91609            -29.6974     11.9164     0
-:  A_n inf solMass nan solMass 1.60997e-08 solMass inf solMass     1
+: name     mean        std             min             max
+: ---- ----------- ----------- ------------------- -----------
+:  x_n     1.66244     2.91609            -29.6974     11.9164
+:  A_n inf solMass nan solMass 1.60997e-08 solMass inf solMass
 : None
 
 #+begin_src python :results value drawer
@@ -886,7 +938,7 @@ dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-fZ8WA9/python-hnFXGv:20: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-fZ8WA9/python-gIdtr8:20: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last five Jacobian evaluations.
 
 #+begin_src python
@@ -1028,15 +1080,15 @@ print(dc["A_f","A_n"].info(["attributes" ,"stats"]))
 
 #+RESULTS:
 #+begin_example
-/home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning:
+/home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning:
 
 invalid value encountered in subtract
 
 <QTable length=607>
-name  dtype    unit      class             mean              std                min               max       n_bad
----- ------- ------- -------------- ------------------ ---------------- ------------------- --------------- -----
- A_f float64 solMass MaskedQuantity 0.00717576 solMass 0.360915 solMass    -1.49288 solMass 8.66436 solMass     0
- A_n float64 solMass       Quantity        inf solMass      nan solMass 1.60997e-08 solMass     inf solMass     1
+name  dtype    unit      class             mean              std                min               max
+---- ------- ------- -------------- ------------------ ---------------- ------------------- ---------------
+ A_f float64 solMass MaskedQuantity 0.00717576 solMass 0.360915 solMass    -1.49288 solMass 8.66436 solMass
+ A_n float64 solMass MaskedQuantity        inf solMass      nan solMass 1.60997e-08 solMass     inf solMass
 None
 #+end_example
 
@@ -1230,6 +1282,9 @@ print(y_values.unit)
 
 #+end_src
 
+#+RESULTS:
+[[file:figure/tau-A.png]]
+
 *** IDEA Check to see if the almost inf points make any sense
 
 ** TODO The gas depletion timescale \tau_g
@@ -1386,14 +1441,14 @@ print(df_log[["MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "tau_g
 
 #+RESULTS:
 :                    MHI     SFR_0  av_SFR_theor       M26       M_g       tau       A_f     tau_g
-: MHI           1.000000  0.861085      0.784292  0.850949  1.000000 -0.050178  0.095460 -0.040938
-: SFR_0         0.861085  1.000000      0.855756  0.854753  0.861085 -0.027560 -0.029703 -0.543286
-: av_SFR_theor  0.784292  0.855756      1.000000  0.894117  0.784292 -0.369881  0.333987 -0.428340
-: M26           0.850949  0.854753      0.894117  1.000000  0.850949 -0.227644  0.185472 -0.285532
-: M_g           1.000000  0.861085      0.784292  0.850949  1.000000 -0.050178  0.095460 -0.040938
+: MHI           1.000000  0.861085      0.784292  0.850949  1.000000 -0.050178  0.137310 -0.040938
+: SFR_0         0.861085  1.000000      0.855756  0.854753  0.861085 -0.027560  0.076759 -0.543286
+: av_SFR_theor  0.784292  0.855756      1.000000  0.894117  0.784292 -0.369881  0.121378 -0.428340
+: M26           0.850949  0.854753      0.894117  1.000000  0.850949 -0.227644  0.080755 -0.285532
+: M_g           1.000000  0.861085      0.784292  0.850949  1.000000 -0.050178  0.137310 -0.040938
 : tau          -0.050178 -0.027560     -0.369881 -0.227644 -0.050178  1.000000 -0.554354 -0.022487
-: A_f           0.095460 -0.029703      0.333987  0.185472  0.095460 -0.554354  1.000000  0.214326
-: tau_g        -0.040938 -0.543286     -0.428340 -0.285532 -0.040938 -0.022487  0.214326  1.000000
+: A_f           0.137310  0.076759      0.121378  0.080755  0.137310 -0.554354  1.000000  0.067690
+: tau_g        -0.040938 -0.543286     -0.428340 -0.285532 -0.040938 -0.022487  0.067690  1.000000
 
 #+begin_src python :results file value
 #heatmap of masses and luminosities
