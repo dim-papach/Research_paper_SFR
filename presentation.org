@@ -1,0 +1,72 @@
+#+title:Investigations of the galaxies in the LCV
+#+subtitle: Finding the normalization constant of $SFR_{del}$ and the relations between the parameters of the Galaxies
+
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_MARGIN: 10
+
+
+* Abstract
+#+begin_abstract
+The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies[cite:@karachentsevUPDATEDNEARBYGALAXY2013] and its updated version from the "Catalog & Atlas of the LV galaxies" database[cite:@CatalogLVGalaxies].
+
+The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories (delayed-$\tau$ model).
+#+end_abstract
+
+* Τι είναι το LCV
+
+- $D \leq 10 Mpc$
+- Ακτινικές ταχύτητες $V_{lg} \le 500 \, km \cdot s^{-1}$
+
+  Κρατάμε και γαλαξίες που πλησιάζουν τα 11 Mpc, κρατώντας και το αντίστοιχο σφάλμα
+
+
+* Τα δεδομένα
+
+1. Catalog of Nearby Galaxies
+2. Global Parameters of the Nearby Galaxies
+3. List of Apparent Magnitudes
+4. List of Heliocentric Velocities
+5. List of Inner Kinematics
+6. List of Distances
+7. List of the nearby galaxies with measured SFR
+8. List of Bibliographic References
+
+
+Ο καταλογος αποτελείται από 1449 γαλαξίες
+
+
+** Σταθερά μεγέθη
+
+Θα πρέπει να χρησιμοποιήσουμε κάποιες σταθερές τιμές για την ανάλυσή μας.
+
+1. Σύμφωνα με τα [cite:@speagleHighlyConsistentFramework2014] και [cite:@kroupaConstraintsStarFormation2020] η τιμή $t_{sf} = 12\, Gyr$ αποτελεί έναν ισχυρό και συνεπή περιορισμό της εξέλιξης των γαλαξιών, σε πολλές μελέτες. Ενώ άλλοι ερευνητές υιοθετούν ένα t_{sf}= 13.6 Gyr[cite:@haslbauerCosmologicalStarFormation2023], εμείς χρησιμοποιούμε την υπόθεση των 12 Gyr ακολουθώντας το πλαίσιο του SP14
+
+#+REVEAL: split
+2. Το $\zeta =$ απώλεια μάζας μέσω της αστρικής εξέλιξης. Σύμφωνα με τη θεωρία IGIMF οι γαλαξίες του LCV αναμένεται να έχουν 1< $\zeta$ <1.3, οπότε υιοθετώντας $\zeta =1.3$ εργαζόμαστε συντηρητικά.
+
+3. Κύρια ακολουθία z = 5
+
+
+** Έξτρα δεδομένα
+
+*** Μάζες
+- Συνολική μάζα του αερίου
+  $M_g=1.33\cdot MHI$
+- Αστρικές μάζες
+  $M_* = 0.6 \cdot K_{Lum}\, [M_\odot/Lum]$
+- Συνολική βαρυονική Μάζα
+  $M_t = M_g + M_*$
+
+*** Δείκτης χρώματος
+
+
+
+*** SFR
+
+$$
+    SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
+$$
+
+$$
+    SFR_{0}=SFR_{i},\ \text{if } SFR_{j}=0\, \left[\right\frac{M_\odot}{yr} ],\ i\neq j,\ i,j=SFR_{FUV},\, SFR_{Ha}
+$$
