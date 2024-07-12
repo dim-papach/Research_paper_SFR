@@ -1,6 +1,6 @@
 #+title:Investigations of the galaxies in the LCV
 #+subtitle: Finding the normalization constant of $SFR_{del}$ and the relations between the parameters of the Galaxies
-
+#+author:
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
 #+REVEAL_MARGIN: 10
 
@@ -34,7 +34,6 @@ The paper aims to understand the distribution and correlation of these propertie
 
 Ο καταλογος αποτελείται από 1449 γαλαξίες
 
-
 ** Σταθερά μεγέθη
 
 Θα πρέπει να χρησιμοποιήσουμε κάποιες σταθερές τιμές για την ανάλυσή μας.
@@ -44,8 +43,9 @@ The paper aims to understand the distribution and correlation of these propertie
 #+REVEAL: split
 2. Το $\zeta =$ απώλεια μάζας μέσω της αστρικής εξέλιξης. Σύμφωνα με τη θεωρία IGIMF οι γαλαξίες του LCV αναμένεται να έχουν 1< $\zeta$ <1.3, οπότε υιοθετώντας $\zeta =1.3$ εργαζόμαστε συντηρητικά.
 
-3. Κύρια ακολουθία z = 5
+3. Κύρια ακολουθία με z = 5
 
+   $$\log(SFR) = \alpha \log(M_*)+\beta$$
 
 ** Έξτρα δεδομένα
 
@@ -60,13 +60,306 @@ The paper aims to understand the distribution and correlation of these propertie
 *** Δείκτης χρώματος
 
 
-
+[[/home/dp/Documents/Research_paper_SFR/figure/color_index.png]]
 *** SFR
 
 $$
     SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
 $$
 
+# $$
+#     SFR_{0}=SFR_{i},\ \text{if } SFR_{j}=0\ \left[\right\frac{M_\odot}{yr} ],\ i\neq j,\ i,j=SFR_{FUV},\ SFR_{Ha}
+# $$
+[[/home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 22-46-40.png]]
+
+#+REVEAL: split
+[[./figure/SFR_FUV-Ha.png]]
+
+#+REVEAL: split
+
+[[./figure/log_SFR_FUV_Ha.png]]
+
+#+REVEAL: split
+**** $\overline{SFR}$
+
 $$
-    SFR_{0}=SFR_{i},\ \text{if } SFR_{j}=0\, \left[\right\frac{M_\odot}{yr} ],\ i\neq j,\ i,j=SFR_{FUV},\, SFR_{Ha}
+    \overline{SFR}=\frac{\zeta M_*}{t_{sf}}
 $$
+- Το $\zeta =$ απώλεια μάζας μέσω της αστρικής εξέλιξης $\approx 1.3$.
+- $t_{sf}=$ χρόνος αστρογένεσης $\approx 12\ Gyr$
+
+  #+reveal: split
+
+[[file:figure/SFR_ratio_hist.png]]
+
+#+REVEAL: split
+
+[[file:figure/ratio_vs_color.png]]
+
+
+** The gas depletion timescale \tau_g
+
+"The gas depletion timescale τg measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR (Pflamm-Altenburg & Kroupa 2009).
+
+$$
+\tau_g = \frac{M_g}{\dot{M_*}}
+$$
+
+where Mg is the neutral gas mass at the desired time and $\dot{M_*}$ is the SFR then."[cite:@nageshSimulationsStarformingMainsequence2023]
+
+
+#+REVEAL: split
+
+[[file:figure/tau_g-hist.png]]
+
+** Limit flags και σφαλματα
+
+Ορισμένες από αυτές τις τιμές περιέχουν σημάνσεις ορίου, τις οποίες θα αποκρύψουμε για την παρούσα ανάλυσή μας. Ωστόσο, οι τιμές αυτές θα εμφανιστούν στα διαγράμματα και στη συνέχεια θα συγκριθούν με τις θεωρητικές τιμές.
+
+Οι σημάνσεις οριακών τιμών τοποθετούνται σε τιμές όπου η αβεβαιότητα της τιμής είναι υψηλή, συνήθως λόγω της ακρίβειας της μέτρησης (πολύ υψηλή ή χαμηλή τιμή).
+
+#+REVEAL: split :t
+Μπορούμε να υποθέσουμε ότι όλες μας οι μετρήσεις, έχουν το ίδιο σφάλμα, επομένως είναι και ισοβαρής
+
+
+* Οι Γαλαξιες μας
+** Χαρτογράφηση
+[[/home/dp/Documents/Research_paper_SFR/figure/mapping.png]]
+
+** Μορφολογια
+[[/home/dp/Documents/Research_paper_SFR/figure/Types.png]]
+
+#+REVEAL: split :t
+[[/home/dp/Documents/Research_paper_SFR/figure/Tdw1.png]]
+#+REVEAL: split :t
+[[/home/dp/Documents/Research_paper_SFR/figure/Tdw2.png]]
+
+* $SFR_0 \geq 10^{-3}\ M_\odot/yr$ cut
+
+#+REVEAL: split :t
+- **Επίδραση top-Light gwIMF**:
+  - Οι τιμές του SFRo μπορεί να είναι ανακριβείς λόγω της αρχικής συνάρτησης μάζας του γαλαξία (gwIMF).
+  - Αυτό οδηγεί σε SFRo,Hα < SFRo,FUV.
+  - Παρατηρείται σε νάνους γαλαξίες όπως ο DDO 154.
+  - Η τάση επιβεβαιώνεται σε πιο μαζικούς γαλαξίες, υποδηλώνοντας παρόμοια αποτελεσματικότητα αστρογένεσης.
+
+#+REVEAL: split :t
+- **Στοχαστικός σχηματισμός αστέρων**:
+  - Ο σχηματισμός αστέρων περιγράφεται ως στοχαστικός.
+  - Οι χαμηλοί SFRs στους νάνους γαλαξίες μπορεί να προκαλέσουν υποδειγματοληψία του gwIMF.
+  - Διαχρονικές μεταβολές των SFRs πιθανόν στους νάνους γαλαξίες.
+    #+reveal: split
+- **Στοχαστικός σχηματισμός αστέρων**:
+  - Ο σχηματισμός αστέρων στους γαλαξίες μπορεί να συμβεί με τυχαίο, απρόβλεπτο τρόπο αντί να ακολουθεί μια ομαλή, συνεχή διαδικασία.
+  - Αυτή η τυχαιότητα μπορεί να οδηγήσει σε σημαντικές διακυμάνσεις στον αριθμό και στους τύπους των αστέρων που σχηματίζονται με την πάροδο του χρόνου και σε διάφορες περιοχές ενός γαλαξία.
+
+#+REVEAL: split :t
+- Υποδειγματοληψία του gwIMF:
+  - Σε γαλαξίες με χαμηλούς ρυθμούς σχηματισμού αστέρων (SFRs), η τυχαία φύση του σχηματισμού αστέρων μπορεί να οδηγήσει σε ελλιπή ή μεροληπτική δειγματοληψία της (gwIMF).
+  - Αυτό σημαίνει ότι δεν σχηματίζονται όλοι οι τύποι αστέρων, ιδιαίτερα οι μαζικοί, σε αναλογία με τον αναμενόμενο αριθμό τους με βάση την gwIMF, οδηγώντας σε αποκλίσεις στις μετρήσεις του SFR.
+
+#+REVEAL: split :t
+- **Μεροληψίες μέτρησης**:
+  - Οι ροές Hα και UV μπορεί να επηρεάζονται από:
+    - Διαρροή φωτονίων
+    - Σκίαση λόγω σκόνης
+    - Ερυθροποίηση
+  - Οι συστηματικές διακυμάνσεις στο gwIMF διορθώνονται για αυτές τις μεροληψίες στην έρευνα.
+
+#+REVEAL: split :t
+- **Ανενεργοί γαλαξίες - δορυφόροι**:
+  - Πολλοί γαλαξίες χαμηλής μάζας είναι δορυφόροι που σταμάτησαν να σχηματίζουν αστέρια πριν από δισεκατομμύρια χρόνια.
+  - Χάνουν αέριο όταν βρίσκονται κοντά σε μεγάλους γαλαξίες.
+  - Οι νάνοι γαλαξίες μακριά από τους μεγάλους συμπεριφέρονται σαν δισκοειδείς γαλαξίες, διατηρώντας τον σχηματισμό άστρων.
+
+
+
+** Αλλαγές στην Μορφολογία
+
+[[/home/dp/Documents/Research_paper_SFR/figure/TType_cut.png]]
+
+#+reveal: split
+
+[[/home/dp/Documents/Research_paper_SFR/figure/Tdw1_cut.png]]
+
+#+reveal: split
+
+[[/home/dp/Documents/Research_paper_SFR/figure/Tdw2_cut.png]]
+
+* The Delayed-\tau model
+
+- Το delayed-$\tau$ model περιγράφει την ιστορία σχηματισμού αστέρων (SFH) ενός γαλαξία, υποθέτοντας ότι οι ρυθμοί σχηματισμού αστέρων (SFRs) συνήθως αυξάνονται στην αρχική φάση εξέλιξης του γαλαξία και βαθμιαία μειώνονται.
+
+- *Speagle et al. (2014):* Το SFH γαλαξιών της κύρια ακολουθίας, μπορεί να παραμετροποιηθεί με ακρίβεια βάση αυτού του μοντέλου
+
+#+reveal: split
+\begin{equation}
+        \label{eq:SFR} SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau},\text{ where } x=\frac{tsf}{\tau}
+\end{equation}
+
+
+\begin{equation}
+        \label{eq:av_SFR-x} \overline{SFRdel}=\frac{Adel}{tsf}[1-(1+x)e^{-x}]
+\end{equation}
+
+\begin{equation}\label{eq:av_SFR M*}
+        \overline{SFR}=\frac{\zeta M_*}{tsf}
+\end{equation}
+
+** Υπολογισμός της $A_{del}$
+
+Σύστημα 2 εξισώσεων και 2 μεταβλητών ($A_{del},\ \tau$), κρατώντας το $t_{sf}$ σταθερό.
+
+Λύση με υπολογιστικές μεθόδους
+
+- Newton Raphson:$\frac{\overline{SFRdel}}{SFR0,del} = \frac{e^x-x-1}{x^2}, \text{where } x =\frac{t_{sf}}{\tau}$
+
+- Python fsolve: Ψάχνει λύσεις και για τις δύο εξισώσεις ταυτόχρονα.
+
+*** Συγκριση μεθοδων
+
+**** X
++-----+-------+-------+--------+-------+
+|name |mean   | std   | min    | max   |
++-----+-------+-------+--------+-------+
+| x_f |1.5824 |2.94119|-29.6974|9.79911|
+|     |       |       |        |       |
++-----+-------+-------+--------+-------+
+| x_n |1.66244|2.91609|-29.6974|11.9164|
++-----+-------+-------+--------+-------+
+
+#+reveal: split
+[[file:figure/x-hist.png]]
+
+#+reveal: split
+
+[[file:figure/x-scatter.png]]
+
+#+reveal: split
+
+**** $A_{del}$
+
+
++-----------+---------+---------+--------+-------+
+|name       |mean     | std     | min    | max   |
+|           |         |         |        |       |
++-----------+---------+---------+--------+-------+
+|A_n/solMass|5.268e+10|5.203e+11|1.61e-08|8.6e+12|
++-----------+---------+---------+--------+-------+
+
+
+#+reveal: split
+
+[[file:figure/A_n-hist.png]]
+
+
+#+reveal: split
+
+[[file:figure/x-A.png]]
+
+#+reveal: split
+
+[[/home/dp/Documents/Research_paper_SFR/figure/SFR-x.png]]
+
+** Υπολογισμος $\tau$
+$\tau = \frac{t_{sf}}{x} = \frac{12}{x}\text{Gyr}$
+
+: mean = 6.29 Gyr
+: std = 77.37 Gyr
+: min = -1036.91 Gyr
+: max = 988.964 Gyr
+
+
+#+reveal: split
+[[file:figure/tau-hist.png]]
+
+#+reveal: split
+[[/home/dp/Documents/Research_paper_SFR/figure/tau-A.png]]
+
+#+reveal: split
+[[/home/dp/Documents/Research_paper_SFR/figure/tau-A_zoom.png]]
+
+* Βρισκοντας τις συσχετισεις
+
+file:/home/dp/Documents/Research_paper_SFR/figure/correlation.html
+
+
+#+reveal: split
+[[/home/dp/Documents/Research_paper_SFR/figure/heatmap_mass_sfr_a_t.png]]
+#+reveal: split
+
+* Πρόβλημα με την προσεγγιση
+
+Περιμένουμε:
+- $3.5<\tau<4.5$
+- $2.7 < x < 3.4$ και
+- $1.5<\frac{\overline{SFR}}{SFR_0}<2.3$
+
+#+REVEAL: split:t
+- Διώρθωση θεωρώντας $t_{sf} = 13.6$ Gyr
+  -  [[https://doi.org/10.1093/mnras/stad2032]["JWST early Universe observations and ΛCDM cosmology"]] $\rightarrow \ T_0=26.7$ Gyr
+#+REVEAL: split:t
+- Ενώ υπάρχει βιβλιογραφία που υποστηρίζει την προσέγγιση $t_{sf} = 12\, \text{Gyr}$, αποκλείει την περίπτωση κάποιοι γαλαξίες να έχουν διαφορετικό $t_{sf}$
+  - Μια μικρή μεταβολή του $t_{sf}$ μπορεί να δώσει αρκετά λάθος προσέγγιση για το $\tau$, λόγω της αστάθειας των συναρτήσεων του $SFR_{del},\, \overline{SFR}$
+
+** Πιθανή λύση
+
+[[/home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 21-57-11.png]]
+
+
+The integral $\int SFR dt=$ The total mass that is turned into stars.
+
+# \begin{equation}
+#         \begin{align}
+#         \int^{t_{sf}}_0 SFR_{del} dt_{sf}&=\int^{t_{sf}}_0 \frac{A_{del}t_{sf}e^{-t_{sf}/\tau}}{\tau^2} dt_{sf}\\
+#         \zeta\cdot M_*&=-A_{del} \frac{{\left(t_{\mathit{sf}} \tau + \tau^{2}\right)} e^{\left(-\frac{t_{\mathit{sf}}}{\tau}\right)}}{\tau^{2}}+A_{del}\\
+#         \zeta\cdot M_*&=-A_{del}\frac{\tau^2(x+1)e^{-x}}{\tau^2}+A_{del}\\
+#         \zeta\cdot M_*& = A_{del}(1-(x+1)e^{-x})\\
+#         A_{del}&=\zeta\cdot M_*\frac{e^x}{e^x-x-1}
+#         \end{align}
+# \end{equation}
+
+
+#+reveal: split :t
+
+[[/home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 21-55-49.png]]
+
+# \begin{equation} \label{eq:SFR final}
+# \begin{align}
+# SFR_{0,del}&=\zeta M_*\frac{e^x}{e^x-x-1}\frac{xe^{-x}}{\tau}\\
+#           &=\zeta M_*\frac{x}{\tau(e^x-x-1)}
+# \end{align}
+# \end{equation}
+# \begin{equation}\label{eq:av_SFR-x final}
+# \begin{align}
+# \overline{SFR_{del}}&=\zeta M_*\frac{e^x}{e^x-x-1}\frac{1}{t_{sf}}[1-(1+x)e^{-x}]\\
+#                    &=\zeta M_*\frac{e^x}{e^x-x-1}\frac{1}{t_{sf}}\frac{e^x-x-1}{e^x}\\
+#                    &=\zeta \frac{M_*}{t_{sf}}
+# \end{align}
+# \end{equation}
+
+#+reveal: split :t
+
+Άρα μπορούμε να γράψουμε:
+
+$$ A_{del} = \zeta\cdot M_* \cdot f(x)$$
+
+όπου $f(x) = \frac{e^x}{e^x-x-1}$
+
+#+reveal: split :t
+
+[[/home/dp/Documents/Research_paper_SFR/figure/AzM_*-x.png]]
+#+reveal: split :t
+
+
+[[/home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 22-25-01.png]]
+
+#+reveal: split :t
+
+[[/home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 22-27-33.png]]
+
+* Σταθερό χ
+
+- Αφήνουμε τους γαλαξίες να έχουν διαφορετική ηλικία και $\tau$
+- Για $x>2.7$ έχουμε μεγάλη ευστάθεια στις συναρτήσεις μας
+- Υποθέτουμε ότι όλοι οι γαλαξίες του LCV είναι στην ίδια εξελικτική τους φάση

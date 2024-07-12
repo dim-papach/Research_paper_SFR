@@ -1,6 +1,6 @@
 #+title: Karachentsev List notes
 #+bibliography: "../My Library/My Library.bib"
-#+PROPERTY: header-args :lang python :eval python :exports results :tangle final.py :results value  :session main
+#+PROPERTY: header-args :lang python :eval python :exports results :tangle list.py :results value  :session main
 
 
 This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on <2023-11-22 Wed>. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]
@@ -77,7 +77,6 @@ for file_path in file_paths:
 #+end_src
 
 #+RESULTS:
-: None
 
 
 #+begin_src python
@@ -91,7 +90,6 @@ for i in range(len(nm)):
 #+end_src
 
 #+RESULTS:
-: None
 
 ** Table 3
 
@@ -138,27 +136,6 @@ colors.info
 #+end_src
 
 #+RESULTS:
-#+begin_example
-<Table length=1449>
-   name    dtype  unit            description             n_bad
---------- ------- ---- ---------------------------------- -----
-     Name   str18      Galaxy name in well-known catalogs     0
-  l_mag_B    str1                       Limit flag on mag  1449
-    mag_B float64  mag   Apparent magnitude in Filter (1)     9
-  e_mag_B float64  mag                   Error in mag (2)  1259
-l_mag_FUV    str1                       Limit flag on mag  1115
-  mag_FUV float64  mag   Apparent magnitude in Filter (1)   315
-e_mag_FUV float64  mag                   Error in mag (2)   745
- l_mag_HI    str1                       Limit flag on mag  1239
-   mag_HI float64  mag   Apparent magnitude in Filter (1)   501
- e_mag_HI float64  mag                   Error in mag (2)  1300
- l_mag_Ha    str1                       Limit flag on mag  1319
-   mag_Ha float64  mag   Apparent magnitude in Filter (1)   713
- e_mag_Ha float64  mag                   Error in mag (2)   775
- l_mag_Ks    str1                       Limit flag on mag  1449
-   mag_Ks float64  mag   Apparent magnitude in Filter (1)  1089
- e_mag_Ks float64  mag                   Error in mag (2)  1103
-#+end_example
 
 
 ** Merging the tables
@@ -172,7 +149,6 @@ param.rename_column("AB","AB_int")
 #+end_src
 
 #+RESULTS:
-: None
 
 **** W50
 #+begin_src python
@@ -182,7 +158,6 @@ print(identical)
 #+end_src
 
 #+RESULTS:
-: None
 
 But, according to the metadata of table 1 "Note (9): The main source of W50 data was LEDA, as well as the HIPASS and ALFALFA surveys. The references to individual W50 measurements are presented in Table 5 and the LV database"
 
@@ -194,7 +169,6 @@ kin.remove_column("r_W50")
 #+end_src
 
 #+RESULTS:
-: None
 
 **** BMag
 
@@ -231,7 +205,6 @@ print(bmag["BMag"])
 #+end_src
 
 #+RESULTS:
-: None
 
 #+begin_src python
 
@@ -243,7 +216,6 @@ sfr.info()
 #+end_src
 
 #+RESULTS:
-: None
 
 **** Right Ascension
 
@@ -255,7 +227,6 @@ print(identical)
 #+end_src
 
 #+RESULTS:
-: None
 
 As I observe, the Right Ascension of CAT and PARAM are the same and the problem is with the SFR table. Plus, as I see from the file "./diff_report_RAh.txt" the differences are marked as +,  indicating new rows in the table.
 
@@ -269,7 +240,6 @@ for col in columns_to_remove:
 #+end_src
 
 #+RESULTS:
-: None
 
 **** Types
 
@@ -282,7 +252,6 @@ identical = report_diff_values(cat["Name","TType"], sfr["Name", "T"])
 #+end_src
 
 #+RESULTS:
-: None
 
 The problem is that the SFR table is smaller, so it cannot join. I will follow the same steps as in BMag.
 
@@ -292,7 +261,6 @@ print(ttype.info)
 #+end_src
 
 #+RESULTS:
-: None
 
 Since each galaxy can have only one  morphological type and as I can see the only difference is that they have is the number of values, I will keep the longer column
 #+begin_src python
@@ -300,7 +268,6 @@ sfr.remove_column("T")
 #+end_src
 
 #+RESULTS:
-: None
 
 **** Remove References
 I have already removed some references. Lets finish it
@@ -313,7 +280,6 @@ dist.remove_column("n_DM") # Method used to determine DM
 #+end_src
 
 #+RESULTS:
-: None
 
 *** Merging
 
@@ -339,7 +305,6 @@ for i in range(len(nm)):
 #+end_src
 
 #+RESULTS:
-: None
 
 #+begin_src python
 
@@ -350,7 +315,6 @@ print(dt.info)
 #+end_src
 
 #+RESULTS:
-: None
 
 
 
@@ -365,7 +329,6 @@ print(dt[dt["Name"] == "6dF J2218489-46130"])
 #+end_src
 
 #+RESULTS:
-: None
 
 Can you spot it? Indeed, the galaxy has such a big name that it moves the data. And that creates a lot of shenanigans in that row. So the fastest way to find the problem is to check if the DE- is a string or not and then, if it is not, delete it.
 
@@ -385,9 +348,10 @@ print("Remaining Galaxies:", len(dt))
 #+end_src
 
 #+RESULTS:
-: None
 
-But wont that create a *"stATIstIcaL PRoBlEM wiTh the Data sET"*? Lets see src_python[:results output]{print(len(rows_to_delete)/len(dt)*100,"%")} {{{results(=0.06906077348066297 %=)}}}
+But wont that create a *"stATIstIcaL PRoBlEM wiTh the Data sET"*? Lets see src_python[:results output]{print(len(rows_to_delete)/len(dt)*100,"%")} {{{results(==)}}}
+
+Same for MKT J045920.2-252959 MKT J125225.4-124304.1
 
 * Fixing the units
 ** Log (dex) units in linear
@@ -412,13 +376,6 @@ dt[["KLum", "M26", "MHI"]].info
 #+end_src
 
 #+RESULTS:
-: <Table length=1448>
-: name  dtype    unit             description             n_bad
-: ---- ------- ------- ---------------------------------- -----
-: KLum float64  solLum        Linear K_S_ band luminosity    12
-:  M26 float64 solMass Linear mass within Holmberg radius   642
-:  MHI float64 solMass               Linear hydrogen mass   501
-
 
 
 * Using Skycoord
@@ -461,187 +418,16 @@ data_table.info()
 #+end_src
 
 #+RESULTS:
-: None
 
 
 
 * Writing
 #+begin_src python
-ascii.write(data_table, "../tables/final_table.ecsv", format= "ecsv" , overwrite=True)
+data_table.write("../tables/final_table.fits", overwrite=True)
 #+end_src
 
 #+RESULTS:
-: None
 
-
-#+begin_src python
-
-paint = QTable(ascii.read("../tables/final_table.ecsv", format="ecsv"),masked=True)
-
-paint.show_in_browser(jsviewer = True)
-#+end_src
-
-#+RESULTS:
-: None
-
-
-As we can see it works. FINALLY
-
-We use the ~ecsv~ format because I get errors with the ~mrt~.
-
-
-#+begin_src python
-paint.info()
-#+end_src
-
-#+RESULTS:
-: None
-
-
-
-* Custom class
-
-I will create a custom Qtable class so i can have latex output of the names and the units.
-
-#+name: class
-#+begin_src python :session class :results none :tangle ../custom_table.py
-from astropy.table import QTable
-import astropy.units as u
-
-class CustomQTable(QTable):
-    def __setitem__(self, key, value):
-        super().__setitem__(key, value)
-        if isinstance(value, u.Quantity):
-            self.update_metadata(key, value.unit)
-
-    def add_column(self, column, index=None, name=None, copy=True, latex_name=None):
-        super().add_column(column, index=index, name=name, copy=copy)
-        if isinstance(column, u.Quantity):
-            self.update_metadata(name, column.unit, latex_name)
-
-    def update_metadata(self, column_name, unit = None, latex_name=None):
-        if 'latex' not in self.meta:
-            self.meta['latex'] = {}
-        if latex_name is None:
-            latex_name = f'${column_name}$'
-        if unit is None:
-            unit = self[column_name].unit
-        self.meta['latex'][column_name] = {
-            'latex_name': latex_name,
-            'latex_unit': f'[{str(unit)}]'
-
-        }
-
-    def change_unit(self, column_name, new_unit):
-        if column_name in self.colnames:
-            self[column_name] = self[column_name].to(new_unit)
-            self.update_metadata(column_name, new_unit)
-
-    def change_latex_name(self, column_name, new_latex_name):
-        if 'latex' in self.meta and column_name in self.meta['latex']:
-            self.meta['latex'][column_name]['latex_name'] = new_latex_name
-
-    def print_latex(self, column_name):
-        return self.meta["latex"][column_name]["latex_name"] + " " + self.meta["latex"][column_name]["latex_unit"]
-
-    def __getitem__(self, key):
-        if isinstance(key, str):
-            return super().__getitem__(key)
-        elif isinstance(key, int):
-            return super().__getitem__(key)
-        else:
-            result = super().__getitem__(key)
-            if 'latex' in self.meta:
-                return self.meta['latex']
-            else:
-                return None
-
-#+end_src
-
-#+begin_src python :session class :results output
-
-# Example usage:
-dt = CustomQTable()
-dt['Column1'] = [1, 2, 3] * u.m
-dt['Column2'] = [4, 5, 6] * u.s
-
-# Changing the unit for Column1 to kilometers
-dt.change_latex_name('Column1', "padsfain")
-dt.update_metadata("Column2",  latex_name = "fads")
-
-dt["Column1"] = dt["Column1"].to(u.km) * u.yr
-# Printing LaTeX metadata for all columns
-
-print(dt.print_latex("Column2"))
-
-#+end_src
-
-#+RESULTS:
-: fads [s]
-
-As we can see the class works!!!
-
-** Fix the latex names
-
-#+call:class[:session main]
-
-#+name: read_data_with_latex
-#+begin_src python
-# custom_table.py
-dt = CustomQTable(ascii.read("../tables/final_table.ecsv", format="ecsv"),masked=True)
-
-#+end_src
-
-#+RESULTS: read_data_with_latex
-: {'latex_name': '${HI_{mag}}^{21\\. cm}$', 'latex_unit': '[mag]'}
-
-#+name: read_data_with_latex
-#+begin_src python
-
-dt.update_metadata("Coordinates", unit = "deg, deg")
-
-for col_name in dt.columns:
-    if col_name != "Coordinates":
-        dt.update_metadata(col_name)
-
-
-dt.change_latex_name("a26", r"$a_{26}$")
-
-dt.change_latex_name("FUVmag", r"$FUV_{mag}$")
-dt.change_latex_name("Bmag", r"$B_{mag}$")
-dt.change_latex_name("Hamag", r"$H\alpha_{mag}$")
-dt.change_latex_name("Kmag", r"$K_{mag}$")
-dt.change_latex_name("21mag", r"${HI_{mag}}^{21\. cm}$")
-dt.change_latex_name("TType", r"Galaxy Type")
-dt.change_latex_name("Dis", r"Distance")
-dt.change_latex_name("A26", r"$A_{26}$")
-dt.change_latex_name("inc", r"inclination")
-dt.change_latex_name("AB_int", r"$AB_{int}$")
-dt.change_latex_name("logKLum", r"$\log{K_{Lum}}$")
-dt.change_latex_name("logM26", r"$\log{M_{26}}$")
-dt.change_latex_name("logMHI", r"$\log{M_{HI}}$")
-dt.change_latex_name("Theta1", r"$\Theta_1$")
-dt.change_latex_name("Theta5", r"$\Theta_5$")
-dt.change_latex_name("Thetaj", r"$\Theta_j$")
-
-dt.change_latex_name("SFRFUV", r"$SFR_{FUV}$")
-dt.change_latex_name("PFUV", r"$P_{FUV}$")
-dt.change_latex_name("FFUV", r"$F_{FUV}$")
-dt.change_latex_name("SFRHa", r"$SFR_{H\alpha}$")
-dt.change_latex_name("PHa", r"$P_{H\alpha}$")
-dt.change_latex_name("FHa", r"$F_{H\alpha}$")
-dt.meta["latex"]["21mag"]
-#+end_src
-
-#+RESULTS:
-: {'latex_name': '${HI_{mag}}^{21\\. cm}$', 'latex_unit': '[mag]'}
-
-#+begin_src python
-ascii.write(dt, "../tables/final_table.ecsv", format= "ecsv" , overwrite=True)
-
-#+end_src
-
-#+RESULTS:
 
 * IDEAS
 ** IDEA mapping with Color, type of galaxy, SFR, Velocity
