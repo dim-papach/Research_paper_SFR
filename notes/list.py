@@ -193,6 +193,7 @@ for pair in pairs:
 pairs.remove(('Bmag', 'BMag'))
 pairs.remove(('AB', 'AB_int'))
 
+all_removed = []
 
 for pair in pairs:
     col1, col2 = pair
@@ -214,6 +215,8 @@ for pair in pairs:
         dt.remove_column(f"e_{removed}")
     if f"f_{removed}" in dt.colnames:
         dt.remove_column(f"f_{removed}")
+    #List of all removed columns
+    all_removed.append(removed)
         
    
 # fix the units
@@ -226,7 +229,60 @@ dt["Thetaj"].unit = ""
 dt["SFRFUV"].unit = u.Msun / u.yr
 dt["SFRHa"].unit = u.Msun / u.yr
 
-print(dt.info())
+# Function to check flag consistency
+def check_flags(table):
+    """
+    Check for consistency between masked values and flag columns in an Astropy Table.
 
+    This function iterates over the columns of the provided table and checks if the 
+    masked values in the main columns are consistent with the corresponding flag columns 
+    (columns starting with 'l_' or 'f_'). If inconsistencies are found, it records the 
+    positions of these inconsistencies.
+
+    Parameters
+    ----------
+    table : astropy.table.Table
+        The table to be checked for flag consistency. The table should contain columns 
+        with names starting with 'l_' or 'f_' which are used as flag indicators for the 
+        main columns.
+
+    Returns
+    -------
+    flag_errors : dict
+        A dictionary where the keys are the names of the flag columns with inconsistencies, 
+        and the values are arrays of positions (indices) where the inconsistencies occur.
+        If no inconsistencies are found, the dictionary will be empty.
+    """
+    flag_errors = {}
+    for colname in table.colnames:
+        if colname.startswith('l_') or colname.startswith('f_'):
+            main_col = colname[2:]  # Remove 'l_' or 'f_' prefix to get the main column name
+            if main_col in table.colnames:
+                mask = table[main_col].mask
+                flags = table[colname]
+                
+                # Check if the flag column has non-empty entries
+                flag_positions = flags != ''  # or you can check for np.nan, or other specific flag indicators
+
+                if not np.all(mask == flag_positions):
+                    flag_errors[colname] = np.where(mask != flag_positions)[0]
+
+    return flag_errors
+# Check the flags
+flag_errors = check_flags(table)
+
+# Report the results
+if flag_errors:
+    for col, error_positions in flag_errors.items():
+        print(f"Inconsistent flags found in column {col} at positions: {error_positions}")
+else:
+    print("All flags are consistent with masked values.")
+    
+print("\nThe masks are not the same as the flag columns in the input data.")
+
+print(dt.info())
+print("\nWe have removed:", all_removed)
+print("\nThe total number of columns in the final table is:", len(dt.colnames),"with number of rows:", len(dt))
+print("\nThe final table has been saved to '../tables/final_table.fits'.")
 # Save the final table to a FITS file
 dt.write("../tables/final_table.fits", overwrite=True)
