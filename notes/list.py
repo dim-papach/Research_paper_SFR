@@ -193,15 +193,34 @@ for pair in pairs:
 pairs.remove(('Bmag', 'BMag'))
 pairs.remove(('AB', 'AB_int'))
 
-all_removed = []
 
-for pair in pairs:
-    col1, col2 = pair
+def compare_and_remove(dt, col1, col2):
+    """
+    Compare two columns in an Astropy Table and remove the one with more masked (NaN) values.
+
+    This function compares the number of masked (NaN) values in two specified columns of an Astropy Table.
+    It removes the column with the greater number of masked values. Additionally, it removes any associated
+    flag columns (columns starting with 'l_', 'e_', or 'f_') corresponding to the removed column.
+
+    Parameters
+    ----------
+    dt : astropy.table.Table
+        The table containing the columns to be compared and potentially removed.
+    col1 : str
+        The name of the first column to be compared.
+    col2 : str
+        The name of the second column to be compared.
+
+    Returns
+    -------
+    removed : str
+        The name of the column that was removed from the table.
+    """
     mask1 = dt[col1].mask.sum()
     mask2 = dt[col2].mask.sum()
     print(f'{col1}: {mask1} NaN', f'{col2}: {mask2} NaN')
-    if mask1>=mask2:
-        dt.remove_column(col1)        
+    if mask1 >= mask2:
+        dt.remove_column(col1)
         print(f'Removed {col1}')
         removed = col1
     else:
@@ -215,8 +234,15 @@ for pair in pairs:
         dt.remove_column(f"e_{removed}")
     if f"f_{removed}" in dt.colnames:
         dt.remove_column(f"f_{removed}")
+    return removed
+
+
+all_removed = []
+for pair in pairs:
+    col1, col2 = pair
+    compiled_removed = compare_and_remove(dt, col1, col2)
     #List of all removed columns
-    all_removed.append(removed)
+    all_removed.append(compiled_removed)
         
    
 # fix the units
