@@ -9,7 +9,9 @@ from astropy.visualization import quantity_support
 import glob
 import os
 
-# Function to clean the data before reading into a Table
+# Set non-interactive backend for matplotlib
+plt.switch_backend('Agg')
+
 def clean_file(file_path):
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -63,7 +65,7 @@ def scatter_and_r2(table1, table2, col1_name, col2_name, title):
     plt.savefig(title)
     plt.close()
 
-# Modify magnitudes table
+### Modify magnitudes table
 magn.remove_column("r_mag")
 magn["Filter"][magn["Filter"] == "FU"] = "FUV"
 
@@ -94,6 +96,7 @@ for dcolor_item in dcolor[1:]:
 param.rename_column("a26", "A26")
 param.rename_column("AB", "AB_int")
 
+### Comparisons
 # Compare and remove columns in cat and kin tables
 scatter_and_r2(cat, kin, "W50", "W50", "cat vs kin W50")
 if len(cat["W50"]) > len(kin["W50"]):
@@ -164,6 +167,66 @@ for col in ['RAh', 'RAm', 'RAs', 'DE-', 'DEd', 'DEm', 'DEs']:
 # Reorder columns
 column_order = ["Name", "Coordinates"] + [col for col in dt.colnames if col not in ["Name", "Coordinates"]]
 dt = dt[column_order]
+
+# create a list of pairs of colums to be plotted
+pairs = [('FUVmag','mag_FUV'),
+         ('Bmag','mag_B'),
+         ('Hamag', 'mag_Ha'),
+         ('Kmag','mag_Ks'),
+         ('Bmag', 'BMag'),
+         ("21mag", "mag_HI"),
+         ('AB','AB_int')
+         ]
+
+# Create plots for each pair of columns
+for pair in pairs:
+    col1, col2 = pair
+    plt.figure(figsize=(8, 6))
+    plt.scatter(dt[col1], dt[col2])
+    plt.xlabel(col1)
+    plt.ylabel(col2)
+    plt.title(f'{col1} vs {col2}')
+    plt.grid(True)
+    plt.savefig(f'{col1} vs {col2}')
+    plt.close()
+
+pairs.remove(('Bmag', 'BMag'))
+pairs.remove(('AB', 'AB_int'))
+
+
+for pair in pairs:
+    col1, col2 = pair
+    mask1 = dt[col1].mask.sum()
+    mask2 = dt[col2].mask.sum()
+    print(f'{col1}: {mask1} NaN', f'{col2}: {mask2} NaN')
+    if mask1>=mask2:
+        dt.remove_column(col1)        
+        print(f'Removed {col1}')
+        removed = col1
+    else:
+        dt.remove_column(col2)
+        print(f'Removed {col2}')
+        removed = col2
+    
+    if f"l_{removed}" in dt.colnames:
+        dt.remove_column(f"l_{removed}")
+    if f"e_{removed}" in dt.colnames:
+        dt.remove_column(f"e_{removed}")
+    if f"f_{removed}" in dt.colnames:
+        dt.remove_column(f"f_{removed}")
+        
+   
+# fix the units
+dt["logKLum"].unit = ""
+dt["logM26"].unit = ""
+dt["logMHI"].unit = ""
+dt["Thetaj"].unit = ""
+
+## SFR units
+dt["SFRFUV"].unit = u.Msun / u.yr
+dt["SFRHa"].unit = u.Msun / u.yr
+
+print(dt.info())
 
 # Save the final table to a FITS file
 dt.write("../tables/final_table.fits", overwrite=True)
