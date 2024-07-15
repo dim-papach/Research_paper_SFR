@@ -2,7 +2,7 @@
 
 ./downloads.sh
 cd tables
-./delete_lines.sh
+./delete_lines.sh lvg_*
 cd ../notes
 /bin/python3 list.py
 cd ../tables
