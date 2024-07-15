@@ -1,3 +1,4 @@
+#!/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
@@ -36,6 +37,7 @@ file_paths = sorted(glob.glob(file_pattern))
 dq = []
 for file_path in file_paths:
     cleaned_content = clean_file(file_path)
+    print(f"Processing {file_path}")
     dq.append(Table(ascii.read(cleaned_content, format="mrt"), masked=True))
 
 # Table names
@@ -154,6 +156,8 @@ dt["MHI"] = (10**dt["logMHI"])
 dt["MHI"].unit = u.Msun
 dt["MHI"].description = "Linear hydrogen mass"
 
+log_columns_to_linear = ["KLum", "M26", "MHI"]
+
 # Create SkyCoord objects for coordinates
 ra_str = [f"{hour}:{minute}:{second:.1f}" for hour, minute, second in zip(dt['RAh'], dt['RAm'], dt['RAs'])]
 dec_str = [f"{sign}{degree}:{minute}:{second:.1f}" for sign, degree, minute, second in zip(dt['DE-'], dt['DEd'], dt['DEm'], dt['DEs'])]
@@ -255,6 +259,8 @@ dt["Thetaj"].unit = ""
 dt["SFRFUV"].unit = u.Msun / u.yr
 dt["SFRHa"].unit = u.Msun / u.yr
 
+fixed_units = ["logKLum", "logM26", "logMHI", "Thetaj", "SFRFUV", "SFRHa"]
+
 # Function to check flag consistency
 def check_flags(table):
     """
@@ -307,7 +313,14 @@ else:
 print("\nThe masks are not the same as the flag columns in the input data.")
 
 print(dt.info())
-print("\nWe have removed:", all_removed)
+print("WHAT WE HAVE DONE:")
+print("\nFixed the coordinates to sky coordinates.")
+print("\nChanged the way table 3 was displayed, so we can compare it to the other tables.")
+print(f"\nWe converted the logarithmic values to linear scale:{log_columns_to_linear} ")
+print(f"\nWe have removed:{all_removed}, after comparison with other columns.")
+print(f"\nThe columns {fixed_units} are now in the correct units.")
+print("\nThe masks are not the same as the flag columns in the input data.")
+print("\nMerged all tables into one.")
 print("\nThe total number of columns in the final table is:", len(dt.colnames),"with number of rows:", len(dt))
 print("\nThe final table has been saved to '../tables/final_table.fits'.")
 # Save the final table to a FITS file
