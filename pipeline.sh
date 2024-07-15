@@ -1,4 +1,6 @@
 #!/bin/bash
+
+./downloads.sh
 cd tables
 ./delete_lines.sh
 cd ../notes
