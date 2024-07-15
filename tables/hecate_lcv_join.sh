@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Keep only the LCV from Hecate
+
 stilts tpipe in=HECATE_v1.1.fits  cmd="select D<11" out=HECATE_LCV.fits
 
 #Outter join for each row of hecate
