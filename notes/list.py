@@ -317,6 +317,7 @@ else:
     
 print("\nThe masks are not the same as the flag columns in the input data.")
 
+file_path = "../tables/final_table.ecsv"
 print(dt.info())
 print("WHAT WE HAVE DONE:")
 print("\nFixed the coordinates to sky coordinates.")
@@ -327,6 +328,6 @@ print(f"\nThe columns {fixed_units} are now in the correct units.")
 print("\nThe masks are not the same as the flag columns in the input data.")
 print("\nMerged all tables into one.")
 print("\nThe total number of columns in the final table is:", len(dt.colnames),"with number of rows:", len(dt))
-print("\nThe final table has been saved to '../tables/final_table.ecsv'.")
+print(f"\nThe final table has been saved to {file_path}.")
 # Save the final table to a FITS file
-ascii.write(dt, "../tables/final_table.ecsv", format = "ecsv", overwrite=True)
+ascii.write(dt, file_path, format = "ecsv", overwrite=True)
