@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
-from astropy.io import ascii
+from astropy.io import ascii, fits
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, join, QTable
 import astropy.units as u
@@ -162,14 +162,19 @@ log_columns_to_linear = ["KLum", "M26", "MHI"]
 ra_str = [f"{hour}:{minute}:{second:.1f}" for hour, minute, second in zip(dt['RAh'], dt['RAm'], dt['RAs'])]
 dec_str = [f"{sign}{degree}:{minute}:{second:.1f}" for sign, degree, minute, second in zip(dt['DE-'], dt['DEd'], dt['DEm'], dt['DEs'])]
 
-dt['Coordinates'] = SkyCoord(ra_str, dec_str, obstime="J2000", unit=(u.hourangle, u.deg))
+dt['Coordinates'] = SkyCoord(ra_str, dec_str, obstime="J2000", unit=(u.hourangle, u.deg))# make it 2 columns RA and DEC
+dt["Ra"] = dt["Coordinates"].ra
+dt["Ra"].description = "Right Ascension"
+dt["Dec"] = dt["Coordinates"].dec
+dt["Dec"].description = "Declination"
+dt.remove_column("Coordinates")
 
 # Remove original coordinate columns
 for col in ['RAh', 'RAm', 'RAs', 'DE-', 'DEd', 'DEm', 'DEs']:
     dt.remove_column(col)
 
 # Reorder columns
-column_order = ["Name", "Coordinates"] + [col for col in dt.colnames if col not in ["Name", "Coordinates"]]
+column_order = ["Name", "Ra", "Dec"] + [col for col in dt.colnames if col not in ["Name", "Ra", "Dec"]]
 dt = dt[column_order]
 
 # create a list of pairs of colums to be plotted
@@ -322,6 +327,6 @@ print(f"\nThe columns {fixed_units} are now in the correct units.")
 print("\nThe masks are not the same as the flag columns in the input data.")
 print("\nMerged all tables into one.")
 print("\nThe total number of columns in the final table is:", len(dt.colnames),"with number of rows:", len(dt))
-print("\nThe final table has been saved to '../tables/final_table.fits'.")
+print("\nThe final table has been saved to '../tables/final_table.ecsv'.")
 # Save the final table to a FITS file
-dt.write("../tables/final_table.fits", overwrite=True)
+ascii.write(dt, "../tables/final_table.ecsv", format = "ecsv", overwrite=True)
