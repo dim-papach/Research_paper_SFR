@@ -91,10 +91,21 @@ div.csl-indent {
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a>
+  <ul class="collapse">
+  <li><a href="#comparable-data" id="toc-comparable-data" class="nav-link" data-scroll-target="#comparable-data">Comparable data</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -125,7 +136,7 @@ div.csl-indent {
 <li>We will use the inner join for 1-1 comparisons</li>
 <li>If we see that the data are similar we can use the outer join</li>
 </ul>
-<div id="5ccb13f8" class="cell" data-execution_count="1">
+<div id="a13dcc84" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score</span>
@@ -137,185 +148,16 @@ div.csl-indent {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> QTable(<span class="bu">ascii</span>.read(<span class="st">"../tables/inner_join.ecsv"</span>), masked<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>dt.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;QTable masked=True length=373&gt;
-    name      dtype       unit                                                                 description                                                                  class      n_bad
------------- ------- ------------- ------------------------------------------------------------------------------------------------------------------------------------ -------------- -----
-        Name   str17                                                                                                                                        Galaxy name   MaskedColumn     0
-        Ra_1 float64           deg                                                                                                                      Right Ascension MaskedQuantity     0
-       Dec_1 float64           deg                                                                                                                          Declination MaskedQuantity     0
-       a26_1 float64        arcmin                                                                                                           Major angular diameter (1) MaskedQuantity     0
-         b/a float64                                                                                                                           Apparent axial ratio (1)   MaskedColumn     0
-          AB float64           mag                                                                                                    Galactic extinction in B band (2) MaskedQuantity     0
-        Kmag float64           mag                                                                                                        2MASS K_S_ band magnitude (6) MaskedQuantity     0
-      f_Kmag    str1                                                                                                                               [*] Flag on Kmag (7)   MaskedColumn   165
-         W50 float64        km / s                                                                                          H I line with at 50% level from maximum (9) MaskedQuantity    60
-       TType   int64                                                                                                                          Morphology type code (10)   MaskedColumn     1
-        Tdw1    str4                                                                                                                       Dwarf galaxy morphology (11)   MaskedColumn    71
-        Tdw2    str1                                                                                                    Dwarf galaxy surface brightness morphology (12)   MaskedColumn    74
-        RVel float64        km / s                                                                                                    Heliocentric radial velocity (13) MaskedQuantity    34
-         Dis float64           Mpc                                                                                                                             Distance MaskedQuantity     0
-       f_Dis    str4                                                                                                                Method flag used to obtain Dis (14)   MaskedColumn     0
-      A26_1a float64           kpc                                                                                                            Major linear diameter (1) MaskedQuantity     0
-         inc float64           deg                                                                                                                          Inclination MaskedQuantity     1
-          Vm float64        km / s                                                                                                 Amplitude of rotational velocity (2) MaskedQuantity    61
-      AB_int float64           mag                                                                                                       Internal B band extinction (3) MaskedQuantity     0
-         SBB float64 mag / arcsec2                                                                                                Average B band surface brightness (5) MaskedQuantity     0
-     logKLum float64                                                                                                                       Log K_S_ band luminosity (6)   MaskedColumn     0
-      logM26 float64                                                                                                                Log mass within Holmberg radius (7)   MaskedColumn     0
-    l_logMHI    str1                                                                                                                               Limit flag on logMHI   MaskedColumn   326
-      logMHI float64                                                                                                                              Log hydrogen mass (8)   MaskedColumn     0
-         VLG float64        km / s                                                                                                                  Radial velocity (9) MaskedQuantity    34
-      Theta1 float64                                                                                                                                   Tidal index (10)   MaskedColumn     0
-          MD   str17                                                                                                                           Main disturber name (11)   MaskedColumn     6
-      Theta5 float64                                                                                                                           Another tidal index (12)   MaskedColumn     0
-      Thetaj float64                                                                                                                 Log K band luminosity density (13)   MaskedColumn     0
-     l_mag_B    str1                                                                                                                                  Limit flag on mag   MaskedColumn   373
-       mag_B float64           mag                                                                                                     Apparent magnitude in Filter (1) MaskedQuantity     0
-     e_mag_B float64           mag                                                                                                                     Error in mag (2) MaskedQuantity     0
-   l_mag_FUV    str1                                                                                                                                  Limit flag on mag   MaskedColumn   333
-     mag_FUV float64           mag                                                                                                     Apparent magnitude in Filter (1) MaskedQuantity     0
-   e_mag_FUV float64           mag                                                                                                                     Error in mag (2) MaskedQuantity     0
-    l_mag_HI    str1                                                                                                                                  Limit flag on mag   MaskedColumn   326
-      mag_HI float64           mag                                                                                                     Apparent magnitude in Filter (1) MaskedQuantity     0
-    e_mag_HI float64           mag                                                                                                                     Error in mag (2) MaskedQuantity     0
-    l_mag_Ha    str1                                                                                                                                  Limit flag on mag   MaskedColumn   331
-      mag_Ha float64           mag                                                                                                     Apparent magnitude in Filter (1) MaskedQuantity     0
-    e_mag_Ha float64           mag                                                                                                                     Error in mag (2) MaskedQuantity     0
-          cz float64        km / s                                                                                                                Heliocentric velocity MaskedQuantity    34
-        e_cz float64        km / s                                                                                                                          Error in cz MaskedQuantity    39
-       e_W50 float64        km / s                                                                                                                         Error in W50 MaskedQuantity   149
-       r_W50   str19                                                                                                                                  Reference for W50   MaskedColumn    60
-          DM float64           mag                                                                                                                     Distance modulus MaskedQuantity     0
-        e_DM float64           mag                                                                                                                          Error in DM MaskedQuantity     0
-        BMag float64           mag                                                                                                        Absolute B band magnitude (1) MaskedQuantity     0
-     l_SFRHa    str1                                                                                                                                Limit flag on SFRHa   MaskedColumn   331
-       SFRHa float64  solMass / yr                                                                                    H{alpha} derived integral star formation rate (1) MaskedQuantity     0
-       l_PHa    str1                                                                                                                                  Limit flag on PHa   MaskedColumn   331
-         PHa float64                                                                                                      H{alpha} derived evolutionary P parameter (1)   MaskedColumn     0
-       l_FHa    str1                                                                                                                                  Limit flag on FHa   MaskedColumn   341
-         FHa float64                                                                                                      H{alpha} derived evolutionary F parameter (1)   MaskedColumn     0
-    l_SFRFUV    str1                                                                                                                               Limit flag on SFRFUV   MaskedColumn   333
-      SFRFUV float64  solMass / yr                                                                                         FUV derived integral star formation rate (1) MaskedQuantity     0
-      l_PFUV    str1                                                                                                                                 Limit flag on PFUV   MaskedColumn   333
-        PFUV float64                                                                                                           FUV derived evolutionary P parameter (1)   MaskedColumn     0
-      l_FFUV    str1                                                                                                                                 Limit flag on FFUV   MaskedColumn   356
-        FFUV float64                                                                                                           FUV derived evolutionary F parameter (1)   MaskedColumn     0
-        KLum float64        solLum                                                                                                          Linear K_S_ band luminosity MaskedQuantity     0
-         M26 float64       solMass                                                                                                   Linear mass within Holmberg radius MaskedQuantity     0
-         MHI float64       solMass                                                                                                                 Linear hydrogen mass MaskedQuantity     0
-         PGC   int32                                                                                                                  Principal Galaxy Catalogue number   MaskedColumn     0
-     OBJNAME   str28                                                                                                                       Object name in the HyperLEDA   MaskedColumn     0
-      ID_NED   str28                                                                                                                                 Object name in NED   MaskedColumn    18
-     ID_NEDD   str29                                                                                                                               Object name in NED-D   MaskedColumn    39
-     ID_IRAS   str12                                                                                                                 Object ID in IRAS-RBGS or IRAS-FSC   MaskedColumn   289
-    ID_2MASS   str16                                                                                                               Object ID in 2MASS LGA or XSC or PSC   MaskedColumn   246
- SDSS_PHOTID   str19                                                                                                        Photometric object ID in SDSS DR8 and later   MaskedColumn     0
- SDSS_SPECID   str19                                                                                                      Spectroscopic object ID in SDSS DR8 and later   MaskedColumn     0
-        RA_2 float64           deg                                                                                                  J2000 Demical right ascension (deg) MaskedQuantity     0
-       DEC_2 float64           deg                                                                                                      J2000 Demical declination (deg) MaskedQuantity     0
-    F_ASTROM   int16                                                                                 Astrometric precision: -1=0.1 asec, 0=1 asec, 1=10 asec, and so on   MaskedColumn     0
-          R1 float32        arcmin                                                                                                             Semi-major axis (arcmin) MaskedQuantity     0
-          R2 float32        arcmin                                                                                                             Semi-minor axis (arcmin) MaskedQuantity     0
-          PA float32           deg                                                                                            North-to-Northeast positional angle (deg) MaskedQuantity     0
-     RSOURCE    str1                                                                                                             Source of size information (see paper)   MaskedColumn     7
-       RFLAG   int16                            Size information flag: 0=missing, 1=all defined, 2=R2 or PA were missing and were set equal to R1 and 0.0 respectively.   MaskedColumn     0
-           T float32                                                                                          Numerical Hubble type following the de Vaucouleurs system   MaskedColumn     0
-         E_T float32                                                                                                                                   Uncertainty on T   MaskedColumn     0
-        INCL float32           deg                                                                                                                    Inclination (deg) MaskedQuantity     0
-           V float32        km / s                                                                                                  Heliocentric radial velocity (km/s) MaskedQuantity     0
-         E_V float32        km / s                                                                                                                     Uncertainty on V MaskedQuantity     0
-       V_VIR float32        km / s                                                                                        Virgo-infall corrected radial velocity (km/s) MaskedQuantity     0
-     E_V_VIR float32        km / s                                                                                                          Uncertainty on V_VIR (km/s) MaskedQuantity     0
-       NDIST   int16                                                                             Number of distance measurements in NED-D used for the computation of D   MaskedColumn     0
-       EDIST   int16                                                                                    If True, the NED-D distance measurements used had uncertainties   MaskedColumn     0
-           D float64           Mpc                                                                                                                       Distance (Mpc) MaskedQuantity     0
-         E_D float32           Mpc                                                                                                               Uncertainty on D (Mpc) MaskedQuantity     0
-      D_LO68 float64           Mpc                                                                                      Lower bound of the 68% CI on the distance (Mpc) MaskedQuantity     0
-      D_HI68 float64           Mpc                                                                                      Upper bound of the 68% CI on the distance (Mpc) MaskedQuantity     0
-      D_LO95 float64           Mpc                                                                                      Lower bound of the 95% CI on the distance (Mpc) MaskedQuantity     0
-      D_HI95 float64           Mpc                                                                                      Upper bound of the 68% CI on the distance (Mpc) MaskedQuantity     0
-     DMETHOD    str2               Distance estimation method: N=from NED-D, Z=regressor, Zv=VC-regressor, C(v)=distance from NED-D but uncertainty from (VC-)regressor   MaskedColumn     0
-          UT float32           mag                                                                                                              Total U magnitude (mag) MaskedQuantity     0
-          BT float32           mag                                                                                                              Total B magnitude (mag) MaskedQuantity     0
-          VT float32           mag                                                                                                              Total V magnitude (mag) MaskedQuantity     0
-          IT float32           mag                                                                                                              Total I magnitude (mag) MaskedQuantity     0
-        E_UT float32           mag                                                                                                              Uncertainty on UT (mag) MaskedQuantity     0
-        E_BT float32           mag                                                                                                              Uncertainty on BT (mag) MaskedQuantity     0
-        E_VT float32           mag                                                                                                              Uncertainty on VT (mag) MaskedQuantity     0
-        E_IT float32           mag                                                                                                              Uncertainty on IT (mag) MaskedQuantity     0
-          AG float32           mag                                                                                                  Galactic absorption on B-band (mag) MaskedQuantity     0
-          AI float32           mag                                                                                                 Intrinsic absorption on B-band (mag) MaskedQuantity     0
-         S12 float64            Jy                                                                                                               IRAS flux at 12um (Jy) MaskedQuantity     0
-         S25 float64            Jy                                                                                                               IRAS flux at 25um (Jy) MaskedQuantity     0
-         S60 float32            Jy                                                                                                               IRAS flux at 60um (Jy) MaskedQuantity     0
-        S100 float32            Jy                                                                                                              IRAS flux at 100um (Jy) MaskedQuantity     0
-         Q12   int16                                                              Quality flag on S12: 0=not in IRAS, 1=upper limit, 2=moderate quality, 3=high quality   MaskedColumn     0
-         Q25   int16                                                                                                           Quality flag on S25: see Q12 description   MaskedColumn     0
-         Q60   int16                                                                                                           Quality flag on S60: see Q12 description   MaskedColumn     0
-        Q100   int16                                                                                                          Quality flag on S100: see Q12 description   MaskedColumn     0
-         WF1 float64           mag                                                                                           3.3um flux in WISE forced photometry (mag) MaskedQuantity     0
-         WF2 float64           mag                                                                                           4.6um flux in WISE forced photometry (mag) MaskedQuantity     0
-         WF3 float64           mag                                                                                            12um flux in WISE forced photometry (mag) MaskedQuantity     0
-         WF4 float64           mag                                                                                            22um flux in WISE forced photometry (mag) MaskedQuantity     0
-       E_WF1 float64           mag                                                                                                             Uncertainty on WF1 (mag) MaskedQuantity     0
-       E_WF2 float64           mag                                                                                                             Uncertainty on WF2 (mag) MaskedQuantity     0
-       E_WF3 float64           mag                                                                                                             Uncertainty on WF3 (mag) MaskedQuantity     0
-       E_WF4 float64           mag                                                                                                             Uncertainty on WF4 (mag) MaskedQuantity     0
-     WFPOINT   int16                                                                                                                              True, if point source   MaskedColumn     0
-     WFTREAT   int16                                                                                                                   True, if treated as point source   MaskedColumn     0
-           J float32           mag                                                                                                      J-band magnitude in 2MASS (mag) MaskedQuantity     0
-           H float32           mag                                                                                                      H-band magnitude in 2MASS (mag) MaskedQuantity     0
-           K float32           mag                                                                                                      K-band magnitude in 2MASS (mag) MaskedQuantity     0
-         E_J float32           mag                                                                                                               Uncertainty on J (mag) MaskedQuantity     0
-         E_H float32           mag                                                                                                               Uncertainty on H (mag) MaskedQuantity     0
-         E_K float32           mag                                                                                                               Uncertainty on K (mag) MaskedQuantity     0
-  FLAG_2MASS   int16                                                                                 Source of the 2MASS ID and magnitudes: 0=none, 1=LGA, 2=XSC, 3=PSC   MaskedColumn     0
-           U float32           mag                                                                                            u-band apparent magnitude from SDSS (mag) MaskedQuantity     0
-           G float32           mag                                                                                            g-band apparent magnitude from SDSS (mag) MaskedQuantity     0
-           R float32           mag                                                                                            r-band apparent magnitude from SDSS (mag) MaskedQuantity     0
-           I float32           mag                                                                                            i-band apparent magnitude from SDSS (mag) MaskedQuantity     0
-           Z float32           mag                                                                                            z-band apparent magnitude from SDSS (mag) MaskedQuantity     0
-         E_U float32           mag                                                                                                               Uncertainty on U (mag) MaskedQuantity     0
-         E_G float32           mag                                                                                                               Uncertainty on G (mag) MaskedQuantity     0
-         E_R float32           mag                                                                                                               Uncertainty on R (mag) MaskedQuantity     0
-         E_I float32           mag                                                                                                               Uncertainty on I (mag) MaskedQuantity     0
-         E_Z float32           mag                                                                                                               Uncertainty on Z (mag) MaskedQuantity     0
-    logL_TIR float32     log(Lsol)                                                                            Decimal logarithm of the total-infrared luminosity [Lsol] MaskedQuantity     0
-    logL_FIR float32     log(Lsol)                                                                              Decimal logarithm of the far-infrared luminosity [Lsol] MaskedQuantity     0
-    logL_60u float32     log(Lsol)                                                                                 Decimal logarithm of the 60um-band luminosity [Lsol] MaskedQuantity     0
-    logL_12u float32     log(Lsol)                                                                                 Decimal logarithm of the 12um-band luminosity [Lsol] MaskedQuantity     0
-    logL_22u float32     log(Lsol)                                                                                 Decimal logarithm of the 22um-band luminosity [Lsol] MaskedQuantity     0
-      logL_K float32     log(Lsol)                                                                                    Decimal logarithm of the K-band luminosity [Lsol] MaskedQuantity     0
-    ML_RATIO float32                                                                                                                                Mass-to-light ratio   MaskedColumn     0
-  logSFR_TIR float32  log(Msol/yr)                                                                       Decimal logarithm of the total-infrared SFR estimate [Msol/yr] MaskedQuantity     0
-  logSFR_FIR float32  log(Msol/yr)                                                                         Decimal logarithm of the far-infrared SFR estimate [Msol/yr] MaskedQuantity     0
-  logSFR_60u float32  log(Msol/yr)                                                                                 Decimal logarithm of the 60um SFR estimate [Msol/yr] MaskedQuantity     0
-  logSFR_12u float32  log(Msol/yr)                                                                                 Decimal logarithm of the 12um SFR estimate [Msol/yr] MaskedQuantity     0
-  logSFR_22u float32  log(Msol/yr)                                                                                 Decimal logarithm of the 22um SFR estimate [Msol/yr] MaskedQuantity     0
-  logSFR_HEC float32  log(Msol/yr)                                                                          Decimal logarithm of the homogenised SFR estimate [Msol/yr] MaskedQuantity     0
-FLAG_SFR_HEC    str2                                                                Flag indicating photometry source and SFR indicator used for logSFR_HEC (see paper)   MaskedColumn   266
-    logM_HEC float32     log(Msol)                                                                                         Decimal logarithm of the stellar mass [Msol] MaskedQuantity     0
-  logSFR_GSW float32  log(Msol/yr)                                                                                    Decimal logarithm of the SFR in GSWLC-2 [Msol/yr] MaskedQuantity     0
-    logM_GSW float32     log(Msol)                                                                              Decimal logarithm of the stellar mass in GSWLC-2 [Msol] MaskedQuantity     0
-     MIN_SNR float32                                                                          Minimum S/N among all emission lines used for the activity classification   MaskedColumn     0
-       METAL float32                                                                                                                            Metallicity 12+log(O/H)   MaskedColumn     0
-  FLAG_METAL   int16                                                                    Metallicity quality flag: -1=unknown, 0=reliable, 1=extrapolated, 2=low quality   MaskedColumn     0
-    CLASS_SP   int16                                                       Nuclear activity classification: 0=star-forming, 1=Seyfert, 2=LINER, 3=composite, -1=unknown   MaskedColumn     0
-     AGN_S17    str1                                                                               AGN classification in She et al. (2017): Y=AGN, N=non-AGN, ?=unknown   MaskedColumn     0
-     AGN_HEC    str1                                                             Combination of SDSS and She et al. (2017) classifications: Y=AGN, N=non-AGN, ?=unknown   MaskedColumn     0
-  Separation float64                                                                                                          Cartesian distance between matched points   MaskedColumn     0</code></pre>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> QTable(<span class="bu">ascii</span>.read(<span class="st">"../tables/inner_join.ecsv"</span>), masked<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>The data we can compare are:</p>
+<p>The dataset we are going to use consists of 373 galaxies and 164</p>
+<section id="comparable-data" class="level2">
+<h2 class="anchored" data-anchor-id="comparable-data">Comparable data</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Coordinates</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Velocities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Luminosities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Magnitudes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">SFR</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Masses</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Coordinates</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Velocities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Morphology and Geometry</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Luminosities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Magnitudes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Absorbsion</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href="">SFR</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href="">Masses</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <table class="table">
-<caption>Coord</caption>
 <thead>
 <tr class="header">
 <th>LCV</th>
@@ -344,7 +186,6 @@ FLAG_SFR_HEC    str2                                                            
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <table class="table">
-<caption>Vel</caption>
 <colgroup>
 <col style="width: 26%">
 <col style="width: 27%">
@@ -365,7 +206,7 @@ FLAG_SFR_HEC    str2                                                            
 </tr>
 <tr class="even">
 <td>RVel</td>
-<td></td>
+<td>V (with errors)</td>
 <td>Heliocentric radial velocity</td>
 </tr>
 <tr class="odd">
@@ -380,7 +221,7 @@ FLAG_SFR_HEC    str2                                                            
 </tr>
 <tr class="odd">
 <td>cz (with errors)</td>
-<td>V (with errors)</td>
+<td></td>
 <td>Heliocentric velocity</td>
 </tr>
 </tbody>
@@ -388,7 +229,39 @@ FLAG_SFR_HEC    str2                                                            
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <table class="table">
-<caption>Lum</caption>
+<colgroup>
+<col style="width: 31%">
+<col style="width: 33%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>LCV</th>
+<th>HECATE</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TType</td>
+<td>T (with errors)</td>
+<td>Numerical Hubble type following the de Vaucouleurs system</td>
+</tr>
+<tr class="even">
+<td>inc</td>
+<td>I</td>
+<td>Inclination (deg)</td>
+</tr>
+<tr class="odd">
+<td>a26_1 (Major)</td>
+<td>R1 (Semi-major axis)</td>
+<td>angular diameter (arcmin)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<table class="table">
 <thead>
 <tr class="header">
 <th>LCV</th>
@@ -415,9 +288,8 @@ FLAG_SFR_HEC    str2                                                            
 </tbody>
 </table>
 </div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <table class="table">
-<caption>Mag</caption>
 <thead>
 <tr class="header">
 <th>LCV</th>
@@ -444,12 +316,45 @@ FLAG_SFR_HEC    str2                                                            
 </tbody>
 </table>
 </div>
-<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<table class="table">
+<thead>
+<tr class="header">
+<th>LCV</th>
+<th>HECATE</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AB</td>
+<td></td>
+<td>Galactic extinction in B band</td>
+</tr>
+<tr class="even">
+<td>AB_int</td>
+<td></td>
+<td>Internal B band extinction</td>
+</tr>
+<tr class="odd">
+<td>AG</td>
+<td></td>
+<td>Galactic absorption on B-band (mag)</td>
+</tr>
+<tr class="even">
+<td>AI</td>
+<td></td>
+<td>Intrinsic absorption on B-band (mag)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
 <table class="table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 58%">
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 44%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -507,12 +412,12 @@ FLAG_SFR_HEC    str2                                                            
 </tbody>
 </table>
 </div>
-<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
 <table class="table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 55%">
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 44%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -553,6 +458,7 @@ FLAG_SFR_HEC    str2                                                            
 </div>
 </div>
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

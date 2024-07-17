@@ -1,6 +1,9 @@
 ---
 title: "Comparison of Catalogs"
 format: html
+toc: true
+toc-depth: 2
+theme: minti
 bibliography: ../My_Library.bib
 execute: 
   echo: true
@@ -29,10 +32,11 @@ import glob
 import os
 
 dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
-dt.info()
 ```
 
-The data we can compare are:
+The dataset we are going to use consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)`
+
+## Comparable data
 
 ::: panel-tabset
 ## Coordinates
@@ -43,19 +47,23 @@ The data we can compare are:
 | Dec_1 | DEC_2  | Declination     |
 | Dis   | D      | Distance        |
 
-: Coord
-
 ## Velocities
 
 | LCV               | HECATE                | Description                             |
 |-------------------|--------------------|---------------------------------|
 | W50 (with errors) |                       | H I line with at 50% level from maximum |
-| RVel              |                       | Heliocentric radial velocity            |
+| RVel              | V (with errors)       | Heliocentric radial velocity            |
 | Vm                |                       | Amplitude of rotational velocity        |
 | VLG               | V/V_VIR (with errors) | Radial velocity                         |
-| cz (with errors)  | V (with errors)       | Heliocentric velocity                   |
+| cz (with errors)  |                       | Heliocentric velocity                   |
 
-: Vel
+## Morphology and Geometry
+
+| LCV           | HECATE               | Description                                               |
+|-----------------------|------------------------|-------------------------|
+| TType         | T (with errors)      | Numerical Hubble type following the de Vaucouleurs system |
+| inc           | I                    | Inclination (deg)                                         |
+| a26_1 (Major) | R1 (Semi-major axis) | angular diameter (arcmin)                                 |
 
 ## Luminosities
 
@@ -65,8 +73,6 @@ The data we can compare are:
 |         |        |             |
 |         |        |             |
 
-: Lum
-
 ## Magnitudes
 
 | LCV                 | HECATE | Description |
@@ -75,12 +81,19 @@ The data we can compare are:
 | mag_FUV             |        |             |
 |                     |        |             |
 
-: Mag
+## Absorbsion
+
+| LCV    | HECATE | Description                          |
+|--------|--------|--------------------------------------|
+| AB     |        | Galactic extinction in B band        |
+| AB_int |        | Internal B band extinction           |
+| AG     |        | Galactic absorption on B-band (mag)  |
+| AI     |        | Intrinsic absorption on B-band (mag) |
 
 ## SFR
 
 | LCV    | HECATE     | Description                                                      |
-|---------------|---------------|-------------------------------------------|
+|--------------------|--------------------|--------------------------------|
 |        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] |
 |        | logSFR_FIR | Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]   |
 |        | logSFR_60u | Decimal logarithm of the 60um SFR estimate \[Msol/yr\]           |
@@ -94,7 +107,7 @@ The data we can compare are:
 ## Masses
 
 | LCV            | HECATE   | Description                                               |
-|----------------|----------------|----------------------------------------|
+|--------------------|--------------------|--------------------------------|
 | logM26         |          | Log mass within Holmberg radius                           |
 | logMHI         |          | Log mass within Holmberg radius                           |
 |                | logM_HEC | Decimal logarithm of the stellar mass \[Msol\]            |
