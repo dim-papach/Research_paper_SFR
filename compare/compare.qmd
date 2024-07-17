@@ -20,7 +20,7 @@ In this script we will compare out 2 catalogs @kovlakasHeraklionExtragalacticCat
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
-from astropy.io import fits
+from astropy.io import ascii
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, join, QTable
 import astropy.units as u
@@ -28,10 +28,9 @@ from astropy.visualization import quantity_support
 import glob
 import os
 
-hdul = fits.open("../tables/inner_join.fits")
-print(hdul[1])
+dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
+dt.info()
 ```
 
 ```{python}
-print("jell
 ```
