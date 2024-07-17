@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Comparison of Catalogs"
 format: html
 bibliography: ../My_Library.bib
 execute: 
@@ -32,5 +32,72 @@ dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
 dt.info()
 ```
 
-```{python}
-```
+The data we can compare are:
+
+::: panel-tabset
+## Coordinates
+
+| LCV   | HECATE | Description     |
+|-------|--------|-----------------|
+| Ra_1  | RA_2   | Right Ascension |
+| Dec_1 | DEC_2  | Declination     |
+| Dis   | D      | Distance        |
+
+: Coord
+
+## Velocities
+
+| LCV               | HECATE                | Description                             |
+|-------------------|--------------------|---------------------------------|
+| W50 (with errors) |                       | H I line with at 50% level from maximum |
+| RVel              |                       | Heliocentric radial velocity            |
+| Vm                |                       | Amplitude of rotational velocity        |
+| VLG               | V/V_VIR (with errors) | Radial velocity                         |
+| cz (with errors)  | V (with errors)       | Heliocentric velocity                   |
+
+: Vel
+
+## Luminosities
+
+| LCV     | HECATE | Description |
+|---------|--------|-------------|
+| logKLum | logL_K |             |
+|         |        |             |
+|         |        |             |
+
+: Lum
+
+## Magnitudes
+
+| LCV                 | HECATE | Description |
+|---------------------|--------|-------------|
+| mag_B (with errors) |        |             |
+| mag_FUV             |        |             |
+|                     |        |             |
+
+: Mag
+
+## SFR
+
+| LCV    | HECATE     | Description                                                      |
+|---------------|---------------|-------------------------------------------|
+|        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] |
+|        | logSFR_FIR | Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]   |
+|        | logSFR_60u | Decimal logarithm of the 60um SFR estimate \[Msol/yr\]           |
+|        | logSFR_12u | Decimal logarithm of the 12um SFR estimate \[Msol/yr\]           |
+|        | logSFR_22u | Decimal logarithm of the 22um SFR estimate \[Msol/yr\]           |
+|        | logSFR_HEC | Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]    |
+|        | logSFR_GSW | Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]              |
+| SFRFUV |            | FUV derived integral star formation rate                         |
+| SFRHa  |            | H{alpha} derived integral star formation rate                    |
+
+## Masses
+
+| LCV            | HECATE   | Description                                               |
+|----------------|----------------|----------------------------------------|
+| logM26         |          | Log mass within Holmberg radius                           |
+| logMHI         |          | Log mass within Holmberg radius                           |
+|                | logM_HEC | Decimal logarithm of the stellar mass \[Msol\]            |
+|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |
+| logStellarMass |          | Stellar Mass from M\*/L=0.6                               |
+:::
