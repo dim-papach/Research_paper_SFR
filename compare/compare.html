@@ -88,6 +88,35 @@ div.csl-indent {
 <link href="compare_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="compare_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -99,10 +128,12 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a></li>
+  <li><a href="#how-are-we-going-to-compare-the-data" id="toc-how-are-we-going-to-compare-the-data" class="nav-link" data-scroll-target="#how-are-we-going-to-compare-the-data">How are we going to compare the data?</a>
   <ul class="collapse">
-  <li><a href="#comparable-data" id="toc-comparable-data" class="nav-link" data-scroll-target="#comparable-data">Comparable data</a></li>
+  <li><a href="#scatter-plots-and-r2-calculation" id="toc-scatter-plots-and-r2-calculation" class="nav-link" data-scroll-target="#scatter-plots-and-r2-calculation">Scatter plots and <span class="math inline">\(R^2\)</span> calculation</a></li>
   </ul></li>
+  <li><a href="#comparable-data" id="toc-comparable-data" class="nav-link" data-scroll-target="#comparable-data">Comparable data</a></li>
   </ul>
 </nav>
 </div>
@@ -136,7 +167,7 @@ div.csl-indent {
 <li>We will use the inner join for 1-1 comparisons</li>
 <li>If we see that the data are similar we can use the outer join</li>
 </ul>
-<div id="a13dcc84" class="cell" data-execution_count="1">
+<div id="f9587109" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score</span>
@@ -145,14 +176,114 @@ div.csl-indent {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.table <span class="im">import</span> Table, join, QTable</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> astropy.units <span class="im">as</span> u</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.visualization <span class="im">import</span> quantity_support</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> QTable(<span class="bu">ascii</span>.read(<span class="st">"../tables/inner_join.ecsv"</span>), masked<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#quantity_support()</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.modeling <span class="im">import</span> models, fitting</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> pearsonr</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> QTable(<span class="bu">ascii</span>.read(<span class="st">"../tables/inner_join.ecsv"</span>), masked<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The dataset we are going to use consists of 373 galaxies and 164</p>
-<section id="comparable-data" class="level2">
-<h2 class="anchored" data-anchor-id="comparable-data">Comparable data</h2>
+</section>
+<section id="how-are-we-going-to-compare-the-data" class="level1">
+<h1>How are we going to compare the data?</h1>
+<section id="scatter-plots-and-r2-calculation" class="level2">
+<h2 class="anchored" data-anchor-id="scatter-plots-and-r2-calculation">Scatter plots and <span class="math inline">\(R^2\)</span> calculation</h2>
+<ol type="1">
+<li><u><span class="math inline">\(R^2\)</span></u>: Measures the proportion of variance explained by the linear model.</li>
+<li><u>Slope of the Fitted Line</u>: Should be close to 1 for a 1-1 correlation.</li>
+</ol>
+<div id="94f29960" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_data(x, y):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Performs a linear comparison between two datasets.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    This function fits a linear model to the data, calculates the slope and intercept of the fitted line,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    and computes the R-squared value and Pearson correlation coefficient to assess the fit quality.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - x (array-like): The independent variable data.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">    - y (array-like): The dependent variable data.</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">    tuple: A tuple containing the following elements:</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">        - slope (float): The slope of the fitted linear model.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">        - intercept (float): The intercept of the fitted linear model.</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">        - r2 (float): The R-squared value, indicating the proportion of variance explained by the linear model.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">        - corr (float): The Pearson correlation coefficient, measuring the linear correlation between x and y.</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    x_data <span class="op">=</span> np.ma.array(x.value, mask<span class="op">=</span>np.isnan(x.value))</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    y_data <span class="op">=</span>  np.ma.array(y.value, mask<span class="op">=</span>np.isnan(y.value))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize a linear fitter</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    fit <span class="op">=</span> fitting.LinearLSQFitter()</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize a linear model</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    line_init <span class="op">=</span> models.Linear1D()</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fit the data with the fitter</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    fitted_line <span class="op">=</span> fit(line_init, x_data, y_data)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    slope <span class="op">=</span> fitted_line.slope.value</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    intercept <span class="op">=</span> fitted_line.intercept.value</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict values using the fitted model</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> fitted_line(x_data)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate R-squared</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    r2 <span class="op">=</span> r2_score(y_data, y_pred)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate Pearson correlation coefficient</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    corr, _ <span class="op">=</span> pearsonr(x_data, y_data)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> slope, intercept, r2, corr</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter_plot(x, y, xerr <span class="op">=</span><span class="dv">0</span>, yerr <span class="op">=</span> <span class="dv">0</span>):</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, </span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">    and displays the fitted line on the plot.</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">    - x (array-like with units): Independent variable data.</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="co">    - y (array-like with units): Dependent variable data.</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co">    xerr (array-like, optional): Error in the independent variable data. Default is 0.</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co">    yerr (array-like, optional): Error in the dependent variable data. Default is 0.</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="co">    None. The function displays a scatter plot with a fitted linear model.</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert data to masked arrays, masking NaN values</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    x_data <span class="op">=</span> np.ma.array(x.value, mask<span class="op">=</span>np.isnan(x.value))</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    y_data <span class="op">=</span>  np.ma.array(y.value, mask<span class="op">=</span>np.isnan(y.value))</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform linear comparison between the datasets</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    c, m, r2, corr <span class="op">=</span> compare_data(x, y)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the data with error bars</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="co"># errorbar -&gt; needs np.ma -&gt; no units</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    plt.errorbar(x_data, y_data, xerr, yerr, alpha <span class="op">=</span> <span class="fl">0.3</span>, c <span class="op">=</span> <span class="st">"blue"</span>, label <span class="op">=</span> <span class="st">"Data"</span>, fmt<span class="op">=</span><span class="st">".k"</span>)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the fitted line with unit support</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, c<span class="op">*</span>x <span class="op">+</span> m<span class="op">*</span>x.unit, c <span class="op">=</span> <span class="st">"red"</span>, label <span class="op">=</span> <span class="st">"Fit"</span>)</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set plot labels</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="ss">f"LCV, </span><span class="sc">{</span>x<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss"> [</span><span class="sc">{</span>x<span class="sc">.</span>unit<span class="sc">}</span><span class="ss">]"</span>)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="ss">f"HECATE, </span><span class="sc">{</span>y<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss"> [</span><span class="sc">{</span>y<span class="sc">.</span>unit<span class="sc">}</span><span class="ss">]"</span>)</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display legend</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show the plot</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Histograms</p></li>
+<li><p>Deviation</p></li>
+</ul>
+</section>
+</section>
+<section id="comparable-data" class="level1">
+<h1>Comparable data</h1>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Coordinates</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Velocities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Morphology and Geometry</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Luminosities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Magnitudes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Absorbsion</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href="">SFR</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href="">Masses</a></li></ul>
 <div class="tab-content">
@@ -160,26 +291,30 @@ div.csl-indent {
 <table class="table">
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Linear Correlation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Ra_1</td>
-<td>RA_2</td>
-<td>Right Ascension</td>
+<td style="text-align: center;">Ra_1</td>
+<td style="text-align: center;">RA_2</td>
+<td style="text-align: center;">Right Ascension</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td>Dec_1</td>
-<td>DEC_2</td>
-<td>Declination</td>
+<td style="text-align: center;">Dec_1</td>
+<td style="text-align: center;">DEC_2</td>
+<td style="text-align: center;">Declination</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td>Dis</td>
-<td>D</td>
-<td>Distance</td>
+<td style="text-align: center;">Dis</td>
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">Distance</td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -187,42 +322,49 @@ div.csl-indent {
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <table class="table">
 <colgroup>
+<col style="width: 24%">
+<col style="width: 24%">
 <col style="width: 26%">
-<col style="width: 27%">
-<col style="width: 45%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Linear Correlation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>W50 (with errors)</td>
-<td></td>
-<td>H I line with at 50% level from maximum</td>
+<td style="text-align: center;">W50 (with errors)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">H I line with at 50% level from maximum</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td>RVel</td>
-<td>V (with errors)</td>
-<td>Heliocentric radial velocity</td>
+<td style="text-align: center;">RVel</td>
+<td style="text-align: center;">V (with errors)</td>
+<td style="text-align: center;">Heliocentric radial velocity</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td>Vm</td>
-<td></td>
-<td>Amplitude of rotational velocity</td>
+<td style="text-align: center;">Vm</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Amplitude of rotational velocity</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td>VLG</td>
-<td>V/V_VIR (with errors)</td>
-<td>Radial velocity</td>
+<td style="text-align: center;">VLG</td>
+<td style="text-align: center;">V/V_VIR (with errors)</td>
+<td style="text-align: center;">Radial velocity</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td>cz (with errors)</td>
-<td></td>
-<td>Heliocentric velocity</td>
+<td style="text-align: center;">cz (with errors)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Heliocentric velocity</td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -230,32 +372,37 @@ div.csl-indent {
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <table class="table">
 <colgroup>
-<col style="width: 31%">
-<col style="width: 33%">
-<col style="width: 34%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Linear Correlation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>TType</td>
-<td>T (with errors)</td>
-<td>Numerical Hubble type following the de Vaucouleurs system</td>
+<td style="text-align: center;">TType</td>
+<td style="text-align: center;">T (with errors)</td>
+<td style="text-align: center;">Numerical Hubble type following the de Vaucouleurs system</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td>inc</td>
-<td>I</td>
-<td>Inclination (deg)</td>
+<td style="text-align: center;">inc</td>
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">Inclination (deg)</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td>a26_1 (Major)</td>
-<td>R1 (Semi-major axis)</td>
-<td>angular diameter (arcmin)</td>
+<td style="text-align: center;">a26_1 (Major)</td>
+<td style="text-align: center;">R1 (Semi-major axis)</td>
+<td style="text-align: center;">angular diameter (arcmin)</td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -264,26 +411,26 @@ div.csl-indent {
 <table class="table">
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>logKLum</td>
-<td>logL_K</td>
-<td></td>
+<td style="text-align: center;">logKLum</td>
+<td style="text-align: center;">logL_K</td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td></td>
-<td></td>
-<td></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td></td>
-<td></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -292,26 +439,26 @@ div.csl-indent {
 <table class="table">
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>mag_B (with errors)</td>
-<td></td>
-<td></td>
+<td style="text-align: center;">mag_B (with errors)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
-<td>mag_FUV</td>
-<td></td>
-<td></td>
+<td style="text-align: center;">mag_FUV</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td></td>
-<td></td>
-<td></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -320,31 +467,21 @@ div.csl-indent {
 <table class="table">
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>AB</td>
-<td></td>
-<td>Galactic extinction in B band</td>
+<td style="text-align: center;">AB</td>
+<td style="text-align: center;">AG</td>
+<td style="text-align: center;">Galactic extinction/absorption in B band</td>
 </tr>
 <tr class="even">
-<td>AB_int</td>
-<td></td>
-<td>Internal B band extinction</td>
-</tr>
-<tr class="odd">
-<td>AG</td>
-<td></td>
-<td>Galactic absorption on B-band (mag)</td>
-</tr>
-<tr class="even">
-<td>AI</td>
-<td></td>
-<td>Intrinsic absorption on B-band (mag)</td>
+<td style="text-align: center;">AB_int</td>
+<td style="text-align: center;">AI</td>
+<td style="text-align: center;">Internal/Intrisic B band extinction/absorption</td>
 </tr>
 </tbody>
 </table>
@@ -358,56 +495,56 @@ div.csl-indent {
 </colgroup>
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td></td>
-<td>logSFR_TIR</td>
-<td>Decimal logarithm of the total-infrared SFR estimate [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_TIR</td>
+<td style="text-align: center;">Decimal logarithm of the total-infrared SFR estimate [Msol/yr]</td>
 </tr>
 <tr class="even">
-<td></td>
-<td>logSFR_FIR</td>
-<td>Decimal logarithm of the far-infrared SFR estimate [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_FIR</td>
+<td style="text-align: center;">Decimal logarithm of the far-infrared SFR estimate [Msol/yr]</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>logSFR_60u</td>
-<td>Decimal logarithm of the 60um SFR estimate [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_60u</td>
+<td style="text-align: center;">Decimal logarithm of the 60um SFR estimate [Msol/yr]</td>
 </tr>
 <tr class="even">
-<td></td>
-<td>logSFR_12u</td>
-<td>Decimal logarithm of the 12um SFR estimate [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_12u</td>
+<td style="text-align: center;">Decimal logarithm of the 12um SFR estimate [Msol/yr]</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>logSFR_22u</td>
-<td>Decimal logarithm of the 22um SFR estimate [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_22u</td>
+<td style="text-align: center;">Decimal logarithm of the 22um SFR estimate [Msol/yr]</td>
 </tr>
 <tr class="even">
-<td></td>
-<td>logSFR_HEC</td>
-<td>Decimal logarithm of the homogenised SFR estimate [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_HEC</td>
+<td style="text-align: center;">Decimal logarithm of the homogenised SFR estimate [Msol/yr]</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>logSFR_GSW</td>
-<td>Decimal logarithm of the SFR in GSWLC-2 [Msol/yr]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logSFR_GSW</td>
+<td style="text-align: center;">Decimal logarithm of the SFR in GSWLC-2 [Msol/yr]</td>
 </tr>
 <tr class="even">
-<td>SFRFUV</td>
-<td></td>
-<td>FUV derived integral star formation rate</td>
+<td style="text-align: center;">SFRFUV</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">FUV derived integral star formation rate</td>
 </tr>
 <tr class="odd">
-<td>SFRHa</td>
-<td></td>
-<td>H{alpha} derived integral star formation rate</td>
+<td style="text-align: center;">SFRHa</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">H{alpha} derived integral star formation rate</td>
 </tr>
 </tbody>
 </table>
@@ -421,36 +558,36 @@ div.csl-indent {
 </colgroup>
 <thead>
 <tr class="header">
-<th>LCV</th>
-<th>HECATE</th>
-<th>Description</th>
+<th style="text-align: center;">LCV</th>
+<th style="text-align: center;">HECATE</th>
+<th style="text-align: center;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>logM26</td>
-<td></td>
-<td>Log mass within Holmberg radius</td>
+<td style="text-align: center;">logM26</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Log mass within Holmberg radius</td>
 </tr>
 <tr class="even">
-<td>logMHI</td>
-<td></td>
-<td>Log mass within Holmberg radius</td>
+<td style="text-align: center;">logMHI</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Log mass within Holmberg radius</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>logM_HEC</td>
-<td>Decimal logarithm of the stellar mass [Msol]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logM_HEC</td>
+<td style="text-align: center;">Decimal logarithm of the stellar mass [Msol]</td>
 </tr>
 <tr class="even">
-<td></td>
-<td>logM_GSW</td>
-<td>Decimal logarithm of the stellar mass in GSWLC-2 [Msol]</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">logM_GSW</td>
+<td style="text-align: center;">Decimal logarithm of the stellar mass in GSWLC-2 [Msol]</td>
 </tr>
 <tr class="odd">
-<td>logStellarMass</td>
-<td></td>
-<td>Stellar Mass from M*/L=0.6</td>
+<td style="text-align: center;">logStellarMass</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Stellar Mass from M*/L=0.6</td>
 </tr>
 </tbody>
 </table>
@@ -458,7 +595,6 @@ div.csl-indent {
 </div>
 </div>
 
-</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

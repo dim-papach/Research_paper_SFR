@@ -28,89 +28,184 @@ from astropy.coordinates import SkyCoord
 from astropy.table import Table, join, QTable
 import astropy.units as u
 from astropy.visualization import quantity_support
+#quantity_support()
+from astropy.modeling import models, fitting
+from scipy.stats import pearsonr
 import glob
 import os
+plt.style.use('ggplot')
 
 dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
 ```
 
 The dataset we are going to use consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)`
 
-## Comparable data
+# How are we going to compare the data?
+
+## Scatter plots and $R^2$ calculation
+
+1.  [$R^2$]{.underline}: Measures the proportion of variance explained by the linear model.
+2.  [Slope of the Fitted Line]{.underline}: Should be close to 1 for a 1-1 correlation.
+
+```{python}
+def compare_data(x, y):
+    """
+    Performs a linear comparison between two datasets.
+    
+    This function fits a linear model to the data, calculates the slope and intercept of the fitted line,
+    and computes the R-squared value and Pearson correlation coefficient to assess the fit quality.
+    
+    Parameters:
+    - x (array-like): The independent variable data.
+    - y (array-like): The dependent variable data.
+    
+    Returns:
+    tuple: A tuple containing the following elements:
+        - slope (float): The slope of the fitted linear model.
+        - intercept (float): The intercept of the fitted linear model.
+        - r2 (float): The R-squared value, indicating the proportion of variance explained by the linear model.
+        - corr (float): The Pearson correlation coefficient, measuring the linear correlation between x and y.
+    """
+    x_data = np.ma.array(x.value, mask=np.isnan(x.value))
+    y_data =  np.ma.array(y.value, mask=np.isnan(y.value))
+    # initialize a linear fitter
+    fit = fitting.LinearLSQFitter()
+
+    # initialize a linear model
+    line_init = models.Linear1D()
+
+    # fit the data with the fitter
+    fitted_line = fit(line_init, x_data, y_data)
+    slope = fitted_line.slope.value
+    intercept = fitted_line.intercept.value
+
+    # Predict values using the fitted model
+    y_pred = fitted_line(x_data)
+
+    # Calculate R-squared
+    r2 = r2_score(y_data, y_pred)
+
+    # Calculate Pearson correlation coefficient
+    corr, _ = pearsonr(x_data, y_data)
+
+    return slope, intercept, r2, corr
+
+def scatter_plot(x, y, xerr =0, yerr = 0):
+    """
+    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, 
+    and displays the fitted line on the plot.
+
+    Parameters:
+    - x (array-like with units): Independent variable data.
+    - y (array-like with units): Dependent variable data.
+    xerr (array-like, optional): Error in the independent variable data. Default is 0.
+    yerr (array-like, optional): Error in the dependent variable data. Default is 0.
+
+    Returns:
+    None. The function displays a scatter plot with a fitted linear model.
+    """
+    # Convert data to masked arrays, masking NaN values
+    x_data = np.ma.array(x.value, mask=np.isnan(x.value))
+    y_data =  np.ma.array(y.value, mask=np.isnan(y.value))
+    
+    # Perform linear comparison between the datasets
+    c, m, r2, corr = compare_data(x, y)
+
+    # Plot the data with error bars
+    # errorbar -> needs np.ma -> no units
+    plt.errorbar(x_data, y_data, xerr, yerr, alpha = 0.3, c = "blue", label = "Data", fmt=".k")
+    
+    # Plot the fitted line with unit support
+    plt.plot(x, c*x + m*x.unit, c = "red", label = "Fit")
+
+    # Set plot labels
+    plt.xlabel(f"LCV, {x.info.name} [{x.unit}]")
+    plt.ylabel(f"HECATE, {y.info.name} [{y.unit}]")
+
+    # Display legend
+    plt.legend()
+    
+    # Show the plot
+    plt.show()
+```
+
+-   Histograms
+
+-   Deviation
+
+# Comparable data
 
 ::: panel-tabset
 ## Coordinates
 
-| LCV   | HECATE | Description     |
-|-------|--------|-----------------|
-| Ra_1  | RA_2   | Right Ascension |
-| Dec_1 | DEC_2  | Declination     |
-| Dis   | D      | Distance        |
+|  LCV  | HECATE |   Description   | Linear Correlation |
+|:-----:|:------:|:---------------:|:------------------:|
+| Ra_1  |  RA_2  | Right Ascension |                    |
+| Dec_1 | DEC_2  |   Declination   |                    |
+|  Dis  |   D    |    Distance     |                    |
 
 ## Velocities
 
-| LCV               | HECATE                | Description                             |
-|-------------------|--------------------|---------------------------------|
-| W50 (with errors) |                       | H I line with at 50% level from maximum |
-| RVel              | V (with errors)       | Heliocentric radial velocity            |
-| Vm                |                       | Amplitude of rotational velocity        |
-| VLG               | V/V_VIR (with errors) | Radial velocity                         |
-| cz (with errors)  |                       | Heliocentric velocity                   |
+|        LCV        |        HECATE         |               Description               | Linear Correlation |
+|:----------------:|:----------------:|:-----------------:|:----------------:|
+| W50 (with errors) |                       | H I line with at 50% level from maximum |                    |
+|       RVel        |    V (with errors)    |      Heliocentric radial velocity       |                    |
+|        Vm         |                       |    Amplitude of rotational velocity     |                    |
+|        VLG        | V/V_VIR (with errors) |             Radial velocity             |                    |
+| cz (with errors)  |                       |          Heliocentric velocity          |                    |
 
 ## Morphology and Geometry
 
-| LCV           | HECATE               | Description                                               |
-|-----------------------|------------------------|-------------------------|
-| TType         | T (with errors)      | Numerical Hubble type following the de Vaucouleurs system |
-| inc           | I                    | Inclination (deg)                                         |
-| a26_1 (Major) | R1 (Semi-major axis) | angular diameter (arcmin)                                 |
+|      LCV      |        HECATE        |                        Description                        | Linear Correlation |
+|:----------------:|:----------------:|:-----------------:|:----------------:|
+|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |                    |
+|      inc      |          I           |                     Inclination (deg)                     |                    |
+| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |                    |
 
 ## Luminosities
 
-| LCV     | HECATE | Description |
-|---------|--------|-------------|
+|   LCV   | HECATE | Description |
+|:-------:|:------:|:-----------:|
 | logKLum | logL_K |             |
 |         |        |             |
 |         |        |             |
 
 ## Magnitudes
 
-| LCV                 | HECATE | Description |
-|---------------------|--------|-------------|
+|         LCV         | HECATE | Description |
+|:-------------------:|:------:|:-----------:|
 | mag_B (with errors) |        |             |
-| mag_FUV             |        |             |
+|       mag_FUV       |        |             |
 |                     |        |             |
 
 ## Absorbsion
 
-| LCV    | HECATE | Description                          |
-|--------|--------|--------------------------------------|
-| AB     |        | Galactic extinction in B band        |
-| AB_int |        | Internal B band extinction           |
-| AG     |        | Galactic absorption on B-band (mag)  |
-| AI     |        | Intrinsic absorption on B-band (mag) |
+|  LCV   | HECATE |                  Description                   |
+|:------:|:------:|:----------------------------------------------:|
+|   AB   |   AG   |    Galactic extinction/absorption in B band    |
+| AB_int |   AI   | Internal/Intrisic B band extinction/absorption |
 
 ## SFR
 
-| LCV    | HECATE     | Description                                                      |
-|--------------------|--------------------|--------------------------------|
+|  LCV   |   HECATE   |                           Description                            |
+|:------------------:|:------------------:|:------------------------------:|
 |        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] |
-|        | logSFR_FIR | Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]   |
-|        | logSFR_60u | Decimal logarithm of the 60um SFR estimate \[Msol/yr\]           |
-|        | logSFR_12u | Decimal logarithm of the 12um SFR estimate \[Msol/yr\]           |
-|        | logSFR_22u | Decimal logarithm of the 22um SFR estimate \[Msol/yr\]           |
-|        | logSFR_HEC | Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]    |
-|        | logSFR_GSW | Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]              |
-| SFRFUV |            | FUV derived integral star formation rate                         |
-| SFRHa  |            | H{alpha} derived integral star formation rate                    |
+|        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  |
+|        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      |
+|        | logSFR_12u |      Decimal logarithm of the 12um SFR estimate \[Msol/yr\]      |
+|        | logSFR_22u |      Decimal logarithm of the 22um SFR estimate \[Msol/yr\]      |
+|        | logSFR_HEC |  Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]   |
+|        | logSFR_GSW |       Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]        |
+| SFRFUV |            |             FUV derived integral star formation rate             |
+| SFRHa  |            |          H{alpha} derived integral star formation rate           |
 
 ## Masses
 
-| LCV            | HECATE   | Description                                               |
-|--------------------|--------------------|--------------------------------|
-| logM26         |          | Log mass within Holmberg radius                           |
-| logMHI         |          | Log mass within Holmberg radius                           |
-|                | logM_HEC | Decimal logarithm of the stellar mass \[Msol\]            |
+|      LCV       |  HECATE  |                        Description                        |
+|:------------------:|:------------------:|:------------------------------:|
+|     logM26     |          |              Log mass within Holmberg radius              |
+|     logMHI     |          |              Log mass within Holmberg radius              |
+|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       |
 |                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |
-| logStellarMass |          | Stellar Mass from M\*/L=0.6                               |
+| logStellarMass |          |                Stellar Mass from M\*/L=0.6                |
 :::
