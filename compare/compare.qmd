@@ -46,13 +46,14 @@ The dataset we are going to use consists of `{python} len(dt)` galaxies and `{py
 ## Scatter plots and $R^2$ calculation
 
 1.  [$R^2$]{.underline}: Measures the proportion of variance explained by the linear model.
-2.  [Slope of the Fitted Line]{.underline}: Should be close to 1 for a 1-1 correlation.
-3.  [Pearson Correlation $\rho$]{.underline}: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1.
+2.  [Slope of the Fitted Line]{.underline}: Should be close to 1 for a 1-1 correlation.[^1]
+3.  [Pearson Correlation $\rho$]{.underline}: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. [^2]
 
-In simple linear regression, $R^2$ is the square of the Pearson correlation coefficient $r$.
+[^1]: Fitting can be done using the uncertainties as weights. To get the standard weighting of 1/unc^2, assuming Gaussian errors, the weights to pass to the fitting are 1/unc.
+[^2]: In simple linear regression, $R^2$ is the square of the Pearson correlation coefficient $\rho$.
 
 ```{python}
-def compare_data(x, y):
+def compare_data(x, y, unc = None):
     """
     Performs a linear comparison between two datasets.
     
@@ -62,7 +63,8 @@ def compare_data(x, y):
     Parameters:
     - x (array-like): The independent variable data.
     - y (array-like): The dependent variable data.
-    
+    - unc (array-like with units, optional): The uncertainties associated with the independent variable data. Default is None.
+
     Returns:
     tuple: A tuple containing the following elements:
         - slope (float): The slope of the fitted linear model.
@@ -72,6 +74,11 @@ def compare_data(x, y):
     """
     x_data = np.ma.array(x.value, mask=np.isnan(x.value))
     y_data =  np.ma.array(y.value, mask=np.isnan(y.value))
+    if unc is None:
+        w = None
+    else:
+        unc = np.ma.array(unc.value, mask=np.isnan(x.value))
+        w = 1/unc 
     # initialize a linear fitter
     fit = fitting.LinearLSQFitter()
 
@@ -79,7 +86,7 @@ def compare_data(x, y):
     line_init = models.Linear1D()
 
     # fit the data with the fitter
-    fitted_line = fit(line_init, x_data, y_data)
+    fitted_line = fit(line_init, x_data, y_data, weights = w)
     slope = fitted_line.slope.value
     intercept = fitted_line.intercept.value
 
@@ -113,8 +120,8 @@ def scatter_plot(x, y, xerr = None, yerr = None):
     Parameters:
     - x (array-like with units): Independent variable data.
     - y (array-like with units): Dependent variable data.
-    xerr (array-like, optional): Error in the independent variable data. Default is 0.
-    yerr (array-like, optional): Error in the dependent variable data. Default is 0.
+    - xerr (array-like, optional): Error in the independent variable data. Default is 0.
+    - yerr (array-like, optional): Error in the dependent variable data. Default is 0.
 
     Returns:
     None. The function displays a scatter plot with a fitted linear model.
@@ -125,17 +132,23 @@ def scatter_plot(x, y, xerr = None, yerr = None):
 
     # Handle default values for xerr and yerr
     if xerr is None:
-        xerr_d = np.ma.zeros(len(x_data))
+        xerr_d = 0
     else:
         xerr_d = np.ma.array(xerr.value, mask=np.isnan(xerr))
     if yerr is None:
-        yerr_d = np.ma.zeros(len(y_data))
+        yerr_d = 0
     else:
         yerr_d = np.ma.array(yerr.value, mask=np.isnan(yerr))
 
     
     # Perform linear comparison between the datasets
-    c, m, r2, corr = compare_data(x, y)
+    if yerr is not None:
+        unc = yerr
+    elif yerr is None and xerr is not None:
+        unc = xerr
+    else:
+        unc = None
+    c, m, r2, corr = compare_data(x, y, unc)
 
     # Plot the data with error bars
     # errorbar -> needs np.ma -> no units
@@ -194,7 +207,7 @@ cz_corr_v = round(compare_data(dt["cz"],dt["V_VIR"])[3],3)
 ```
 
 |       LCV        |        HECATE         |         Description          |        Linear Correlation         |
-|:----------------:|:------------------:|:----------------:|:----------------:|
+|:----------------:|:-----------------:|:----------------:|:----------------:|
 |       RVel       | V/V_VIR (with errors) | Heliocentric radial velocity | `{python} rvel_corr, rvel_corr_v` |
 |       VLG        | V/V_VIR (with errors) |       Radial velocity        |  `{python} vlg_corr, vlg_corr_v`  |
 | cz (with errors) | V/V_VIR (with errors) |    Heliocentric velocity     |   `{python} cz_corr, cz_corr_v`   |
@@ -215,7 +228,7 @@ inc_corr = round(compare_data(dt["inc"], dt["I"])[3], 3)
 ```
 
 |      LCV      |        HECATE        |                        Description                        | Pearson Correlation \[-1,1\] |
-|:---------------:|:---------------:|:---------------------:|:---------------:|
+|:---------------:|:---------------:|:-------------------:|:---------------:|
 |     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
 |      inc      |          I           |                     Inclination (deg)                     |     `{python} inc_corr`      |
 | a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |              0               |
