@@ -20,6 +20,7 @@ In this script we will compare out 2 catalogs @kovlakasHeraklionExtragalacticCat
 -   If we see that the data are similar we can use the outer join
 
 ```{python}
+#| echo: false
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
@@ -46,6 +47,9 @@ The dataset we are going to use consists of `{python} len(dt)` galaxies and `{py
 
 1.  [$R^2$]{.underline}: Measures the proportion of variance explained by the linear model.
 2.  [Slope of the Fitted Line]{.underline}: Should be close to 1 for a 1-1 correlation.
+3.  [Pearson Correlation $\rho$]{.underline}: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1.
+
+In simple linear regression, $R^2$ is the square of the Pearson correlation coefficient $r$.
 
 ```{python}
 def compare_data(x, y):
@@ -82,15 +86,26 @@ def compare_data(x, y):
     # Predict values using the fitted model
     y_pred = fitted_line(x_data)
 
+    # Remove NaN values
+    mask = ~np.isnan(y_data) & ~np.isnan(y_pred)
+    y_data_clean = y_data[mask]
+    y_pred_clean = y_pred[mask]
+    mask = ~np.isnan(x_data) 
+    x_data_clean = x_data[mask]
+
     # Calculate R-squared
-    r2 = r2_score(y_data, y_pred)
+    r2 = r2_score(y_data_clean, y_pred_clean)
 
     # Calculate Pearson correlation coefficient
-    corr, _ = pearsonr(x_data, y_data)
+    corr = np.sqrt(np.abs(r2))
 
     return slope, intercept, r2, corr
+```
 
-def scatter_plot(x, y, xerr =0, yerr = 0):
+4.  [Scatter plots]{.underline}: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.
+
+```{python}
+def scatter_plot(x, y, xerr = None, yerr = None):
     """
     Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, 
     and displays the fitted line on the plot.
@@ -107,16 +122,27 @@ def scatter_plot(x, y, xerr =0, yerr = 0):
     # Convert data to masked arrays, masking NaN values
     x_data = np.ma.array(x.value, mask=np.isnan(x.value))
     y_data =  np.ma.array(y.value, mask=np.isnan(y.value))
+
+    # Handle default values for xerr and yerr
+    if xerr is None:
+        xerr_d = np.ma.zeros(len(x_data))
+    else:
+        xerr_d = np.ma.array(xerr.value, mask=np.isnan(xerr))
+    if yerr is None:
+        yerr_d = np.ma.zeros(len(y_data))
+    else:
+        yerr_d = np.ma.array(yerr.value, mask=np.isnan(yerr))
+
     
     # Perform linear comparison between the datasets
     c, m, r2, corr = compare_data(x, y)
 
     # Plot the data with error bars
     # errorbar -> needs np.ma -> no units
-    plt.errorbar(x_data, y_data, xerr, yerr, alpha = 0.3, c = "blue", label = "Data", fmt=".k")
+    plt.errorbar(x_data, y_data, xerr = xerr_d, yerr = yerr_d, alpha = 0.3, c = "blue", label = "Data", fmt=".")
     
     # Plot the fitted line with unit support
-    plt.plot(x, c*x + m*x.unit, c = "red", label = "Fit")
+    plt.plot(x, c*x + m*x.unit, c = "red", label = f"Fit: {y.info.name}$_H $= {c:.2f}$\cdot${x.info.name}$_L${m:+.2f}\n $R^2=$ {r2:.2f}")
 
     # Set plot labels
     plt.xlabel(f"LCV, {x.info.name} [{x.unit}]")
@@ -138,29 +164,68 @@ def scatter_plot(x, y, xerr =0, yerr = 0):
 ::: panel-tabset
 ## Coordinates
 
-|  LCV  | HECATE |   Description   | Linear Correlation |
-|:-----:|:------:|:---------------:|:------------------:|
-| Ra_1  |  RA_2  | Right Ascension |                    |
-| Dec_1 | DEC_2  |   Declination   |                    |
-|  Dis  |   D    |    Distance     |                    |
+```{python}
+#| echo: false
+ra_corr = round(compare_data(dt["Ra_1"],dt["RA_2"])[3],3)
+dec_corr = round(compare_data(dt["Dec_1"],dt["DEC_2"])[3],3)
+d_corr = round(compare_data(dt["Dis"],dt["D"])[3],3)
+```
+
+|  LCV  | HECATE |   Description   | Pearson Correlation \[-1,1\] |
+|:-----:|:------:|:---------------:|:----------------------------:|
+| Ra_1  |  RA_2  | Right Ascension |      `{python} ra_corr`      |
+| Dec_1 | DEC_2  |   Declination   |     `{python} dec_corr`      |
+|  Dis  |   D    |    Distance     |      `{python} d_corr`       |
+
+```{python}
+
+scatter_plot(dt["Ra_1"], dt["RA_2"]), scatter_plot(dt["Dec_1"], dt["DEC_2"]), scatter_plot(dt["Dis"], dt["D"])
+```
 
 ## Velocities
 
-|        LCV        |        HECATE         |               Description               | Linear Correlation |
-|:----------------:|:----------------:|:-----------------:|:----------------:|
-| W50 (with errors) |                       | H I line with at 50% level from maximum |                    |
-|       RVel        |    V (with errors)    |      Heliocentric radial velocity       |                    |
-|        Vm         |                       |    Amplitude of rotational velocity     |                    |
-|        VLG        | V/V_VIR (with errors) |             Radial velocity             |                    |
-| cz (with errors)  |                       |          Heliocentric velocity          |                    |
+```{python}
+rvel_corr = round(compare_data(dt["RVel"],dt["V"])[3],3)
+rvel_corr_v = round(compare_data(dt["RVel"],dt["V_VIR"])[3],3)
+vlg_corr = round(compare_data(dt["VLG"],dt["V"])[3],3)
+vlg_corr_v = round(compare_data(dt["VLG"],dt["V_VIR"])[3],3)
+cz_corr = round(compare_data(dt["cz"],dt["V"])[3],3)
+cz_corr_v = round(compare_data(dt["cz"],dt["V_VIR"])[3],3)
+```
+
+|       LCV        |        HECATE         |         Description          |        Linear Correlation         |
+|:----------------:|:------------------:|:----------------:|:----------------:|
+|       RVel       | V/V_VIR (with errors) | Heliocentric radial velocity | `{python} rvel_corr, rvel_corr_v` |
+|       VLG        | V/V_VIR (with errors) |       Radial velocity        |  `{python} vlg_corr, vlg_corr_v`  |
+| cz (with errors) | V/V_VIR (with errors) |    Heliocentric velocity     |   `{python} cz_corr, cz_corr_v`   |
+
+```{python}
+scatter_plot(dt["RVel"], dt["V"], yerr = dt["E_V"])
+```
 
 ## Morphology and Geometry
 
-|      LCV      |        HECATE        |                        Description                        | Linear Correlation |
-|:----------------:|:----------------:|:-----------------:|:----------------:|
-|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |                    |
-|      inc      |          I           |                     Inclination (deg)                     |                    |
-| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |                    |
+```{python}
+#| echo: false
+ 
+ttype_corr = round(compare_data(dt["TType"], dt["T"])[3], 4)
+inc_corr = round(compare_data(dt["inc"], dt["I"])[3], 3)
+#a26_corr = round(compare_data(dt["a26_1"], dt["R1"])[3], 3)
+#it doesnt even compute
+```
+
+|      LCV      |        HECATE        |                        Description                        | Pearson Correlation \[-1,1\] |
+|:---------------:|:---------------:|:---------------------:|:---------------:|
+|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
+|      inc      |          I           |                     Inclination (deg)                     |     `{python} inc_corr`      |
+| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |              0               |
+
+As we can see we don't have any significant correlation between the data
+
+```{python}
+
+dt["TType"].info, dt["T"].info
+```
 
 ## Luminosities
 
