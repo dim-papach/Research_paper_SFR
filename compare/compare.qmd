@@ -265,11 +265,20 @@ scatter_plot(dt["logKLum"], dt["logL_K"])
 
 ## Magnitudes
 
-|         LCV         | HECATE | Description |
-|:-------------------:|:------:|:-----------:|
-| mag_B (with errors) |  BT (with errors)      |             |
-|       Kmag   |     K   | 2MASS band magnitude  (both)          |
-|                     |        |             |
+```{python}
+#| echo: false
+mag_B_corr = round(compare_data(dt["mag_B"], dt["BT"],unc = dt["E_BT"])[3], 3)
+Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], unc = dt["E_K"])[3], 3)
+```
+|         LCV         | HECATE | Description | Pearson Correlation \[-1,1\] |
+|:-------------------:|:------:|:-----------:|:----------------------------:|
+| mag_B (with errors) |  BT (with errors) |             | `{python} mag_B_corr` |
+|       Kmag          |     K              | 2MASS band magnitude (both) | `{python} Kmag_corr` |
+
+```{python}
+scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"])
+scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"])
+```
 ## Absorbsion
 
 ```{python}

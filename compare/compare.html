@@ -178,7 +178,7 @@ window.Quarto = {
 <li><u>Slope of the Fitted Line</u>: Should be close to 1 for a 1-1 correlation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li><u>Pearson Correlation <span class="math inline">\(\rho\)</span></u>: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol>
-<div id="f5e7ec91" class="cell" data-execution_count="2">
+<div id="5165f35d" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_data(x, y, unc<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Performs a linear comparison between two datasets.</span></span>
@@ -214,7 +214,7 @@ window.Quarto = {
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># fit the data with the fitter</span></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        fitted_line <span class="op">=</span> fit(line_init, x_data, y_data, weights<span class="op">=</span>w)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        slope <span class="op">=</span> fitted_line.slope.value</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        slope <span class="op">=</span> fitted_line[<span class="dv">0</span>].slope.value</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        intercept <span class="op">=</span> fitted_line.intercept.value</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Predict values using the fitted model</span></span>
@@ -240,7 +240,7 @@ window.Quarto = {
 <ol start="4" type="1">
 <li><u>Scatter plots</u>: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.</li>
 </ol>
-<div id="3580d28f" class="cell" data-execution_count="3">
+<div id="97bbbd0e" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter_plot(x, y, xerr <span class="op">=</span> <span class="va">None</span>, yerr <span class="op">=</span> <span class="va">None</span>):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, </span></span>
@@ -323,23 +323,23 @@ window.Quarto = {
 <td style="text-align: center;">Ra_1</td>
 <td style="text-align: center;">RA_2</td>
 <td style="text-align: center;">Right Ascension</td>
-<td style="text-align: center;">0.976</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Dec_1</td>
 <td style="text-align: center;">DEC_2</td>
 <td style="text-align: center;">Declination</td>
-<td style="text-align: center;">1.0</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Dis</td>
 <td style="text-align: center;">D</td>
 <td style="text-align: center;">Distance</td>
-<td style="text-align: center;">1.0</td>
+<td style="text-align: center;">0</td>
 </tr>
 </tbody>
 </table>
-<div id="f57eb99c" class="cell" data-execution_count="5">
+<div id="6af4c13b" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Ra_1"</span>], dt[<span class="st">"RA_2"</span>]), scatter_plot(dt[<span class="st">"Dec_1"</span>], dt[<span class="st">"DEC_2"</span>]), scatter_plot(dt[<span class="st">"Dis"</span>], dt[<span class="st">"D"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -365,7 +365,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="a8e24149" class="cell" data-execution_count="6">
+<div id="9e5784a4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rvel_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rvel_corr_v <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V_VIR"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>vlg_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"VLG"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
@@ -393,23 +393,23 @@ window.Quarto = {
 <td style="text-align: center;">RVel</td>
 <td style="text-align: center;">V/V_VIR (with errors)</td>
 <td style="text-align: center;">Heliocentric radial velocity</td>
-<td style="text-align: center;">(0.897, 0.775)</td>
+<td style="text-align: center;">(0, 0)</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">VLG</td>
 <td style="text-align: center;">V/V_VIR (with errors)</td>
 <td style="text-align: center;">Radial velocity</td>
-<td style="text-align: center;">(0.819, 0.816)</td>
+<td style="text-align: center;">(0, 0)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">cz (with errors)</td>
 <td style="text-align: center;">V/V_VIR (with errors)</td>
 <td style="text-align: center;">Heliocentric velocity</td>
-<td style="text-align: center;">(0.899, 0.774)</td>
+<td style="text-align: center;">(0, 0)</td>
 </tr>
 </tbody>
 </table>
-<div id="3050b2eb" class="cell" data-execution_count="7">
+<div id="0fa3c0f5" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"RVel"</span>], dt[<span class="st">"V"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -421,74 +421,6 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="f75b4f09" class="cell" data-execution_count="8">
-<div class="cell-output cell-output-stdout">
-<pre><code> ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value</code></pre>
-</div>
-</div>
 <table class="table">
 <colgroup>
 <col style="width: 23%">
@@ -509,13 +441,13 @@ window.Quarto = {
 <td style="text-align: center;">TType</td>
 <td style="text-align: center;">T (with errors)</td>
 <td style="text-align: center;">Numerical Hubble type following the de Vaucouleurs system</td>
-<td style="text-align: center;">0.6176</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">inc</td>
 <td style="text-align: center;">INCL</td>
 <td style="text-align: center;">Inclination (deg)</td>
-<td style="text-align: center;">0.58</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">a26_1 (Major)</td>
@@ -526,10 +458,10 @@ window.Quarto = {
 </tbody>
 </table>
 <p>As we can see we don’t have any significant correlation between the Types of galaxies</p>
-<div id="f67885fd" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"TType"</span>], dt[<span class="st">"T"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_T"</span>])</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"a26_1"</span>], dt[<span class="st">"A26_1a"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a95dc97f" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"TType"</span>], dt[<span class="st">"T"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_T"</span>])</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"a26_1"</span>], dt[<span class="st">"A26_1a"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -573,8 +505,8 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="04611794" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"logKLum"</span>], dt[<span class="st">"logL_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5c2d3554" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"logKLum"</span>], dt[<span class="st">"logL_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -586,11 +518,18 @@ window.Quarto = {
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <table class="table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 11%">
+<col style="width: 18%">
+<col style="width: 41%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LCV</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
+<th style="text-align: center;">Pearson Correlation [-1,1]</th>
 </tr>
 </thead>
 <tbody>
@@ -598,19 +537,34 @@ window.Quarto = {
 <td style="text-align: center;">mag_B (with errors)</td>
 <td style="text-align: center;">BT (with errors)</td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Kmag</td>
 <td style="text-align: center;">K</td>
 <td style="text-align: center;">2MASS band magnitude (both)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;">0</td>
 </tr>
 </tbody>
 </table>
+<div id="2ee221c5" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"mag_B"</span>], dt[<span class="st">"BT"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_BT"</span>])</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Kmag"</span>], dt[<span class="st">"K"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="compare_files/figure-html/cell-14-output-1.png" width="587" height="432" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="compare_files/figure-html/cell-14-output-2.png" width="587" height="435" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
 <table class="table">
@@ -633,7 +587,7 @@ window.Quarto = {
 <td style="text-align: center;">AB</td>
 <td style="text-align: center;">AG</td>
 <td style="text-align: center;">Galactic extinction/absorption in B band</td>
-<td style="text-align: center;">0.989</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">AB_int</td>
@@ -643,12 +597,12 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="463f05a5" class="cell" data-execution_count="13">
+<div id="c9ff0e4e" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"AB"</span>], dt[<span class="st">"AG"</span>])<span class="co">#, scatter_plot(dt["AB_int"], dt["AI"])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-14-output-1.png" width="587" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-16-output-1.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
