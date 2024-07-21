@@ -178,8 +178,8 @@ window.Quarto = {
 <li><u>Slope of the Fitted Line</u>: Should be close to 1 for a 1-1 correlation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li><u>Pearson Correlation <span class="math inline">\(\rho\)</span></u>: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol>
-<div id="5165f35d" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_data(x, y, unc<span class="op">=</span><span class="va">None</span>):</span>
+<div id="4f34aab8" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_data(x, y, unc<span class="op">=</span><span class="va">None</span>, sigma <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Performs a linear comparison between two datasets.</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
@@ -213,35 +213,41 @@ window.Quarto = {
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        line_init <span class="op">=</span> models.Linear1D()</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># fit the data with the fitter</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        fitted_line <span class="op">=</span> fit(line_init, x_data, y_data, weights<span class="op">=</span>w)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        slope <span class="op">=</span> fitted_line[<span class="dv">0</span>].slope.value</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        intercept <span class="op">=</span> fitted_line.intercept.value</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Predict values using the fitted model</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        y_pred <span class="op">=</span> fitted_line(x_data)</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove NaN values</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> <span class="op">~</span>np.isnan(y_data) <span class="op">&amp;</span> <span class="op">~</span>np.isnan(y_pred)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>        y_data_clean <span class="op">=</span> y_data[mask]</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        y_pred_clean <span class="op">=</span> y_pred[mask]</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> <span class="op">~</span>np.isnan(x_data)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        x_data_clean <span class="op">=</span> x_data[mask]</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate R-squared</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> r2_score(y_data_clean, y_pred_clean)</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate Pearson correlation coefficient</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        corr <span class="op">=</span> np.sqrt(np.<span class="bu">abs</span>(r2))</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># check if sigma</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> sigma <span class="kw">is</span> <span class="va">False</span>:</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            fitted_line <span class="op">=</span> fit(line_init, x_data, y_data, weights<span class="op">=</span>w)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            outliers <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            or_fit <span class="op">=</span> fitting.FittingWithOutlierRemoval(fit, sigma_clip, niter<span class="op">=</span><span class="dv">3</span>, sigma<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            fitted_line, outliers <span class="op">=</span> or_fit(line_init, x, y, weights<span class="op">=</span>w)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        slope <span class="op">=</span> fitted_line.slope.value</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        intercept <span class="op">=</span> fitted_line.intercept.value</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Predict values using the fitted model</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        y_pred <span class="op">=</span> fitted_line(x_data)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Remove NaN values</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> <span class="op">~</span>np.isnan(y_data) <span class="op">&amp;</span> <span class="op">~</span>np.isnan(y_pred)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        y_data_clean <span class="op">=</span> y_data[mask]</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>        y_pred_clean <span class="op">=</span> y_pred[mask]</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> <span class="op">~</span>np.isnan(x_data)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        x_data_clean <span class="op">=</span> x_data[mask]</span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> slope, intercept, r2, corr</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate R-squared</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> r2_score(y_data_clean, y_pred_clean)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate Pearson correlation coefficient</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        corr <span class="op">=</span> np.sqrt(np.<span class="bu">abs</span>(r2))</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> slope, intercept, r2, corr, outliers</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
 <li><u>Scatter plots</u>: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.</li>
 </ol>
-<div id="97bbbd0e" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter_plot(x, y, xerr <span class="op">=</span> <span class="va">None</span>, yerr <span class="op">=</span> <span class="va">None</span>):</span>
+<div id="dbacf69c" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter_plot(x, y, xerr <span class="op">=</span> <span class="va">None</span>, yerr <span class="op">=</span> <span class="va">None</span>, sigma <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, </span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">    and displays the fitted line on the plot.</span></span>
@@ -277,25 +283,30 @@ window.Quarto = {
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        unc <span class="op">=</span> xerr</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        unc <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    c, m, r2, corr <span class="op">=</span> compare_data(x, y, unc)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    c, m, r2, corr, outliers <span class="op">=</span> compare_data(x, y, unc, sigma)</span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the data with error bars</span></span>
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># errorbar -&gt; needs np.ma -&gt; no units</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    plt.errorbar(x_data, y_data, xerr <span class="op">=</span> xerr_d, yerr <span class="op">=</span> yerr_d, alpha <span class="op">=</span> <span class="fl">0.3</span>, c <span class="op">=</span> <span class="st">"blue"</span>, label <span class="op">=</span> <span class="st">"Data"</span>, fmt<span class="op">=</span><span class="st">"."</span>)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the fitted line with unit support</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c<span class="op">!=</span><span class="dv">0</span>:</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        plt.plot(x, c<span class="op">*</span>x.value<span class="op">+</span> m, c <span class="op">=</span> <span class="st">"red"</span>, label <span class="op">=</span> <span class="ss">f"Fit: </span><span class="sc">{</span>y<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss">$_H $= </span><span class="sc">{</span>c<span class="sc">:.2f}</span><span class="ss">$\cdot$</span><span class="sc">{</span>x<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss">$_L$</span><span class="sc">{</span>m<span class="sc">:+.2f}</span><span class="ch">\n</span><span class="ss"> $R^2=$ </span><span class="sc">{</span>r2<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set plot labels</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="ss">f"LCV, </span><span class="sc">{</span>x<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss"> [</span><span class="sc">{</span>x<span class="sc">.</span>unit<span class="sc">}</span><span class="ss">]"</span>)</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="ss">f"HECATE, </span><span class="sc">{</span>y<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss"> [</span><span class="sc">{</span>y<span class="sc">.</span>unit<span class="sc">}</span><span class="ss">]"</span>)</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display legend</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show the plot</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> outliers <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        filtered_data <span class="op">=</span> np.ma.masked_array(y_data, mask <span class="op">=</span> outlier)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        plt.scatter(x, filtered_data,  label<span class="op">=</span><span class="st">"Fitted Data"</span>, c <span class="op">=</span> <span class="st">"blue"</span>, fillstyle <span class="op">=</span> <span class="st">"filled"</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        plt.errorbar(x, y, yerr<span class="op">=</span>yunc, fillstyle<span class="op">=</span><span class="st">"filled"</span>, c <span class="op">=</span> <span class="st">"black"</span>, label<span class="op">=</span><span class="st">"Clipped Data"</span>, fmt <span class="op">=</span> <span class="st">"o"</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        plt.errorbar(x_data, y_data, xerr <span class="op">=</span> xerr_d, yerr <span class="op">=</span> yerr_d, alpha <span class="op">=</span> <span class="fl">0.3</span>, c <span class="op">=</span> <span class="st">"blue"</span>, label <span class="op">=</span> <span class="st">"Data"</span>, fmt <span class="op">=</span> <span class="st">"."</span>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the fitted line </span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c<span class="op">!=</span><span class="dv">0</span>:</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        plt.plot(x, c<span class="op">*</span>x.value<span class="op">+</span> m, c <span class="op">=</span> <span class="st">"red"</span>, label <span class="op">=</span> <span class="ss">f"Fit: </span><span class="sc">{</span>y<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss">$_H $= </span><span class="sc">{</span>c<span class="sc">:.2f}</span><span class="ss">$\cdot$</span><span class="sc">{</span>x<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss">$_L$</span><span class="sc">{</span>m<span class="sc">:+.2f}</span><span class="ch">\n</span><span class="ss"> $R^2=$ </span><span class="sc">{</span>r2<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set plot labels</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="ss">f"LCV, </span><span class="sc">{</span>x<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss"> [</span><span class="sc">{</span>x<span class="sc">.</span>unit<span class="sc">}</span><span class="ss">]"</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="ss">f"HECATE, </span><span class="sc">{</span>y<span class="sc">.</span>info<span class="sc">.</span>name<span class="sc">}</span><span class="ss"> [</span><span class="sc">{</span>y<span class="sc">.</span>unit<span class="sc">}</span><span class="ss">]"</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display legend</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show the plot</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p>Histograms</p></li>
@@ -323,23 +334,23 @@ window.Quarto = {
 <td style="text-align: center;">Ra_1</td>
 <td style="text-align: center;">RA_2</td>
 <td style="text-align: center;">Right Ascension</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">0.976</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Dec_1</td>
 <td style="text-align: center;">DEC_2</td>
 <td style="text-align: center;">Declination</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">1.0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Dis</td>
 <td style="text-align: center;">D</td>
 <td style="text-align: center;">Distance</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">1.0</td>
 </tr>
 </tbody>
 </table>
-<div id="6af4c13b" class="cell" data-execution_count="5">
+<div id="10c1b235" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Ra_1"</span>], dt[<span class="st">"RA_2"</span>]), scatter_plot(dt[<span class="st">"Dec_1"</span>], dt[<span class="st">"DEC_2"</span>]), scatter_plot(dt[<span class="st">"Dis"</span>], dt[<span class="st">"D"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -365,7 +376,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="9e5784a4" class="cell" data-execution_count="6">
+<div id="80c6b06c" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rvel_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rvel_corr_v <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V_VIR"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>vlg_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"VLG"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
@@ -393,23 +404,23 @@ window.Quarto = {
 <td style="text-align: center;">RVel</td>
 <td style="text-align: center;">V/V_VIR (with errors)</td>
 <td style="text-align: center;">Heliocentric radial velocity</td>
-<td style="text-align: center;">(0, 0)</td>
+<td style="text-align: center;">(0.897, 0.775)</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">VLG</td>
 <td style="text-align: center;">V/V_VIR (with errors)</td>
 <td style="text-align: center;">Radial velocity</td>
-<td style="text-align: center;">(0, 0)</td>
+<td style="text-align: center;">(0.819, 0.816)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">cz (with errors)</td>
 <td style="text-align: center;">V/V_VIR (with errors)</td>
 <td style="text-align: center;">Heliocentric velocity</td>
-<td style="text-align: center;">(0, 0)</td>
+<td style="text-align: center;">(0.899, 0.774)</td>
 </tr>
 </tbody>
 </table>
-<div id="0fa3c0f5" class="cell" data-execution_count="7">
+<div id="01bbe622" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"RVel"</span>], dt[<span class="st">"V"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -425,7 +436,7 @@ window.Quarto = {
 <colgroup>
 <col style="width: 23%">
 <col style="width: 23%">
-<col style="width: 29%">
+<col style="width: 28%">
 <col style="width: 23%">
 </colgroup>
 <thead>
@@ -441,7 +452,7 @@ window.Quarto = {
 <td style="text-align: center;">TType</td>
 <td style="text-align: center;">T (with errors)</td>
 <td style="text-align: center;">Numerical Hubble type following the de Vaucouleurs system</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">0.6176</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">inc</td>
@@ -458,9 +469,9 @@ window.Quarto = {
 </tbody>
 </table>
 <p>As we can see we don’t have any significant correlation between the Types of galaxies</p>
-<div id="a95dc97f" class="cell" data-execution_count="9">
+<div id="0920b745" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"TType"</span>], dt[<span class="st">"T"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_T"</span>])</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>], sigma <span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"a26_1"</span>], dt[<span class="st">"A26_1a"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -505,7 +516,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="5c2d3554" class="cell" data-execution_count="11">
+<div id="a3259ee7" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"logKLum"</span>], dt[<span class="st">"logL_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -519,10 +530,10 @@ window.Quarto = {
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <table class="table">
 <colgroup>
-<col style="width: 29%">
-<col style="width: 11%">
-<col style="width: 18%">
-<col style="width: 41%">
+<col style="width: 23%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 35%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -547,8 +558,8 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="2ee221c5" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"mag_B"</span>], dt[<span class="st">"BT"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_BT"</span>])</span>
+<div id="57e0279f" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"mag_B"</span>], dt[<span class="st">"BT"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_BT"</span>], sigma <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Kmag"</span>], dt[<span class="st">"K"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -569,10 +580,10 @@ window.Quarto = {
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
 <table class="table">
 <colgroup>
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 51%">
-<col style="width: 31%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 41%">
+<col style="width: 23%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -587,7 +598,7 @@ window.Quarto = {
 <td style="text-align: center;">AB</td>
 <td style="text-align: center;">AG</td>
 <td style="text-align: center;">Galactic extinction/absorption in B band</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">0.989</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">AB_int</td>
@@ -597,7 +608,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="c9ff0e4e" class="cell" data-execution_count="15">
+<div id="94253c9c" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"AB"</span>], dt[<span class="st">"AG"</span>])<span class="co">#, scatter_plot(dt["AB_int"], dt["AI"])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
