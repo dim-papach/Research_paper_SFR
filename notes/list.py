@@ -168,6 +168,15 @@ dt["SFRFUV"].description = "Linear Star Formation Rate (FUV)"
 
 log_columns_to_linear = ["KLum", "M26", "MHI"]
 
+# Add Stellar Mass from Mass/Light ratio M*/KLum = 0.6
+dt["StellarMass"] = (0.6 * dt["KLum"])
+dt["StellarMass"].unit = u.Msun
+dt["StellarMass"].description = "Stellar Mass (M*/K luminosity)"
+
+# Add column of logStellarMass 
+dt["logStellarMass"] = np.log10(dt["StellarMass"])
+dt["logStellarMass"].description = "Log Stellar Mass (M*/K luminosity)"
+
 # Create SkyCoord objects for coordinates
 ra_str = [f"{hour}:{minute}:{second:.1f}" for hour, minute, second in zip(dt['RAh'], dt['RAm'], dt['RAs'])]
 dec_str = [f"{sign}{degree}:{minute}:{second:.1f}" for sign, degree, minute, second in zip(dt['DE-'], dt['DEd'], dt['DEm'], dt['DEs'])]
