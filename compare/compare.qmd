@@ -32,6 +32,8 @@ from astropy.visualization import quantity_support
 #quantity_support()
 from astropy.modeling import models, fitting
 from scipy.stats import pearsonr
+import seaborn as sns
+import pandas as pd
 import glob
 import os
 plt.style.use('ggplot')
@@ -39,7 +41,7 @@ plt.style.use('ggplot')
 dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
 ```
 
-The dataset we are going to use consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)`
+The dataset we are going to use consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)` columns.
 
 # How are we going to compare the data?
 
@@ -243,7 +245,7 @@ a26_corr = round(compare_data(dt["a26_1"], dt["A26_1a"], sigma =True)[3], 3)
 ```
 
 |      LCV      |          HECATE          |                        Description                        | Pearson Correlation \[-1,1\] |
-|:---------------:|:---------------:|:------------------:|:---------------:|
+|:----------------:|:----------------:|:------------------:|:----------------:|
 |     TType     |     T (with errors)      | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
 |      inc      |           INCL           |                     Inclination (deg)                     |     `{python} inc_corr`      |
 | a26_1 (Major) | A26_1a (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
@@ -260,11 +262,13 @@ scatter_plot(dt["a26_1"], dt["A26_1a"], yerr = dt["E_V"])
 
 **For the A26: In the LCV Catalog it is measured in deg, and in Hecate it is mesaured in kpc**
 
+
+
 ## Luminosities
 
 ```{python}
 #| echo: false
-logKLum_corr = round(compare_data(dt["logKLum"], dt["logL_K"])[3], 3)
+logKLum_corr = round(compare_data(dt["logKLum"], dt["logL_K"], sigma = True)[3], 3)
 ```
 
 |   LCV   | HECATE | Description | Pearson Correlation \[-1,1\] |
@@ -279,12 +283,12 @@ scatter_plot(dt["logKLum"], dt["logL_K"])
 
 ```{python}
 #| echo: false
-mag_B_corr = round(compare_data(dt["mag_B"], dt["BT"],unc = dt["E_BT"], sigma = True)[3], 3)
+mag_B_corr = round(compare_data(dt["mag_B"], dt["BT"],unc = dt["E_BT"], sigma = False)[3], 3)
 Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], unc = dt["E_K"])[3], 3)
 ```
 
 |         LCV         |      HECATE      |         Description         | Pearson Correlation \[-1,1\] |
-|:---------------:|:-------------:|:-------------:|:------------------------:|
+|:--------------:|:--------------:|:--------------:|:----------------------:|
 | mag_B (with errors) | BT (with errors) |                             |    `{python} mag_B_corr`     |
 |        Kmag         |        K         | 2MASS band magnitude (both) |     `{python} Kmag_corr`     |
 
@@ -302,7 +306,7 @@ ab_corr = round(compare_data(dt["AB"], dt["AG"])[3], 3)
 ```
 
 |  LCV   | HECATE |                  Description                   | Pearson Correlation \[-1,1\] |
-|:-----------:|:-----------:|:----------------------------:|:---------------:|
+|:--------------:|:--------------:|:------------------------:|:--------------:|
 |   AB   |   AG   |    Galactic extinction/absorption in B band    |      `{python} ab_corr`      |
 | AB_int |   AI   | Internal/Intrisic B band extinction/absorption |              0               |
 
@@ -312,25 +316,83 @@ scatter_plot(dt["AB"], dt["AG"])#, scatter_plot(dt["AB_int"], dt["AI"])
 
 ## SFR
 
-|  LCV   |   HECATE   |                           Description                            |
-|:------------------:|:------------------:|:------------------------------:|
-|        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] |
-|        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  |
-|        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      |
-|        | logSFR_12u |      Decimal logarithm of the 12um SFR estimate \[Msol/yr\]      |
-|        | logSFR_22u |      Decimal logarithm of the 22um SFR estimate \[Msol/yr\]      |
-|        | logSFR_HEC |  Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]   |
-|        | logSFR_GSW |       Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]        |
-| SFRFUV |            |             FUV derived integral star formation rate             |
-| SFRHa  |            |          H{alpha} derived integral star formation rate           |
+```{python}
+#| echo: false
+# Extract the relevant SFR columns
+sfr_columns = ["logSFR_TIR", "logSFR_FIR", "logSFR_60u", "logSFR_12u", "logSFR_22u", "logSFR_HEC", "logSFR_GSW", "logSFRFUV", "logSFRHa"]
+sfr_data = dt[sfr_columns].to_pandas()
+
+# Count the number of non-NaN cells for each column
+non_nan_counts = sfr_data.notna().sum()
+```
+
+|  LCV   |   HECATE   |                           Description                            |                  Count                  |
+|:--------------:|:--------------:|:------------------------:|:--------------:|
+|        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] | `{python} non_nan_counts["logSFR_TIR"]` |
+|        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  | `{python} non_nan_counts["logSFR_FIR"]` |
+|        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_60u"]` |
+|        | logSFR_12u |      Decimal logarithm of the 12um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_12u"]` |
+|        | logSFR_22u |      Decimal logarithm of the 22um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_22u"]` |
+|        | logSFR_HEC |  Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]   | `{python} non_nan_counts["logSFR_HEC"]` |
+|        | logSFR_GSW |       Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]        | `{python} non_nan_counts["logSFR_GSW"]` |
+| SFRFUV |            |             FUV derived integral star formation rate             | `{python} non_nan_counts["logSFRFUV"]`  |
+| SFRHa  |            |          H{alpha} derived integral star formation rate           |  `{python} non_nan_counts["logSFRHa"]`  |
+
+```{python}
+#| echo: false
+sfr_data.drop("logSFR_GSW", axis=1, inplace=True)
+# Compute the correlation matrix
+corr_matrix = sfr_data.corr()
+
+# Create a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
+plt.title("Correlation Heatmap of SFR Values")
+plt.show()
+
+# Create a pair grid
+sns.pairplot(sfr_data)
+plt.show()
+
+```
+
+It is possible we dont see a correlation because we dont have a big enough common sample
 
 ## Masses
 
-|      LCV       |  HECATE  |                        Description                        |
-|:------------------:|:------------------:|:------------------------------:|
-|     logM26     |          |              Log mass within Holmberg radius              |
-|     logMHI     |          |              Log mass within Holmberg radius              |
-|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       |
-|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |
-| logStellarMass |          |                Stellar Mass from M\*/L=0.6                |
+```{python}
+#| echo: false
+# Extract the relevant mass columns
+mass_columns = ["logM26", "logMHI", "logM_HEC", "logM_GSW", "logStellarMass"]
+mass_data = dt[mass_columns].to_pandas()
+
+# Count the number of non-NaN cells for each column
+non_nan_counts = mass_data.notna().sum()
+```
+
+|      LCV       |  HECATE  |                        Description                        |                  Count                  |
+|:------------------:|:------------------:|:------------------------------:|:------------------------------:|
+|     logM26     |          |              Log mass within Holmberg radius              | `{python} non_nan_counts["logM26"]`     |
+|     logMHI     |          |              Log mass within Holmberg radius              | `{python} non_nan_counts["logMHI"]`     |
+|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       | `{python} non_nan_counts["logM_HEC"]`   |
+|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] | `{python} non_nan_counts["logM_GSW"]`   |
+| logStellarMass |          |                Stellar Mass from M_*/L=0.6                | `{python} non_nan_counts["logStellarMass"]` |
+
+```{python}
+#| echo: false
+mass_data.drop("logM_GSW", axis=1, inplace=True)
+# Compute the correlation matrix
+mass_corr_matrix = mass_data.corr()
+
+# Create a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(mass_corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
+plt.title("Correlation Heatmap of Mass Values")
+plt.show()
+
+# Create a pair grid
+sns.pairplot(mass_data)
+plt.show()
+```
+
 :::
