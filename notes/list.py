@@ -156,6 +156,16 @@ dt["MHI"] = (10**dt["logMHI"])
 dt["MHI"].unit = u.Msun
 dt["MHI"].description = "Linear hydrogen mass"
 
+dt.rename_column("SFRHa", "logSFRHa")
+dt.rename_column("SFRFUV", "logSFRFUV")
+
+dt["SFRHa"] = 10**dt["logSFRHa"]
+dt["SFRFUV"] = 10**dt["logSFRFUV"]
+dt["SFRFUV"].unit = u.Msun / u.yr
+dt["SFRHa"].unit = u.Msun / u.yr
+dt["SFRHa"].description = "Linear Star Formation Rate (Hα)"
+dt["SFRFUV"].description = "Linear Star Formation Rate (FUV)"
+
 log_columns_to_linear = ["KLum", "M26", "MHI"]
 
 # Create SkyCoord objects for coordinates
@@ -260,9 +270,6 @@ dt["logM26"].unit = ""
 dt["logMHI"].unit = ""
 dt["Thetaj"].unit = ""
 
-## SFR units
-dt["SFRFUV"].unit = u.Msun / u.yr
-dt["SFRHa"].unit = u.Msun / u.yr
 
 fixed_units = ["logKLum", "logM26", "logMHI", "Thetaj", "SFRFUV", "SFRHa"]
 
