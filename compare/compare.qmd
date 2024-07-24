@@ -241,29 +241,24 @@ scatter_plot(dt["RVel"], dt["V"], yerr = dt["E_V"])
  
 ttype_corr = round(compare_data(dt["TType"], dt["T"])[3], 4)
 inc_corr = round(compare_data(dt["inc"], dt["INCL"], sigma = True)[3], 3)
-a26_corr = round(compare_data(dt["a26_1"], dt["A26_1a"], sigma =True)[3], 3)
+a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 ```
 
 |      LCV      |          HECATE          |                        Description                        | Pearson Correlation \[-1,1\] |
-|:----------------:|:----------------:|:------------------:|:----------------:|
+|:----------------:|:----------------:|:-----------------:|:----------------:|
 |     TType     |     T (with errors)      | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
 |      inc      |           INCL           |                     Inclination (deg)                     |     `{python} inc_corr`      |
-| a26_1 (Major) | A26_1a (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
+| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
 
-As we can see we don't have any significant correlation between the Types of galaxies
+As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0 
 
 ```{python}
 
 scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
-scatter_plot(dt["inc"], dt["INCL"], yerr = dt["E_V"], sigma =True)
-scatter_plot(dt["a26_1"], dt["A26_1a"], yerr = dt["E_V"])
+scatter_plot(dt["inc"], dt["INCL"], sigma =True)
+scatter_plot(dt["a26_1"], dt["R1"])
 
 ```
-
-**For the A26: In the LCV Catalog it is measured in deg, and in Hecate it is mesaured in kpc**
-
-
-
 ## Luminosities
 
 ```{python}
@@ -288,7 +283,7 @@ Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], unc = dt["E_K"])[3], 3)
 ```
 
 |         LCV         |      HECATE      |         Description         | Pearson Correlation \[-1,1\] |
-|:--------------:|:--------------:|:--------------:|:----------------------:|
+|:----------------:|:----------------:|:----------------:|:-----------------:|
 | mag_B (with errors) | BT (with errors) |                             |    `{python} mag_B_corr`     |
 |        Kmag         |        K         | 2MASS band magnitude (both) |     `{python} Kmag_corr`     |
 
@@ -306,7 +301,7 @@ ab_corr = round(compare_data(dt["AB"], dt["AG"])[3], 3)
 ```
 
 |  LCV   | HECATE |                  Description                   | Pearson Correlation \[-1,1\] |
-|:--------------:|:--------------:|:------------------------:|:--------------:|
+|:----------------:|:----------------:|:------------------:|:----------------:|
 |   AB   |   AG   |    Galactic extinction/absorption in B band    |      `{python} ab_corr`      |
 | AB_int |   AI   | Internal/Intrisic B band extinction/absorption |              0               |
 
@@ -327,7 +322,7 @@ non_nan_counts = sfr_data.notna().sum()
 ```
 
 |  LCV   |   HECATE   |                           Description                            |                  Count                  |
-|:--------------:|:--------------:|:------------------------:|:--------------:|
+|:----------------:|:----------------:|:------------------:|:----------------:|
 |        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] | `{python} non_nan_counts["logSFR_TIR"]` |
 |        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  | `{python} non_nan_counts["logSFR_FIR"]` |
 |        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_60u"]` |
@@ -370,13 +365,13 @@ mass_data = dt[mass_columns].to_pandas()
 non_nan_counts = mass_data.notna().sum()
 ```
 
-|      LCV       |  HECATE  |                        Description                        |                  Count                  |
-|:------------------:|:------------------:|:------------------------------:|:------------------------------:|
-|     logM26     |          |              Log mass within Holmberg radius              | `{python} non_nan_counts["logM26"]`     |
-|     logMHI     |          |              Log mass within Holmberg radius              | `{python} non_nan_counts["logMHI"]`     |
-|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       | `{python} non_nan_counts["logM_HEC"]`   |
-|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] | `{python} non_nan_counts["logM_GSW"]`   |
-| logStellarMass |          |                Stellar Mass from M_*/L=0.6                | `{python} non_nan_counts["logStellarMass"]` |
+|      LCV       |  HECATE  |                        Description                        |                    Count                    |
+|:----------------:|:----------------:|:----------------:|:----------------:|
+|     logM26     |          |              Log mass within Holmberg radius              |     `{python} non_nan_counts["logM26"]`     |
+|     logMHI     |          |              Log mass within Holmberg radius              |     `{python} non_nan_counts["logMHI"]`     |
+|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       |    `{python} non_nan_counts["logM_HEC"]`    |
+|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |    `{python} non_nan_counts["logM_GSW"]`    |
+| logStellarMass |          |               Stellar Mass from M\_\*/L=0.6               | `{python} non_nan_counts["logStellarMass"]` |
 
 ```{python}
 #| echo: false
@@ -394,5 +389,6 @@ plt.show()
 sns.pairplot(mass_data)
 plt.show()
 ```
-
 :::
+
+# Morphology

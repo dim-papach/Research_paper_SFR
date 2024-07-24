@@ -134,6 +134,7 @@ window.Quarto = {
   <li><a href="#scatter-plots-and-r2-calculation" id="toc-scatter-plots-and-r2-calculation" class="nav-link" data-scroll-target="#scatter-plots-and-r2-calculation">Scatter plots and <span class="math inline">\(R^2\)</span> calculation</a></li>
   </ul></li>
   <li><a href="#comparable-data" id="toc-comparable-data" class="nav-link" data-scroll-target="#comparable-data">Comparable data</a></li>
+  <li><a href="#morphology" id="toc-morphology" class="nav-link" data-scroll-target="#morphology">Morphology</a></li>
   </ul>
 </nav>
 </div>
@@ -178,7 +179,7 @@ window.Quarto = {
 <li><u>Slope of the Fitted Line</u>: Should be close to 1 for a 1-1 correlation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li><u>Pearson Correlation <span class="math inline">\(\rho\)</span></u>: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol>
-<div id="70802c8c" class="cell" data-execution_count="2">
+<div id="2467622f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_data(x, y, unc<span class="op">=</span><span class="va">None</span>, sigma <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Performs a linear comparison between two datasets.</span></span>
@@ -246,7 +247,7 @@ window.Quarto = {
 <ol start="4" type="1">
 <li><u>Scatter plots</u>: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.</li>
 </ol>
-<div id="2d9bcf19" class="cell" data-execution_count="3">
+<div id="fc80d163" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter_plot(x, y, xerr <span class="op">=</span> <span class="va">None</span>, yerr <span class="op">=</span> <span class="va">None</span>, sigma <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, </span></span>
@@ -350,7 +351,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="57a940a9" class="cell" data-execution_count="5">
+<div id="c729e599" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Ra_1"</span>], dt[<span class="st">"RA_2"</span>]), scatter_plot(dt[<span class="st">"Dec_1"</span>], dt[<span class="st">"DEC_2"</span>]), scatter_plot(dt[<span class="st">"Dis"</span>], dt[<span class="st">"D"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -376,7 +377,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="42277a98" class="cell" data-execution_count="6">
+<div id="1502a303" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rvel_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rvel_corr_v <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V_VIR"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>vlg_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"VLG"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
@@ -420,7 +421,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="6b9eac47" class="cell" data-execution_count="7">
+<div id="5b305125" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"RVel"</span>], dt[<span class="st">"V"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -436,7 +437,7 @@ window.Quarto = {
 <colgroup>
 <col style="width: 24%">
 <col style="width: 24%">
-<col style="width: 27%">
+<col style="width: 26%">
 <col style="width: 24%">
 </colgroup>
 <thead>
@@ -462,17 +463,21 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td style="text-align: center;">a26_1 (Major)</td>
-<td style="text-align: center;">A26_1a (Semi-major axis)</td>
+<td style="text-align: center;">R1 (Semi-major axis)</td>
 <td style="text-align: center;">angular diameter (arcmin)</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">0.992</td>
 </tr>
 </tbody>
 </table>
 <p>As we can see we don’t have any significant correlation between the Types of galaxies</p>
-<div id="88b298e7" class="cell" data-execution_count="9">
+<p><strong>For the A26: In the LCV Catalog it is measured in deg, and in Hecate it is mesaured in kpc</strong></p>
+<p>We need to convert the <span class="math inline">\(a26_{HEC}\)</span> from kpc to deg using the formula <span class="math display">\[\delta =  2\arctan \left(\frac{d}{2D}\right)\]</span></p>
+<p><img src="/Angular_diameter_formula.svg.png" class="img-fluid"></p>
+<p>in which <span class="math inline">\(\delta\)</span> is the angular diameter in degrees, and d is the actual diameter of the object, and D is the distance to the object.</p>
+<div id="2d980611" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"TType"</span>], dt[<span class="st">"T"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_T"</span>])</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>], sigma <span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"a26_1"</span>], dt[<span class="st">"A26_1a"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], sigma <span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"a26_1"</span>], dt[<span class="st">"R1"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -483,19 +488,18 @@ window.Quarto = {
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-10-output-2.png" width="607" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-10-output-2.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-10-output-3.png" width="607" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-10-output-3.png" width="596" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p><strong>For the A26: In the LCV Catalog it is measured in deg, and in Hecate it is mesaured in kpc</strong></p>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <table class="table">
@@ -516,7 +520,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="5d156e96" class="cell" data-execution_count="11">
+<div id="e1c5eb95" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"logKLum"</span>], dt[<span class="st">"logL_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -530,10 +534,10 @@ window.Quarto = {
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <table class="table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 22%">
-<col style="width: 33%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -558,7 +562,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="44d97fdf" class="cell" data-execution_count="13">
+<div id="2ad5c078" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"mag_B"</span>], dt[<span class="st">"BT"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_BT"</span>], sigma <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Kmag"</span>], dt[<span class="st">"K"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_K"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -580,10 +584,10 @@ window.Quarto = {
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
 <table class="table">
 <colgroup>
-<col style="width: 21%">
-<col style="width: 21%">
-<col style="width: 35%">
-<col style="width: 21%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 27%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -608,7 +612,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="5ba51071" class="cell" data-execution_count="15">
+<div id="babe9e39" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"AB"</span>], dt[<span class="st">"AG"</span>])<span class="co">#, scatter_plot(dt["AB_int"], dt["AI"])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -622,10 +626,10 @@ window.Quarto = {
 <div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
 <table class="table">
 <colgroup>
-<col style="width: 21%">
-<col style="width: 21%">
-<col style="width: 35%">
-<col style="width: 21%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 27%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -692,7 +696,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="41b253d8" class="cell" data-execution_count="17">
+<div id="c2e0b763" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -713,10 +717,10 @@ window.Quarto = {
 <div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
 <table class="table">
 <colgroup>
-<col style="width: 19%">
-<col style="width: 19%">
-<col style="width: 30%">
-<col style="width: 30%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -759,7 +763,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="ddce646c" class="cell" data-execution_count="19">
+<div id="f5f8ce0e" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -778,11 +782,14 @@ window.Quarto = {
 </div>
 </div>
 </div>
+</section>
+<section id="morphology" class="level1 unnumbered">
+
 
 </section>
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Morphology</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-karachentsevSTARFORMATIONPROPERTIES2013a" class="csl-entry" role="listitem">
 Karachentsev, Igor D., and Elena I. Kaisina. 2013. <span>“<span>STAR FORMATION PROPERTIES IN THE LOCAL VOLUME GALAXIES VIA Hα AND FAR-ULTRAVIOLET FLUXES</span>.”</span> <em>AJ</em> 146 (3): 46. <a href="https://doi.org/10.1088/0004-6256/146/3/46">https://doi.org/10.1088/0004-6256/146/3/46</a>.
 </div>
