@@ -91,7 +91,7 @@ def compare_data(x, y, sigma = False):
             fitted_line = fit(line_init, x_data, y_data)
             outliers = None
         else:
-            or_fit = fitting.FittingWithOutlierRemoval(fit, sigma_clip, niter=3, sigma=2)
+            or_fit = fitting.FittingWithOutlierRemoval(fit, sigma_clip, niter =3, sigma=3)
             fitted_line, outliers = or_fit(line_init, x_data, y_data)
         slope = fitted_line.slope.value
         intercept = fitted_line.intercept.value
@@ -116,6 +116,8 @@ def compare_data(x, y, sigma = False):
     except Exception:
         return 0,0,0,0,None
 ```
+
+
 
 4.  [Scatter plots]{.underline}: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.
 
@@ -155,9 +157,12 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False):
     # Plot the data with error bars
     # errorbar -> needs np.ma -> no units
     if outliers is not None:
-        filtered_data = np.ma.masked_array(y_data, mask = outliers)
-        plt.errorbar(x_data, y_data, yerr=yerr_d, c = "black", label="Clipped Data", fmt = "o", fillstyle = "none")
-        plt.scatter(x_data, filtered_data,  label="Fitted Data", c = "blue")
+        filtered_data = np.ma.masked_array(y.value , mask = outliers)
+        outlier_percentage = (np.sum(outliers) / len(outliers)) * 100
+
+        plt.errorbar(x.value, y.value, yerr=yerr_d, c = "black", label="Clipped Data, {} ({}%)".format(np.sum(outliers), round(outlier_percentage,1)), fmt = "o", fillstyle = "none")
+        plt.scatter(x[~outliers], y[~outliers],  label=f"Fitted Data, {np.sum(~filtered_data.mask)}", c = "blue")
+
     else:
         plt.errorbar(x_data, y_data, xerr = xerr_d, yerr = yerr_d, alpha = 0.3, c = "blue", label = "Data", fmt = ".")
     
@@ -196,12 +201,21 @@ d_corr = round(compare_data(dt["Dis"],dt["D"])[3],3)
 | Ra_1  |  RA_2  | Right Ascension |      `{python} ra_corr`      |
 | Dec_1 | DEC_2  |   Declination   |     `{python} dec_corr`      |
 |  Dis  |   D    |    Distance     |      `{python} d_corr`       |
-
+::: panel-tabset
+## Right Ascnsion
 ```{python}
 
-scatter_plot(dt["Ra_1"], dt["RA_2"]), scatter_plot(dt["Dec_1"], dt["DEC_2"]), scatter_plot(dt["Dis"], dt["D"])
+scatter_plot(dt["Ra_1"], dt["RA_2"])
 ```
-
+## Declination
+```{python}
+scatter_plot(dt["Dec_1"], dt["DEC_2"]), 
+```
+## Distance
+```{python}
+scatter_plot(dt["Dis"], dt["D"])
+```
+:::
 ## Velocities
 
 ```{python}
