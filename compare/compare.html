@@ -133,7 +133,17 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#scatter-plots-and-r2-calculation" id="toc-scatter-plots-and-r2-calculation" class="nav-link" data-scroll-target="#scatter-plots-and-r2-calculation">Scatter plots and <span class="math inline">\(R^2\)</span> calculation</a></li>
   </ul></li>
-  <li><a href="#comparable-data" id="toc-comparable-data" class="nav-link" data-scroll-target="#comparable-data">Comparable data</a></li>
+  <li><a href="#comparable-data" id="toc-comparable-data" class="nav-link" data-scroll-target="#comparable-data">Comparable data</a>
+  <ul class="collapse">
+  <li><a href="#coordinates" id="toc-coordinates" class="nav-link" data-scroll-target="#coordinates">Coordinates</a></li>
+  <li><a href="#velocities" id="toc-velocities" class="nav-link" data-scroll-target="#velocities">Velocities</a></li>
+  <li><a href="#morphology-and-geometry" id="toc-morphology-and-geometry" class="nav-link" data-scroll-target="#morphology-and-geometry">Morphology and Geometry</a></li>
+  <li><a href="#luminosities" id="toc-luminosities" class="nav-link" data-scroll-target="#luminosities">Luminosities</a></li>
+  <li><a href="#magnitudes" id="toc-magnitudes" class="nav-link" data-scroll-target="#magnitudes">Magnitudes</a></li>
+  <li><a href="#absorbsion" id="toc-absorbsion" class="nav-link" data-scroll-target="#absorbsion">Absorbsion</a></li>
+  <li><a href="#sfr" id="toc-sfr" class="nav-link" data-scroll-target="#sfr">SFR</a></li>
+  <li><a href="#masses" id="toc-masses" class="nav-link" data-scroll-target="#masses">Masses</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -178,7 +188,7 @@ window.Quarto = {
 <li><u>Slope of the Fitted Line</u>: Should be close to 1 for a 1-1 correlation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
 <li><u>Pearson Correlation <span class="math inline">\(\rho\)</span></u>: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol>
-<div id="0b89bd0c" class="cell" data-execution_count="2">
+<div id="5ddd08eb" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_data(x, y, sigma <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Performs a linear comparison between two datasets.</span></span>
@@ -241,7 +251,7 @@ window.Quarto = {
 <ol start="4" type="1">
 <li><u>Scatter plots</u>: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.</li>
 </ol>
-<div id="138cf11a" class="cell" data-execution_count="3">
+<div id="bea33a8e" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter_plot(x, y, xerr <span class="op">=</span> <span class="va">None</span>, yerr <span class="op">=</span> <span class="va">None</span>, sigma <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, </span></span>
@@ -305,10 +315,8 @@ window.Quarto = {
 </section>
 <section id="comparable-data" class="level1">
 <h1>Comparable data</h1>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Coordinates</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Velocities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Morphology and Geometry</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Luminosities</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Magnitudes</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false" href="">Absorbsion</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-7" role="tab" aria-controls="tabset-1-7" aria-selected="false" href="">SFR</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-8" role="tab" aria-controls="tabset-1-8" aria-selected="false" href="">Masses</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<section id="coordinates" class="level2">
+<h2 class="anchored" data-anchor-id="coordinates">Coordinates</h2>
 <table class="table">
 <thead>
 <tr class="header">
@@ -339,7 +347,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="cbc94ef1" class="cell" data-execution_count="5">
+<div id="e93e1c18" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Ra_1"</span>], dt[<span class="st">"RA_2"</span>]), scatter_plot(dt[<span class="st">"Dec_1"</span>], dt[<span class="st">"DEC_2"</span>]), scatter_plot(dt[<span class="st">"Dis"</span>], dt[<span class="st">"D"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -363,9 +371,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="5095ca5a" class="cell" data-execution_count="6">
+</section>
+<section id="velocities" class="level2">
+<h2 class="anchored" data-anchor-id="velocities">Velocities</h2>
+<div id="5e71f00a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rvel_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>rvel_corr_v <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"RVel"</span>],dt[<span class="st">"V_VIR"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>vlg_corr <span class="op">=</span> <span class="bu">round</span>(compare_data(dt[<span class="st">"VLG"</span>],dt[<span class="st">"V"</span>])[<span class="dv">3</span>],<span class="dv">3</span>)</span>
@@ -409,7 +418,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="6aabe789" class="cell" data-execution_count="7">
+<div id="d5542265" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"RVel"</span>], dt[<span class="st">"V"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_V"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -419,9 +428,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="be55efcf" class="cell" data-execution_count="8">
+</section>
+<section id="morphology-and-geometry" class="level2">
+<h2 class="anchored" data-anchor-id="morphology-and-geometry">Morphology and Geometry</h2>
+<div id="52036bc3" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
 WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
@@ -465,7 +475,7 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </tbody>
 </table>
 <p>As we can see we don’t have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0</p>
-<div id="c817dd8f" class="cell" data-execution_count="9">
+<div id="92035a5a" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"TType"</span>], dt[<span class="st">"T"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_T"</span>])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"inc"</span>], dt[<span class="st">"INCL"</span>], sigma <span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"a26_1"</span>], dt[<span class="st">"R1"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -496,9 +506,10 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div id="e31bb965" class="cell" data-execution_count="10">
+</section>
+<section id="luminosities" class="level2">
+<h2 class="anchored" data-anchor-id="luminosities">Luminosities</h2>
+<div id="d2f46675" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
 WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
@@ -523,7 +534,7 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </tr>
 </tbody>
 </table>
-<div id="9f9adc69" class="cell" data-execution_count="11">
+<div id="38e00ced" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
 WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
@@ -537,9 +548,10 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-<div id="f32f1b98" class="cell" data-execution_count="12">
+</section>
+<section id="magnitudes" class="level2">
+<h2 class="anchored" data-anchor-id="magnitudes">Magnitudes</h2>
+<div id="74a2d9dc" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
 WARNING: Input data contains invalid values (NaNs or infs), which were automatically clipped. [astropy.stats.sigma_clipping]
@@ -579,7 +591,7 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </tr>
 </tbody>
 </table>
-<div id="ca17dd96" class="cell" data-execution_count="13">
+<div id="fd4ef45d" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"mag_B"</span>], dt[<span class="st">"BT"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_BT"</span>], sigma <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"Kmag"</span>], dt[<span class="st">"K"</span>], yerr <span class="op">=</span> dt[<span class="st">"E_K"</span>], sigma <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -605,13 +617,14 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
+</section>
+<section id="absorbsion" class="level2">
+<h2 class="anchored" data-anchor-id="absorbsion">Absorbsion</h2>
 <table class="table">
 <colgroup>
 <col style="width: 24%">
 <col style="width: 24%">
-<col style="width: 27%">
+<col style="width: 26%">
 <col style="width: 24%">
 </colgroup>
 <thead>
@@ -637,7 +650,7 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </tr>
 </tbody>
 </table>
-<div id="0c7c3698" class="cell" data-execution_count="15">
+<div id="9658e18a" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>scatter_plot(dt[<span class="st">"AB"</span>], dt[<span class="st">"AG"</span>])<span class="co">#, scatter_plot(dt["AB_int"], dt["AI"])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -647,13 +660,14 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-7-tab">
+</section>
+<section id="sfr" class="level2">
+<h2 class="anchored" data-anchor-id="sfr">SFR</h2>
 <table class="table">
 <colgroup>
 <col style="width: 24%">
 <col style="width: 24%">
-<col style="width: 27%">
+<col style="width: 26%">
 <col style="width: 24%">
 </colgroup>
 <thead>
@@ -721,7 +735,7 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </tr>
 </tbody>
 </table>
-<div id="03395a80" class="cell" data-execution_count="17">
+<div id="33689593" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -738,8 +752,9 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </div>
 </div>
 <p>It is possible we dont see a correlation because we dont have a big enough common sample</p>
-</div>
-<div id="tabset-1-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-8-tab">
+</section>
+<section id="masses" class="level2">
+<h2 class="anchored" data-anchor-id="masses">Masses</h2>
 <table class="table">
 <colgroup>
 <col style="width: 25%">
@@ -788,18 +803,37 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </tr>
 </tbody>
 </table>
-<div id="8e02f280" class="cell" data-execution_count="19">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Heatmap</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Plot Grid</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="c89cc2d1" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mass_data.drop(<span class="st">"logM_GSW"</span>, axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the correlation matrix</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>mass_corr_matrix <span class="op">=</span> mass_data.corr()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a heatmap</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>sns.heatmap(mass_corr_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">"coolwarm"</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Correlation Heatmap of Mass Values"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-20-output-1.png" width="754" height="655" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-20-output-1.png" width="553" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div id="1d416c14" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a pair grid</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sns.pairplot(mass_data)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-20-output-2.png" width="946" height="946" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-21-output-1.png" width="946" height="946" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -808,6 +842,7 @@ WARNING: Input data contains invalid values (NaNs or infs), which were automatic
 </div>
 </div>
 
+</section>
 </section>
 
 

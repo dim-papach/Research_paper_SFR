@@ -182,7 +182,6 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False):
 
 # Comparable data
 
-::: panel-tabset
 ## Coordinates
 
 ```{python}
@@ -234,13 +233,13 @@ inc_corr = round(compare_data(dt["inc"], dt["INCL"], sigma = True)[3], 3)
 a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 ```
 
-|      LCV      |          HECATE          |                        Description                        | Pearson Correlation \[-1,1\] |
+|      LCV      |        HECATE        |                        Description                        | Pearson Correlation \[-1,1\] |
 |:----------------:|:----------------:|:-----------------:|:----------------:|
-|     TType     |     T (with errors)      | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
-|      inc      |           INCL           |                     Inclination (deg)                     |     `{python} inc_corr`      |
+|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
+|      inc      |         INCL         |                     Inclination (deg)                     |     `{python} inc_corr`      |
 | a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
 
-As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0 
+As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0
 
 ```{python}
 
@@ -266,7 +265,6 @@ logKLum_corr = round(compare_data(dt["logKLum"], dt["logL_K"], sigma = True)[3],
 #| echo: false
 scatter_plot(dt["logKLum"], dt["logL_K"], sigma = True)
 ```
-
 
 ## Magnitudes
 
@@ -295,7 +293,7 @@ ab_corr = round(compare_data(dt["AB"], dt["AG"])[3], 3)
 ```
 
 |  LCV   | HECATE |                  Description                   | Pearson Correlation \[-1,1\] |
-|:----------------:|:----------------:|:------------------:|:----------------:|
+|:----------------:|:----------------:|:-----------------:|:----------------:|
 |   AB   |   AG   |    Galactic extinction/absorption in B band    |      `{python} ab_corr`      |
 | AB_int |   AI   | Internal/Intrisic B band extinction/absorption |              0               |
 
@@ -316,7 +314,7 @@ non_nan_counts = sfr_data.notna().sum()
 ```
 
 |  LCV   |   HECATE   |                           Description                            |                  Count                  |
-|:----------------:|:----------------:|:------------------:|:----------------:|
+|:----------------:|:----------------:|:-----------------:|:----------------:|
 |        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] | `{python} non_nan_counts["logSFR_TIR"]` |
 |        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  | `{python} non_nan_counts["logSFR_FIR"]` |
 |        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_60u"]` |
@@ -367,18 +365,20 @@ non_nan_counts = mass_data.notna().sum()
 |                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |    `{python} non_nan_counts["logM_GSW"]`    |
 | logStellarMass |          |               Stellar Mass from M\_\*/L=0.6               | `{python} non_nan_counts["logStellarMass"]` |
 
+::: panel-tabset
+## Heatmap
 ```{python}
-#| echo: false
 mass_data.drop("logM_GSW", axis=1, inplace=True)
 # Compute the correlation matrix
 mass_corr_matrix = mass_data.corr()
 
 # Create a heatmap
-plt.figure(figsize=(10, 8))
 sns.heatmap(mass_corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap of Mass Values")
 plt.show()
-
+```
+## Plot Grid
+```{python}
 # Create a pair grid
 sns.pairplot(mass_data)
 plt.show()
