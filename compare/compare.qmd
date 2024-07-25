@@ -118,10 +118,10 @@ def compare_data(x, y, sigma = False):
         return 0,0,0,0,None
 ```
 
-4.  [Scatter plots]{.underline}: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.
+4.  [Plots]{.underline}: Plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.
 
 ```{python}
-def scatter_plot(x, y, xerr = None, yerr = None, sigma = False):
+def scatter_plot(x, y, xerr = None, yerr = None, sigma = False, logscale = False):
     """
     Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, 
     and displays the fitted line on the plot.
@@ -180,11 +180,15 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False):
     plt.show()
 ```
 
-Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers whith $sigma > 3$
+Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with $sigma > 3$
 
--   Histograms
+- Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.
 
--   Deviation
+In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.
+
+- Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn't help us right now.[^3] This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value
+
+[^3]: When we will use the outer join table we could use histograms due to the large number of counts.
 
 # Comparable data
 
@@ -204,7 +208,7 @@ d_corr = round(compare_data(dt["Dis"],dt["D"])[3],3)
 |  Dis  |   D    |    Distance     |      `{python} d_corr`       |
 
 ::: panel-tabset
-## Right Ascnsion
+## Right Ascension
 
 ```{python}
 
@@ -257,7 +261,7 @@ vel_data = dt[["RVel", "V", "VLG", "cz", "V_VIR"]].to_pandas()
 sns.pairplot(vel_data, corner=True)
 plt.show()
 ```
-
+[?] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference.
 ## Heatmap
 ```{python}
 # Compute the correlation matrix
@@ -305,7 +309,7 @@ scatter_plot(dt["inc"], dt["INCL"], sigma =True)
 ## Major Axis
 
 ```{python}
-scatter_plot(dt["a26_1"], dt["R1"])
+scatter_plot(dt["a26_1"], dt["R1"], logscale = True)
 ```
 
 :::
@@ -353,7 +357,7 @@ scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma = True)
 scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"], sigma = True)
 ```
 :::
-## Absorbsion
+## Absorpsion
 
 ```{python}
 #| echo: false
@@ -364,10 +368,10 @@ ab_corr = round(compare_data(dt["AB"], dt["AG"])[3], 3)
 |  LCV   | HECATE |                  Description                   | Pearson Correlation \[-1,1\] |
 |:----------------:|:----------------:|:-----------------:|:----------------:|
 |   AB   |   AG   |    Galactic extinction/absorption in B band    |      `{python} ab_corr`      |
-| AB_int |   AI   | Internal/Intrisic B band extinction/absorption |              0               |
+| AB_int |   AI   | Internal/Intrinsic B band extinction/absorption |              0               |
 
 ```{python}
-scatter_plot(dt["AB"], dt["AG"])#, scatter_plot(dt["AB_int"], dt["AI"])
+scatter_plot(dt["AB"], dt["AG"], logscale = True)#, scatter_plot(dt["AB_int"], dt["AI"])
 ```
 
 ## SFR
