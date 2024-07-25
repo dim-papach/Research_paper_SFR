@@ -340,7 +340,7 @@ Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
 |        Kmag         |        K         | 2MASS band magnitude (both) |     `{python} Kmag_corr`     |
 
 ::: panel-tabset
-# B mag
+## B mag
 ```{python}
 scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma = True)
 ```
