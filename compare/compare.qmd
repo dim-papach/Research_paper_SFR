@@ -6,7 +6,7 @@ toc-depth: 2
 theme: minti
 bibliography: ../My_Library.bib
 execute: 
-  echo: true
+  echo: false
   eval: true
 ---
 
@@ -117,8 +117,6 @@ def compare_data(x, y, sigma = False):
         return 0,0,0,0,None
 ```
 
-
-
 4.  [Scatter plots]{.underline}: Scatter plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.
 
 ```{python}
@@ -181,6 +179,8 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False):
     plt.show()
 ```
 
+Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers whith $sigma > 3$
+
 -   Histograms
 
 -   Deviation
@@ -201,21 +201,28 @@ d_corr = round(compare_data(dt["Dis"],dt["D"])[3],3)
 | Ra_1  |  RA_2  | Right Ascension |      `{python} ra_corr`      |
 | Dec_1 | DEC_2  |   Declination   |     `{python} dec_corr`      |
 |  Dis  |   D    |    Distance     |      `{python} d_corr`       |
+
 ::: panel-tabset
 ## Right Ascnsion
+
 ```{python}
 
 scatter_plot(dt["Ra_1"], dt["RA_2"])
 ```
+
 ## Declination
+
 ```{python}
 scatter_plot(dt["Dec_1"], dt["DEC_2"]), 
 ```
+
 ## Distance
+
 ```{python}
 scatter_plot(dt["Dis"], dt["D"])
 ```
 :::
+
 ## Velocities
 
 ```{python}
@@ -227,15 +234,42 @@ cz_corr = round(compare_data(dt["cz"],dt["V"])[3],3)
 cz_corr_v = round(compare_data(dt["cz"],dt["V_VIR"])[3],3)
 ```
 
-|       LCV        |        HECATE         |         Description          |        Linear Correlation         |
+|     LCV     |    HECATE    |              Description               |  Linear Correlation  |
 |:----------------:|:-----------------:|:----------------:|:----------------:|
-|       RVel       | V/V_VIR (with errors) | Heliocentric radial velocity | `{python} rvel_corr, rvel_corr_v` |
-|       VLG        | V/V_VIR (with errors) |       Radial velocity        |  `{python} vlg_corr, vlg_corr_v`  |
-| cz (with errors) | V/V_VIR (with errors) |    Heliocentric velocity     |   `{python} cz_corr, cz_corr_v`   |
+| RVel (km/s) |   V (km/s)   |      Heliocentric radial velocity      | `{python} rvel_corr` |
+| VLG (km/s)  |              |            Radial velocity             |                      |
+|  cz (km/s)  |              |         Heliocentric velocity          |                      |
+|             | V_VIR (km/s) | Virgo-infall corrected radial velocity |                      |
+
+::: panel-tabset
+## Heliocentric radial Velocity
 
 ```{python}
 scatter_plot(dt["RVel"], dt["V"], yerr = dt["E_V"])
 ```
+
+## Scatter Grid
+```{python}
+vel_data = dt[["RVel", "V", "VLG", "cz", "V_VIR"]].to_pandas()
+
+# Create a pair grid
+sns.pairplot(vel_data, corner=True)
+plt.show()
+```
+
+## Heatmap
+```{python}
+# Compute the correlation matrix
+corr_matrix = vel_data.corr()
+
+# Create a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
+plt.title("Correlation Heatmap of Velocity Values")
+plt.show()
+```
+
+:::
 
 ## Morphology and Geometry
 
@@ -253,15 +287,27 @@ a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 |      inc      |         INCL         |                     Inclination (deg)                     |     `{python} inc_corr`      |
 | a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
 
-As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0
+::: panel-tabset
+## Galaxy Types
 
 ```{python}
 
 scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
-scatter_plot(dt["inc"], dt["INCL"], sigma =True)
-scatter_plot(dt["a26_1"], dt["R1"])
 
 ```
+As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0
+
+## Inclanation
+```{python}
+scatter_plot(dt["inc"], dt["INCL"], sigma =True)
+```
+## Major Axis
+
+```{python}
+scatter_plot(dt["a26_1"], dt["R1"])
+```
+
+:::
 
 ## Luminosities
 
@@ -293,11 +339,19 @@ Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
 | mag_B (with errors) | BT (with errors) |                             |    `{python} mag_B_corr`     |
 |        Kmag         |        K         | 2MASS band magnitude (both) |     `{python} Kmag_corr`     |
 
+::: panel-tabset
+# B mag
 ```{python}
 scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma = True)
-scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"], sigma = True)
 ```
 
+## K mag
+
+```{python}
+
+scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"], sigma = True)
+```
+:::
 ## Absorbsion
 
 ```{python}
@@ -339,6 +393,8 @@ non_nan_counts = sfr_data.notna().sum()
 | SFRFUV |            |             FUV derived integral star formation rate             | `{python} non_nan_counts["logSFRFUV"]`  |
 | SFRHa  |            |          H{alpha} derived integral star formation rate           |  `{python} non_nan_counts["logSFRHa"]`  |
 
+::: panel-tabset
+## Heatmap
 ```{python}
 #| echo: false
 sfr_data.drop("logSFR_GSW", axis=1, inplace=True)
@@ -350,14 +406,16 @@ plt.figure(figsize=(10, 8))
 sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap of SFR Values")
 plt.show()
-
-# Create a pair grid
-sns.pairplot(sfr_data)
+```
+## Scatter Grid
+```{python}
+# Create a pair grid 
+sns.pairplot(sfr_data, corner=True)
 plt.show()
 
 ```
-
-It is possible we dont see a correlation because we dont have a big enough common sample
+:::
+It is possible we dont see a good correlation because we dont have a big enough common sample
 
 ## Masses
 
@@ -381,6 +439,7 @@ non_nan_counts = mass_data.notna().sum()
 
 ::: panel-tabset
 ## Heatmap
+
 ```{python}
 mass_data.drop("logM_GSW", axis=1, inplace=True)
 # Compute the correlation matrix
@@ -391,10 +450,12 @@ sns.heatmap(mass_corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap of Mass Values")
 plt.show()
 ```
+
 ## Plot Grid
+
 ```{python}
 # Create a pair grid
-sns.pairplot(mass_data)
+sns.pairplot(mass_data, corner=True)
 plt.show()
 ```
 :::
