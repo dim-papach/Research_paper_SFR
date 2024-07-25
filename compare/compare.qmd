@@ -29,7 +29,7 @@ from astropy.io import ascii
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, join, QTable
 import astropy.units as u
-from astropy.visualization import quantity_support
+from astropy.visualization import quantity_support, hist
 #quantity_support()
 from astropy.stats import sigma_clip
 from astropy.modeling import models, fitting
@@ -78,7 +78,7 @@ def compare_data(x, y, sigma = False):
         - corr (float): The Pearson correlation coefficient, measuring the linear correlation between x and y.
     """
     try:
-        x_data = np.ma.array(x.value, mask=np.isnan(x.value))
+        x_data = np.ma.array(x.value, mask=np.isnan(x.value)&x.mask)
         y_data = np.ma.array(y.value, mask=np.isnan(y.value))
         # initialize a linear fitter
         fit = fitting.LinearLSQFitter()
@@ -190,6 +190,18 @@ In a correlation heatmap, each variable is represented by a row and a column, an
 
 [^3]: When we will use the outer join table we could use histograms due to the large number of counts.
 
+- Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference. 
+
+
+$$\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%$$
+
+```{python}
+def relative_diff(hec, lcv):
+    diff = 100*(hec - lcv) / hec
+    diff[np.isinf(diff)] = np.nan
+    return diff
+```
+
 # Comparable data
 
 ## Coordinates
@@ -300,17 +312,52 @@ a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
 
 ```
+**Percentage change:**
+```{python}
+dt["diff_T"] = relative_diff(dt["T"], dt["TType"])
+dt["diff_T"].info("stats")
+```
+```{python}
+sns.distplot(dt["diff_T"])
+plt.xlabel("Percentage change of Types of Galaxies")
+plt.show()
+```
 As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0
 
 ## Inclanation
 ```{python}
 scatter_plot(dt["inc"], dt["INCL"], sigma =True)
 ```
+
+```{python}
+dt["diff_inc"] = relative_diff(dt["INCL"], dt["inc"])
+dt["diff_inc"].info("stats")
+```
+```{python}
+sns.distplot(dt["diff_inc"])
+plt.xlabel("Percentage change of the inclination of the galaxies [%]")
+plt.show()
+```
+
+
 ## Major Axis
 
 ```{python}
-scatter_plot(dt["a26_1"], dt["R1"], logscale = True)
+scatter_plot(dt["a26_1"], dt["R1"])
 ```
+it is not very clear if we truly have a correlation or not. We need to see the linear correlation of the decimal logarithms.
+
+```{python}
+dt["log_a26"] = np.log(dt["a26_1"].data)
+dt["log_a26"].unit = u.arcmin
+dt["log_R1"] = np.log(dt["R1"].data)
+dt["log_R1"].unit = u.arcmin
+dt["log_R1"].info
+```
+```{python}
+scatter_plot(dt["log_a26"], dt["log_R1"], sigma = True)
+```
+
 
 :::
 
