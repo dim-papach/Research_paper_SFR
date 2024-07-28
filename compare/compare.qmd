@@ -39,6 +39,7 @@ import pandas as pd
 import glob
 import os
 plt.style.use('ggplot')
+pd.set_option('display.float_format', lambda x: '%.f' % x)
 
 dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
 ```
@@ -198,9 +199,59 @@ $$\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%
 
 ```{python}
 def relative_diff(hec, lcv):
-    diff = (hec - lcv) *100/ hec
+    """
+    Calculate the relative difference between two sets of values.
+
+    Parameters:
+    hec (numpy.ndarray): An array of values representing the HEC dataset.
+    lcv (numpy.ndarray): An array of values representing the LCV dataset.
+
+    Returns:
+    numpy.ndarray: An array of relative differences between the HEC and LCV datasets.
+    The relative difference is calculated as ((HEC - LCV) * 100) / |HEC|.
+    Any infinite values in the result are replaced with NaN.
+    """
+    diff = (hec - lcv) * 100 / np.abs(hec)
     diff[np.isinf(diff)] = np.nan
     return diff
+
+def percent_desc_histogram(x, sigmaclip = True, zoom = None):
+    """
+    This function creates a histogram of the given data and optionally applies a 3-sigma clip.
+    
+    Parameters:
+    - x (array-like): The input data to create the histogram.
+    - sigmaclip (bool, optional): Whether to apply a 3-sigma clip to the data. Default is True.
+    - zoom (tuple, optional): The range of values to display on the x-axis of the histogram. Default is None.
+    
+    Returns:
+    - t_pd (DataFrame): A pandas DataFrame containing statistical information about the input data.
+    
+    The function uses the seaborn library to create the histogram and applies a 3-sigma clip if `sigmaclip` is True.
+    The histogram is displayed with appropriate labels and titles.
+    The statistical information about the input data is returned as a pandas DataFrame.
+    """
+    plt.close()
+    temp_table = QTable()
+    temp_table["Percentage change"]= x.copy()
+    
+    if sigmaclip is True:
+        temp_table["Percentage change, after 3 sigma clip"] = sigma_clip(temp_table["Percentage change"],3)
+    
+    t_pd = temp_table.to_pandas()
+    
+    sns.histplot(temp_table["Percentage change"], kde = True, label = "Percentage change")
+    
+    if sigmaclip is True:
+        sns.histplot(temp_table["Percentage change, after 3 sigma clip"], kde = True, label = "Percentage change, after 3 sigma clip")
+    
+    plt.xlim(zoom)
+    plt.xlabel("Percentage change Distribution [%]")
+    plt.title("Types of Galaxies")
+    plt.legend()
+    plt.show()
+    
+    return t_pd.describe(percentiles=[]).map('{:,.0f}'.format).style.set_properties(**{'text-align': 'center'})
 ```
 
 # Comparable data
@@ -293,6 +344,9 @@ plt.show()
 ## Morphology and Geometry
 
 ```{python}
+dt["INCL"].mask = np.isnan(dt["INCL"])
+```
+```{python}
 #| echo: false
  
 ttype_corr = round(compare_data(dt["TType"], dt["T"])[3], 4)
@@ -339,26 +393,10 @@ scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
 **Percentage change:**
 
 ```{python}
-dt["diff_T"] = relative_diff(dt["T"], dt["TType"])
-dt["diff_T"].info("stats")
-```
 
-```{python}
-sigma_T = sigma_clip(dt["diff_T"])
-sigma_T.info("stats"), dt["diff_T"].info("stats")
+dt["diff_T"] = relative_diff(hec = dt["T"], lcv = dt["TType"])
+percent_desc_histogram(dt["diff_T"], zoom = [-200,200])
 ```
-
-```{python}
-sns.histplot(dt["diff_T"], kde = True, label="Unclipped data")
-sns.histplot(sigma_T, kde = True, label = "Sigma=3")
-plt.title("Percentage change Distribution [%]")
-plt.xlim([-200, 200])
-plt.xlabel("Types of Galaxies")
-plt.legend()
-plt.show()
-```
-
-As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0
 
 ## Inclanation
 
@@ -367,15 +405,16 @@ scatter_plot(dt["inc"], dt["INCL"], sigma =True)
 ```
 
 ```{python}
-dt["diff_inc"] = relative_diff(dt["INCL"], dt["inc"])
-dt["diff_inc"].info("stats") 
+dt["INCL"].mask
+```
+```{python}
+dt["diff_inc"] = relative_diff(hec = dt["INCL"],lcv = dt["inc"])
+percent_desc_histogram(dt["diff_inc"])
 ```
 
 ```{python}
-sns.histplot(dt["diff_inc"], kde = True)
-plt.title("Percentage change Distribution [%]")
-plt.xlabel(f"Inclination of the galaxies [{dt['inc'].unit}]")
-plt.show()
+#k = sigma_clip(dt["diff_inc"])
+dt["diff_T"].info
 ```
 
 ## Major Axis
