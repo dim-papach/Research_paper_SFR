@@ -182,22 +182,23 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False, logscale = False
 
 Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with $sigma > 3$
 
-- Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.
+-   Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.
 
 In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.
 
-- Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn't help us right now.[^3] This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value
+-   Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn't help us right now.[^3] This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value
 
 [^3]: When we will use the outer join table we could use histograms due to the large number of counts.
 
-- Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference. 
+<!-- -->
 
+-   Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.
 
 $$\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%$$
 
 ```{python}
 def relative_diff(hec, lcv):
-    diff = 100*(hec - lcv) / hec
+    diff = (hec - lcv) *100/ hec
     diff[np.isinf(diff)] = np.nan
     return diff
 ```
@@ -266,6 +267,7 @@ scatter_plot(dt["RVel"], dt["V"], yerr = dt["E_V"])
 ```
 
 ## Scatter Grid
+
 ```{python}
 vel_data = dt[["RVel", "V", "VLG", "cz", "V_VIR"]].to_pandas()
 
@@ -273,8 +275,9 @@ vel_data = dt[["RVel", "V", "VLG", "cz", "V_VIR"]].to_pandas()
 sns.pairplot(vel_data, corner=True)
 plt.show()
 ```
-[?] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference.
-## Heatmap
+
+\[?\] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference. \## Heatmap
+
 ```{python}
 # Compute the correlation matrix
 corr_matrix = vel_data.corr()
@@ -285,7 +288,6 @@ sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap of Velocity Values")
 plt.show()
 ```
-
 :::
 
 ## Morphology and Geometry
@@ -307,60 +309,96 @@ a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 ::: panel-tabset
 ## Galaxy Types
 
+```{=html}
+<table style="border-collapse:collapse;border-spacing:0" class="tg"><thead>
+<tr><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Hubble stage T </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">−6 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">−5 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">−4 </th>
+<th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">−3 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">−2 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">−1 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">0 </th>
+<th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">1 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">2 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">3 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">4 </th>
+<th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">5 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">6 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">7 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">8 </th>
+<th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">9 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">10 </th><th style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">11 </th></tr>
+</thead>
+<tbody>
+<tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">de Vaucouleurs class </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">cE </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">E </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">E+ </td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">S0− </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">S00 </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">S0+ </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">S0/a </td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sa </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sab </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sb </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sbc </td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sc </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Scd </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sd </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sdm </td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sm </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Im </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal"> </td></tr>
+<tr><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Approximate Hubble class </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal" colspan="3">E </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal" colspan="3">S0 </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">S0/a </td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sa </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sa-b </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sb </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sb-c </td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal" colspan="3">Sc </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Sc-Irr </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Irr I </td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal"></td>
+<td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal"></td></tr>
+</tbody></table>
+```
+
 ```{python}
 
 scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
 
 ```
+
 **Percentage change:**
+
 ```{python}
 dt["diff_T"] = relative_diff(dt["T"], dt["TType"])
 dt["diff_T"].info("stats")
 ```
+
 ```{python}
-sns.distplot(dt["diff_T"])
-plt.xlabel("Percentage change of Types of Galaxies")
+sigma_T = sigma_clip(dt["diff_T"])
+sigma_T.info("stats"), dt["diff_T"].info("stats")
+```
+
+```{python}
+sns.histplot(dt["diff_T"], kde = True, label="Unclipped data")
+sns.histplot(sigma_T, kde = True, label = "Sigma=3")
+plt.title("Percentage change Distribution [%]")
+plt.xlim([-200, 200])
+plt.xlabel("Types of Galaxies")
+plt.legend()
 plt.show()
 ```
+
 As we can see we don't have any significant correlation between the Types of galaxies and thus the correlation of the inclanations are 0
 
 ## Inclanation
+
 ```{python}
 scatter_plot(dt["inc"], dt["INCL"], sigma =True)
 ```
 
 ```{python}
 dt["diff_inc"] = relative_diff(dt["INCL"], dt["inc"])
-dt["diff_inc"].info("stats")
-```
-```{python}
-sns.distplot(dt["diff_inc"])
-plt.xlabel("Percentage change of the inclination of the galaxies [%]")
-plt.show()
+dt["diff_inc"].info("stats") 
 ```
 
+```{python}
+sns.histplot(dt["diff_inc"], kde = True)
+plt.title("Percentage change Distribution [%]")
+plt.xlabel(f"Inclination of the galaxies [{dt['inc'].unit}]")
+plt.show()
+```
 
 ## Major Axis
 
 ```{python}
 scatter_plot(dt["a26_1"], dt["R1"])
 ```
+
 it is not very clear if we truly have a correlation or not. We need to see the linear correlation of the decimal logarithms.
 
 ```{python}
-dt["log_a26"] = np.log(dt["a26_1"].data)
+dt["log_a26"] = np.log10(dt["a26_1"].data)
 dt["log_a26"].unit = u.arcmin
-dt["log_R1"] = np.log(dt["R1"].data)
+dt["log_R1"] = np.log10(dt["R1"].data)
 dt["log_R1"].unit = u.arcmin
 dt["log_R1"].info
 ```
+
 ```{python}
 scatter_plot(dt["log_a26"], dt["log_R1"], sigma = True)
 ```
 
-
 :::
-
 ## Luminosities
 
 ```{python}
@@ -393,6 +431,7 @@ Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
 
 ::: panel-tabset
 ## B mag
+
 ```{python}
 scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma = True)
 ```
@@ -403,7 +442,20 @@ scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma = True)
 
 scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"], sigma = True)
 ```
+
+```{python}
+dt["diff_K_mag"] = relative_diff(dt["Kmag"], dt["K"])
+dt["diff_K_mag"].info("stats")
+```
+
+```{python}
+sns.histplot(dt["diff_K_mag"], kde = True)
+plt.title("Percentage change Distribution [%]")
+plt.xlabel(f"K band magnitude [{dt['K'].unit}]")
+plt.show()
+```
 :::
+
 ## Absorpsion
 
 ```{python}
@@ -412,14 +464,34 @@ ab_corr = round(compare_data(dt["AB"], dt["AG"])[3], 3)
 #ab_int_corr = round(compare_data(dt["AB_int"], dt["AI"])[3], 3)
 ```
 
-|  LCV   | HECATE |                  Description                   | Pearson Correlation \[-1,1\] |
+|  LCV   | HECATE |                   Description                   | Pearson Correlation \[-1,1\] |
 |:----------------:|:----------------:|:-----------------:|:----------------:|
-|   AB   |   AG   |    Galactic extinction/absorption in B band    |      `{python} ab_corr`      |
+|   AB   |   AG   |    Galactic extinction/absorption in B band     |      `{python} ab_corr`      |
 | AB_int |   AI   | Internal/Intrinsic B band extinction/absorption |              0               |
+
+::: panel-tabset
+## Galactic
 
 ```{python}
 scatter_plot(dt["AB"], dt["AG"], logscale = True)#, scatter_plot(dt["AB_int"], dt["AI"])
 ```
+
+## Internal
+
+```{python}
+plt.scatter(dt["AB_int"],dt["AI"],)
+plt.xlabel(f"LCV, AB_int [{dt['AB_int'].unit}]")
+plt.ylabel(f"HECATE, AI [{dt['AI'].unit}]")
+plt.yscale("log")
+plt.show()
+```
+
+If we use the decimal logarithm of the data we can clearly see the linear correlation.
+
+```{python}
+sns.jointplot(x=dt["AB_int"], y=dt["AI"], kind="reg",)
+```
+:::
 
 ## SFR
 
@@ -447,6 +519,7 @@ non_nan_counts = sfr_data.notna().sum()
 
 ::: panel-tabset
 ## Heatmap
+
 ```{python}
 #| echo: false
 sfr_data.drop("logSFR_GSW", axis=1, inplace=True)
@@ -459,7 +532,9 @@ sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", vmin=-1, vmax=1)
 plt.title("Correlation Heatmap of SFR Values")
 plt.show()
 ```
+
 ## Scatter Grid
+
 ```{python}
 # Create a pair grid 
 sns.pairplot(sfr_data, corner=True)
@@ -467,6 +542,7 @@ plt.show()
 
 ```
 :::
+
 It is possible we dont see a good correlation because we dont have a big enough common sample
 
 ## Masses
