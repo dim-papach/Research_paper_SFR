@@ -398,24 +398,23 @@ dt["diff_T"] = relative_diff(hec = dt["T"], lcv = dt["TType"])
 percent_desc_histogram(dt["diff_T"], zoom = [-200,200])
 ```
 
-## Inclanation
+## Inclination
 
 ```{python}
-scatter_plot(dt["inc"], dt["INCL"], sigma =True)
+temp = dt[["inc", "INCL"]].to_pandas()
+
+sns.histplot(temp[["inc", "INCL"]], kde = True)
+plt.xlabel("Inclination of galaxies [deg]")
+plt.show()
+
+temp["Percentage Change [%]"] = (-temp["inc"] + temp["INCL"])/temp["INCL"]
+temp.loc[np.isinf(temp["Percentage Change [%]"]), "Percentage Change [%]"] = np.nan
+sns.histplot(temp["Percentage Change [%]"], kde = True)
+plt.show()
+temp.describe()
 ```
 
-```{python}
-dt["INCL"].mask
-```
-```{python}
-dt["diff_inc"] = relative_diff(hec = dt["INCL"],lcv = dt["inc"])
-percent_desc_histogram(dt["diff_inc"])
-```
-
-```{python}
-#k = sigma_clip(dt["diff_inc"])
-dt["diff_T"].info
-```
+We can see that for values in the range $[\sim 30^\circ,\sim 80^\circ]$, the values of the LCV inclination are higher. However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, $\sigma$ = 0 with a range $[-3\%,1\%]$), we can ignore the differences and assume they are the same values.
 
 ## Major Axis
 
