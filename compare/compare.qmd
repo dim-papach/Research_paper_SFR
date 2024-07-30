@@ -547,8 +547,6 @@ plt.yscale("log")
 plt.show()
 ```
 
-If we use the decimal logarithm of the data we can clearly see the linear correlation.
-
 ```{python}
 sns.jointplot(x=dt["AB_int"], y=dt["AI"], kind="reg",)
 ```
@@ -600,8 +598,16 @@ plt.show()
 # Create a pair grid 
 sns.pairplot(sfr_data, corner=True)
 plt.show()
-
 ```
+
+## Density Grids
+
+```{python}
+# Create a pair grid 
+sns.pairplot(sfr_data, corner=True, kind="kde", diag_kind="hist")
+plt.show()
+```
+
 :::
 
 It is possible we dont see a good correlation because we dont have a big enough common sample
