@@ -31,7 +31,7 @@ from astropy.table import Table, join, QTable
 import astropy.units as u
 from astropy.visualization import quantity_support, hist
 #quantity_support()
-from astropy.stats import sigma_clip
+from astropy.stats import sigma_clip, SigmaClip
 from astropy.modeling import models, fitting
 from scipy.stats import pearsonr
 import seaborn as sns
@@ -79,7 +79,7 @@ def compare_data(x, y, sigma = False):
         - corr (float): The Pearson correlation coefficient, measuring the linear correlation between x and y.
     """
     try:
-        x_data = np.ma.array(x.value, mask=np.isnan(x.value)&x.mask)
+        x_data = np.ma.array(x.value, mask=np.isnan(x.value))
         y_data = np.ma.array(y.value, mask=np.isnan(y.value))
         # initialize a linear fitter
         fit = fitting.LinearLSQFitter()
@@ -327,7 +327,9 @@ sns.pairplot(vel_data, corner=True)
 plt.show()
 ```
 
-\[?\] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference. \## Heatmap
+\[?\] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference. 
+
+## Heatmap
 
 ```{python}
 # Compute the correlation matrix
@@ -346,6 +348,7 @@ plt.show()
 ```{python}
 dt["INCL"].mask = np.isnan(dt["INCL"])
 ```
+
 ```{python}
 #| echo: false
  
@@ -435,8 +438,8 @@ dt["log_R1"].info
 ```{python}
 scatter_plot(dt["log_a26"], dt["log_R1"], sigma = True)
 ```
-
 :::
+
 ## Luminosities
 
 ```{python}
@@ -451,7 +454,20 @@ logKLum_corr = round(compare_data(dt["logKLum"], dt["logL_K"], sigma = True)[3],
 
 ```{python}
 #| echo: false
-scatter_plot(dt["logKLum"], dt["logL_K"], sigma = True)
+dt["diff_L_K"] = relative_diff(hec = dt["logL_K"].value, lcv = dt["logKLum"])
+temp = dt[["logKLum", "logL_K", "diff_L_K"]].to_pandas()
+sns.histplot(temp["diff_L_K"], kde = True)
+plt.xlabel("Percentage change [%]")
+plt.title("K-band Luminosities")
+plt.show()
+```
+
+```{python}
+temp.rename(columns = {"logKLum":"log(L_K)_{LCV}$", "logL_K":"log(L_K)_{HEC}", "diff_L_K":"Percentage Change [%]"}, inplace=True)
+```
+
+```{python}
+temp.describe()
 ```
 
 ## Magnitudes
@@ -471,7 +487,7 @@ Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
 ## B mag
 
 ```{python}
-scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma = True)
+scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma=True)
 ```
 
 ## K mag
@@ -483,11 +499,18 @@ scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"], sigma = True)
 
 ```{python}
 dt["diff_K_mag"] = relative_diff(dt["Kmag"], dt["K"])
-dt["diff_K_mag"].info("stats")
+
+temp = dt[["diff_K_mag"]].to_pandas()
+c = temp["diff_K_mag"]
+up_clip = c.mean() + 3*c.std()
+low_clip = c.mean() - 3*c.std()
+temp["Percentage Change, after 3 sigma clip [%]"] = temp["diff_K_mag"].clip(low_clip, up_clip)
+temp.rename(columns={"diff_K_mag":"Percentage Change [%]"}, inplace=True)
+temp.describe()
 ```
 
 ```{python}
-sns.histplot(dt["diff_K_mag"], kde = True)
+sns.histplot(temp, kde = True)
 plt.title("Percentage change Distribution [%]")
 plt.xlabel(f"K band magnitude [{dt['K'].unit}]")
 plt.show()
