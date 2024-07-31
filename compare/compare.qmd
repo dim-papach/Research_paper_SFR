@@ -52,9 +52,11 @@ The dataset we are going to use consists of `{python} len(dt)` galaxies and `{py
 
 1.  $R^2$: Measures the proportion of variance explained by the linear model.
 2.  Slope of the Fitted Line: Should be close to 1 for a 1-1 correlation.[^1]
+
+[^1]: Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with $\sigma > 3$
+
 3.  Pearson Correlation $\rho$: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. [^2]
 
-[^1]: Fitting can be done using the uncertainties as weights. To get the standard weighting of 1/unc\^2, assuming Gaussian errors, the weights to pass to the fitting are 1/unc.
 
 [^2]: In simple linear regression, $R^2$ is the square of the Pearson correlation coefficient $\rho$.
 
@@ -181,19 +183,18 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False, logscale = False
     plt.show()
 ```
 
-Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with $sigma > 3$
-
--   Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.
-
-In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.
 
 -   Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn't help us right now.[^3] This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value
 
 [^3]: When we will use the outer join table we could use histograms due to the large number of counts.
 
-<!-- -->
+-   Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.
 
--   Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.
+    In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.
+
+-   Kernel Density Estimate (KDE) plot: The KDE plot visually represents the distribution of data, providing insights into its shape, central tendency, and spread.
+
+5.  Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.
 
 $$\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%$$
 
@@ -432,7 +433,6 @@ dt["log_a26"] = np.log10(dt["a26_1"].data)
 dt["log_a26"].unit = u.arcmin
 dt["log_R1"] = np.log10(dt["R1"].data)
 dt["log_R1"].unit = u.arcmin
-dt["log_R1"].info
 ```
 
 ```{python}
@@ -467,7 +467,7 @@ temp.rename(columns = {"logKLum":"log(L_K)_{LCV}$", "logL_K":"log(L_K)_{HEC}", "
 ```
 
 ```{python}
-temp.describe()
+temp.describe(percentiles=[])
 ```
 
 ## Magnitudes
@@ -506,7 +506,7 @@ up_clip = c.mean() + 3*c.std()
 low_clip = c.mean() - 3*c.std()
 temp["Percentage Change, after 3 sigma clip [%]"] = temp["diff_K_mag"].clip(low_clip, up_clip)
 temp.rename(columns={"diff_K_mag":"Percentage Change [%]"}, inplace=True)
-temp.describe()
+temp.describe(percentiles=[])
 ```
 
 ```{python}
@@ -517,7 +517,7 @@ plt.show()
 ```
 :::
 
-## Absorpsion
+## Absorption
 
 ```{python}
 #| echo: false
@@ -538,18 +538,13 @@ scatter_plot(dt["AB"], dt["AG"], logscale = True)#, scatter_plot(dt["AB_int"], d
 ```
 
 ## Internal
-
-```{python}
-plt.scatter(dt["AB_int"],dt["AI"],)
-plt.xlabel(f"LCV, AB_int [{dt['AB_int'].unit}]")
-plt.ylabel(f"HECATE, AI [{dt['AI'].unit}]")
-plt.yscale("log")
-plt.show()
-```
-
 ```{python}
 sns.jointplot(x=dt["AB_int"], y=dt["AI"], kind="reg",)
+plt.xlabel(f"LCV, AB_int [{dt['AB_int'].unit}]")
+plt.ylabel(f"HECATE, AI [{dt['AI'].unit}]")
+plt.show()
 ```
+Here we can see an attempt to correlate the internal absorption of the two catalogs, however as it is very clear, there is no correlation, since even their distributions are not similar.
 :::
 
 ## SFR
@@ -596,6 +591,7 @@ plt.show()
 
 ```{python}
 # Create a pair grid 
+plt.figure(figsize=(10, 8))
 sns.pairplot(sfr_data, corner=True)
 plt.show()
 ```
@@ -650,7 +646,7 @@ plt.show()
 temp.rename(columns={"diff_M":"Percantage Change [%]"}, inplace = True)
 ```
 ```{python}
-temp.describe()
+temp.describe(percentiles=[])
 ```
 ## Heatmap
 

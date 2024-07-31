@@ -109,7 +109,7 @@ window.Quarto = {
   <li><a href="#morphology-and-geometry" id="toc-morphology-and-geometry" class="nav-link" data-scroll-target="#morphology-and-geometry">Morphology and Geometry</a></li>
   <li><a href="#luminosities" id="toc-luminosities" class="nav-link" data-scroll-target="#luminosities">Luminosities</a></li>
   <li><a href="#magnitudes" id="toc-magnitudes" class="nav-link" data-scroll-target="#magnitudes">Magnitudes</a></li>
-  <li><a href="#absorpsion" id="toc-absorpsion" class="nav-link" data-scroll-target="#absorpsion">Absorpsion</a></li>
+  <li><a href="#absorption" id="toc-absorption" class="nav-link" data-scroll-target="#absorption">Absorption</a></li>
   <li><a href="#sfr" id="toc-sfr" class="nav-link" data-scroll-target="#sfr">SFR</a></li>
   <li><a href="#masses" id="toc-masses" class="nav-link" data-scroll-target="#masses">Masses</a></li>
   </ul></li>
@@ -155,23 +155,24 @@ window.Quarto = {
 <ol type="1">
 <li><span class="math inline">\(R^2\)</span>: Measures the proportion of variance explained by the linear model.</li>
 <li>Slope of the Fitted Line: Should be close to 1 for a 1-1 correlation.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ol>
+<ol start="3" type="1">
 <li>Pearson Correlation <span class="math inline">\(\rho\)</span>: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ol>
 <ol start="4" type="1">
 <li><u>Plots</u>: Plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.</li>
 </ol>
-<p>Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with <span class="math inline">\(sigma &gt; 3\)</span></p>
-<ul>
-<li>Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.</li>
-</ul>
-<p>In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.</p>
 <ul>
 <li>Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn’t help us right now.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value</li>
 </ul>
-<!-- -->
 <ul>
-<li>Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.</li>
+<li><p>Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are.</p>
+<p>In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.</p></li>
+<li><p>Kernel Density Estimate (KDE) plot: The KDE plot visually represents the distribution of data, providing insights into its shape, central tendency, and spread.</p></li>
 </ul>
+<ol start="5" type="1">
+<li>Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.</li>
+</ol>
 <p><span class="math display">\[\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%\]</span></p>
 </section>
 </section>
@@ -213,7 +214,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Right Ascension</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Declination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Distance</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="35558aa7" class="cell" data-execution_count="6">
+<div id="4560cf1d" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -224,7 +225,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="84e1b4e0" class="cell" data-execution_count="7">
+<div id="5cd9b61d" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -235,7 +236,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="1caabe2a" class="cell" data-execution_count="8">
+<div id="1edb761f" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -296,7 +297,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Heliocentric radial Velocity</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Scatter Grid</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Heatmap</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="dbdb8604" class="cell" data-execution_count="10">
+<div id="fa0a7a13" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -307,7 +308,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div id="b500a985" class="cell" data-execution_count="11">
+<div id="eb01eb2c" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -319,7 +320,7 @@ window.Quarto = {
 <p>[?] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference.</p>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div id="e6756787" class="cell" data-execution_count="12">
+<div id="1175a2bc" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -439,7 +440,7 @@ window.Quarto = {
 </tbody>
 </table>
 </div>
-<div id="b3614555" class="cell" data-execution_count="15">
+<div id="e412550c" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -449,7 +450,7 @@ window.Quarto = {
 </div>
 </div>
 <p><strong>Percentage change:</strong></p>
-<div id="8823c625" class="cell" data-execution_count="16">
+<div id="9e0b1050" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -460,49 +461,49 @@ window.Quarto = {
 <div class="cell-output cell-output-display" data-execution_count="16">
 <div>
 <style type="text/css">
-#T_61e1b_row0_col0, #T_61e1b_row0_col1, #T_61e1b_row1_col0, #T_61e1b_row1_col1, #T_61e1b_row2_col0, #T_61e1b_row2_col1, #T_61e1b_row3_col0, #T_61e1b_row3_col1, #T_61e1b_row4_col0, #T_61e1b_row4_col1, #T_61e1b_row5_col0, #T_61e1b_row5_col1 {
+#T_cf821_row0_col0, #T_cf821_row0_col1, #T_cf821_row1_col0, #T_cf821_row1_col1, #T_cf821_row2_col0, #T_cf821_row2_col1, #T_cf821_row3_col0, #T_cf821_row3_col1, #T_cf821_row4_col0, #T_cf821_row4_col1, #T_cf821_row5_col0, #T_cf821_row5_col1 {
   text-align: center;
 }
 </style>
 
-<table id="T_61e1b" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table id="T_cf821" data-quarto-postprocess="true" class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_61e1b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Percentage change</th>
-<th id="T_61e1b_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Percentage change, after 3 sigma clip</th>
+<th id="T_cf821_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Percentage change</th>
+<th id="T_cf821_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Percentage change, after 3 sigma clip</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_61e1b_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">count</td>
-<td id="T_61e1b_row0_col0" class="data row0 col0">267</td>
-<td id="T_61e1b_row0_col1" class="data row0 col1">228</td>
+<td id="T_cf821_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">count</td>
+<td id="T_cf821_row0_col0" class="data row0 col0">267</td>
+<td id="T_cf821_row0_col1" class="data row0 col1">228</td>
 </tr>
 <tr class="even">
-<td id="T_61e1b_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">mean</td>
-<td id="T_61e1b_row1_col0" class="data row1 col0">-21</td>
-<td id="T_61e1b_row1_col1" class="data row1 col1">-3</td>
+<td id="T_cf821_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">mean</td>
+<td id="T_cf821_row1_col0" class="data row1 col0">-21</td>
+<td id="T_cf821_row1_col1" class="data row1 col1">-3</td>
 </tr>
 <tr class="odd">
-<td id="T_61e1b_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">std</td>
-<td id="T_61e1b_row2_col0" class="data row2 col0">191</td>
-<td id="T_61e1b_row2_col1" class="data row2 col1">17</td>
+<td id="T_cf821_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">std</td>
+<td id="T_cf821_row2_col0" class="data row2 col0">191</td>
+<td id="T_cf821_row2_col1" class="data row2 col1">17</td>
 </tr>
 <tr class="even">
-<td id="T_61e1b_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">min</td>
-<td id="T_61e1b_row3_col0" class="data row3 col0">-2,400</td>
-<td id="T_61e1b_row3_col1" class="data row3 col1">-67</td>
+<td id="T_cf821_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">min</td>
+<td id="T_cf821_row3_col0" class="data row3 col0">-2,400</td>
+<td id="T_cf821_row3_col1" class="data row3 col1">-67</td>
 </tr>
 <tr class="odd">
-<td id="T_61e1b_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">50%</td>
-<td id="T_61e1b_row4_col0" class="data row4 col0">0</td>
-<td id="T_61e1b_row4_col1" class="data row4 col1">0</td>
+<td id="T_cf821_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">50%</td>
+<td id="T_cf821_row4_col0" class="data row4 col0">0</td>
+<td id="T_cf821_row4_col1" class="data row4 col1">0</td>
 </tr>
 <tr class="even">
-<td id="T_61e1b_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">max</td>
-<td id="T_61e1b_row5_col0" class="data row5 col0">1,100</td>
-<td id="T_61e1b_row5_col1" class="data row5 col1">70</td>
+<td id="T_cf821_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">max</td>
+<td id="T_cf821_row5_col0" class="data row5 col0">1,100</td>
+<td id="T_cf821_row5_col1" class="data row5 col1">70</td>
 </tr>
 </tbody>
 </table>
@@ -511,7 +512,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div id="d1bdc2a6" class="cell" data-execution_count="17">
+<div id="67005fb1" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -599,7 +600,7 @@ window.Quarto = {
 <p>We can see that for values in the range <span class="math inline">\([\sim 30^\circ,\sim 80^\circ]\)</span>, the values of the LCV inclination are higher. However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, <span class="math inline">\(\sigma\)</span> = 0 with a range <span class="math inline">\([-3\%,1\%]\)</span>), we can ignore the differences and assume they are the same values.</p>
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<div id="9c369063" class="cell" data-execution_count="18">
+<div id="8e301178" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -609,17 +610,7 @@ window.Quarto = {
 </div>
 </div>
 <p>it is not very clear if we truly have a correlation or not. We need to see the linear correlation of the decimal logarithms.</p>
-<div id="1973abb5" class="cell" data-execution_count="19">
-<div class="cell-output cell-output-display" data-execution_count="19">
-<pre><code>name = log_R1
-dtype = float32
-unit = arcmin
-class = MaskedQuantity
-n_bad = 0
-length = 296</code></pre>
-</div>
-</div>
-<div id="2af679f7" class="cell" data-execution_count="20">
+<div id="e3c48507" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -652,7 +643,7 @@ length = 296</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="f892e054" class="cell" data-execution_count="22">
+<div id="319d196f" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -661,7 +652,7 @@ length = 296</code></pre>
 </div>
 </div>
 </div>
-<div id="a78a371b" class="cell" data-execution_count="24">
+<div id="55f49410" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display" data-execution_count="24">
 <div>
 <div>
@@ -702,22 +693,10 @@ length = 296</code></pre>
 <td>-48</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">25%</td>
-<td>7</td>
-<td>8</td>
-<td>-6</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">50%</td>
 <td>8</td>
 <td>9</td>
 <td>-0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">75%</td>
-<td>8</td>
-<td>10</td>
-<td>0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">max</td>
@@ -769,7 +748,7 @@ length = 296</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">B mag</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">K mag</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div id="d2102cac" class="cell" data-execution_count="26">
+<div id="93454f90" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -780,7 +759,7 @@ length = 296</code></pre>
 </div>
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div id="4cd8735e" class="cell" data-execution_count="27">
+<div id="b98c40b3" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -789,7 +768,7 @@ length = 296</code></pre>
 </div>
 </div>
 </div>
-<div id="db3610ec" class="cell" data-execution_count="28">
+<div id="1fd93b09" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display" data-execution_count="28">
 <div>
 <div>
@@ -825,19 +804,9 @@ length = 296</code></pre>
 <td>-84</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">25%</td>
-<td>-11</td>
-<td>-11</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">50%</td>
 <td>-0</td>
 <td>-0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">75%</td>
-<td>1</td>
-<td>1</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">max</td>
@@ -851,7 +820,7 @@ length = 296</code></pre>
 </div>
 </div>
 </div>
-<div id="ce5041b6" class="cell" data-execution_count="29">
+<div id="d6ee720e" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -864,8 +833,8 @@ length = 296</code></pre>
 </div>
 </div>
 </section>
-<section id="absorpsion" class="level2">
-<h2 class="anchored" data-anchor-id="absorpsion">Absorpsion</h2>
+<section id="absorption" class="level2">
+<h2 class="anchored" data-anchor-id="absorption">Absorption</h2>
 <table class="table">
 <colgroup>
 <col style="width: 24%">
@@ -900,7 +869,7 @@ length = 296</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Galactic</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">Internal</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div id="3fa352fe" class="cell" data-execution_count="31">
+<div id="ad55fefa" class="cell" data-execution_count="31">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -911,24 +880,16 @@ length = 296</code></pre>
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div id="17988539" class="cell" data-execution_count="32">
+<div id="3aa13788" class="cell" data-execution_count="32">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-33-output-1.png" width="601" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-33-output-1.png" width="596" height="588" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="21d90ff0" class="cell" data-execution_count="33">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-34-output-1.png" width="575" height="566" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
+<p>Here we can see an attempt to correlate the internal absorption of the two catalogs, however as it is very clear, there is no correlation, since even their distributions are not similar.</p>
 </div>
 </div>
 </div>
@@ -1011,33 +972,36 @@ length = 296</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Heatmap</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">Scatter Grid</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false" href="">Density Grids</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<div id="9b54eb2b" class="cell" data-execution_count="35">
+<div id="b4d0fce6" class="cell" data-execution_count="34">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-36-output-1.png" width="821" height="722" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-35-output-1.png" width="821" height="722" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-<div id="e84b33b0" class="cell" data-execution_count="36">
+<div id="2f7962fd" class="cell" data-execution_count="35">
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 960x768 with 0 Axes&gt;</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-37-output-1.png" width="1896" height="1887" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-36-output-2.png" width="1896" height="1887" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
-<div id="25437b0a" class="cell" data-execution_count="37">
+<div id="70c49928" class="cell" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-38-output-1.png" width="1875" height="1887" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-37-output-1.png" width="1875" height="1887" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1101,17 +1065,17 @@ length = 296</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Stellar Masses Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">Heatmap</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-3" role="tab" aria-controls="tabset-7-3" aria-selected="false" href="">Plot Grid</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-4" role="tab" aria-controls="tabset-7-4" aria-selected="false" href="">Density Grid</a></li></ul>
 <div class="tab-content">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
-<div id="57b62cc3" class="cell" data-execution_count="39">
+<div id="dd6caf87" class="cell" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-40-output-1.png" width="587" height="456" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-39-output-1.png" width="587" height="456" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="509c7c34" class="cell" data-execution_count="41">
-<div class="cell-output cell-output-display" data-execution_count="41">
+<div id="dceafc64" class="cell" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="40">
 <div>
 <div>
 
@@ -1141,16 +1105,8 @@ length = 296</code></pre>
 <td>-43</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">25%</td>
-<td>-1</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">50%</td>
 <td>1</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">75%</td>
-<td>2</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">max</td>
@@ -1165,33 +1121,33 @@ length = 296</code></pre>
 </div>
 </div>
 <div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
-<div id="009fa449" class="cell" data-execution_count="42">
+<div id="ab04146b" class="cell" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-43-output-1.png" width="553" height="433" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-42-output-1.png" width="553" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-7-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-3-tab">
-<div id="92236ebd" class="cell" data-execution_count="43">
+<div id="72c99a23" class="cell" data-execution_count="42">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-44-output-1.png" width="946" height="946" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-43-output-1.png" width="946" height="946" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-7-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-4-tab">
-<div id="97aff527" class="cell" data-execution_count="44">
+<div id="fcdbe067" class="cell" data-execution_count="43">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-45-output-1.png" width="946" height="946" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-44-output-1.png" width="946" height="946" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1217,7 +1173,7 @@ Kovlakas, K., A. Zezas, J. J. Andrews, A. Basu-Zych, T. Fragos, A. Hornschemeier
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>Fitting can be done using the uncertainties as weights. To get the standard weighting of 1/unc^2, assuming Gaussian errors, the weights to pass to the fitting are 1/unc.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with <span class="math inline">\(\sigma &gt; 3\)</span><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>In simple linear regression, <span class="math inline">\(R^2\)</span> is the square of the Pearson correlation coefficient <span class="math inline">\(\rho\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>When we will use the outer join table we could use histograms due to the large number of counts.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
