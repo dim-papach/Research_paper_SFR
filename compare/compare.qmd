@@ -633,6 +633,25 @@ non_nan_counts = mass_data.notna().sum()
 | logStellarMass |          |               Stellar Mass from M\_\*/L=0.6               | `{python} non_nan_counts["logStellarMass"]` |
 
 ::: panel-tabset
+## Stellar Masses Comparison
+
+```{python}
+
+dt["diff_M"] =  relative_diff(hec = dt["logM_HEC"].data, lcv = dt["logStellarMass"])
+temp = dt[["diff_M"]].to_pandas()
+sns.histplot(temp, kde = True)
+plt.title("Percentage change Distribution [%]")
+plt.xlabel(r"$\log_{10}M_*$ "+f"[{dt['logM_HEC'].unit}]")
+plt.show()
+
+```
+
+```{python}
+temp.rename(columns={"diff_M":"Percantage Change [%]"}, inplace = True)
+```
+```{python}
+temp.describe()
+```
 ## Heatmap
 
 ```{python}
@@ -651,6 +670,14 @@ plt.show()
 ```{python}
 # Create a pair grid
 sns.pairplot(mass_data, corner=True)
+plt.show()
+```
+
+## Density Grid
+
+```{python}
+# Create a pair grid
+sns.pairplot(mass_data, corner=True, kind="kde", diag_kind="hist")
 plt.show()
 ```
 :::
