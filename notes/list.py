@@ -283,7 +283,7 @@ dt["Thetaj"].unit = ""
 fixed_units = ["logKLum", "logM26", "logMHI", "Thetaj", "SFRFUV", "SFRHa"]
 
 # Function to check flag consistency
-def check_flags(table):
+def check_flags(table, log_file="flag_errors_table.txt"):
     """
     Check for consistency between masked values and flag columns in an Astropy Table.
 
@@ -306,32 +306,54 @@ def check_flags(table):
         and the values are arrays of positions (indices) where the inconsistencies occur.
         If no inconsistencies are found, the dictionary will be empty.
     """
-    flag_errors = {}
+    flag_errors = []
+
+    # Iterate over columns with 'l_' or 'f_' prefix to identify limit flags or other flag indicators
     for colname in table.colnames:
         if colname.startswith('l_') or colname.startswith('f_'):
             main_col = colname[2:]  # Remove 'l_' or 'f_' prefix to get the main column name
             if main_col in table.colnames:
                 mask = table[main_col].mask
                 flags = table[colname]
-                
-                # Check if the flag column has non-empty entries
-                flag_positions = flags != ''  # or you can check for np.nan, or other specific flag indicators
 
-                if not np.all(mask == flag_positions):
-                    flag_errors[colname] = np.where(mask != flag_positions)[0]
+                # Check where the flag indicates a limit but the main column isn't masked
+                flag_positions = flags != ''  # Adjust for specific flag indicators if needed
+                inconsistent_mask = (~mask) & flag_positions  # Only add masks, don't remove existing ones
+
+                # If inconsistencies exist, log them by adding masks
+                if np.any(inconsistent_mask):
+                    # Apply mask where the flag indicates a limit but the column is not masked
+                    for i in np.where(inconsistent_mask)[0]:
+                        if flags[i] != '' and not mask[i]:  # Flag indicates a limit, but the main column is not masked
+                            table[main_col].mask[i] = True  # Apply mask
+                            # Log the error
+                            flag_errors.append([colname, i, f"Mask applied to {main_col} at index {i}"])
+
+    # Print names of affected columns
+    affected_columns = set([error[0] for error in flag_errors])
+    if affected_columns:
+        print("Inconsistencies found in the following columns:")
+        for col in affected_columns:
+            print(col)
+    else:
+        print("All flags are consistent with masked values.")
+
+    # Log inconsistencies in a table format
+    if flag_errors:
+        error_table = Table(rows=flag_errors, names=("Column", "Position", "Action"))
+        error_table.write(log_file, format='ascii', overwrite=True)
+        print(f"Flag inconsistencies logged as a table to {log_file}.")
 
     return flag_errors
+
+
 # Check the flags
 flag_errors = check_flags(table)
 
-# Report the results
-if flag_errors:
-    for col, error_positions in flag_errors.items():
-        print(f"Inconsistent flags found in column {col} at positions: {error_positions}")
-else:
-    print("All flags are consistent with masked values.")
-    
-print("\nThe masks are not the same as the flag columns in the input data.")
+# Make sure that all distances are less or equal to 11 Mpc, remove the galaxy otherwise
+dt = dt[dt["Dis"] <= 11]
+
+# Save the final table to an ECSV file
 
 file_path = "../tables/final_table.ecsv"
 print(dt.info())
