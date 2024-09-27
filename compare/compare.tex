@@ -334,10 +334,91 @@ Type}\label{completeness-of-the-catalogs-based-on-the-distance-and-the-morpholog
 
 \end{minipage}%
 
-\caption{\label{fig-dis-comp}Histograms showing the Completeness of the
-Catalogs}
+\caption{\label{fig-dis-comp}Histograms showing the Distance
+Completeness of the Catalogs}
 
 \end{figure}%
+
+\begin{table}
+
+\caption{\label{tbl-dis-comp}Table showing the Completeness of the
+Catalogs, per bin}
+
+\begin{minipage}{0.50\linewidth}
+
+\subcaption{\label{tbl-dis-comp-1}HECATE}
+
+\centering{
+
+\begin{tabular}{rrll}
+\toprule
+Bin Start & Bin End & Unique \% & Inner \%\\
+\midrule
+0 & 0 & 43\% & 57\%\\
+0 & 1 & 93\% & 7\%\\
+1 & 1 & 95\% & 5\%\\
+1 & 2 & 98\% & 2\%\\
+2 & 2 & 98\% & 2\%\\
+2 & 2 & 95\% & 5\%\\
+2 & 3 & 98\% & 2\%\\
+3 & 3 & 96\% & 4\%\\
+3 & 4 & 96\% & 4\%\\
+4 & 4 & 95\% & 5\%\\
+4 & 4 & 96\% & 4\%\\
+4 & 5 & 90\% & 10\%\\
+5 & 5 & 81\% & 19\%\\
+5 & 6 & 86\% & 14\%\\
+6 & 6 & 62\% & 38\%\\
+6 & 6 & 58\% & 42\%\\
+6 & 7 & 74\% & 26\%\\
+7 & 7 & 71\% & 29\%\\
+7 & 7 & 62\% & 38\%\\
+7 & 8 & 64\% & 36\%\\
+8 & 8 & 52\% & 48\%\\
+8 & 9 & 71\% & 29\%\\
+9 & 9 & 69\% & 31\%\\
+9 & 9 & 77\% & 23\%\\
+9 & 10 & 75\% & 25\%\\
+10 & 10 & 73\% & 27\%\\
+10 & 11 & 73\% & 27\%\\
+11 & 11 & 83\% & 17\%\\
+\bottomrule
+\end{tabular}
+
+}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\subcaption{\label{tbl-dis-comp-2}LCV}
+
+\centering{
+
+\begin{tabular}{rrll}
+\toprule
+Bin Start & Bin End & Unique \% & Inner \%\\
+\midrule
+0 & 1 & 68\% & 32\%\\
+1 & 2 & 50\% & 50\%\\
+2 & 3 & 67\% & 33\%\\
+3 & 4 & 80\% & 20\%\\
+4 & 5 & 85\% & 15\%\\
+5 & 6 & 79\% & 21\%\\
+6 & 6 & 73\% & 27\%\\
+6 & 7 & 83\% & 17\%\\
+7 & 8 & 74\% & 26\%\\
+8 & 9 & 72\% & 28\%\\
+9 & 10 & 85\% & 15\%\\
+10 & 11 & 78\% & 22\%\\
+\bottomrule
+\end{tabular}
+
+}
+
+\end{minipage}%
+
+\end{table}%
 
 \begin{figure}
 
@@ -365,165 +446,8 @@ Catalogs}
 
 \end{minipage}%
 
-\caption{\label{fig-type-comp}Histograms showing the Completeness of the
-Catalogs}
-
-\end{figure}%
-
-\begin{figure}
-
-\begin{minipage}{0.50\linewidth}
-
-\begin{longtable}[]{@{}rr@{}}
-\toprule\noalign{}
-Value & Count \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
--3 & 138 \\
--2 & 224 \\
--1 & 119 \\
-0 & 4 \\
-1 & 7 \\
-2 & 2 \\
-3 & 8 \\
-4 & 9 \\
-5 & 7 \\
-6 & 24 \\
-7 & 31 \\
-8 & 86 \\
-9 & 166 \\
-10 & 484 \\
-11 & 4 \\
-\end{longtable}
-
-\end{minipage}%
-%
-\begin{minipage}{0.50\linewidth}
-
-\begin{longtable}[]{@{}rr@{}}
-\toprule\noalign{}
-Value & Count \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
--5 & 52 \\
--4.9 & 7 \\
--4.8 & 13 \\
--4.7 & 2 \\
--4.3 & 2 \\
--4 & 3 \\
--3.9 & 1 \\
--3.7 & 1 \\
--3.5 & 3 \\
--3.3 & 1 \\
--3.1 & 1 \\
--3 & 11 \\
--2.9 & 3 \\
--2.8 & 3 \\
--2.7 & 3 \\
--2.6 & 5 \\
--2.5 & 1 \\
--2.1 & 2 \\
--2 & 3 \\
--1.9 & 1 \\
--1.8 & 3 \\
--1.7 & 1 \\
--1.6 & 1 \\
--1.3 & 2 \\
--1 & 8 \\
--0.8 & 1 \\
--0.4 & 2 \\
--0.1 & 1 \\
-0 & 3 \\
-0.1 & 1 \\
-0.4 & 1 \\
-0.5 & 1 \\
-0.6 & 1 \\
-1 & 5 \\
-1.1 & 2 \\
-1.2 & 1 \\
-1.3 & 1 \\
-1.5 & 2 \\
-1.6 & 2 \\
-1.8 & 1 \\
-1.9 & 2 \\
-2.1 & 1 \\
-2.2 & 2 \\
-2.3 & 1 \\
-2.4 & 3 \\
-2.5 & 1 \\
-2.6 & 1 \\
-2.7 & 1 \\
-2.9 & 1 \\
-3 & 3 \\
-3.1 & 4 \\
-3.2 & 1 \\
-3.3 & 6 \\
-3.4 & 3 \\
-3.5 & 2 \\
-3.6 & 2 \\
-3.8 & 2 \\
-3.9 & 2 \\
-4 & 13 \\
-4.1 & 1 \\
-4.2 & 2 \\
-4.4 & 2 \\
-4.5 & 1 \\
-4.7 & 1 \\
-4.8 & 1 \\
-5 & 21 \\
-5.1 & 5 \\
-5.2 & 5 \\
-5.3 & 1 \\
-5.4 & 3 \\
-5.5 & 1 \\
-5.7 & 1 \\
-5.8 & 2 \\
-5.9 & 9 \\
-6 & 13 \\
-6.1 & 7 \\
-6.4 & 1 \\
-6.5 & 2 \\
-6.7 & 3 \\
-6.8 & 2 \\
-6.9 & 5 \\
-7 & 11 \\
-7.1 & 1 \\
-7.2 & 2 \\
-7.3 & 1 \\
-7.4 & 2 \\
-7.5 & 4 \\
-7.6 & 1 \\
-7.7 & 3 \\
-7.8 & 6 \\
-7.9 & 9 \\
-8 & 19 \\
-8.1 & 4 \\
-8.2 & 3 \\
-8.3 & 5 \\
-8.4 & 2 \\
-8.5 & 4 \\
-8.6 & 5 \\
-8.7 & 6 \\
-8.8 & 9 \\
-8.9 & 15 \\
-9 & 29 \\
-9.1 & 4 \\
-9.2 & 4 \\
-9.3 & 2 \\
-9.4 & 4 \\
-9.5 & 13 \\
-9.6 & 4 \\
-9.7 & 17 \\
-9.8 & 48 \\
-9.9 & 90 \\
-10 & 203 \\
-\end{longtable}
-
-\end{minipage}%
+\caption{\label{fig-type-comp}Histograms showing the Type Completeness
+of the Catalogs}
 
 \end{figure}%
 
@@ -630,15 +554,15 @@ Dis & D & Distance & 0.881 \\
 
 \subsubsection{Right Ascension}
 
-\includegraphics{compare_files/figure-pdf/cell-12-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-14-output-1.pdf}
 
 \subsubsection{Declination}
 
-\includegraphics{compare_files/figure-pdf/cell-13-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-15-output-1.pdf}
 
 \subsubsection{Distance}
 
-\includegraphics{compare_files/figure-pdf/cell-14-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-16-output-1.pdf}
 
 \subsection{Velocities}\label{velocities}
 
@@ -667,9 +591,9 @@ cz (km/s) & & Heliocentric velocity & \\
 & V\_VIR (km/s) & Virgo-infall corrected radial velocity & \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-16-output-1.pdf}
-
 \includegraphics{compare_files/figure-pdf/cell-18-output-1.pdf}
+
+\includegraphics{compare_files/figure-pdf/cell-20-output-1.pdf}
 
 {[}?{]} The close correlation between all of the velocities, could be
 due to the fact that all of them measure the velocity of each galaxy,
@@ -704,11 +628,11 @@ a26\_1 (Major) & R1 (Semi-major axis) & angular diameter (arcmin) & 0 \\
 
 \subsubsection{Galaxy Types}
 
-\includegraphics{compare_files/figure-pdf/cell-21-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-23-output-1.pdf}
 
 \textbf{Percentage change:}
 
-\includegraphics{compare_files/figure-pdf/cell-22-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-24-output-1.pdf}
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -758,17 +682,17 @@ max & 10 & 10 & 1 & 1 \\
 Also, as we can see the minimum values are lower by 2 in HECATE, which
 complies with the linear fit.
 
-\includegraphics{compare_files/figure-pdf/cell-25-output-1.pdf}
-
-\includegraphics{compare_files/figure-pdf/cell-26-output-1.pdf}
-
 \includegraphics{compare_files/figure-pdf/cell-27-output-1.pdf}
-
-\subsubsection{Inclination}
 
 \includegraphics{compare_files/figure-pdf/cell-28-output-1.pdf}
 
-\includegraphics{compare_files/figure-pdf/cell-28-output-2.pdf}
+\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
+
+\subsubsection{Inclination}
+
+\includegraphics{compare_files/figure-pdf/cell-30-output-1.pdf}
+
+\includegraphics{compare_files/figure-pdf/cell-30-output-2.pdf}
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
@@ -796,79 +720,12 @@ they are the same values.
 
 \subsubsection{Major Axis}
 
-\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-31-output-1.pdf}
 
 it is not very clear if we truly have a correlation or not. We need to
 see the linear correlation of the decimal logarithms.
 
-\begin{verbatim}
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  5 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
- ** On entry to DLASCL parameter number  4 had an illegal value
-\end{verbatim}
-
-\includegraphics{compare_files/figure-pdf/cell-31-output-2.pdf}
+\includegraphics{compare_files/figure-pdf/cell-33-output-1.pdf}
 
 \subsection{Luminosities}\label{luminosities}
 
@@ -882,7 +739,7 @@ LCV & HECATE & Description & Pearson Correlation {[}-1,1{]} \\
 logKLum & logL\_K & & 0 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-33-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-35-output-1.pdf}
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
@@ -927,11 +784,11 @@ Kmag & K & 2MASS band magnitude (both) & 0 \\
 
 \subsubsection{B mag}
 
-\includegraphics{compare_files/figure-pdf/cell-37-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-39-output-1.pdf}
 
 \subsubsection{K mag}
 
-\includegraphics{compare_files/figure-pdf/cell-38-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-40-output-1.pdf}
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -949,7 +806,7 @@ min & -70 & -42 \\
 max & 16 & 16 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-40-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-42-output-1.pdf}
 
 {[}?{]}
 
@@ -992,7 +849,7 @@ SFRFUV & & FUV derived integral star formation rate & 220 \\
 SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-42-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-44-output-1.pdf}
 
 \subsection{Masses}\label{masses}
 
@@ -1025,7 +882,7 @@ logStellarMass & & Stellar Mass from \(M_*/L=0.6\) & 287 \\
 
 \subsubsection{Stellar Masses Comparison}
 
-\includegraphics{compare_files/figure-pdf/cell-44-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-46-output-1.pdf}
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
@@ -1044,7 +901,7 @@ max & 9 \\
 
 \subsubsection{Heatmap}
 
-\includegraphics{compare_files/figure-pdf/cell-47-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-49-output-1.pdf}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}

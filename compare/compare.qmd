@@ -48,6 +48,7 @@ import pandas as pd
 import glob
 import os
 from tabulate import tabulate
+from IPython.display import Markdown, display
 
 plt.style.use('ggplot')
 pd.set_option('display.float_format', lambda x: '%.f' % x)
@@ -116,84 +117,235 @@ Completeness (LCV)= `{python} round(len(lcv_not_hec)/len(lcv)*100)` %
 
 Combined Completeness =$\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LCV}}$= `{python} round(len(outer)/(len(lcv_not_hec)+(len(hec_not_lcv))) * 100)` %
 
-## Completeness of the Catalogs, based on the Distance and the Morphological Type
+## Completeness of the Data
 
 ```{python}
-#| fig-cap: "Histograms showing the Completeness of the Catalogs"
+def plot_completeness(dataset_choice="lcv", column_name="Dis", description="Distance", units=True, logx=False, logy=False, bins=0, keep_nan=False):
+    """
+    Plots histograms with KDE and displays a table of counts and percentages for each bin, 
+    based on the choice of dataset (LCV or HEC).
+    
+    Parameters:
+    - dataset_choice: A string indicating which dataset to use ("lcv" or "hec")
+    - column_name: The column name in the Qtable to plot and analyze (default is "Dis")
+    - description: What to show in the title and the axis (default "Distance")
+    - units: Show units or not (default is True)
+    - logx: logarithmic x-axis (default is False)
+    - logy: logarithmic y-axis (default is False)
+    - bins: Number of bins or custom bin edges (default is 'auto')
+    - keep_nan: keep (True) or remove NaN's (default is True)
+    """
+    
+    if dataset_choice == "lcv":
+        main_df, unique_df, label = lcv, lcv_not_hec, "LCV"
+    elif dataset_choice == "hec" and hec is not None and hec_not_lcv is not None:
+        main_df, unique_df, label = hec, hec_not_lcv, "HECATE"
+    else:
+        raise ValueError("Invalid dataset choice. Please choose 'lcv' or 'hec' with valid datasets.")
+    
+# Remove NaN values and strip units before plotting
+    if not keep_nan:
+        main_data_clean = main_df[column_name].value.filled(np.nan)
+        main_data_clean = main_data_clean[~np.isnan(main_data_clean)]
+        
+        unique_data_clean = unique_df[column_name].value.filled(np.nan)
+        unique_data_clean = unique_data_clean[~np.isnan(unique_data_clean)]
+    else:
+        main_data_clean = main_df[column_name].value.filled(np.nan)
+        unique_data_clean = unique_df[column_name].value.filled(np.nan)
+
+    # Check if bins is an integer or array of bin edges
+    if bins == 0:
+        counts, bin_edges = np.histogram(main_data_clean, bins='auto')
+    elif isinstance(bins, int):
+        counts, bin_edges = np.histogram(main_data_clean, bins=bins)
+    else:
+        bin_edges = bins  # If bins is an array of bin edges
+    
+    # Plot the histograms
+    sns.histplot(main_data_clean.data, bins=bin_edges, kde=True, label=label)
+    sns.histplot(unique_data_clean.data, bins=bin_edges, kde=True, label=f"Unique for {label}")
+    
+    # Set logarithmic axes if requested
+    if logx:
+        plt.xscale('log')
+    if logy:
+        plt.yscale('log')
+
+    # Set the title and labels
+    plt.title(f"Completeness of {description} for {label}")
+    if units and main_df[column_name].unit is not None:
+        plt.xlabel(f"{description} [{main_df[column_name].unit}]")
+    else:
+        plt.xlabel(f"{description}")
+    plt.ylabel("Number of galaxies")
+    plt.legend()
+
+    # Calculate histogram counts for each dataset
+    main_counts, _ = np.histogram(main_data_clean, bins=bin_edges)
+    unique_counts, _ = np.histogram(unique_data_clean, bins=bin_edges)
+
+    # Calculate bin centers for annotation
+    bin_centers = 0.5 * (bin_edges[1:] + bin_edges[:-1])
+
+    # Annotate percentages on the bars
+    for i, center in enumerate(bin_centers):
+        if main_counts[i] > 0:
+            unique_pct = (unique_counts[i] / main_counts[i]) * 100
+            plt.text(center, unique_counts[i], f'{unique_pct:.1f}%', color="green", ha='center', va='bottom')
+    
+    # Show the plot
+    plt.show()
+    plt.close()
+
+
+```
+
+```{python}
+def table_completeness(dataset_choice, column_name="Dis", description = "Distance", keep_nan = False):
+    """
+    Creates a table of counts and percentages for each bin based on the chosen dataset (LCV or HEC).
+    
+    Parameters:
+    - dataset_choice: A string indicating which dataset to use ("lcv" or "hec")
+    - column_name: The column name in the datasets to analyze (default is "Dis")
+    - description: what to show in the title and the axis (default "Distance")
+    """
+    
+    if dataset_choice == "lcv":
+        main_df, unique_df, label = lcv, lcv_not_hec, "LCV"
+    elif dataset_choice == "hec" and hec is not None and hec_not_lcv is not None:
+        main_df, unique_df, label = hec, hec_not_lcv, "HEC"
+    else:
+        raise ValueError("Invalid dataset choice. Please choose 'lcv' or 'hec' with valid datasets.")
+
+    # Remove NaN values before plotting
+    if keep_nan == False:
+        main_df = main_df[~np.isnan(main_df[column_name].data)]
+        unique_df = unique_df[~np.isnan(unique_df[column_name].data)]
+    else:
+        main_df = main_df[column_name].data
+        unique_dF = unique_df[column_name].data
+    counts, bin_edges = np.histogram(main_df[column_name].data, bins='auto')
+
+    main_counts, _ = np.histogram(main_df[column_name].data, bins=bin_edges)
+    unique_counts, _ = np.histogram(unique_df[column_name].data, bins=bin_edges)
+    inner_counts, _ = np.histogram(inner[column_name].data, bins=bin_edges)
+
+    bin_centers = 0.5 * (bin_edges[1:] + bin_edges[:-1])
+    table_data = []
+
+    for i in range(len(bin_centers)):
+        if main_counts[i] > 0:
+            unique_pct = (unique_counts[i] / main_counts[i]) * 100
+            inner_pct = (inner_counts[i] / main_counts[i]) * 100
+            table_data.append({
+                "Bin Start": round(bin_edges[i]),
+                "Bin End": round(bin_edges[i+1]),
+                f"Unique %": f'{unique_pct:.0f}%',
+                "Inner %": f'{inner_pct:.0f}%'
+            })
+    table_df = pd.DataFrame(table_data)
+    return table_df
+```
+
+### Distance
+
+```{python}
+#| fig-cap: "Histograms showing the Distance Completeness of the Catalogs"
 #| layout-ncol: 2
 #| fig-subcap: 
 #| - "HECATE"
 #| - "LCV"
 #| label: fig-dis-comp
 
-
-plt.close()
-# Using numpy's histogram function to get the bin edges automatically for the first dataset
-_, bin_edges = np.histogram(hec["D"].data, bins='auto')  # 'auto' decides the best number of bins for the data
-
-# Step 2: Use the same bin edges for all datasets
-sns.histplot(hec["D"].value, bins=bin_edges, kde=True, label="HECATE")
-sns.histplot(hec_not_lcv["D"].value, bins=bin_edges, kde=True, label="Unique for Hecate")
-sns.histplot(inner["D"].value, bins=bin_edges, kde=True, label="Inner join")
-
-plt.title("Completeness of Distance for HECATE")
-plt.xlabel("Distance [Mpc]")
-plt.ylabel("Number of galaxies")
-plt.legend()
-plt.show()
-plt.close()
-
-# Using numpy's histogram function to get the bin edges automatically for the first dataset
-_, bin_edges = np.histogram(lcv["Dis"].data, bins='auto')  # 'auto' decides the best number of bins for the data
-sns.histplot(lcv["Dis"].value, bins=bin_edges, kde = True, label = "LCV")
-sns.histplot(lcv_not_hec["Dis"].value, bins=bin_edges, kde = True, label = "Unique for LCV")
-sns.histplot(inner["Dis"].value, bins=bin_edges, kde = True, label = "Inner join")
-plt.title("Completeness of Distance for LCV")
-plt.xlabel("Distance [Mpc]")
-plt.ylabel("Number of galaxies")
-plt.legend()
-plt.show()
-plt.close()
-
+plot_completeness("hec", column_name = "D", description = "Distance", keep_nan = True)
+plot_completeness("lcv",keep_nan = True)
 ```
+```{python}
+#| label: tbl-dis-comp
+#| tbl-cap: "Table showing the Completeness of the Catalogs, per bin"
+#| layout-ncol: 2
+#| tbl-subcap: 
+#| - "HECATE"
+#| - "LCV"
+table_completeness("hec", column_name = "D", description = "Distance")
+
+table_completeness("lcv")
+```
+
+### Type
 
 ```{python}
 #| layout-ncol: 2
-#| fig-cap: "Histograms showing the Completeness of the Catalogs"
+#| fig-cap: "Histograms showing the Type Completeness of the Catalogs"
 #| fig-subcap: 
 #| - "HECATE"
 #| - "LCV"
 #| label: fig-type-comp
-# Using numpy's histogram function to get the bin edges automatically for the first dataset
-bin_edges = 16
-
-sns.histplot(hec["T"], bins=bin_edges, kde = True, label = "HECATE")
-sns.histplot(hec_not_lcv["T"], bins=bin_edges, kde = True, label = "Unique for Hecate")
-sns.histplot(inner["T"].value, bins=bin_edges, kde = True, label = "Inner join")
-plt.title("Completeness of Types of galaxies for HECATE")
-plt.xlabel("Type")
-plt.ylabel("Number of galaxies")
-plt.legend()
-plt.show()
 plt.close()
+plot_completeness("hec", column_name = "T", description = "Type", units = False)
+plot_completeness("lcv", column_name = "TType", description = "Type", units = False, bins = 12)
+```
 
-bin_edges = 14
+As we can see from the histograms @fig-dis-comp and @fig-type-comp the sample of unique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
 
-sns.histplot(lcv["TType"], bins=bin_edges, kde = True, label = "LCV")
-sns.histplot(lcv_not_hec["TType"], bins=bin_edges, kde = True, label = "Unique for LCV")
-sns.histplot(inner["TType"].value, bins=bin_edges, kde = True, label = "Inner join")
-plt.title("Completeness of Types of galaxies for LCV")
-plt.xlabel("Type")
-plt.ylabel("Number of galaxies")
-plt.legend()
-plt.show()
+This means there is no bias in the selection of the galaxies.
+
+### Helocentric Radial Velocities
+
+```{python}
+#| layout-ncol: 2
+#| fig-cap: "Histograms showing the Velocity Completeness of the Catalogs"
+#| fig-subcap: 
+#| - "HECATE"
+#| - "LCV"
+#| label: fig-type-comp
 plt.close()
+plot_completeness("hec", column_name = "V", description = "Velocities", keep_nan = True, logx = True)
+plot_completeness("lcv", column_name = "RVel", description = "Velocities",keep_nan = True)
+```
+
+```{python}
 
 ```
 
-As we can see from the histograms @fig-dis-comp and @fig-type-comp the sample of nique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
 
-This means there is no bias in the selection of the galaxies.
+### Luminosities
+
+```{python}
+#| layout-ncol: 2
+#| fig-cap: "Histograms showing the $L_K$ Completeness of the Catalogs"
+#| fig-subcap: 
+#| - "HECATE"
+#| - "LCV"
+#| label: fig-type-comp
+plt.close()
+plot_completeness("hec", column_name = "logL_K", description = "$log_{10}(L_K)$", units = False,keep_nan = False, bins = 0)
+plot_completeness("lcv", column_name = "logKLum", description = "$log_{10}(L_K)$",units=False,keep_nan = False)
+```
+
+```{python}
+# Plot the histograms
+plt.close()
+sns.histplot(hec_not_lcv["logL_K"], kde=True, label = "afd")
+sns.histplot(hec["logL_K"], kde=True, label=f"Unique for")
+plt.legend()
+plt.show()
+plt.close()
+```
+
+```{python}
+sns.scatterplot(table_completeness("hec", "logL_K"),x = "Bin End", y = "Unique %")
+plt.show()
+```
+
+
+### Magnitudes
+
+### SFR
+
+### Masses
 
 # How are we going to compare the data?
 
@@ -288,6 +440,7 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False, logscale = False
     Returns:
     None. The function displays a scatter plot with a fitted linear model.
     """
+    plt.close()
     # Convert data to masked arrays, masking NaN values
     x_data = np.ma.array(x.value, mask=np.isnan(x.value))
     y_data =  np.ma.array(y.value, mask=np.isnan(y.value))
@@ -331,6 +484,7 @@ def scatter_plot(x, y, xerr = None, yerr = None, sigma = False, logscale = False
     
     # Show the plot
     plt.show()
+    plt.close()
 ```
 
 -   Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn't help us right now.[^3] This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value

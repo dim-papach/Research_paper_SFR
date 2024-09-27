@@ -110,14 +110,13 @@ window.Quarto = {
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a></li>
   <li><a href="#catalog-completeness" id="toc-catalog-completeness" class="nav-link" data-scroll-target="#catalog-completeness">Catalog Completeness</a>
   <ul class="collapse">
   <li><a href="#completeness-of-the-inner-join" id="toc-completeness-of-the-inner-join" class="nav-link" data-scroll-target="#completeness-of-the-inner-join">Completeness of the Inner join</a></li>
   <li><a href="#completeness-in-outer-join" id="toc-completeness-in-outer-join" class="nav-link" data-scroll-target="#completeness-in-outer-join">Completeness in Outer join</a></li>
-  <li><a href="#distance-comp" id="toc-distance-comp" class="nav-link" data-scroll-target="#distance-comp">Distance Comp</a></li>
-  <li><a href="#type-comp" id="toc-type-comp" class="nav-link" data-scroll-target="#type-comp">Type Comp</a></li>
+  <li><a href="#completeness-of-the-catalogs-based-on-the-distance-and-the-morphological-type" id="toc-completeness-of-the-catalogs-based-on-the-distance-and-the-morphological-type" class="nav-link" data-scroll-target="#completeness-of-the-catalogs-based-on-the-distance-and-the-morphological-type">Completeness of the Catalogs, based on the Distance and the Morphological Type</a></li>
   </ul></li>
   <li><a href="#how-are-we-going-to-compare-the-data" id="toc-how-are-we-going-to-compare-the-data" class="nav-link" data-scroll-target="#how-are-we-going-to-compare-the-data">How are we going to compare the data?</a>
   <ul class="collapse">
@@ -230,47 +229,80 @@ window.Quarto = {
 <p>Completeness (LCV)= 78 %</p>
 <p>Combined Completeness =<span class="math inline">\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LCV}}</span>= 80 %</p>
 </section>
-<section id="distance-comp" class="level2">
-<h2 class="anchored" data-anchor-id="distance-comp">Distance Comp</h2>
-<div id="f713430d" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-4-output-1.png" width="596" height="454" class="figure-img"></p>
+<section id="completeness-of-the-catalogs-based-on-the-distance-and-the-morphological-type" class="level2">
+<h2 class="anchored" data-anchor-id="completeness-of-the-catalogs-based-on-the-distance-and-the-morphological-type">Completeness of the Catalogs, based on the Distance and the Morphological Type</h2>
+<div id="fig-dis-comp" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dis-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-dis-comp" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-dis-comp-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-dis-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-dis-comp-output-1.png" data-ref-parent="fig-dis-comp" width="596" height="454" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-dis-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) HECATE
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-dis-comp" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-dis-comp-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-dis-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-dis-comp-output-2.png" data-ref-parent="fig-dis-comp" width="596" height="454" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-dis-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) LCV
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="6469d5b5" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-5-output-1.png" width="596" height="454" class="figure-img"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dis-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Histograms showing the Completeness of the Catalogs
+</figcaption>
+</figure>
+</div>
+<div id="fig-type-comp" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-type-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-type-comp" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-type-comp-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-type-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-type-comp-output-1.png" data-ref-parent="fig-type-comp" width="596" height="454" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-type-comp-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) HECATE
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-type-comp" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-type-comp-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-type-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-type-comp-output-2.png" data-ref-parent="fig-type-comp" width="596" height="454" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-type-comp-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) LCV
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="type-comp" class="level2">
-<h2 class="anchored" data-anchor-id="type-comp">Type Comp</h2>
-<div id="604e8249" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-6-output-1.png" width="596" height="454" class="figure-img"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-type-comp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Histograms showing the Completeness of the Catalogs
+</figcaption>
 </figure>
 </div>
-</div>
-</div>
-<div id="9042bac2" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-7-output-1.png" width="596" height="454" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
+<p>As we can see from the histograms <a href="#fig-dis-comp" class="quarto-xref">Figure&nbsp;1</a> and <a href="#fig-type-comp" class="quarto-xref">Figure&nbsp;2</a> the sample of nique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).</p>
+<p>This means there is no bias in the selection of the galaxies.</p>
 </section>
 </section>
 <section id="how-are-we-going-to-compare-the-data" class="level1">
@@ -340,33 +372,33 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Right Ascension</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Declination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Distance</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="9e84352c" class="cell" data-execution_count="12">
+<div id="2cf9fa87" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-13-output-1.png" width="596" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-11-output-1.png" width="596" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="9f2e5249" class="cell" data-execution_count="13">
+<div id="4234e330" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-14-output-1.png" width="599" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-12-output-1.png" width="599" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="733a09b6" class="cell" data-execution_count="14">
+<div id="df01e50b" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-15-output-1.png" width="587" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-13-output-1.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -379,9 +411,9 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="velocities">Velocities</h2>
 <table class="table">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 15%">
-<col style="width: 44%">
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 24%">
 <col style="width: 24%">
 </colgroup>
 <thead>
@@ -419,28 +451,21 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Heliocentric radial Velocity</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="7c1ecc20" class="cell" data-execution_count="16">
+<div id="8cb85a33" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-17-output-1.png" width="607" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-15-output-1.png" width="607" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="dc4d06dc" class="cell" data-execution_count="18">
+<div id="86efa418" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-19-output-1.png" width="1181" height="1181" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-17-output-1.png" width="1181" height="1181" class="figure-img"></p>
 </figure>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -450,10 +475,10 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="morphology-and-geometry">Morphology and Geometry</h2>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 17%">
-<col style="width: 46%">
-<col style="width: 23%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -485,183 +510,28 @@ window.Quarto = {
 </tbody>
 </table>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Galaxy Types</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">Inclination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href="">Major Axis</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Galaxy Types</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Inclination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Major Axis</a></li></ul>
 <div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div>
-<table class="tg table" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Hubble stage T</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">−6</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">−5</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">−4</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">−3</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">−2</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">−1</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">0</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">1</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">2</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">3</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">4</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">5</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">6</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">7</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">8</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">9</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">10</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; font-weight: normal; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">11</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">de Vaucouleurs class</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">cE</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">E</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">E+</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">S0−</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">S00</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">S0+</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">S0/a</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sa</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sab</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sb</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sbc</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sc</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Scd</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sd</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sdm</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sm</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Im</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Approximate Hubble class</td>
-<td colspan="3" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">E</td>
-<td colspan="3" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">S0</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">S0/a</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sa</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sa-b</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sb</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sb-c</td>
-<td colspan="3" style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sc</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Sc-Irr</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;">Irr I</td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;"></td>
-<td style="text-align: center; border-color: inherit; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size: 14px; overflow: hidden; padding: 10px 5px; vertical-align: top; word-break: normal;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 6%">
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 4%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Hubble stage T</th>
-<th>−6</th>
-<th>−5</th>
-<th>−4</th>
-<th>−3</th>
-<th>−2</th>
-<th>−1</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-<th>10</th>
-<th>11</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>de Vaucouleurs class</td>
-<td>cE</td>
-<td>E</td>
-<td>E+</td>
-<td>S0−</td>
-<td>S00</td>
-<td>S0+</td>
-<td>S0/a</td>
-<td>Sa</td>
-<td>Sab</td>
-<td>Sb</td>
-<td>Sbc</td>
-<td>Sc</td>
-<td>Scd</td>
-<td>Sd</td>
-<td>Sdm</td>
-<td>Sm</td>
-<td>Im</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Approximate Hubble class</td>
-<td>E</td>
-<td></td>
-<td></td>
-<td>S0</td>
-<td></td>
-<td></td>
-<td>S0/a</td>
-<td>Sa</td>
-<td>Sa-b</td>
-<td>Sb</td>
-<td>Sb-c</td>
-<td>Sc</td>
-<td></td>
-<td></td>
-<td>Sc-Irr</td>
-<td>Irr I</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<div id="73983fd9" class="cell" data-execution_count="21">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="ea5c3bf9" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-22-output-1.png" width="598" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-20-output-1.png" width="598" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p><strong>Percentage change:</strong></p>
-<div id="1295bef4" class="cell" data-execution_count="22">
+<div id="e0d146ac" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-23-output-1.png" width="608" height="454" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-21-output-1.png" width="608" height="454" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <div>
 <div>
 
@@ -726,8 +596,8 @@ window.Quarto = {
 <section id="normalize-the-scale-of-galaxy-types" class="level4">
 <h4 class="anchored" data-anchor-id="normalize-the-scale-of-galaxy-types">Normalize the scale of galaxy types</h4>
 <p>It is very possible that the two catalogs use different scaling methods, as indicated by the use of decimal numbers in HECATE.</p>
-<div id="d0a50b03" class="cell" data-execution_count="24">
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div id="7aa9fcc2" class="cell" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <div>
 <div>
 
@@ -807,52 +677,52 @@ window.Quarto = {
 </div>
 </div>
 <p>Also, as we can see the minimum values are lower by 2 in HECATE, which complies with the linear fit.</p>
-<div id="392348b6" class="cell" data-execution_count="25">
+<div id="bd597551" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-26-output-1.png" width="596" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-24-output-1.png" width="596" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="7ea728da" class="cell" data-execution_count="26">
+<div id="8c1568a1" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-27-output-1.png" width="587" height="433" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-25-output-1.png" width="587" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="5880a07c" class="cell" data-execution_count="27">
+<div id="f6ce2a3e" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-28-output-1.png" width="602" height="433" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-26-output-1.png" width="602" height="433" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div id="661e1df4" class="cell" data-execution_count="28">
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="64900789" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-29-output-1.png" width="587" height="434" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-27-output-1.png" width="587" height="434" class="figure-img"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-29-output-2.png" width="587" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-27-output-2.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <div>
 <div>
 
@@ -924,22 +794,22 @@ window.Quarto = {
 </div>
 <p>We can see that for values in the range <span class="math inline">[\sim 30^\circ,\sim 80^\circ]</span>, the values of the LCV inclination are higher. However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, <span class="math inline">\sigma</span> = 0 with a range <span class="math inline">[-3\%,1\%]</span>), we can ignore the differences and assume they are the same values.</p>
 </div>
-<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<div id="4509e3a6" class="cell" data-execution_count="29">
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div id="124ee3a6" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-30-output-1.png" width="596" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-28-output-1.png" width="596" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>it is not very clear if we truly have a correlation or not. We need to see the linear correlation of the decimal logarithms.</p>
-<div id="f454dea0" class="cell" data-execution_count="31">
+<div id="2a3c05e8" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-32-output-1.png" width="601" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-30-output-1.png" width="601" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -968,17 +838,17 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="cb85a04a" class="cell" data-execution_count="33">
+<div id="73bc074a" class="cell" data-execution_count="31">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-34-output-1.png" width="596" height="454" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-32-output-1.png" width="596" height="454" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="94d1a27a" class="cell" data-execution_count="35">
-<div class="cell-output cell-output-display" data-execution_count="35">
+<div id="b00c5d97" class="cell" data-execution_count="33">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <div>
 <div>
 
@@ -1041,10 +911,10 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="magnitudes">Magnitudes</h2>
 <table class="table">
 <colgroup>
-<col style="width: 21%">
-<col style="width: 18%">
-<col style="width: 29%">
-<col style="width: 30%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1070,31 +940,31 @@ window.Quarto = {
 </tbody>
 </table>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">B mag</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">K mag</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">B mag</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">K mag</a></li></ul>
 <div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div id="7ef84bd1" class="cell" data-execution_count="37">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div id="f589b4ce" class="cell" data-execution_count="35">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-38-output-1.png" width="587" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-36-output-1.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div id="6d343afc" class="cell" data-execution_count="38">
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div id="8dea15eb" class="cell" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-39-output-1.png" width="587" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-37-output-1.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="43b81f52" class="cell" data-execution_count="39">
-<div class="cell-output cell-output-display" data-execution_count="39">
+<div id="e59cbcd3" class="cell" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="37">
 <div>
 <div>
 
@@ -1145,11 +1015,11 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="5e35e30b" class="cell" data-execution_count="40">
+<div id="4fc03d68" class="cell" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-41-output-1.png" width="591" height="454" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-39-output-1.png" width="591" height="454" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1163,10 +1033,10 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="sfr">SFR</h2>
 <table class="table">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 9%">
-<col style="width: 51%">
-<col style="width: 32%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1233,11 +1103,11 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<div id="28248ddf" class="cell" data-execution_count="42">
+<div id="48967013" class="cell" data-execution_count="40">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-43-output-1.png" width="1887" height="1887" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-41-output-1.png" width="1887" height="1887" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1247,10 +1117,10 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="masses">Masses</h2>
 <table class="table">
 <colgroup>
-<col style="width: 12%">
-<col style="width: 7%">
-<col style="width: 45%">
-<col style="width: 34%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1294,20 +1164,20 @@ window.Quarto = {
 </tbody>
 </table>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Stellar Masses Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">Heatmap</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Stellar Masses Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">Heatmap</a></li></ul>
 <div class="tab-content">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div id="5ed867f2" class="cell" data-execution_count="44">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div id="c82ce3b1" class="cell" data-execution_count="42">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-45-output-1.png" width="589" height="456" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-43-output-1.png" width="589" height="456" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="9dbd88db" class="cell" data-execution_count="46">
-<div class="cell-output cell-output-display" data-execution_count="46">
+<div id="b5373143" class="cell" data-execution_count="44">
+<div class="cell-output cell-output-display" data-execution_count="44">
 <div>
 <div>
 
@@ -1352,12 +1222,12 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div id="91c16fe8" class="cell" data-execution_count="47">
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div id="6e4f6238" class="cell" data-execution_count="45">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-48-output-1.png" width="946" height="946" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-46-output-1.png" width="946" height="946" class="figure-img"></p>
 </figure>
 </div>
 </div>
