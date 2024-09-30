@@ -235,33 +235,185 @@ magnitudes or large distances, can distort cosmological measurements and
 hinder our understanding of galaxy formation and evolution.
 
 Completeness checks are crucial for addressing selection biases,
-ensuring accurate redshift distributions, and validating galaxy
-simulations. They help identify gaps in the data and guide follow-up
-observations, ensuring that the catalog provides a reliable sample for
-scientific analysis. Without these checks, conclusions drawn from the
-data may be inaccurate or incomplete.
+identify gaps in the data and guide follow-up observations, ensuring
+that the catalog provides a reliable sample for scientific analysis.
+Without these checks, conclusions drawn from the data may be inaccurate
+or incomplete.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\subsection{Completeness of the LCV
+Catalog}\label{completeness-of-the-lcv-catalog}
 
-Checking for completeness in galaxy catalogs is essential to ensure that
-the data accurately represents the true population of galaxies.
-Incomplete catalogs can lead to biased results in statistical studies,
-such as the distribution of galaxy luminosity, mass, or star formation
-rates. Additionally, missing galaxies, especially those at faint
-magnitudes or large distances, can distort cosmological measurements and
-hinder our understanding of galaxy formation and evolution. Completeness
-checks are crucial for addressing selection biases, ensuring accurate
-redshift distributions, and validating galaxy simulations.
+The local volume selection has been made by taking into account galaxies
+with: 1. Radial velocities of
+\begin{equation}\phantomsection\label{eq-lcv-vel}{
+    V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
+    }\end{equation} 2. Distances of D\textless11 Mpc
 
-Distance-based corrections are applied to mitigate these biases by
-adjusting for the underrepresentation of galaxies at greater distances.
-As galaxies move farther away, they become fainter and harder to detect,
-leading to a drop in the number of detected galaxies. Methods like
-\textbf{volume corrections} (e.g., V/Vmax) and \textbf{luminosity
-function-based corrections} help account for these effects by estimating
-the true galaxy population based on the observed sample. These
-corrections ensure that statistical analyses, even in incomplete
-catalogs, more accurately reflect the full galaxy population.
+A simultaneous fulfillment of both conditions (1) and (2) is not
+required.
+
+\begin{itemize}
+\tightlist
+\item
+  Completeness within a 10 Mpc radius is difficult to assess due to:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Variability in galaxy properties (luminosity, size, surface
+    brightness, gas content)
+  \item
+    Errors in distance measurements (Tully--Fisher method errors of
+    \textasciitilde20--25\%), especially at the 10 Mpc boundary.
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Accurate distances are mainly known within \textasciitilde5 Mpc.
+    \end{itemize}
+  \item
+    Non-Hubble motions (\textasciitilde300 km/s) may make up half of the
+    adopted velocity constraint Equation~\ref{eq-lcv-vel}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Solution for our usage: only keep the galaxies inside a radius of
+      \(D=11 Mpc\)
+    \item
+      HI sources in surveys with low angular resolution: ``The presence
+      around our Galaxy of hundreds of high-velocity clouds with low
+      line-of-sight velocities and small W50 widths also provokes the
+      inclusion of false ``nearby'' dwarf galaxies in the
+      LV''Karachentsev, Makarov, and Kaisina (2013)
+    \item
+      photographic emulsion defect -\textgreater{} exotic cases of
+      galaxies -\textgreater{} radial velocity of \(+614 km s^{−1}\)
+    \end{itemize}
+  \end{itemize}
+\item
+  Astro-Spam and Survey Errors:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Automatic surveys produce false detections (e.g., stars
+    misclassified as galaxies, high-velocity clouds mistaken for
+    dwarfs).
+  \end{itemize}
+\item
+  Conditional Completeness Estimate:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Galaxies brighter than \(M_B^c = -11^m\) or with linear diameters
+    larger than \(A_{26} = 1.0\) kpc show (40--60)\% completeness.
+  \item
+    ``among the members of the Local Group (D \textless{} 1 Mpc), only
+    half of the galaxies have absolute magnitudes brighter than −11m.
+    Consequently, more than half of the ultra-faint dwarf companions
+    around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc),
+    still remain outside our field of view.''
+  \end{itemize}
+\item
+  Undetected Ultra-Faint Dwarfs:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Many faint dwarf galaxies remain undetected beyond the Local Group.
+    Estimated population of undetected dwarfs could be as large as
+    \(10^3–10^4\) within the LV.
+  \end{itemize}
+\item
+  Surface Brightness Distribution:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Surface brightness remains consistent across distances, except for
+    ultra-faint dwarfs (\(SB <31 \text{mag}\cdot\text{arcsec}^{-2}\)).
+  \item
+    Faintest dwarf galaxies are detectable only nearby due to their
+    resolution into individual stars.
+  \end{itemize}
+\item
+  Luminosity-Size Relationship:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Observations align with cosmological models predicting \(L\sim A^3\)
+    Navarro, Frenk, and White (1996), though deviations occur for
+    extremely low surface brightness galaxies.
+  \item
+    ``The deviation from it at the extremely low surface brightness end
+    is due to a systematic overestimation of dwarf galaxy sizes, the
+    brightness profiles of which lie entirely below the Holmberg
+    isophote.''
+  \end{itemize}
+\end{itemize}
+
+\subsection{Completeness of HECATE}\label{completeness-of-hecate}
+
+The completeness of HECATE is difficult to assess due to: - Unknown
+selection function of HyperLEDA and selection effects from other
+cross-correlated catalogs. - Estimation based on comparing B-band
+luminosity distribution with the galaxy luminosity function (LF).
+
+\begin{itemize}
+\item
+  HECATE is:
+
+  \begin{itemize}
+  \item
+    Complete down to \(L_B\sim 10^{9.5} L_{B,\odot}\) for distances less
+    than 33 Mpc.
+  \item
+    Complete down to \(L_B\sim 10^{10} L_{B,\odot}\) for distances
+    between 67 Mpc and 100 Mpc.
+  \item
+    Incomplete at distances greater than 167 Mpc, even for the brightest
+    galaxies.
+  \end{itemize}
+\item
+  Completeness estimates based on B-band luminosity density:
+
+  \begin{itemize}
+  \item
+    \textgreater75\% complete for distances less than 100 Mpc.
+    \(\sim 50\%\) complete at distances of \(\sim170\) Mpc.
+  \item
+    Completeness exceeds 100\% within 30 Mpc due to the overdensity of
+    galaxies around the Milky Way.
+  \end{itemize}
+\item
+  Completeness in terms of stellar mass (M*):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Similar to B-band completeness when measured with K\_s-band
+    luminosity as a tracer for stellar mass. Overdensity at small
+    distances and cut-off at large distances are observed.
+  \end{itemize}
+\item
+  Completeness in terms of star formation rate (SFR):
+
+  \begin{itemize}
+  \item
+    \textasciitilde50\% complete between 30 and 150 Mpc.
+  \item
+    Lower SFR completeness due to limitations in WISE-based SFR
+    estimates, which lack full sky coverage.
+  \item
+    Despite IRAS's limited depth, it provides \textgreater50\% coverage
+    for star-forming galaxies in the local neighborhood.
+  \end{itemize}
+\end{itemize}
+
+In this section we will check the completeness
 
 \begin{longtable}[]{@{}lr@{}}
 \toprule\noalign{}
@@ -304,9 +456,9 @@ Combined Completeness
 =\(\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LCV}}\)=
 80 \%
 
-\subsection{Completeness of the Catalogs, based on the Distance and the
-Morphological
-Type}\label{completeness-of-the-catalogs-based-on-the-distance-and-the-morphological-type}
+\subsection{Completeness of the Data}\label{completeness-of-the-data}
+
+\subsubsection{Distance}\label{distance}
 
 \begin{figure}
 
@@ -338,87 +490,6 @@ Type}\label{completeness-of-the-catalogs-based-on-the-distance-and-the-morpholog
 Completeness of the Catalogs}
 
 \end{figure}%
-
-\begin{table}
-
-\caption{\label{tbl-dis-comp}Table showing the Completeness of the
-Catalogs, per bin}
-
-\begin{minipage}{0.50\linewidth}
-
-\subcaption{\label{tbl-dis-comp-1}HECATE}
-
-\centering{
-
-\begin{tabular}{rrll}
-\toprule
-Bin Start & Bin End & Unique \% & Inner \%\\
-\midrule
-0 & 0 & 43\% & 57\%\\
-0 & 1 & 93\% & 7\%\\
-1 & 1 & 95\% & 5\%\\
-1 & 2 & 98\% & 2\%\\
-2 & 2 & 98\% & 2\%\\
-2 & 2 & 95\% & 5\%\\
-2 & 3 & 98\% & 2\%\\
-3 & 3 & 96\% & 4\%\\
-3 & 4 & 96\% & 4\%\\
-4 & 4 & 95\% & 5\%\\
-4 & 4 & 96\% & 4\%\\
-4 & 5 & 90\% & 10\%\\
-5 & 5 & 81\% & 19\%\\
-5 & 6 & 86\% & 14\%\\
-6 & 6 & 62\% & 38\%\\
-6 & 6 & 58\% & 42\%\\
-6 & 7 & 74\% & 26\%\\
-7 & 7 & 71\% & 29\%\\
-7 & 7 & 62\% & 38\%\\
-7 & 8 & 64\% & 36\%\\
-8 & 8 & 52\% & 48\%\\
-8 & 9 & 71\% & 29\%\\
-9 & 9 & 69\% & 31\%\\
-9 & 9 & 77\% & 23\%\\
-9 & 10 & 75\% & 25\%\\
-10 & 10 & 73\% & 27\%\\
-10 & 11 & 73\% & 27\%\\
-11 & 11 & 83\% & 17\%\\
-\bottomrule
-\end{tabular}
-
-}
-
-\end{minipage}%
-%
-\begin{minipage}{0.50\linewidth}
-
-\subcaption{\label{tbl-dis-comp-2}LCV}
-
-\centering{
-
-\begin{tabular}{rrll}
-\toprule
-Bin Start & Bin End & Unique \% & Inner \%\\
-\midrule
-0 & 1 & 68\% & 32\%\\
-1 & 2 & 50\% & 50\%\\
-2 & 3 & 67\% & 33\%\\
-3 & 4 & 80\% & 20\%\\
-4 & 5 & 85\% & 15\%\\
-5 & 6 & 79\% & 21\%\\
-6 & 6 & 73\% & 27\%\\
-6 & 7 & 83\% & 17\%\\
-7 & 8 & 74\% & 26\%\\
-8 & 9 & 72\% & 28\%\\
-9 & 10 & 85\% & 15\%\\
-10 & 11 & 78\% & 22\%\\
-\bottomrule
-\end{tabular}
-
-}
-
-\end{minipage}%
-
-\end{table}%
 
 \begin{figure}
 
@@ -452,8 +523,8 @@ of the Catalogs}
 \end{figure}%
 
 As we can see from the histograms Figure~\ref{fig-dis-comp} and
-Figure~\ref{fig-type-comp} the sample of nique galaxies of each catalog,
-gets smaller by an almost constant proportion (Inner join).
+Figure~\ref{fig-type-comp} the sample of unique galaxies of each
+catalog, gets smaller by an almost constant proportion (Inner join).
 
 This means there is no bias in the selection of the galaxies.
 
@@ -554,15 +625,15 @@ Dis & D & Distance & 0.881 \\
 
 \subsubsection{Right Ascension}
 
-\includegraphics{compare_files/figure-pdf/cell-14-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-13-output-1.pdf}
 
 \subsubsection{Declination}
 
-\includegraphics{compare_files/figure-pdf/cell-15-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-14-output-1.pdf}
 
 \subsubsection{Distance}
 
-\includegraphics{compare_files/figure-pdf/cell-16-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-15-output-1.pdf}
 
 \subsection{Velocities}\label{velocities}
 
@@ -591,9 +662,9 @@ cz (km/s) & & Heliocentric velocity & \\
 & V\_VIR (km/s) & Virgo-infall corrected radial velocity & \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-18-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-17-output-1.pdf}
 
-\includegraphics{compare_files/figure-pdf/cell-20-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-19-output-1.pdf}
 
 {[}?{]} The close correlation between all of the velocities, could be
 due to the fact that all of them measure the velocity of each galaxy,
@@ -628,71 +699,50 @@ a26\_1 (Major) & R1 (Semi-major axis) & angular diameter (arcmin) & 0 \\
 
 \subsubsection{Galaxy Types}
 
+\includegraphics{compare_files/figure-pdf/cell-22-output-1.pdf}
+
+``Morphological type of galaxy in the numerical code according to the
+classification by de Vaucouleurs et al.~(1991). It should be noted that
+about three quarters of objects in the LV are dwarf galaxies, which
+require a more detailed morphological classification. For example, dwarf
+spheroidal galaxies and normal ellipticals are usually denoted by the
+same numerical code T \textless{} 0, although their physical properties
+drastically differ. The classification problem arises as well for the
+``transient'' type dwarf galaxies, T r, which combine the features of
+spheroidal (Sph) and irregular (Ir)systems. Due to small classification
+errors, such objects may ``jump'' from one end of the T scale to the
+other.'' Karachentsev, Makarov, and Kaisina (2013)
+
+\begin{itemize}
+\tightlist
+\item
+  we can assume that the galaxies from the upper left and lower right
+  regions of the plot are classified differently because of this
+\item
+  this might explain the large errors E\_T of HECATE
+\item
+  why we see a difference in the distribution of
+  Figure~\ref{fig-type-comp}
+\end{itemize}
+
+We can remove the ``problematic'' galaxies by only keeping the ones
+with: \[
+|{T_{HECATE}-T_{LCV}}|<7
+\]
+
 \includegraphics{compare_files/figure-pdf/cell-23-output-1.pdf}
-
-\textbf{Percentage change:}
-
-\includegraphics{compare_files/figure-pdf/cell-24-output-1.pdf}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
-& diff\_T & diff\_T\_clip \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-count & 229 & 191 \\
-mean & -30 & -1 \\
-std & 119 & 10 \\
-min & -1000 & -39 \\
-25\% & -11 & -2 \\
-50\% & 0 & 0 \\
-75\% & 0 & 2 \\
-max & 131 & 30 \\
-\end{longtable}
-
-{[}?{]} After the sigma clip we only lose 39 galaxies (\(14\%\)) and we
-can see that both the median and the mean of the percentage change are
-close to \(0\%\).This is why we can assume that the Types of the
-galaxies are the same for the two catalogs
-
-\paragraph{Normalize the scale of galaxy
-types}\label{normalize-the-scale-of-galaxy-types}
-
-It is very possible that the two catalogs use different scaling methods,
-as indicated by the use of decimal numbers in HECATE.
-
-\begin{longtable}[]{@{}lllll@{}}
-\toprule\noalign{}
-& T & TType & T\_norm & TType\_norm \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-count & 229 & 287 & 229 & 287 \\
-mean & 7 & 7 & 1 & 1 \\
-std & 5 & 5 & 0 & 0 \\
-min & -5 & -3 & 0 & 0 \\
-25\% & 7 & 6 & 1 & 1 \\
-50\% & 10 & 9 & 1 & 1 \\
-75\% & 10 & 10 & 1 & 1 \\
-max & 10 & 10 & 1 & 1 \\
-\end{longtable}
-
-Also, as we can see the minimum values are lower by 2 in HECATE, which
-complies with the linear fit.
-
-\includegraphics{compare_files/figure-pdf/cell-27-output-1.pdf}
-
-\includegraphics{compare_files/figure-pdf/cell-28-output-1.pdf}
-
-\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
 
 \subsubsection{Inclination}
 
-\includegraphics{compare_files/figure-pdf/cell-30-output-1.pdf}
+\begin{figure}
 
-\includegraphics{compare_files/figure-pdf/cell-30-output-2.pdf}
+\begin{minipage}{0.50\linewidth}
+\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\includegraphics{compare_files/figure-pdf/cell-29-output-2.pdf}\end{minipage}%
+\newline
+\begin{minipage}{\linewidth}
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
@@ -711,6 +761,10 @@ min & 9 & 0 & -3 \\
 max & 90 & 90 & 1 \\
 \end{longtable}
 
+\end{minipage}%
+
+\end{figure}%
+
 We can see that for values in the range
 \([\sim 30^\circ,\sim 80^\circ]\), the values of the LCV inclination are
 higher. However, since their means, median, min and maxes are similar
@@ -720,12 +774,12 @@ they are the same values.
 
 \subsubsection{Major Axis}
 
-\includegraphics{compare_files/figure-pdf/cell-31-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-30-output-1.pdf}
 
 it is not very clear if we truly have a correlation or not. We need to
 see the linear correlation of the decimal logarithms.
 
-\includegraphics{compare_files/figure-pdf/cell-33-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-32-output-1.pdf}
 
 \subsection{Luminosities}\label{luminosities}
 
@@ -739,7 +793,7 @@ LCV & HECATE & Description & Pearson Correlation {[}-1,1{]} \\
 logKLum & logL\_K & & 0 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-35-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-34-output-1.pdf}
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
@@ -784,11 +838,11 @@ Kmag & K & 2MASS band magnitude (both) & 0 \\
 
 \subsubsection{B mag}
 
-\includegraphics{compare_files/figure-pdf/cell-39-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-38-output-1.pdf}
 
 \subsubsection{K mag}
 
-\includegraphics{compare_files/figure-pdf/cell-40-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-39-output-1.pdf}
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -806,7 +860,7 @@ min & -70 & -42 \\
 max & 16 & 16 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-42-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-41-output-1.pdf}
 
 {[}?{]}
 
@@ -849,7 +903,7 @@ SFRFUV & & FUV derived integral star formation rate & 220 \\
 SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-44-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-43-output-1.pdf}
 
 \subsection{Masses}\label{masses}
 
@@ -882,7 +936,7 @@ logStellarMass & & Stellar Mass from \(M_*/L=0.6\) & 287 \\
 
 \subsubsection{Stellar Masses Comparison}
 
-\includegraphics{compare_files/figure-pdf/cell-46-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-45-output-1.pdf}
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
@@ -901,20 +955,20 @@ max & 9 \\
 
 \subsubsection{Heatmap}
 
-\includegraphics{compare_files/figure-pdf/cell-49-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-48-output-1.pdf}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-karachentsevSTARFORMATIONPROPERTIES2013a}
 Karachentsev, Igor D., and Elena I. Kaisina. 2013. {``{STAR FORMATION
 PROPERTIES IN THE LOCAL VOLUME GALAXIES VIA Hα AND FAR-ULTRAVIOLET
-FLUXES}.''} \emph{AJ} 146 (3): 46.
+FLUXES}.''} \emph{The Astronomical Journal} 146 (3): 46.
 \url{https://doi.org/10.1088/0004-6256/146/3/46}.
 
 \bibitem[\citeproctext]{ref-karachentsevUPDATEDNEARBYGALAXY2013}
 Karachentsev, Igor D., Dmitry I. Makarov, and Elena I. Kaisina. 2013.
-{``{UPDATED NEARBY GALAXY CATALOG}.''} \emph{AJ} 145 (4): 101.
-\url{https://doi.org/10.1088/0004-6256/145/4/101}.
+{``{UPDATED NEARBY GALAXY CATALOG}.''} \emph{The Astronomical Journal}
+145 (4): 101. \url{https://doi.org/10.1088/0004-6256/145/4/101}.
 
 \bibitem[\citeproctext]{ref-kovlakasHeraklionExtragalacticCatalogue2021}
 Kovlakas, K., A. Zezas, J. J. Andrews, A. Basu-Zych, T. Fragos, A.
@@ -923,6 +977,11 @@ Hornschemeier, K. Kouroumpatzakis, B. Lehmer, and A. Ptak. 2021. {``The
 Catalogue for Multimessenger Astrophysics.''} \emph{Monthly Notices of
 the Royal Astronomical Society} 506 (September): 1896--1915.
 \url{https://doi.org/10.1093/mnras/stab1799}.
+
+\bibitem[\citeproctext]{ref-navarroStructureColdDark1996}
+Navarro, Julio F., Carlos S. Frenk, and Simon D. M. White. 1996. {``The
+{Structure} of {Cold Dark Matter Halos}.''} \emph{The Astrophysical
+Journal} 462 (May): 563. \url{https://doi.org/10.1086/177173}.
 
 \end{CSLReferences}
 

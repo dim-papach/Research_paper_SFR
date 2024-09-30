@@ -39,6 +39,7 @@ from astropy.coordinates import SkyCoord
 from astropy.table import Table, join, QTable
 import astropy.units as u
 from astropy.visualization import quantity_support, hist
+import scipy
 #quantity_support()
 from astropy.stats import sigma_clip, SigmaClip
 from astropy.modeling import models, fitting
@@ -71,13 +72,73 @@ The dataset we are going to use for the comparison (inner join) consists of `{py
 
 Checking for completeness in galaxy catalogs is essential to ensure that the data accurately represents the true population of galaxies. Incomplete catalogs can lead to biased results in statistical studies, such as the distribution of galaxy luminosity, mass, or star formation rates. Additionally, missing galaxies, especially those at faint magnitudes or large distances, can distort cosmological measurements and hinder our understanding of galaxy formation and evolution.
 
-Completeness checks are crucial for addressing selection biases, ensuring accurate redshift distributions, and validating galaxy simulations. They help identify gaps in the data and guide follow-up observations, ensuring that the catalog provides a reliable sample for scientific analysis. Without these checks, conclusions drawn from the data may be inaccurate or incomplete.
+Completeness checks are crucial for addressing selection biases, identify gaps in the data and guide follow-up observations, ensuring that the catalog provides a reliable sample for scientific analysis. Without these checks, conclusions drawn from the data may be inaccurate or incomplete.
 
-------------------------------------------------------------------------
+## Completeness of the LCV Catalog
 
-Checking for completeness in galaxy catalogs is essential to ensure that the data accurately represents the true population of galaxies. Incomplete catalogs can lead to biased results in statistical studies, such as the distribution of galaxy luminosity, mass, or star formation rates. Additionally, missing galaxies, especially those at faint magnitudes or large distances, can distort cosmological measurements and hinder our understanding of galaxy formation and evolution. Completeness checks are crucial for addressing selection biases, ensuring accurate redshift distributions, and validating galaxy simulations.
+The local volume selection has been made by taking into account galaxies with: 1. Radial velocities of $$
+    V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
+    $$ {#eq-lcv-vel} 2. Distances of D\<11 Mpc
 
-Distance-based corrections are applied to mitigate these biases by adjusting for the underrepresentation of galaxies at greater distances. As galaxies move farther away, they become fainter and harder to detect, leading to a drop in the number of detected galaxies. Methods like **volume corrections** (e.g., V/Vmax) and **luminosity function-based corrections** help account for these effects by estimating the true galaxy population based on the observed sample. These corrections ensure that statistical analyses, even in incomplete catalogs, more accurately reflect the full galaxy population.
+A simultaneous fulfillment of both conditions (1) and (2) is not required.
+
+-   Completeness within a 10 Mpc radius is difficult to assess due to:
+    -   Variability in galaxy properties (luminosity, size, surface brightness, gas content)
+    -   Errors in distance measurements (Tully–Fisher method errors of \~20–25%), especially at the 10 Mpc boundary.
+        -   Accurate distances are mainly known within \~5 Mpc.
+    -   Non-Hubble motions (\~300 km/s) may make up half of the adopted velocity constraint @eq-lcv-vel
+        -   Solution for our usage: only keep the galaxies inside a radius of $D=11 Mpc$
+        -   HI sources in surveys with low angular resolution: "The presence around our Galaxy of hundreds of high-velocity clouds with low line-of-sight velocities and small W50 widths also provokes the inclusion of false “nearby” dwarf galaxies in the LV"@karachentsevUPDATEDNEARBYGALAXY2013
+        -   photographic emulsion defect -\> exotic cases of galaxies -\> radial velocity of $+614 km s^{−1}$
+-   Astro-Spam and Survey Errors:
+    -   Automatic surveys produce false detections (e.g., stars misclassified as galaxies, high-velocity clouds mistaken for dwarfs).
+-   Conditional Completeness Estimate:
+    -   Galaxies brighter than $M_B^c = -11^m$ or with linear diameters larger than $A_{26} = 1.0$ kpc show (40–60)% completeness.
+    -   "among the members of the Local Group (D \< 1 Mpc), only half of the galaxies have absolute magnitudes brighter than −11m. Consequently, more than half of the ultra-faint dwarf companions around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside our field of view."
+-   Undetected Ultra-Faint Dwarfs:
+    -   Many faint dwarf galaxies remain undetected beyond the Local Group. Estimated population of undetected dwarfs could be as large as $10^3–10^4$ within the LV.
+-   Surface Brightness Distribution:
+    -   Surface brightness remains consistent across distances, except for ultra-faint dwarfs ($SB <31 \text{mag}\cdot\text{arcsec}^{-2}$).
+    -   Faintest dwarf galaxies are detectable only nearby due to their resolution into individual stars.
+-   Luminosity-Size Relationship:
+    -   Observations align with cosmological models predicting $L\sim A^3$ @navarroStructureColdDark1996, though deviations occur for extremely low surface brightness galaxies.
+    -   "The deviation from it at the extremely low surface brightness end is due to a systematic overestimation of dwarf galaxy sizes, the brightness profiles of which lie entirely below the Holmberg isophote."
+
+## Completeness of HECATE
+
+The completeness of HECATE is difficult to assess due to: - Unknown selection function of HyperLEDA and selection effects from other cross-correlated catalogs. - Estimation based on comparing B-band luminosity distribution with the galaxy luminosity function (LF).
+
+-   HECATE is:
+
+    -   Complete down to $L_B\sim 10^{9.5} L_{B,\odot}$ for distances less than 33 Mpc.
+
+    -   Complete down to $L_B\sim 10^{10} L_{B,\odot}$ for distances between 67 Mpc and 100 Mpc.
+
+    -   Incomplete at distances greater than 167 Mpc, even for the brightest galaxies.
+
+-   Completeness estimates based on B-band luminosity density:
+
+    -   \>75% complete for distances less than 100 Mpc. $\sim 50\%$ complete at distances of $\sim170$ Mpc.
+
+    -   Completeness exceeds 100% within 30 Mpc due to the overdensity of galaxies around the Milky Way.
+
+-   Completeness in terms of stellar mass (M\*):
+
+    -   Similar to B-band completeness when measured with $K_s$-band luminosity as a tracer for stellar mass.
+
+    -   Overdensity at small distances and cut-off at large distances are observed.
+
+-   Completeness in terms of star formation rate (SFR):
+
+    -   \~50% complete between 30 and 150 Mpc.
+
+    -   Lower SFR completeness due to limitations in WISE-based SFR estimates, which lack full sky coverage.
+
+    -   Despite IRAS’s limited depth, it provides \>50% coverage for star-forming galaxies in the local neighborhood.
+
+    -   HECATE's nonuniform SFR and stellar mass coverage, affecting the reliability of stellar population parameters.
+
+In this section we will check the completeness
 
 ```{python}
 #| output: asis
@@ -143,17 +204,14 @@ def plot_completeness(dataset_choice="lcv", column_name="Dis", description="Dist
     else:
         raise ValueError("Invalid dataset choice. Please choose 'lcv' or 'hec' with valid datasets.")
     
-# Remove NaN values and strip units before plotting
+    # Remove NaN values before plotting
     if not keep_nan:
-        main_data_clean = main_df[column_name].value.filled(np.nan)
-        main_data_clean = main_data_clean[~np.isnan(main_data_clean)]
-        
-        unique_data_clean = unique_df[column_name].value.filled(np.nan)
-        unique_data_clean = unique_data_clean[~np.isnan(unique_data_clean)]
+        main_data_clean = main_df[~np.isnan(main_df[column_name].data)].data
+        unique_ddata_clean = unique_df[~np.isnan(unique_df[column_name].data)]
     else:
-        main_data_clean = main_df[column_name].value.filled(np.nan)
-        unique_data_clean = unique_df[column_name].value.filled(np.nan)
-
+        main_data_clean = main_df[column_name].data
+        unique_data_clean = unique_df[column_name].data
+    
     # Check if bins is an integer or array of bin edges
     if bins == 0:
         counts, bin_edges = np.histogram(main_data_clean, bins='auto')
@@ -163,8 +221,8 @@ def plot_completeness(dataset_choice="lcv", column_name="Dis", description="Dist
         bin_edges = bins  # If bins is an array of bin edges
     
     # Plot the histograms
-    sns.histplot(main_data_clean.data, bins=bin_edges, kde=True, label=label)
-    sns.histplot(unique_data_clean.data, bins=bin_edges, kde=True, label=f"Unique for {label}")
+    sns.histplot(main_data_clean, bins=bin_edges, kde=True, label=label)
+    sns.histplot(unique_data_clean, bins=bin_edges, kde=True, label=f"Unique for {label}")
     
     # Set logarithmic axes if requested
     if logx:
@@ -225,7 +283,7 @@ def table_completeness(dataset_choice, column_name="Dis", description = "Distanc
         unique_df = unique_df[~np.isnan(unique_df[column_name].data)]
     else:
         main_df = main_df[column_name].data
-        unique_dF = unique_df[column_name].data
+        unique_df = unique_df[column_name].data
     counts, bin_edges = np.histogram(main_df[column_name].data, bins='auto')
 
     main_counts, _ = np.histogram(main_df[column_name].data, bins=bin_edges)
@@ -259,93 +317,138 @@ def table_completeness(dataset_choice, column_name="Dis", description = "Distanc
 #| - "LCV"
 #| label: fig-dis-comp
 
-plot_completeness("hec", column_name = "D", description = "Distance", keep_nan = True)
-plot_completeness("lcv",keep_nan = True)
+#HECATE
+
+main = hec["D"].data
+unique = hec_not_lcv["D"].data
+counts, bin_edges = np.histogram(main)
+
+main_counts, _ = np.histogram(main, bins=bin_edges)
+unique_counts, _ = np.histogram(unique, bins=bin_edges)
+
+plt.subplot(2,1,1)
+sns.histplot(main, bins = bin_edges, kde = True, label = "HECATE")
+sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for HECATE")
+plt.legend()
+plt.title("Completenes of Distance for HECATE")
+unique_pct = (unique_counts/main_counts)*100 
+###
+plt.subplot(2,1,2)
+ax = sns.lineplot(x = bin_edges[1:], y = unique_pct)
+ax.set(xlabel='xlabel', ylabel='ylabel', title='title')
+
+#changing ylables ticks
+plt.yticks(np.arange(min(unique_pct), max(unique_pct)+1, 5.0))
+y_value=['{:,.0f}'.format(x) + '%' for x in ax.get_yticks()]
+ax.set_yticklabels(y_value)
+plt.ylabel("Completeness %")
+plt.xlabel("Distance [{}]".format(hec["D"].unit))
+plt.title("")
+plt.show()
+
+#LCV
+main = lcv["Dis"].data
+unique = lcv_not_hec["Dis"].data
+counts, bin_edges = np.histogram(main)
+
+main_counts, _ = np.histogram(main, bins=bin_edges)
+unique_counts, _ = np.histogram(unique, bins=bin_edges)
+
+plt.subplot(2,1,1)
+sns.histplot(main, bins = bin_edges, kde = True, label = "LCV")
+sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for LCV")
+plt.legend()
+plt.title("Completenes of Distance for LCV")
+unique_pct = (unique_counts/main_counts)*100 
+###
+plt.subplot(2,1,2)
+ax = sns.lineplot(x = bin_edges[1:], y = unique_pct)
+ax.set(xlabel='xlabel', ylabel='ylabel', title='title')
+
+#changing ylables ticks
+plt.yticks(np.arange(min(unique_pct), max(unique_pct)+1, 5.0))
+y_value=['{:,.0f}'.format(x) + '%' for x in ax.get_yticks()]
+ax.set_yticklabels(y_value)
+
+plt.ylabel("Completeness %")
+plt.xlabel("Distance [{}]".format(lcv["Dis"].unit))
+plt.title("")
+plt.show()
+
+plt.close()
 ```
-```{python}
-#| label: tbl-dis-comp
-#| tbl-cap: "Table showing the Completeness of the Catalogs, per bin"
-#| layout-ncol: 2
-#| tbl-subcap: 
-#| - "HECATE"
-#| - "LCV"
-table_completeness("hec", column_name = "D", description = "Distance")
-
-table_completeness("lcv")
-```
-
-### Type
 
 ```{python}
-#| layout-ncol: 2
 #| fig-cap: "Histograms showing the Type Completeness of the Catalogs"
+#| layout-ncol: 2
 #| fig-subcap: 
 #| - "HECATE"
 #| - "LCV"
 #| label: fig-type-comp
-plt.close()
-plot_completeness("hec", column_name = "T", description = "Type", units = False)
-plot_completeness("lcv", column_name = "TType", description = "Type", units = False, bins = 12)
+main = hec["T"].data
+main = main[~np.isnan(main)]
+unique = hec_not_lcv["T"].data
+unique = unique[~np.isnan(unique)]
+counts, bin_edges = np.histogram(main, bins = 12)
+
+main_counts, _ = np.histogram(main, bins=bin_edges)
+unique_counts, _ = np.histogram(unique, bins=bin_edges)
+
+plt.subplot(2,1,1)
+sns.histplot(main, bins = bin_edges, kde = True, label = "HECATE")
+sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for HECATE")
+plt.legend()
+plt.title("Completenes of Types for HECATE")
+unique_pct = (unique_counts/main_counts)*100 
+###
+plt.subplot(2,1,2)
+ax = sns.lineplot(x = bin_edges[1:], y = unique_pct)
+ax.set(xlabel='xlabel', ylabel='ylabel', title='title')
+
+#changing ylables ticks
+plt.yticks(np.arange(min(unique_pct), max(unique_pct)+1, 5.0))
+y_value=['{:,.0f}'.format(x) + '%' for x in ax.get_yticks()]
+ax.set_yticklabels(y_value)
+plt.ylabel("Completeness %")
+plt.xlabel("Types of galaxies")
+plt.title("")
+plt.show()
+
+#LCV
+main = lcv["TType"].data
+main = main[~np.isnan(main)]
+unique = lcv_not_hec["TType"].data
+unique = unique[~np.isnan(unique)]
+counts, bin_edges = np.histogram(main)
+
+main_counts, _ = np.histogram(main, bins=bin_edges)
+unique_counts, _ = np.histogram(unique, bins=bin_edges)
+
+plt.subplot(2,1,1)
+sns.histplot(main, bins = bin_edges, kde = True, label = "LCV")
+sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for LCV")
+plt.legend()
+plt.title("Completenes of Distance for LCV")
+unique_pct = (unique_counts/main_counts)*100 
+
+plt.subplot(2,1,2)
+ax = sns.lineplot(x = bin_edges[1:] ,y = unique_pct)
+ax.set(xlabel='xlabel', ylabel='ylabel', title='title')
+
+#changing ylables ticks
+plt.yticks(np.arange(min(unique_pct), max(unique_pct)+1, 10.0))
+y_value=['{:,.0f}'.format(x) + '%' for x in ax.get_yticks()]
+ax.set_yticklabels(y_value)
+
+plt.ylabel("Completeness %")
+plt.xlabel("Types of galaxies")
+plt.title("")
+plt.show()
 ```
 
 As we can see from the histograms @fig-dis-comp and @fig-type-comp the sample of unique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
 
 This means there is no bias in the selection of the galaxies.
-
-### Helocentric Radial Velocities
-
-```{python}
-#| layout-ncol: 2
-#| fig-cap: "Histograms showing the Velocity Completeness of the Catalogs"
-#| fig-subcap: 
-#| - "HECATE"
-#| - "LCV"
-#| label: fig-type-comp
-plt.close()
-plot_completeness("hec", column_name = "V", description = "Velocities", keep_nan = True, logx = True)
-plot_completeness("lcv", column_name = "RVel", description = "Velocities",keep_nan = True)
-```
-
-```{python}
-
-```
-
-
-### Luminosities
-
-```{python}
-#| layout-ncol: 2
-#| fig-cap: "Histograms showing the $L_K$ Completeness of the Catalogs"
-#| fig-subcap: 
-#| - "HECATE"
-#| - "LCV"
-#| label: fig-type-comp
-plt.close()
-plot_completeness("hec", column_name = "logL_K", description = "$log_{10}(L_K)$", units = False,keep_nan = False, bins = 0)
-plot_completeness("lcv", column_name = "logKLum", description = "$log_{10}(L_K)$",units=False,keep_nan = False)
-```
-
-```{python}
-# Plot the histograms
-plt.close()
-sns.histplot(hec_not_lcv["logL_K"], kde=True, label = "afd")
-sns.histplot(hec["logL_K"], kde=True, label=f"Unique for")
-plt.legend()
-plt.show()
-plt.close()
-```
-
-```{python}
-sns.scatterplot(table_completeness("hec", "logL_K"),x = "Bin End", y = "Unique %")
-plt.show()
-```
-
-
-### Magnitudes
-
-### SFR
-
-### Masses
 
 # How are we going to compare the data?
 
@@ -577,44 +680,6 @@ def relative_diff(hec, lcv):
     diff = (hec - lcv) * 100 / np.abs(hec)
     diff[np.isinf(diff)] = np.nan
     return diff
-
-def percent_desc_histogram(x, sigmaclip = True, zoom = None):
-    """
-    This function creates a histogram of the given data and optionally applies a 3-sigma clip.
-    
-    Parameters:
-    - x (array-like): The input data to create the histogram.
-    - sigmaclip (bool, optional): Whether to apply a 3-sigma clip to the data. Default is True.
-    - zoom (tuple, optional): The range of values to display on the x-axis of the histogram. Default is None.
-    
-    Returns:
-    - t_pd (DataFrame): A pandas DataFrame containing statistical information about the input data.
-    
-    The function uses the seaborn library to create the histogram and applies a 3-sigma clip if `sigmaclip` is True.
-    The histogram is displayed with appropriate labels and titles.
-    The statistical information about the input data is returned as a pandas DataFrame.
-    """
-    plt.close()
-    temp_table = QTable()
-    temp_table["Percentage change [%]"]= x.copy()
-    
-    if sigmaclip is True:
-        temp_table["Percentage change [%], after 3 sigma clip"] = sigma_clip(temp_table["Percentage change [%]"],3)
-    
-    t_pd = temp_table.to_pandas()
-    
-    sns.histplot(temp_table["Percentage change [%]"], kde = True, label = "Percentage change [%]")
-    
-    if sigmaclip is True:
-        sns.histplot(temp_table["Percentage change [%], after 3 sigma clip"], kde = True, label = "Percentage change [%], after 3 sigma clip")
-    
-    plt.xlim(zoom)
-    plt.xlabel("Percentage change Distribution [%]")
-    plt.title("Types of Galaxies")
-    plt.legend()
-    plt.show()
-    
-    return t_pd.describe(percentiles=[]).map('{:,.0f}'.format).style.set_properties(**{'text-align': 'center'})
 ```
 
 # Comparable data
@@ -641,6 +706,8 @@ d_corr = round(compare_data(dt["Dis"],dt["D"])[3],3)
 
 scatter_plot(dt["Ra_1"], dt["RA_2"])
 ```
+
+
 
 ### Declination
 
@@ -715,20 +782,25 @@ a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
 ```
 
-**Percentage change:**
+"Morphological type of galaxy in the numerical code according to the classification by de Vaucouleurs et al. (1991). It should be noted that about three quarters of objects in the LV are dwarf galaxies, which require a more detailed morphological classification. For example, dwarf spheroidal galaxies and normal ellipticals are usually denoted by the same numerical code T \< 0, although their physical properties drastically differ. The classification problem arises as well for the “transient” type dwarf galaxies, T r, which combine the features of spheroidal (Sph) and irregular (Ir)systems. Due to small classification errors, such objects may “jump” from one end of the T scale to the other." @karachentsevUPDATEDNEARBYGALAXY2013
+
+-   we can assume that the galaxies from the upper left and lower right regions of the plot are classified differently because of this
+-   this might explain the large errors E_T of HECATE
+-   why we see a difference in the distribution of @fig-type-comp
+
+We can remove the "problematic" galaxies by only keeping the ones with: $$
+|{T_{HECATE}-T_{LCV}}|<7
+$$
 
 ```{python}
-
-dt["diff_T"] = relative_diff(hec = dt["T"], lcv = dt["TType"])
-percent_desc_histogram(dt["diff_T"], zoom = [-200,200])
-dt["diff_T_clip"] = sigma_clip(dt["diff_T"], sigma=3)
-dt[["diff_T", "diff_T_clip"]].to_pandas().describe()
-
+types = dt[["T", "TType","E_T"]]
+types["diff"] = dt["T"]-dt["TType"]
+types = types[np.abs(types["diff"])<7]
+scatter_plot(types["TType"], types["T"])
 ```
 
-\[?\] After the sigma clip we only lose 39 galaxies ($14\%$) and we can see that both the median and the mean of the percentage change are close to $0\%$.This is why we can assume that the Types of the galaxies are the same for the two catalogs
-
-#### Normalize the scale of galaxy types
+````{=html}
+<!-- #### Normalize the scale of galaxy types
 
 It is very possible that the two catalogs use different scaling methods, as indicated by the use of decimal numbers in HECATE.
 
@@ -743,7 +815,7 @@ def min_max_normalize(series):
 types["T_norm"] = min_max_normalize(types["T"])
 types["T_norm"].mask = types["T"].mask
 types["TType_norm"] = min_max_normalize(types["TType"])
-types.describe()
+#types.describe()
 ```
 
 Also, as we can see the minimum values are lower by 2 in HECATE, which complies with the linear fit.
@@ -769,14 +841,19 @@ plt.xlim(-0.2,0.2)
 plt.xlabel(r"$(T_{HECATE}-T_{LCV})/T_{HECATE}$")
 plt.show()
 ```
+-->
+````
 
 ### Inclination
 
 ```{python}
-
+#| layout: [[50,50],[1]]
+plt.close()
 temp = dt[["inc", "INCL"]].to_pandas()
 
-sns.histplot(temp[["inc", "INCL"]], kde = True)
+sns.histplot(temp["INCL"], kde = True, label = "HECATE")
+sns.histplot(temp["inc"], kde = True, label = "LCV")
+plt.legend()
 plt.xlabel("Inclination of galaxies [deg]")
 plt.show()
 
@@ -843,7 +920,7 @@ temp.describe(percentiles=[])
 ## Magnitudes
 
 ```{python}
-#| echo: false
+#| output: false 
 #| warning: false
 mag_B_corr = round(compare_data(dt["mag_B"], dt["BT"], sigma = True)[3], 3)
 Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
