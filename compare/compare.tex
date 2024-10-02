@@ -392,11 +392,12 @@ luminosity distribution with the galaxy luminosity function (LF).
   Completeness in terms of stellar mass (M*):
 
   \begin{itemize}
-  \tightlist
   \item
-    Similar to B-band completeness when measured with K\_s-band
-    luminosity as a tracer for stellar mass. Overdensity at small
-    distances and cut-off at large distances are observed.
+    Similar to B-band completeness when measured with \(K_s\)-band
+    luminosity as a tracer for stellar mass.
+  \item
+    Overdensity at small distances and cut-off at large distances are
+    observed.
   \end{itemize}
 \item
   Completeness in terms of star formation rate (SFR):
@@ -410,6 +411,9 @@ luminosity distribution with the galaxy luminosity function (LF).
   \item
     Despite IRAS's limited depth, it provides \textgreater50\% coverage
     for star-forming galaxies in the local neighborhood.
+  \item
+    HECATE's nonuniform SFR and stellar mass coverage, affecting the
+    reliability of stellar population parameters.
   \end{itemize}
 \end{itemize}
 
@@ -618,22 +622,30 @@ LCV & HECATE & Description & Pearson Correlation {[}-1,1{]} \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Ra\_1 & RA\_2 & Right Ascension & 1.0 \\
-Dec\_1 & DEC\_2 & Declination & 1.0 \\
 Dis & D & Distance & 0.881 \\
 \end{longtable}
 
-\subsubsection{Right Ascension}
+\begin{figure}
 
-\includegraphics{compare_files/figure-pdf/cell-13-output-1.pdf}
+\centering{
 
-\subsubsection{Declination}
+\includegraphics{compare_files/figure-pdf/fig-coord-compare-output-1.pdf}
 
-\includegraphics{compare_files/figure-pdf/cell-14-output-1.pdf}
+}
 
-\subsubsection{Distance}
+\caption{\label{fig-coord-compare}Comparison of the Distances}
 
-\includegraphics{compare_files/figure-pdf/cell-15-output-1.pdf}
+\end{figure}%
+
+\begin{itemize}
+\tightlist
+\item
+  The average error of the distance in the HECATE catalog is
+  \(\overline{E_D} = \pm 1.6\) Mpc, so the intercept is included in the
+  error.
+\item
+  So we can assume that the Distances are the same
+\end{itemize}
 
 \subsection{Velocities}\label{velocities}
 
@@ -662,9 +674,29 @@ cz (km/s) & & Heliocentric velocity & \\
 & V\_VIR (km/s) & Virgo-infall corrected radial velocity & \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-17-output-1.pdf}
+\begin{figure}
 
-\includegraphics{compare_files/figure-pdf/cell-19-output-1.pdf}
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-vel-compare-output-1.pdf}
+
+}
+
+\caption{\label{fig-vel-compare}Comparison of the Radial Velocities}
+
+\end{figure}%
+
+\begin{itemize}
+\tightlist
+\item
+  The average error of the radial velocity in the HECATE catalog is
+  \(\overline{E_V} = \pm 12\text{km}\cdot s^{-1}\) , so the intercept is
+  included in the error.
+\item
+  So we can assume that the radial velocities are the same
+\end{itemize}
+
+\includegraphics{compare_files/figure-pdf/cell-15-output-1.pdf}
 
 {[}?{]} The close correlation between all of the velocities, could be
 due to the fact that all of them measure the velocity of each galaxy,
@@ -699,7 +731,37 @@ a26\_1 (Major) & R1 (Semi-major axis) & angular diameter (arcmin) & 0 \\
 
 \subsubsection{Galaxy Types}
 
-\includegraphics{compare_files/figure-pdf/cell-22-output-1.pdf}
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-types-compare-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-types-compare-1}All the galaxies, without the
+correction}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-types-compare-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-types-compare-2}Comparison with the correction
+\(|{T_{HECATE}-T_{LCV}}|<7\)}
+
+\end{minipage}%
+
+\caption{\label{fig-types-compare}Comparison of the Types of galaxies}
+
+\end{figure}%
 
 ``Morphological type of galaxy in the numerical code according to the
 classification by de Vaucouleurs et al.~(1991). It should be noted that
@@ -730,19 +792,27 @@ with: \[
 |{T_{HECATE}-T_{LCV}}|<7
 \]
 
-\includegraphics{compare_files/figure-pdf/cell-23-output-1.pdf}
+\begin{itemize}
+\tightlist
+\item
+  The average uncertainty of the morphological type in the HECATE
+  catalog is \(\overline{E_T} = \pm 1.4\), so the intercept is included
+  in the error.
+\item
+  So we can assume that the Distances are the same
+\end{itemize}
 
 \subsubsection{Inclination}
 
 \begin{figure}
 
 \begin{minipage}{0.50\linewidth}
-\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}\end{minipage}%
+\includegraphics{compare_files/figure-pdf/cell-24-output-1.pdf}\end{minipage}%
 %
 \begin{minipage}{0.50\linewidth}
-\includegraphics{compare_files/figure-pdf/cell-29-output-2.pdf}\end{minipage}%
-\newline
-\begin{minipage}{\linewidth}
+\includegraphics{compare_files/figure-pdf/cell-24-output-2.pdf}\end{minipage}%
+
+\end{figure}%
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
@@ -761,10 +831,6 @@ min & 9 & 0 & -3 \\
 max & 90 & 90 & 1 \\
 \end{longtable}
 
-\end{minipage}%
-
-\end{figure}%
-
 We can see that for values in the range
 \([\sim 30^\circ,\sim 80^\circ]\), the values of the LCV inclination are
 higher. However, since their means, median, min and maxes are similar
@@ -774,12 +840,48 @@ they are the same values.
 
 \subsubsection{Major Axis}
 
-\includegraphics{compare_files/figure-pdf/cell-30-output-1.pdf}
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-axis-compare-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-axis-compare-1}Linear scale}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-axis-compare-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-axis-compare-2}\(log_{10}\) scale}
+
+\end{minipage}%
+
+\caption{\label{fig-axis-compare}Comparison of the Major Axises of the
+galaxies}
+
+\end{figure}%
 
 it is not very clear if we truly have a correlation or not. We need to
 see the linear correlation of the decimal logarithms.
 
-\includegraphics{compare_files/figure-pdf/cell-32-output-1.pdf}
+\(\overline{R_1} = 3.9\) {[}arcmin{]}, \(\overline{a_{26}} = 9.3\)
+{[}arcmin{]}, so the intercept is negligable. \[
+R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
+\]
+
+\[
+\log(R1) = 0.89\log(a_{26})-10^{0.38} = \log(10^{-0.38}a_{26}^{0.89}) = \log(0.41\cdot a_{26}^{0.89})\Rightarrow R1\simeq \frac{a_{26}}{2}
+\]
 
 \subsection{Luminosities}\label{luminosities}
 
@@ -793,7 +895,30 @@ LCV & HECATE & Description & Pearson Correlation {[}-1,1{]} \\
 logKLum & logL\_K & & 0 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-34-output-1.pdf}
+\begin{figure}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-klum-compare-output-1.pdf}
+
+}
+
+\caption{\label{fig-klum-compare}Comparison of the \(L_K\) of the
+galaxies}
+
+\end{figure}%
+
+\[
+\log(L_{K,HEC})=1.16\log(L_{K,LCV})-1.78=\log\left(\frac{{L_{K,LCV}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LCV}}^{1.16}
+\]
+
+So as we can see the usage of a linear fitting is not correct here. But
+we can clearly see a linear correlation.
+
+We will use the relative difference of the two luminosities, to see if
+statistically they are the same:
+
+\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
 
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
@@ -836,13 +961,50 @@ mag\_B (with errors) & BT (with errors) & & 0 \\
 Kmag & K & 2MASS band magnitude (both) & 0 \\
 \end{longtable}
 
-\subsubsection{B mag}
+\begin{figure}
 
-\includegraphics{compare_files/figure-pdf/cell-38-output-1.pdf}
+\begin{minipage}{0.50\linewidth}
 
-\subsubsection{K mag}
+\centering{
 
-\includegraphics{compare_files/figure-pdf/cell-39-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/fig-mag-compare-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-mag-compare-1}\(M_B\)}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-mag-compare-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-mag-compare-2}\(M_K\)}
+
+\end{minipage}%
+
+\caption{\label{fig-mag-compare}Comparison of the Magnitudes of the
+galaxies}
+
+\end{figure}%
+
+\begin{itemize}
+\tightlist
+\item
+  \(M_B\): it is a 1-1 correlation, since the average error
+  \(M_{B,HECATE} = 0.4\ mag\), so the itercept is smaller than the error
+\item
+  \(M_K\): we need to examine it more, since the intercept is bigger
+  than the error \(M_{K,HECATE} = 0.09\ mag\)
+\end{itemize}
+
+\includegraphics{compare_files/figure-pdf/cell-35-output-1.pdf}
+
+\includegraphics{compare_files/figure-pdf/cell-35-output-2.pdf}
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -860,9 +1022,8 @@ min & -70 & -42 \\
 max & 16 & 16 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-41-output-1.pdf}
-
-{[}?{]}
+{[}?{]} this 5\% average in the difference probably exists because of
+the low number of galaxies we compare, so we can ignore it.
 
 \subsection{SFR}\label{sfr}
 
@@ -903,7 +1064,80 @@ SFRFUV & & FUV derived integral star formation rate & 220 \\
 SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-43-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-38-output-1.pdf}
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-lcv-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-sfr-lcv-1}Linear scale}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-lcv-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-sfr-lcv-2}Decimal logarithmic scale}
+
+\end{minipage}%
+
+\caption{\label{fig-sfr-lcv}Comparison of the \$SFR\_\{FUV\}-SFR\_\{Ha\}
+of the galaxies}
+
+\end{figure}%
+
+The SFR according to Kroupa et al. (2020), can be calculated from the
+mean of SFR from the Ha and FUV, for \(SFR>10^{-3}\ M_\odot\, yr^{-1}\).
+As we can see from the plots Figure~\ref{fig-sfr-lcv} it is a good
+aproximation for all SFR's
+
+\[
+SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
+\]
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-compare-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-sfr-compare-1}Linear scale}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-compare-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-sfr-compare-2}Decimal logarithmic scale}
+
+\end{minipage}%
+
+\caption{\label{fig-sfr-compare}Comparison of the SFR's of the galaxies}
+
+\end{figure}%
+
+?EXPLANATION? this low correlation maybe comes from the
+inaccuracy/approximation of Kroupa et al. (2020)
 
 \subsection{Masses}\label{masses}
 
@@ -936,26 +1170,32 @@ logStellarMass & & Stellar Mass from \(M_*/L=0.6\) & 287 \\
 
 \subsubsection{Stellar Masses Comparison}
 
-\includegraphics{compare_files/figure-pdf/cell-45-output-1.pdf}
+\begin{figure}
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
-& Percantage Change {[}\%{]} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-count & 64 \\
-mean & -1 \\
-std & 5 \\
-min & -19 \\
-50\% & 1 \\
-max & 9 \\
-\end{longtable}
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-mass-compare-output-1.pdf}
+
+}
+
+\caption{\label{fig-mass-compare}Comparison of the Stellar Masses of the
+galaxies}
+
+\end{figure}%
+
+\includegraphics{compare_files/figure-pdf/cell-44-output-1.pdf}
+
+\[
+\log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LCV}}-0.69, \text{ but } \log{M_*}>6\Rightarrow M_{*,HEC}\sim M_{*,LCV}
+\]
+
+As we can see the aproximation of Mass/Light=const.=0.6 is a pretty good
+approximation, for the calculation of \(\log(M_*/M_\odot)\), especially
+for high-mass galaxies
 
 \subsubsection{Heatmap}
 
-\includegraphics{compare_files/figure-pdf/cell-48-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-45-output-1.pdf}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
@@ -977,6 +1217,13 @@ Hornschemeier, K. Kouroumpatzakis, B. Lehmer, and A. Ptak. 2021. {``The
 Catalogue for Multimessenger Astrophysics.''} \emph{Monthly Notices of
 the Royal Astronomical Society} 506 (September): 1896--1915.
 \url{https://doi.org/10.1093/mnras/stab1799}.
+
+\bibitem[\citeproctext]{ref-kroupaConstraintsStarFormation2020}
+Kroupa, P, M Haslbauer, I Banik, S T Nagesh, and J Pflamm-Altenburg.
+2020. {``Constraints on the Star Formation Histories of Galaxies in the
+{Local Cosmological Volume}.''} \emph{Monthly Notices of the Royal
+Astronomical Society} 497 (1): 37--43.
+\url{https://doi.org/10.1093/mnras/staa1851}.
 
 \bibitem[\citeproctext]{ref-navarroStructureColdDark1996}
 Navarro, Julio F., Carlos S. Frenk, and Simon D. M. White. 1996. {``The

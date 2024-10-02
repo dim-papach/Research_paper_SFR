@@ -114,6 +114,8 @@ window.Quarto = {
   <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a></li>
   <li><a href="#catalog-completeness" id="toc-catalog-completeness" class="nav-link" data-scroll-target="#catalog-completeness">Catalog Completeness</a>
   <ul class="collapse">
+  <li><a href="#completeness-of-the-lcv-catalog" id="toc-completeness-of-the-lcv-catalog" class="nav-link" data-scroll-target="#completeness-of-the-lcv-catalog">Completeness of the LCV Catalog</a></li>
+  <li><a href="#completeness-of-hecate" id="toc-completeness-of-hecate" class="nav-link" data-scroll-target="#completeness-of-hecate">Completeness of HECATE</a></li>
   <li><a href="#completeness-of-the-inner-join" id="toc-completeness-of-the-inner-join" class="nav-link" data-scroll-target="#completeness-of-the-inner-join">Completeness of the Inner join</a></li>
   <li><a href="#completeness-in-outer-join" id="toc-completeness-in-outer-join" class="nav-link" data-scroll-target="#completeness-in-outer-join">Completeness in Outer join</a></li>
   <li><a href="#completeness-of-the-data" id="toc-completeness-of-the-data" class="nav-link" data-scroll-target="#completeness-of-the-data">Completeness of the Data</a>
@@ -177,10 +179,82 @@ window.Quarto = {
 <section id="catalog-completeness" class="level1">
 <h1>Catalog Completeness</h1>
 <p>Checking for completeness in galaxy catalogs is essential to ensure that the data accurately represents the true population of galaxies. Incomplete catalogs can lead to biased results in statistical studies, such as the distribution of galaxy luminosity, mass, or star formation rates. Additionally, missing galaxies, especially those at faint magnitudes or large distances, can distort cosmological measurements and hinder our understanding of galaxy formation and evolution.</p>
-<p>Completeness checks are crucial for addressing selection biases, ensuring accurate redshift distributions, and validating galaxy simulations. They help identify gaps in the data and guide follow-up observations, ensuring that the catalog provides a reliable sample for scientific analysis. Without these checks, conclusions drawn from the data may be inaccurate or incomplete.</p>
-<hr>
-<p>Checking for completeness in galaxy catalogs is essential to ensure that the data accurately represents the true population of galaxies. Incomplete catalogs can lead to biased results in statistical studies, such as the distribution of galaxy luminosity, mass, or star formation rates. Additionally, missing galaxies, especially those at faint magnitudes or large distances, can distort cosmological measurements and hinder our understanding of galaxy formation and evolution. Completeness checks are crucial for addressing selection biases, ensuring accurate redshift distributions, and validating galaxy simulations.</p>
-<p>Distance-based corrections are applied to mitigate these biases by adjusting for the underrepresentation of galaxies at greater distances. As galaxies move farther away, they become fainter and harder to detect, leading to a drop in the number of detected galaxies. Methods like <strong>volume corrections</strong> (e.g., V/Vmax) and <strong>luminosity function-based corrections</strong> help account for these effects by estimating the true galaxy population based on the observed sample. These corrections ensure that statistical analyses, even in incomplete catalogs, more accurately reflect the full galaxy population.</p>
+<p>Completeness checks are crucial for addressing selection biases, identify gaps in the data and guide follow-up observations, ensuring that the catalog provides a reliable sample for scientific analysis. Without these checks, conclusions drawn from the data may be inaccurate or incomplete.</p>
+<section id="completeness-of-the-lcv-catalog" class="level2">
+<h2 class="anchored" data-anchor-id="completeness-of-the-lcv-catalog">Completeness of the LCV Catalog</h2>
+<p>The local volume selection has been made by taking into account galaxies with: 1. Radial velocities of <span id="eq-lcv-vel"><span class="math display">
+    V_{LG}&lt;600 \text{ km}\cdot\text{m}^{-1}
+     \tag{1}</span></span> 2. Distances of D&lt;11 Mpc</p>
+<p>A simultaneous fulfillment of both conditions (1) and (2) is not required.</p>
+<ul>
+<li>Completeness within a 10 Mpc radius is difficult to assess due to:
+<ul>
+<li>Variability in galaxy properties (luminosity, size, surface brightness, gas content)</li>
+<li>Errors in distance measurements (Tully–Fisher method errors of ~20–25%), especially at the 10 Mpc boundary.
+<ul>
+<li>Accurate distances are mainly known within ~5 Mpc.</li>
+</ul></li>
+<li>Non-Hubble motions (~300 km/s) may make up half of the adopted velocity constraint <a href="#eq-lcv-vel" class="quarto-xref">Equation&nbsp;1</a>
+<ul>
+<li>Solution for our usage: only keep the galaxies inside a radius of <span class="math inline">D=11 Mpc</span></li>
+<li>HI sources in surveys with low angular resolution: “The presence around our Galaxy of hundreds of high-velocity clouds with low line-of-sight velocities and small W50 widths also provokes the inclusion of false “nearby” dwarf galaxies in the LV”<span class="citation" data-cites="karachentsevUPDATEDNEARBYGALAXY2013">Karachentsev, Makarov, and Kaisina (<a href="#ref-karachentsevUPDATEDNEARBYGALAXY2013" role="doc-biblioref">2013</a>)</span></li>
+<li>photographic emulsion defect -&gt; exotic cases of galaxies -&gt; radial velocity of <span class="math inline">+614 km s^{−1}</span></li>
+</ul></li>
+</ul></li>
+<li>Astro-Spam and Survey Errors:
+<ul>
+<li>Automatic surveys produce false detections (e.g., stars misclassified as galaxies, high-velocity clouds mistaken for dwarfs).</li>
+</ul></li>
+<li>Conditional Completeness Estimate:
+<ul>
+<li>Galaxies brighter than <span class="math inline">M_B^c = -11^m</span> or with linear diameters larger than <span class="math inline">A_{26} = 1.0</span> kpc show (40–60)% completeness.</li>
+<li>“among the members of the Local Group (D &lt; 1 Mpc), only half of the galaxies have absolute magnitudes brighter than −11m. Consequently, more than half of the ultra-faint dwarf companions around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside our field of view.”</li>
+</ul></li>
+<li>Undetected Ultra-Faint Dwarfs:
+<ul>
+<li>Many faint dwarf galaxies remain undetected beyond the Local Group. Estimated population of undetected dwarfs could be as large as <span class="math inline">10^3–10^4</span> within the LV.</li>
+</ul></li>
+<li>Surface Brightness Distribution:
+<ul>
+<li>Surface brightness remains consistent across distances, except for ultra-faint dwarfs (<span class="math inline">SB &lt;31 \text{mag}\cdot\text{arcsec}^{-2}</span>).</li>
+<li>Faintest dwarf galaxies are detectable only nearby due to their resolution into individual stars.</li>
+</ul></li>
+<li>Luminosity-Size Relationship:
+<ul>
+<li>Observations align with cosmological models predicting <span class="math inline">L\sim A^3</span> <span class="citation" data-cites="navarroStructureColdDark1996">Navarro, Frenk, and White (<a href="#ref-navarroStructureColdDark1996" role="doc-biblioref">1996</a>)</span>, though deviations occur for extremely low surface brightness galaxies.</li>
+<li>“The deviation from it at the extremely low surface brightness end is due to a systematic overestimation of dwarf galaxy sizes, the brightness profiles of which lie entirely below the Holmberg isophote.”</li>
+</ul></li>
+</ul>
+</section>
+<section id="completeness-of-hecate" class="level2">
+<h2 class="anchored" data-anchor-id="completeness-of-hecate">Completeness of HECATE</h2>
+<p>The completeness of HECATE is difficult to assess due to: - Unknown selection function of HyperLEDA and selection effects from other cross-correlated catalogs. - Estimation based on comparing B-band luminosity distribution with the galaxy luminosity function (LF).</p>
+<ul>
+<li><p>HECATE is:</p>
+<ul>
+<li><p>Complete down to <span class="math inline">L_B\sim 10^{9.5} L_{B,\odot}</span> for distances less than 33 Mpc.</p></li>
+<li><p>Complete down to <span class="math inline">L_B\sim 10^{10} L_{B,\odot}</span> for distances between 67 Mpc and 100 Mpc.</p></li>
+<li><p>Incomplete at distances greater than 167 Mpc, even for the brightest galaxies.</p></li>
+</ul></li>
+<li><p>Completeness estimates based on B-band luminosity density:</p>
+<ul>
+<li><p>&gt;75% complete for distances less than 100 Mpc. <span class="math inline">\sim 50\%</span> complete at distances of <span class="math inline">\sim170</span> Mpc.</p></li>
+<li><p>Completeness exceeds 100% within 30 Mpc due to the overdensity of galaxies around the Milky Way.</p></li>
+</ul></li>
+<li><p>Completeness in terms of stellar mass (M*):</p>
+<ul>
+<li><p>Similar to B-band completeness when measured with <span class="math inline">K_s</span>-band luminosity as a tracer for stellar mass.</p></li>
+<li><p>Overdensity at small distances and cut-off at large distances are observed.</p></li>
+</ul></li>
+<li><p>Completeness in terms of star formation rate (SFR):</p>
+<ul>
+<li><p>~50% complete between 30 and 150 Mpc.</p></li>
+<li><p>Lower SFR completeness due to limitations in WISE-based SFR estimates, which lack full sky coverage.</p></li>
+<li><p>Despite IRAS’s limited depth, it provides &gt;50% coverage for star-forming galaxies in the local neighborhood.</p></li>
+<li><p>HECATE’s nonuniform SFR and stellar mass coverage, affecting the reliability of stellar population parameters.</p></li>
+</ul></li>
+</ul>
+<p>In this section we will check the completeness</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -215,6 +289,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+</section>
 <section id="completeness-of-the-inner-join" class="level2">
 <h2 class="anchored" data-anchor-id="completeness-of-the-inner-join">Completeness of the Inner join</h2>
 <p><span class="math display">
@@ -355,18 +430,6 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Ra_1</td>
-<td style="text-align: center;">RA_2</td>
-<td style="text-align: center;">Right Ascension</td>
-<td style="text-align: center;">1.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Dec_1</td>
-<td style="text-align: center;">DEC_2</td>
-<td style="text-align: center;">Declination</td>
-<td style="text-align: center;">1.0</td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;">Dis</td>
 <td style="text-align: center;">D</td>
 <td style="text-align: center;">Distance</td>
@@ -374,44 +437,24 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 </tr>
 </tbody>
 </table>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Right Ascension</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Declination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Distance</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="0da1067b" class="cell" data-execution_count="12">
+<div id="cell-fig-coord-compare" class="cell" data-layout-align="center" data-execution_count="11">
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-13-output-1.png" width="596" height="432" class="figure-img"></p>
+<div id="fig-coord-compare" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-coord-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-coord-compare-output-1.png" width="661" height="469" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coord-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Comparison of the Distances
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="fd301e4e" class="cell" data-execution_count="13">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-14-output-1.png" width="599" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="1e28372c" class="cell" data-execution_count="14">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-15-output-1.png" width="587" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<ul>
+<li>The average error of the distance in the HECATE catalog is <span class="math inline">\hat{E_D} = \pm 1.6</span> Mpc, so the intercept is included in the error.</li>
+<li>So we can assume that the Distances are the same</li>
+</ul>
 </section>
 <section id="velocities" class="level2">
 <h2 class="anchored" data-anchor-id="velocities">Velocities</h2>
@@ -457,20 +500,29 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 </tr>
 </tbody>
 </table>
-<div id="e7e780b2" class="cell" data-execution_count="16">
+<div id="cell-fig-vel-compare" class="cell" data-layout-align="center" data-execution_count="13">
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-17-output-1.png" width="607" height="432" class="figure-img"></p>
+<div id="fig-vel-compare" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vel-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-vel-compare-output-1.png" width="608" height="433" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vel-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Comparison of the Radial Velocities
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="c7f80e1f" class="cell" data-execution_count="18">
+<ul>
+<li>The average error of the radial velocity in the HECATE catalog is <span class="math inline">\hat{E_V} = \pm 12\text{km}\cdot s^{-1}</span> , so the intercept is included in the error.</li>
+<li>So we can assume that the radial velocities are the same</li>
+</ul>
+<div id="048293da" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-19-output-1.png" width="1181" height="1181" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-16-output-1.png" width="1181" height="1181" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -516,17 +568,43 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 </tbody>
 </table>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Galaxy Types</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Inclination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Major Axis</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Galaxy Types</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Inclination</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Major Axis</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="02611019" class="cell" data-execution_count="21">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-22-output-1.png" width="598" height="432" class="figure-img"></p>
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="fig-types-compare" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-types-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-types-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-types-compare-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-types-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-types-compare-output-1.png" data-ref-parent="fig-types-compare" width="600" height="433" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-types-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) All the galaxies, without the correction
+</figcaption>
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-types-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-types-compare-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-types-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-types-compare-output-2.png" data-ref-parent="fig-types-compare" width="591" height="433" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-types-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Comparison with the correction <span class="math inline">|{T_{HECATE}-T_{LCV}}|&lt;7</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-types-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Comparison of the Types of galaxies
+</figcaption>
+</figure>
 </div>
 <p>“Morphological type of galaxy in the numerical code according to the classification by de Vaucouleurs et al.&nbsp;(1991). It should be noted that about three quarters of objects in the LV are dwarf galaxies, which require a more detailed morphological classification. For example, dwarf spheroidal galaxies and normal ellipticals are usually denoted by the same numerical code T &lt; 0, although their physical properties drastically differ. The classification problem arises as well for the “transient” type dwarf galaxies, T r, which combine the features of spheroidal (Sph) and irregular (Ir)systems. Due to small classification errors, such objects may “jump” from one end of the T scale to the other.” <span class="citation" data-cites="karachentsevUPDATEDNEARBYGALAXY2013">Karachentsev, Makarov, and Kaisina (<a href="#ref-karachentsevUPDATEDNEARBYGALAXY2013" role="doc-biblioref">2013</a>)</span></p>
 <ul>
@@ -537,15 +615,10 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 <p>We can remove the “problematic” galaxies by only keeping the ones with: <span class="math display">
 |{T_{HECATE}-T_{LCV}}|&lt;7
 </span></p>
-<div id="05255c13" class="cell" data-execution_count="22">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-23-output-1.png" width="590" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
+<ul>
+<li>The average uncertainty of the morphological type in the HECATE catalog is <span class="math inline">\hat{E_T} = \pm 1.4</span>, so the intercept is included in the error.</li>
+<li>So we can assume that the Distances are the same</li>
+</ul>
 <!-- #### Normalize the scale of galaxy types
 
 It is very possible that the two catalogs use different scaling methods, as indicated by the use of decimal numbers in HECATE.
@@ -554,109 +627,113 @@ It is very possible that the two catalogs use different scaling methods, as indi
 
 
 
+TType
+
 Also, as we can see the minimum values are lower by 2 in HECATE, which complies with the linear fit.
 
-::: {#0cb02a9d .cell execution_count=25}
+::: {#35b1ef93 .cell execution_count=21}
 
 ::: {.cell-output .cell-output-display}
-![](compare_files/figure-html/cell-26-output-1.png){width=596 height=432}
+![](compare_files/figure-html/cell-22-output-1.png){width=596 height=432}
 :::
 :::
 
 
-::: {#82a45015 .cell execution_count=26}
+::: {#397f60fe .cell execution_count=22}
 
 ::: {.cell-output .cell-output-display}
-![](compare_files/figure-html/cell-27-output-1.png){width=587 height=433}
+![](compare_files/figure-html/cell-23-output-1.png){width=587 height=433}
 :::
 :::
 
 
-::: {#80929e1e .cell execution_count=27}
+::: {#a22236ff .cell execution_count=23}
 
 ::: {.cell-output .cell-output-display}
-![](compare_files/figure-html/cell-28-output-1.png){width=602 height=433}
+![](compare_files/figure-html/cell-24-output-1.png){width=602 height=433}
 :::
 :::
 
 
 -->
 </div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div>
 
 </div>
-<div id="da4284ac" class="cell quarto-layout-panel" data-execution_count="28" data-layout="[[50,50],[1]]">
+<div id="b94e5040" class="cell quarto-layout-panel" data-layout="[[50,50]]" data-execution_count="24">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="compare_files/figure-html/cell-29-output-1.png" width="587" height="432"></p>
+<p><img src="compare_files/figure-html/cell-25-output-1.png" width="587" height="432"></p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img src="compare_files/figure-html/cell-29-output-2.png" width="587" height="432"></p>
+<p><img src="compare_files/figure-html/cell-25-output-2.png" width="587" height="432"></p>
 </div>
 </div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+</div>
+<div id="8ca9a20d" class="cell" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
 <div>
 
 
 <table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">inc</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">INCL</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Percentage Change [%]</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">inc</th>
+<th data-quarto-table-cell-role="th">INCL</th>
+<th data-quarto-table-cell-role="th">Percentage Change [%]</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th">count</td>
-<td style="text-align: left;">287</td>
-<td style="text-align: left;">209</td>
-<td style="text-align: left;">202</td>
+<td data-quarto-table-cell-role="th">count</td>
+<td>287</td>
+<td>209</td>
+<td>202</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;" data-quarto-table-cell-role="th">mean</td>
-<td style="text-align: left;">60</td>
-<td style="text-align: left;">59</td>
-<td style="text-align: left;">-0</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>60</td>
+<td>59</td>
+<td>-0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th">std</td>
-<td style="text-align: left;">19</td>
-<td style="text-align: left;">23</td>
-<td style="text-align: left;">0</td>
+<td data-quarto-table-cell-role="th">std</td>
+<td>19</td>
+<td>23</td>
+<td>0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;" data-quarto-table-cell-role="th">min</td>
-<td style="text-align: left;">9</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">-3</td>
+<td data-quarto-table-cell-role="th">min</td>
+<td>9</td>
+<td>0</td>
+<td>-3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th">25%</td>
-<td style="text-align: left;">47</td>
-<td style="text-align: left;">47</td>
-<td style="text-align: left;">-0</td>
+<td data-quarto-table-cell-role="th">25%</td>
+<td>47</td>
+<td>47</td>
+<td>-0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;" data-quarto-table-cell-role="th">50%</td>
-<td style="text-align: left;">60</td>
-<td style="text-align: left;">59</td>
-<td style="text-align: left;">0</td>
+<td data-quarto-table-cell-role="th">50%</td>
+<td>60</td>
+<td>59</td>
+<td>0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;" data-quarto-table-cell-role="th">75%</td>
-<td style="text-align: left;">72</td>
-<td style="text-align: left;">78</td>
-<td style="text-align: left;">0</td>
+<td data-quarto-table-cell-role="th">75%</td>
+<td>72</td>
+<td>78</td>
+<td>0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;" data-quarto-table-cell-role="th">max</td>
-<td style="text-align: left;">90</td>
-<td style="text-align: left;">90</td>
-<td style="text-align: left;">1</td>
+<td data-quarto-table-cell-role="th">max</td>
+<td>90</td>
+<td>90</td>
+<td>1</td>
 </tr>
 </tbody>
 </table>
@@ -667,26 +744,49 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </div>
 <p>We can see that for values in the range <span class="math inline">[\sim 30^\circ,\sim 80^\circ]</span>, the values of the LCV inclination are higher. However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, <span class="math inline">\sigma</span> = 0 with a range <span class="math inline">[-3\%,1\%]</span>), we can ignore the differences and assume they are the same values.</p>
 </div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div id="481a138a" class="cell" data-execution_count="29">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-30-output-1.png" width="596" height="432" class="figure-img"></p>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div id="fig-axis-compare" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-axis-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-axis-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-axis-compare-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-axis-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-axis-compare-output-1.png" data-ref-parent="fig-axis-compare" width="598" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-axis-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Linear scale
+</figcaption>
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-axis-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-axis-compare-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-axis-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-axis-compare-output-2.png" data-ref-parent="fig-axis-compare" width="602" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-axis-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) <span class="math inline">log_{10}</span> scale
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-axis-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Comparison of the Major Axises of the galaxies
+</figcaption>
+</figure>
 </div>
 <p>it is not very clear if we truly have a correlation or not. We need to see the linear correlation of the decimal logarithms.</p>
-<div id="ea216684" class="cell" data-execution_count="31">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-32-output-1.png" width="601" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
+<p><span class="math inline">\hat{R_1} = 3.9</span> [arcmin], <span class="math inline">\hat{a_{26}} = 9.3</span> [arcmin], so the intercept is negligable. <span class="math display">
+R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
+</span></p>
+<p><span class="math display">
+\log(R1) = 0.89\log(a_{26})-10^{0.38} = \log(10^{-0.38}a_{26}^{0.89}) = \log(0.41\cdot a_{26}^{0.89})\Rightarrow R1\simeq \frac{a_{26}}{2}
+</span></p>
 </div>
 </div>
 </div>
@@ -711,17 +811,36 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </tr>
 </tbody>
 </table>
-<div id="afa4f84f" class="cell" data-execution_count="33">
+<div id="cell-fig-KLum-compare" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-34-output-1.png" width="596" height="454" class="figure-img"></p>
+<div id="fig-klum-compare" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-klum-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-klum-compare-output-1.png" width="589" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-klum-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Comparison of the <span class="math inline">L_K</span> of the galaxies
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="033e7deb" class="cell" data-execution_count="35">
-<div class="cell-output cell-output-display" data-execution_count="35">
+<p><span class="math display">
+\log(L_{K,HEC})=1.16\log(L_{K,LCV})-1.78=\log\left(\frac{{L_{K,LCV}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LCV}}^{1.16}
+</span></p>
+<p>So as we can see the usage of a linear fitting is not correct here. But we can clearly see a linear correlation.</p>
+<p>We will use the relative difference of the two luminosities, to see if statistically they are the same:</p>
+<div id="7d725c8a" class="cell" data-execution_count="29">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="compare_files/figure-html/cell-30-output-1.png" width="596" height="454" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="f3a197c1" class="cell" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <div>
 <div>
 
@@ -812,32 +931,63 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </tr>
 </tbody>
 </table>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">B mag</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">K mag</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="189e6a45" class="cell" data-execution_count="37">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-38-output-1.png" width="587" height="432" class="figure-img"></p>
+<div id="fig-mag-compare" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mag-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-mag-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-mag-compare-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mag-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-mag-compare-output-1.png" data-ref-parent="fig-mag-compare" width="589" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mag-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) <span class="math inline">M_B</span>
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-mag-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-mag-compare-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mag-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-mag-compare-output-2.png" data-ref-parent="fig-mag-compare" width="589" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mag-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) <span class="math inline">M_K</span>
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div id="91cb6fa5" class="cell" data-execution_count="38">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mag-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Comparison of the Magnitudes of the galaxies
+</figcaption>
+</figure>
+</div>
+<ul>
+<li><span class="math inline">M_B</span>: it is a 1-1 correlation, since the average error <span class="math inline">M_{B,HECATE} = 0.4\ mag</span>, so the itercept is smaller than the error</li>
+<li><span class="math inline">M_K</span>: we need to examine it more, since the intercept is bigger than the error <span class="math inline">M_{K,HECATE} = 0.09\ mag</span></li>
+</ul>
+<div id="69e1ca10" class="cell" data-execution_count="35">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-39-output-1.png" width="587" height="432" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-36-output-1.png" width="591" height="454" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="compare_files/figure-html/cell-36-output-2.png" width="587" height="432" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="f47bda30" class="cell" data-execution_count="39">
-<div class="cell-output cell-output-display" data-execution_count="39">
+<div id="7332b3c2" class="cell" data-execution_count="36">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <div>
 <div>
 
@@ -888,19 +1038,7 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </div>
 </div>
 </div>
-<div id="1fd7146d" class="cell" data-execution_count="40">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-41-output-1.png" width="591" height="454" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>[?]</p>
-</div>
-</div>
-</div>
+<p>[?] this 5% average in the difference probably exists because of the low number of galaxies we compare, so we can ignore it.</p>
 </section>
 <section id="sfr" class="level2">
 <h2 class="anchored" data-anchor-id="sfr">SFR</h2>
@@ -976,15 +1114,100 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </tr>
 </tbody>
 </table>
-<div id="72c9744a" class="cell" data-execution_count="42">
+<div id="509d30bf" class="cell" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-43-output-1.png" width="1887" height="1887" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-39-output-1.png" width="1887" height="1887" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
+<div id="fig-sfrfuv-sfrha-compare" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sfrfuv-sfrha-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-sfrfuv-sfrha-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-sfrfuv-sfrha-compare-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-sfrfuv-sfrha-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-sfrfuv-sfrha-compare-output-1.png" data-ref-parent="fig-sfrfuv-sfrha-compare" width="588" height="444" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-sfrfuv-sfrha-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Linear scale
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-sfrfuv-sfrha-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-sfrfuv-sfrha-compare-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-sfrfuv-sfrha-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-sfrfuv-sfrha-compare-output-2.png" data-ref-parent="fig-sfrfuv-sfrha-compare" width="600" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-sfrfuv-sfrha-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Decimal logarithmic scale
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sfrfuv-sfrha-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Comparison of the $SFR_{FUV}-SFR_{Hlpha} of the galaxies
+</figcaption>
+</figure>
+</div>
+<p>The SFR according to <span class="citation" data-cites="kroupaConstraintsStarFormation2020">Kroupa et al. (<a href="#ref-kroupaConstraintsStarFormation2020" role="doc-biblioref">2020</a>)</span>, can be calculated from the mean of SFR from the Ha and FUV, for <span class="math inline">SFR&gt;10^{-3}\ M_\odot\, yr^{-1}</span>. As we can see from the plots <strong>?@fig-fig-SFRFUV-SFRHa-compare</strong> it is a good aproximation for all SFR’s</p>
+<p><span class="math display">
+SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
+</span></p>
+<div id="d79b2136" class="cell" data-execution_count="40">
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;QTable length=288&gt;
+ name           mean                   std                    min                     max         
+------ ---------------------- --------------------- ------------------------ ---------------------
+ SFR_t  -2.92541 solMass / yr    1.895 solMass / yr       -9.16 solMass / yr 0.455309 solMass / yr
+SFRFUV 0.0902197 solMass / yr 0.354732 solMass / yr 7.76247e-10 solMass / yr  3.46737 solMass / yr
+ SFRHa 0.0920146 solMass / yr  0.32629 solMass / yr 6.91831e-10 solMass / yr  2.75423 solMass / yr</code></pre>
+</div>
+</div>
+<div id="fig-sfr-compare" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sfr-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-sfr-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-sfr-compare-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-sfr-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-sfr-compare-output-1.png" data-ref-parent="fig-sfr-compare" width="588" height="442" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-sfr-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Linear scale
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-sfr-compare" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-sfr-compare-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-sfr-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-sfr-compare-output-2.png" data-ref-parent="fig-sfr-compare" width="592" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-sfr-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Decimal logarithmic scale
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sfr-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Comparison of the Magnitudes of the galaxies
+</figcaption>
+</figure>
+</div>
+<p>?EXPLANATION? this low correlation maybe comes from the inaccuracy/approximation of <span class="citation" data-cites="kroupaConstraintsStarFormation2020">Kroupa et al. (<a href="#ref-kroupaConstraintsStarFormation2020" role="doc-biblioref">2020</a>)</span></p>
 </section>
 <section id="masses" class="level2">
 <h2 class="anchored" data-anchor-id="masses">Masses</h2>
@@ -1037,10 +1260,24 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </tbody>
 </table>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Stellar Masses Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">Heatmap</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Stellar Masses Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Heatmap</a></li></ul>
 <div class="tab-content">
-<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div id="56b59472" class="cell" data-execution_count="44">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="cell-fig-Mass-compare" class="cell" data-execution_count="43">
+<div class="cell-output cell-output-display">
+<div id="fig-mass-compare" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mass-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-mass-compare-output-1.png" width="589" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mass-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Comparison of the $SFR_{FUV}-SFR_{Hlpha} of the galaxies
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="83c6e052" class="cell" data-execution_count="44">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1049,58 +1286,17 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 </div>
 </div>
 </div>
-<div id="9435236e" class="cell" data-execution_count="46">
-<div class="cell-output cell-output-display" data-execution_count="46">
-<div>
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Percantage Change [%]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">count</td>
-<td>64</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">mean</td>
-<td>-1</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">std</td>
-<td>5</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">min</td>
-<td>-19</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">50%</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">max</td>
-<td>9</td>
-</tr>
-</tbody>
-</table>
-
+<p><span class="math display">
+\log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LCV}}-0.69, \text{ but } \log{M_*}&gt;6\Rightarrow M_{*,HEC}\sim M_{*,LCV}
+</span></p>
+<p>As we can see the aproximation of Mass/Light=const.=0.6 is a pretty good approximation, for the calculation of <span class="math inline">\log(M_*/M_\odot)</span>, especially for high-mass galaxies</p>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div id="49dbb2ba" class="cell" data-execution_count="47">
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="f7154e06" class="cell" data-execution_count="45">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-48-output-1.png" width="946" height="946" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-46-output-1.png" width="946" height="946" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1115,13 +1311,19 @@ Also, as we can see the minimum values are lower by 2 in HECATE, which complies 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-karachentsevSTARFORMATIONPROPERTIES2013a" class="csl-entry" role="listitem">
-Karachentsev, Igor D., and Elena I. Kaisina. 2013. <span>“<span>STAR FORMATION PROPERTIES IN THE LOCAL VOLUME GALAXIES VIA Hα AND FAR-ULTRAVIOLET FLUXES</span>.”</span> <em>AJ</em> 146 (3): 46. <a href="https://doi.org/10.1088/0004-6256/146/3/46">https://doi.org/10.1088/0004-6256/146/3/46</a>.
+Karachentsev, Igor D., and Elena I. Kaisina. 2013. <span>“<span>STAR FORMATION PROPERTIES IN THE LOCAL VOLUME GALAXIES VIA Hα AND FAR-ULTRAVIOLET FLUXES</span>.”</span> <em>The Astronomical Journal</em> 146 (3): 46. <a href="https://doi.org/10.1088/0004-6256/146/3/46">https://doi.org/10.1088/0004-6256/146/3/46</a>.
 </div>
 <div id="ref-karachentsevUPDATEDNEARBYGALAXY2013" class="csl-entry" role="listitem">
-Karachentsev, Igor D., Dmitry I. Makarov, and Elena I. Kaisina. 2013. <span>“<span>UPDATED NEARBY GALAXY CATALOG</span>.”</span> <em>AJ</em> 145 (4): 101. <a href="https://doi.org/10.1088/0004-6256/145/4/101">https://doi.org/10.1088/0004-6256/145/4/101</a>.
+Karachentsev, Igor D., Dmitry I. Makarov, and Elena I. Kaisina. 2013. <span>“<span>UPDATED NEARBY GALAXY CATALOG</span>.”</span> <em>The Astronomical Journal</em> 145 (4): 101. <a href="https://doi.org/10.1088/0004-6256/145/4/101">https://doi.org/10.1088/0004-6256/145/4/101</a>.
 </div>
 <div id="ref-kovlakasHeraklionExtragalacticCatalogue2021" class="csl-entry" role="listitem">
 Kovlakas, K., A. Zezas, J. J. Andrews, A. Basu-Zych, T. Fragos, A. Hornschemeier, K. Kouroumpatzakis, B. Lehmer, and A. Ptak. 2021. <span>“The <span>Heraklion Extragalactic Catalogue</span> (<span>HECATE</span>): A Value-Added Galaxy Catalogue for Multimessenger Astrophysics.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 506 (September): 1896–1915. <a href="https://doi.org/10.1093/mnras/stab1799">https://doi.org/10.1093/mnras/stab1799</a>.
+</div>
+<div id="ref-kroupaConstraintsStarFormation2020" class="csl-entry" role="listitem">
+Kroupa, P, M Haslbauer, I Banik, S T Nagesh, and J Pflamm-Altenburg. 2020. <span>“Constraints on the Star Formation Histories of Galaxies in the <span>Local Cosmological Volume</span>.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 497 (1): 37–43. <a href="https://doi.org/10.1093/mnras/staa1851">https://doi.org/10.1093/mnras/staa1851</a>.
+</div>
+<div id="ref-navarroStructureColdDark1996" class="csl-entry" role="listitem">
+Navarro, Julio F., Carlos S. Frenk, and Simon D. M. White. 1996. <span>“The <span>Structure</span> of <span>Cold Dark Matter Halos</span>.”</span> <em>The Astrophysical Journal</em> 462 (May): 563. <a href="https://doi.org/10.1086/177173">https://doi.org/10.1086/177173</a>.
 </div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
