@@ -40,13 +40,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\ifLuaTeX
-  \usepackage{luacolor}
-  \usepackage[soul]{lua-ul}
-\else
-  \usepackage{soul}
-  
-\fi
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
@@ -195,8 +188,8 @@
 }
 \section{The data}\label{the-data}
 
-In this script we will compare 2 catalogs Kovlakas et al. (2021) and
-Karachentsev and Kaisina (2013)
+In this script we will compare 2 catalogs, HECATE (Kovlakas et al.
+(2021)) and LCV (Karachentsev and Kaisina (2013))
 
 \begin{itemize}
 \tightlist
@@ -227,12 +220,13 @@ of 288 galaxies and 168 columns.
 \section{Catalog Completeness}\label{catalog-completeness}
 
 Checking for completeness in galaxy catalogs is essential to ensure that
-the data accurately represents the true population of galaxies.
-Incomplete catalogs can lead to biased results in statistical studies,
-such as the distribution of galaxy luminosity, mass, or star formation
-rates. Additionally, missing galaxies, especially those at faint
-magnitudes or large distances, can distort cosmological measurements and
-hinder our understanding of galaxy formation and evolution.
+the data accurately represents the true population of galaxies, for
+\(z \approx 0\). Incomplete catalogs can lead to biased results in
+statistical studies, such as the distribution of galaxy luminosity,
+mass, or star formation rates. Additionally, missing galaxies,
+especially those at faint magnitudes or large distances, can distort
+cosmological measurements and hinder our understanding of galaxy
+formation and evolution.
 
 Completeness checks are crucial for addressing selection biases,
 identify gaps in the data and guide follow-up observations, ensuring
@@ -244,116 +238,95 @@ or incomplete.
 Catalog}\label{completeness-of-the-lcv-catalog}
 
 The local volume selection has been made by taking into account galaxies
-with: 1. Radial velocities of
-\begin{equation}\phantomsection\label{eq-lcv-vel}{
-    V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
-    }\end{equation} 2. Distances of D\textless11 Mpc
+with:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Radial velocities of
+  \begin{equation}\phantomsection\label{eq-lcv-vel}{
+   V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
+  }\end{equation}
+\item
+  Distances of \begin{equation}\phantomsection\label{eq-lcv-dis}{
+     D<11\ \text{Mpc}
+     }\end{equation}
+\end{enumerate}
 
 A simultaneous fulfillment of both conditions (1) and (2) is not
 required.
 
-\begin{itemize}
+\subsubsection{Difficulties in calculating the
+Completeness}\label{difficulties-in-calculating-the-completeness}
+
+As explained in (Karachentsev, Makarov, and Kaisina (2013)), it is
+difficult to calculate the completeness of the catalog.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Completeness within a 10 Mpc radius is difficult to assess due to:
+  Completeness within a 10 Mpc radius is difficult to assess due to: -
+  Variability in galaxy properties (luminosity, size, surface
+  brightness, gas content) - Errors in distance measurements
+  (Tully--Fisher method errors of \textasciitilde20--25\%), especially
+  at the 10 Mpc boundary.
 
   \begin{itemize}
   \tightlist
   \item
-    Variability in galaxy properties (luminosity, size, surface
-    brightness, gas content)
+    Accurate distances are mainly known within \textasciitilde5 Mpc.
   \item
-    Errors in distance measurements (Tully--Fisher method errors of
-    \textasciitilde20--25\%), especially at the 10 Mpc boundary.
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Accurate distances are mainly known within \textasciitilde5 Mpc.
-    \end{itemize}
+    Non-Hubble motions (\textasciitilde300 km/s)\footnote{\emph{Non-Hubble
+      motion refers to the component of a galaxy's velocity that
+      deviates from the uniform expansion of the universe, described by
+      the equation} \(V= H_0 d + v_p\),where \(V\) is the total
+      velocity, \(H_0 d\) represents the Hubble flow, and
+      \(v_p\)\hspace{0pt} is the peculiar velocity. {``Essay''} (n.d.)}
+    may make up half of the adopted velocity constraint
+    (Equation~\ref{eq-lcv-vel})
   \item
-    Non-Hubble motions (\textasciitilde300 km/s) may make up half of the
-    adopted velocity constraint Equation~\ref{eq-lcv-vel}
-
-    \begin{itemize}
-    \tightlist
-    \item
-      Solution for our usage: only keep the galaxies inside a radius of
-      \(D=11 Mpc\)
-    \item
-      HI sources in surveys with low angular resolution: ``The presence
-      around our Galaxy of hundreds of high-velocity clouds with low
-      line-of-sight velocities and small W50 widths also provokes the
-      inclusion of false ``nearby'' dwarf galaxies in the
-      LV''Karachentsev, Makarov, and Kaisina (2013)
-    \item
-      photographic emulsion defect -\textgreater{} exotic cases of
-      galaxies -\textgreater{} radial velocity of \(+614 km s^{−1}\)
-    \end{itemize}
+    Solution for our usage: only keep the galaxies inside a radius of
+    \(D=11 Mpc\)
+  \item
+    HI sources in surveys with low angular resolution: ``The presence
+    around our Galaxy of hundreds of high-velocity clouds with low
+    line-of-sight velocities and small W50 widths also provokes the
+    inclusion of false ``nearby'' dwarf galaxies in the
+    LV''(Karachentsev, Makarov, and Kaisina (2013))
   \end{itemize}
 \item
-  Astro-Spam and Survey Errors:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Automatic surveys produce false detections (e.g., stars
-    misclassified as galaxies, high-velocity clouds mistaken for
-    dwarfs).
-  \end{itemize}
+  Astro-Spam and Survey Errors: - Automatic surveys produce false
+  detections (e.g., stars misclassified as galaxies, high-velocity
+  clouds mistaken for dwarfs).
 \item
-  Conditional Completeness Estimate:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Galaxies brighter than \(M_B^c = -11^m\) or with linear diameters
-    larger than \(A_{26} = 1.0\) kpc show (40--60)\% completeness.
-  \item
-    ``among the members of the Local Group (D \textless{} 1 Mpc), only
-    half of the galaxies have absolute magnitudes brighter than −11m.
-    Consequently, more than half of the ultra-faint dwarf companions
-    around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc),
-    still remain outside our field of view.''
-  \end{itemize}
+  Conditional Completeness Estimate: - Galaxies brighter than
+  \(M_B^c = -11^m\) or with linear diameters larger than
+  \(A_{26} = 1.0\) kpc show (40--60)\% completeness. - ``among the
+  members of the Local Group (D \textless{} 1 Mpc), only half of the
+  galaxies have absolute magnitudes brighter than −11m. Consequently,
+  more than half of the ultra-faint dwarf companions around normal
+  galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside
+  our field of view.''
 \item
-  Undetected Ultra-Faint Dwarfs:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Many faint dwarf galaxies remain undetected beyond the Local Group.
-    Estimated population of undetected dwarfs could be as large as
-    \(10^3–10^4\) within the LV.
-  \end{itemize}
+  Undetected Ultra-Faint Dwarfs: - Many faint dwarf galaxies remain
+  undetected beyond the Local Group. Estimated population of undetected
+  dwarfs could be as large as \(10^3–10^4\) within the LV.
 \item
-  Surface Brightness Distribution:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Surface brightness remains consistent across distances, except for
-    ultra-faint dwarfs (\(SB <31 \text{mag}\cdot\text{arcsec}^{-2}\)).
-  \item
-    Faintest dwarf galaxies are detectable only nearby due to their
-    resolution into individual stars.
-  \end{itemize}
+  Surface Brightness Distribution: - Surface brightness remains
+  consistent across distances, except for ultra-faint dwarfs
+  (\(SB <31 \text{mag}\cdot\text{arcsec}^{-2}\)). - Faintest dwarf
+  galaxies are detectable only nearby due to their resolution into
+  individual stars.
 \item
-  Luminosity-Size Relationship:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Observations align with cosmological models predicting \(L\sim A^3\)
-    Navarro, Frenk, and White (1996), though deviations occur for
-    extremely low surface brightness galaxies.
-  \item
-    ``The deviation from it at the extremely low surface brightness end
-    is due to a systematic overestimation of dwarf galaxy sizes, the
-    brightness profiles of which lie entirely below the Holmberg
-    isophote.''
-  \end{itemize}
-\end{itemize}
+  Luminosity-Size Relationship: - Observations align with cosmological
+  models predicting \(L\sim A^3\) (Navarro, Frenk, and White (1996)),
+  though deviations occur for extremely low surface brightness galaxies.
+  - ``The deviation from it at the extremely low surface brightness end
+  is due to a systematic overestimation of dwarf galaxy sizes, the
+  brightness profiles of which lie entirely below the Holmberg
+  isophote.''
+\end{enumerate}
 
 \subsection{Completeness of HECATE}\label{completeness-of-hecate}
 
@@ -462,8 +435,6 @@ Combined Completeness
 
 \subsection{Completeness of the Data}\label{completeness-of-the-data}
 
-\subsubsection{Distance}\label{distance}
-
 \begin{figure}
 
 \begin{minipage}{0.50\linewidth}
@@ -526,8 +497,8 @@ of the Catalogs}
 
 \end{figure}%
 
-As we can see from the histograms Figure~\ref{fig-dis-comp} and
-Figure~\ref{fig-type-comp} the sample of unique galaxies of each
+As we can see from the histograms (Figure~\ref{fig-dis-comp}) and
+(Figure~\ref{fig-type-comp}) the sample of unique galaxies of each
 catalog, gets smaller by an almost constant proportion (Inner join).
 
 This means there is no bias in the selection of the galaxies.
@@ -535,26 +506,18 @@ This means there is no bias in the selection of the galaxies.
 \section{How are we going to compare the
 data?}\label{how-are-we-going-to-compare-the-data}
 
-\subsection{\texorpdfstring{Scatter plots and \(R^2\)
-calculation}{Scatter plots and R\^{}2 calculation}}\label{scatter-plots-and-r2-calculation}
+For the comparison of our data we will mainly use two methods: linear
+regression and comparison of the distributions.
+
+For the linear regression out main tools are scatter plots and \(R^2\)
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
 \item
   \(R^2\): Measures the proportion of variance explained by the linear
   model.
 \item
-  Slope of the Fitted Line: Should be close to 1 for a 1-1
-  correlation.\footnote{Some data seem to have a very good linear
-    correlation but they have many outliers. This is why we will clip
-    the outliers with \(\sigma > 3\)}
-\end{enumerate}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
+  Slope of the Fitted Line: Should be close to 1 for a 1-1 correlation.
 \item
   Pearson Correlation \(\rho\): Measures the strength and direction of
   the linear relationship between two variables, ranging from -1 to 1.
@@ -565,26 +528,13 @@ calculation}{Scatter plots and R\^{}2 calculation}}\label{scatter-plots-and-r2-c
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{3}
-\tightlist
 \item
-  \ul{Plots}: Plots are essential for visually assessing the
-  relationship between two datasets, identifying correlations, trends,
-  and outliers, and evaluating the fit of linear models.
-\end{enumerate}
+  Plots: Plots are essential for visually assessing the relationship
+  between two datasets, identifying correlations, trends, and outliers,
+  and evaluating the fit of linear models. Beside scatter plots and
+  histograms, another useful plot is the Correlation Heatmap.
 
-\begin{itemize}
-\tightlist
-\item
-  Histograms: Because not all of our data have the same number of
-  counts, the comparison with histograms between data that are not the
-  same, doesn't help us right now.\footnote{When we will use the outer
-    join table we could use histograms due to the large number of
-    counts.} This is why we will only use histograms for comparing the
-  distribution of same-data columns normalized by their maximum value
-\end{itemize}
-
-\begin{itemize}
-\item
+  \begin{quote}
   Correlation Heatmaps: A correlation heatmap is a graphical tool that
   displays the correlation between multiple variables as a color-coded
   matrix. It's like a color chart that shows us how closely related
@@ -593,21 +543,23 @@ calculation}{Scatter plots and R\^{}2 calculation}}\label{scatter-plots-and-r2-c
   between them. The color of each cell represents the strength and
   direction of the correlation, with darker colors indicating stronger
   correlations.
-\item
-  Kernel Density Estimate (KDE) plot: The KDE plot visually represents
-  the distribution of data, providing insights into its shape, central
-  tendency, and spread.
-\end{itemize}
+  \end{quote}
+\end{enumerate}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{4}
+For the distrabution comparisons we will use histograms and Kernel
+Density Estimate (KDE) plots. The KDE plots visually represent the
+distribution of data, providing insights into its shape, central
+tendency, and spread.
+
+Finally, we will examine the percentage change for each galaxy.
+
+\begin{itemize}
 \tightlist
 \item
   Percentage change: We can calculate the percentage change of the data
   for each galaxy and then we can see if the data are similar, based on
   minimum, the maximum and the mean value of the difference.
-\end{enumerate}
+\end{itemize}
 
 \[\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%\]
 
@@ -615,9 +567,21 @@ calculation}{Scatter plots and R\^{}2 calculation}}\label{scatter-plots-and-r2-c
 
 \subsection{Coordinates}\label{coordinates}
 
-\begin{longtable}[]{@{}cccc@{}}
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2329}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2329}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2329}}
+  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3014}}@{}}
 \toprule\noalign{}
-LCV & HECATE & Description & Pearson Correlation {[}-1,1{]} \\
+\begin{minipage}[b]{\linewidth}\centering
+LCV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+HECATE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Pearson Correlation {[}-1,1{]}
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -641,8 +605,8 @@ Dis & D & Distance & 0.881 \\
 \tightlist
 \item
   The average error of the distance in the HECATE catalog is
-  \(\overline{E_D} = \pm 1.6\) Mpc, so the intercept is included in the
-  error.
+  \(\overline{\delta D} = \pm 1.6\) Mpc, so the intercept is included in
+  the error.
 \item
   So we can assume that the Distances are the same
 \end{itemize}
@@ -690,17 +654,42 @@ cz (km/s) & & Heliocentric velocity & \\
 \tightlist
 \item
   The average error of the radial velocity in the HECATE catalog is
-  \(\overline{E_V} = \pm 12\text{km}\cdot s^{-1}\) , so the intercept is
-  included in the error.
+  \(\overline{\delta V} = \pm 12\text{km}\cdot s^{-1}\) , so the
+  intercept is included in the error.
 \item
   So we can assume that the radial velocities are the same
 \end{itemize}
 
-\includegraphics{compare_files/figure-pdf/cell-15-output-1.pdf}
+\begin{figure}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-vel-pairplot-output-1.pdf}
+
+}
+
+\caption{\label{fig-vel-pairplot}The correlation Matrix of the
+Velocities. The lower left triangle is is composed of the scatter plots
+of the various velocities, the diagonal shows their distrubution and the
+upper right triangle shows the correlations of the Velocities}
+
+\end{figure}%
 
 {[}?{]} The close correlation between all of the velocities, could be
 due to the fact that all of them measure the velocity of each galaxy,
 but from a different frame of reference.
+
+The strong correlation between the velocities reported by the HECATE and
+LCV catalogs can be attributed to the fact that both measure the same
+intrinsic galaxy velocities but reference them to different frames. For
+instance, velocities can be corrected for the movement of the Earth
+(heliocentric frame) or the for the Virgo-infall. These corrections
+shift the measured velocity slightly, but the fundamental measurement
+remains consistent. This explains why the velocities are highly
+correlated, as they represent the same physical phenomenon but adjusted
+for different reference points.
+
+\newpage{}
 
 \subsection{Morphology and Geometry}\label{morphology-and-geometry}
 
@@ -730,6 +719,18 @@ a26\_1 (Major) & R1 (Semi-major axis) & angular diameter (arcmin) & 0 \\
 \end{longtable}
 
 \subsubsection{Galaxy Types}
+
+``Morphological type of galaxy in the numerical code according to the
+classification by de Vaucouleurs et al.~(1991). It should be noted that
+about three quarters of objects in the LV are dwarf galaxies, which
+require a more detailed morphological classification. For example, dwarf
+spheroidal galaxies and normal ellipticals are usually denoted by the
+same numerical code T \textless{} 0, although their physical properties
+drastically differ. The classification problem arises as well for the
+``transient'' type dwarf galaxies, T r, which combine the features of
+spheroidal (Sph) and irregular (Ir)systems. Due to small classification
+errors, such objects may ``jump'' from one end of the T scale to the
+other.'' (Karachentsev, Makarov, and Kaisina (2013))
 
 \begin{figure}
 
@@ -763,18 +764,6 @@ correction}
 
 \end{figure}%
 
-``Morphological type of galaxy in the numerical code according to the
-classification by de Vaucouleurs et al.~(1991). It should be noted that
-about three quarters of objects in the LV are dwarf galaxies, which
-require a more detailed morphological classification. For example, dwarf
-spheroidal galaxies and normal ellipticals are usually denoted by the
-same numerical code T \textless{} 0, although their physical properties
-drastically differ. The classification problem arises as well for the
-``transient'' type dwarf galaxies, T r, which combine the features of
-spheroidal (Sph) and irregular (Ir)systems. Due to small classification
-errors, such objects may ``jump'' from one end of the T scale to the
-other.'' Karachentsev, Makarov, and Kaisina (2013)
-
 \begin{itemize}
 \tightlist
 \item
@@ -784,20 +773,20 @@ other.'' Karachentsev, Makarov, and Kaisina (2013)
   this might explain the large errors E\_T of HECATE
 \item
   why we see a difference in the distribution of
-  Figure~\ref{fig-type-comp}
+  (Figure~\ref{fig-type-comp})
 \end{itemize}
 
 We can remove the ``problematic'' galaxies by only keeping the ones
 with: \[
-|{T_{HECATE}-T_{LCV}}|<7
+|{T_{HECATE}-T_{LCV}}|<\sigma_{T_{LCV}} = 4.8
 \]
 
 \begin{itemize}
 \tightlist
 \item
   The average uncertainty of the morphological type in the HECATE
-  catalog is \(\overline{E_T} = \pm 1.4\), so the intercept is included
-  in the error.
+  catalog is \(\overline{\delta T} = \pm 1.4\), so the intercept is
+  included in the error.
 \item
   So we can assume that the Distances are the same
 \end{itemize}
@@ -807,10 +796,33 @@ with: \[
 \begin{figure}
 
 \begin{minipage}{0.50\linewidth}
-\includegraphics{compare_files/figure-pdf/cell-24-output-1.pdf}\end{minipage}%
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-incl-compare-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-incl-compare-1}Distribution of the Inclination of
+the galaxies}
+
+\end{minipage}%
 %
 \begin{minipage}{0.50\linewidth}
-\includegraphics{compare_files/figure-pdf/cell-24-output-2.pdf}\end{minipage}%
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-incl-compare-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-incl-compare-2}Distribution of the Percentage
+Change}
+
+\end{minipage}%
+
+\caption{\label{fig-incl-compare}Comparison of the Inclination of the
+galaxies}
 
 \end{figure}%
 
@@ -833,10 +845,11 @@ max & 90 & 90 & 1 \\
 
 We can see that for values in the range
 \([\sim 30^\circ,\sim 80^\circ]\), the values of the LCV inclination are
-higher. However, since their means, median, min and maxes are similar
-and the percentage change is practically 0\% (mean, median, \(\sigma\) =
-0 with a range \([-3\%,1\%]\)), we can ignore the differences and assume
-they are the same values.
+higher (Figure~\ref{fig-incl-compare}). However, since their means,
+median, min and maxes are similar and the percentage change is
+practically 0\% (mean, median, \(\sigma\) = 0 with a range
+\([-3\%,1\%]\)), we can ignore the differences and assume they are the
+same values.
 
 \subsubsection{Major Axis}
 
@@ -871,11 +884,14 @@ galaxies}
 
 \end{figure}%
 
-it is not very clear if we truly have a correlation or not. We need to
-see the linear correlation of the decimal logarithms.
+it is not very clear if we truly have a correlation or not
+(Figure~\ref{fig-axis-compare-1}). We need to see the linear correlation
+of the decimal logarithms (Figure~\ref{fig-axis-compare-2}).
 
 \(\overline{R_1} = 3.9\) {[}arcmin{]}, \(\overline{a_{26}} = 9.3\)
-{[}arcmin{]}, so the intercept is negligable. \[
+{[}arcmin{]}, so the intercept is negligable.
+
+\[
 R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
 \]
 
@@ -897,14 +913,33 @@ logKLum & logL\_K & & 0 \\
 
 \begin{figure}
 
+\begin{minipage}{0.50\linewidth}
+
 \centering{
 
 \includegraphics{compare_files/figure-pdf/fig-klum-compare-output-1.pdf}
 
 }
 
+\subcaption{\label{fig-klum-compare-1}Linear Regression with free
+paramaters, \(y=ax+b\)}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-klum-compare-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-klum-compare-2}Linear Regrassion \(y=x\)}
+
+\end{minipage}%
+
 \caption{\label{fig-klum-compare}Comparison of the \(L_K\) of the
-galaxies}
+galaxies.}
 
 \end{figure}%
 
@@ -912,29 +947,40 @@ galaxies}
 \log(L_{K,HEC})=1.16\log(L_{K,LCV})-1.78=\log\left(\frac{{L_{K,LCV}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LCV}}^{1.16}
 \]
 
-So as we can see the usage of a linear fitting is not correct here. But
-we can clearly see a linear correlation.
+To assess whether the two galaxy catalogs have a 1-1 correlation, I
+applied two types of linear fits to the data: a free fit and a forced
+fit. The free fit allows both the slope and intercept to vary freely,
+meaning the line can take on any slope and can cross the y-axis at any
+point. In contrast, for the forced fit, I set the slope to exactly 1 and
+fixed the line to pass through the origin, meaning the equation becomes
+y=xy=x. This forced fit represents a perfect 1-1 relationship, where the
+values from one catalog should match the other exactly, without any
+shift or scaling.
 
-We will use the relative difference of the two luminosities, to see if
-statistically they are the same:
+After fitting the data using both methods, I calculated the \(R^2\)
+value for each fit. In this case, both the free fit and the forced fit
+produced very similar \(R^2\) values, around 87.13\%\footnote{The
+  difference of the linear regression with the free parameters and the
+  forced regression is \(\Delta R^2 = 1.14\cdot 10^{-13}\%\)},
+indicating that both fits explain about 87\% of the variance in the data
+(Figure~\ref{fig-klum-compare}).
 
-\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
+The fact that both the free and forced fits have nearly identical
+\(R^2\) values suggests that the data closely follows a 1-1
+relationship. In the free fit, the best-fitting line had a very small
+intercept, which shows that allowing the line to shift vertically did
+not significantly improve how well the line fits the data. This strongly
+indicates that the data from the two catalogs are well-aligned and
+follow the relationship y=x quite closely, which is what we expect if
+the catalogs are in good agreement.
 
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
-& log(L\_K)\_\{LCV\}\$ & log(L\_K)\_\{HEC\} & Percentage Change
-{[}\%{]} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-count & 287 & 70 & 70 \\
-mean & 8 & 9 & -4 \\
-std & 1 & 1 & 8 \\
-min & 3 & 5 & -48 \\
-50\% & 8 & 9 & -0 \\
-max & 11 & 11 & 7 \\
-\end{longtable}
+While these results are promising, it's important to note that achieving
+an \(R^2\) of 87\%---while high---doesn't necessarily prove a perfect
+1-1 correlation. There may still be small discrepancies or uncertainties
+in the data that prevent a perfect match. Nonetheless, the fact that
+fixing the slope to 1 and forcing the line through the origin gave such
+a good result suggests that the two catalogs are very consistent with
+each other.
 
 \subsection{Magnitudes}\label{magnitudes}
 
@@ -997,14 +1043,16 @@ galaxies}
 \item
   \(M_B\): it is a 1-1 correlation, since the average error
   \(M_{B,HECATE} = 0.4\ mag\), so the itercept is smaller than the error
+  (Figure~\ref{fig-mag-compare})
 \item
   \(M_K\): we need to examine it more, since the intercept is bigger
   than the error \(M_{K,HECATE} = 0.09\ mag\)
+  (Figure~\ref{fig-mag-compare})
 \end{itemize}
 
-\includegraphics{compare_files/figure-pdf/cell-35-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-26-output-1.pdf}
 
-\includegraphics{compare_files/figure-pdf/cell-35-output-2.pdf}
+\includegraphics{compare_files/figure-pdf/cell-26-output-2.pdf}
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -1022,8 +1070,8 @@ min & -70 & -42 \\
 max & 16 & 16 \\
 \end{longtable}
 
-{[}?{]} this 5\% average in the difference probably exists because of
-the low number of galaxies we compare, so we can ignore it.
+{[}?{]} this 5\% mean in the difference probably exists because of the
+low number of galaxies we compare, so we can ignore it.
 
 \subsection{SFR}\label{sfr}
 
@@ -1064,7 +1112,7 @@ SFRFUV & & FUV derived integral star formation rate & 220 \\
 SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
 \end{longtable}
 
-\includegraphics{compare_files/figure-pdf/cell-38-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
 
 \begin{figure}
 
@@ -1092,14 +1140,14 @@ SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
 
 \end{minipage}%
 
-\caption{\label{fig-sfr-lcv}Comparison of the \$SFR\_\{FUV\}-SFR\_\{Ha\}
-of the galaxies}
+\caption{\label{fig-sfr-lcv}Comparison of the \(SFR_{FUV}-SFR_{Ha}\) of
+the galaxies}
 
 \end{figure}%
 
-The SFR according to Kroupa et al. (2020), can be calculated from the
+The SFR according to (Kroupa et al. (2020)), can be calculated from the
 mean of SFR from the Ha and FUV, for \(SFR>10^{-3}\ M_\odot\, yr^{-1}\).
-As we can see from the plots Figure~\ref{fig-sfr-lcv} it is a good
+As we can see from the plots (Figure~\ref{fig-sfr-lcv}) it is a good
 aproximation for all SFR's
 
 \[
@@ -1136,8 +1184,12 @@ SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_
 
 \end{figure}%
 
-?EXPLANATION? this low correlation maybe comes from the
-inaccuracy/approximation of Kroupa et al. (2020)
+{[}?{]}EXPLANATION this low correlation maybe comes from the
+inaccuracy/approximation of (Kroupa et al. (2020))
+
+The reason is that this aproximation is accurate if we consider a stable
+SFR over time. However, we tend to observe higher Ha for more recent SF
+activity. (we discussed it in our last meeting, I need a refrence).
 
 \subsection{Masses}\label{masses}
 
@@ -1183,8 +1235,6 @@ galaxies}
 
 \end{figure}%
 
-\includegraphics{compare_files/figure-pdf/cell-44-output-1.pdf}
-
 \[
 \log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LCV}}-0.69, \text{ but } \log{M_*}>6\Rightarrow M_{*,HEC}\sim M_{*,LCV}
 \]
@@ -1195,10 +1245,31 @@ for high-mass galaxies
 
 \subsubsection{Heatmap}
 
-\includegraphics{compare_files/figure-pdf/cell-45-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-35-output-1.pdf}
+
+The heatmap is used to visually assess the correlations between
+different mass estimates of the galaxies, including the mass within the
+Holmberg radius (\(M_{26}\)), the HI gas mass (\(M_{HI}\)\hspace{0pt}),
+the stellar mass from the HECATE catalog (\(M_{HEC}\)\hspace{0pt}), and
+the stellar mass derived assuming a mass-to-light ratio of 0.6
+(StellarMass). The purpose of this visualization is to quickly identify
+whether these different mass measurements show consistent correlations,
+which would suggest that they capture similar aspects of the galaxies'
+mass distributions.
+
+This quick check using the heatmap helps confirm that, while different
+catalogs and methods might have their own specific ways of calculating
+galaxy masses, the overall mass estimates align well, offering a solid
+basis for further analysis of galaxy properties.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-Essay}
+{``Essay.''} n.d. Accessed October 5, 2024.
+\url{https://ned.ipac.caltech.edu/level5/Glossary/Essay_pecmotion.html}.
+
 \bibitem[\citeproctext]{ref-karachentsevSTARFORMATIONPROPERTIES2013a}
 Karachentsev, Igor D., and Elena I. Kaisina. 2013. {``{STAR FORMATION
 PROPERTIES IN THE LOCAL VOLUME GALAXIES VIA Hα AND FAR-ULTRAVIOLET
