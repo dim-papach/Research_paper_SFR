@@ -189,7 +189,7 @@
 \section{The data}\label{the-data}
 
 In this script we will compare 2 catalogs, HECATE (Kovlakas et al.
-(2021)) and LCV (Karachentsev and Kaisina (2013))
+(2021)) and LVG (Karachentsev and Kaisina (2013))
 
 \begin{itemize}
 \tightlist
@@ -215,7 +215,7 @@ In this script we will compare 2 catalogs, HECATE (Kovlakas et al.
 \end{itemize}
 
 The dataset we are going to use for the comparison (inner join) consists
-of 288 galaxies and 168 columns.
+of 288 galaxies and 168 columns with their physical characteristics.
 
 \section{Catalog Completeness}\label{catalog-completeness}
 
@@ -234,24 +234,33 @@ that the catalog provides a reliable sample for scientific analysis.
 Without these checks, conclusions drawn from the data may be inaccurate
 or incomplete.
 
-\subsection{Completeness of the LCV
-Catalog}\label{completeness-of-the-lcv-catalog}
+\subsection{Completeness of the LVG
+Catalog}\label{completeness-of-the-lvg-catalog}
 
 The local volume selection has been made by taking into account galaxies
 with:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\tightlist
 \item
   Radial velocities of
-  \begin{equation}\phantomsection\label{eq-lcv-vel}{
-   V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
-  }\end{equation}
-\item
-  Distances of \begin{equation}\phantomsection\label{eq-lcv-dis}{
-     D<11\ \text{Mpc}
-     }\end{equation}
 \end{enumerate}
+
+\begin{equation}\phantomsection\label{eq-lvg-vel}{
+     V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
+}\end{equation}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Distances of
+\end{enumerate}
+
+\begin{equation}\phantomsection\label{eq-lvg-dis}{
+       D<11\ \text{Mpc}
+}\end{equation}
 
 A simultaneous fulfillment of both conditions (1) and (2) is not
 required.
@@ -284,10 +293,14 @@ difficult to calculate the completeness of the catalog.
       velocity, \(H_0 d\) represents the Hubble flow, and
       \(v_p\)\hspace{0pt} is the peculiar velocity. {``Essay''} (n.d.)}
     may make up half of the adopted velocity constraint
-    (Equation~\ref{eq-lcv-vel})
-  \item
-    Solution for our usage: only keep the galaxies inside a radius of
-    \(D=11 Mpc\)
+    (Equation~\ref{eq-lvg-vel})
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Solution for our usage: only keep the galaxies inside a radius of
+      \(D=11 Mpc\)
+    \end{itemize}
   \item
     HI sources in surveys with low angular resolution: ``The presence
     around our Galaxy of hundreds of high-velocity clouds with low
@@ -295,37 +308,73 @@ difficult to calculate the completeness of the catalog.
     inclusion of false ``nearby'' dwarf galaxies in the
     LV''(Karachentsev, Makarov, and Kaisina (2013))
   \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
 \item
-  Astro-Spam and Survey Errors: - Automatic surveys produce false
-  detections (e.g., stars misclassified as galaxies, high-velocity
-  clouds mistaken for dwarfs).
+  Astro-Spam and Survey Errors:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Automatic surveys produce false detections (e.g., stars
+    misclassified as galaxies, high-velocity clouds mistaken for
+    dwarfs).
+  \end{itemize}
 \item
   Conditional Completeness Estimate: - Galaxies brighter than
   \(M_B^c = -11^m\) or with linear diameters larger than
-  \(A_{26} = 1.0\) kpc show (40--60)\% completeness. - ``among the
-  members of the Local Group (D \textless{} 1 Mpc), only half of the
-  galaxies have absolute magnitudes brighter than −11m. Consequently,
-  more than half of the ultra-faint dwarf companions around normal
-  galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside
-  our field of view.''
+  \(A_{26} = 1.0\) kpc show (40--60)\% completeness.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ``among the members of the Local Group (D \textless{} 1 Mpc), only
+    half of the galaxies have absolute magnitudes brighter than
+    \(−11^m\). Consequently, more than half of the ultra-faint dwarf
+    companions around normal galaxies, like the Sombrero galaxy (D = 9.3
+    Mpc), still remain outside our field of view.''
+  \end{itemize}
 \item
-  Undetected Ultra-Faint Dwarfs: - Many faint dwarf galaxies remain
-  undetected beyond the Local Group. Estimated population of undetected
-  dwarfs could be as large as \(10^3–10^4\) within the LV.
+  Undetected Ultra-Faint Dwarfs:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Many faint dwarf galaxies remain undetected beyond the Local Group.
+    Estimated population of undetected dwarfs could be as large as
+    \(10^3–10^4\) within the LV.
+  \end{itemize}
 \item
-  Surface Brightness Distribution: - Surface brightness remains
-  consistent across distances, except for ultra-faint dwarfs
-  (\(SB <31 \text{mag}\cdot\text{arcsec}^{-2}\)). - Faintest dwarf
-  galaxies are detectable only nearby due to their resolution into
-  individual stars.
+  Surface Brightness Distribution:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Surface brightness remains consistent across distances, except for
+    ultra-faint dwarfs (\(SB <31 \text{mag}\cdot\text{arcsec}^{-2}\)).
+  \item
+    Faintest dwarf galaxies are detectable only nearby due to their
+    resolution into individual stars.
+  \end{itemize}
 \item
-  Luminosity-Size Relationship: - Observations align with cosmological
-  models predicting \(L\sim A^3\) (Navarro, Frenk, and White (1996)),
-  though deviations occur for extremely low surface brightness galaxies.
-  - ``The deviation from it at the extremely low surface brightness end
-  is due to a systematic overestimation of dwarf galaxy sizes, the
-  brightness profiles of which lie entirely below the Holmberg
-  isophote.''
+  Luminosity-Size Relationship:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Observations align with cosmological models predicting \(L\sim A^3\)
+    (Navarro, Frenk, and White (1996)), though deviations occur for
+    extremely low surface brightness galaxies.
+  \item
+    ``The deviation from it at the extremely low surface brightness end
+    is due to a systematic overestimation of dwarf galaxy sizes, the
+    brightness profiles of which lie entirely below the Holmberg
+    isophote.''
+  \end{itemize}
 \end{enumerate}
 
 \subsection{Completeness of HECATE}\label{completeness-of-hecate}
@@ -401,9 +450,9 @@ Table & Number of galaxies \\
 \endlastfoot
 Inner join & 288 \\
 Outer join & 2901 \\
-LCV & 1316 \\
+LVG & 1316 \\
 HECATE & 2901 \\
-Unique galaxies in LCV & 1028 \\
+Unique galaxies in LVG & 1028 \\
 Unique Galaxies in Hecate & 2613 \\
 \end{longtable}
 
@@ -416,7 +465,7 @@ join}\label{completeness-of-the-inner-join}
 
 Completeness (HECATE)= 10 \%
 
-Completeness (LCV)= 22 \%
+Completeness (LVG)= 22 \%
 
 \subsection{Completeness in Outer
 join}\label{completeness-in-outer-join}
@@ -427,10 +476,10 @@ join}\label{completeness-in-outer-join}
 
 Completeness (HECATE)= 90 \%
 
-Completeness (LCV)= 78 \%
+Completeness (LVG)= 78 \%
 
 Combined Completeness
-=\(\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LCV}}\)=
+=\(\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LVG}}\)=
 80 \%
 
 \subsection{Completeness of the Data}\label{completeness-of-the-data}
@@ -457,7 +506,7 @@ Combined Completeness
 
 }
 
-\subcaption{\label{fig-dis-comp-2}LCV}
+\subcaption{\label{fig-dis-comp-2}LVG}
 
 \end{minipage}%
 
@@ -488,7 +537,7 @@ Completeness of the Catalogs}
 
 }
 
-\subcaption{\label{fig-type-comp-2}LCV}
+\subcaption{\label{fig-type-comp-2}LVG}
 
 \end{minipage}%
 
@@ -496,12 +545,6 @@ Completeness of the Catalogs}
 of the Catalogs}
 
 \end{figure}%
-
-As we can see from the histograms (Figure~\ref{fig-dis-comp}) and
-(Figure~\ref{fig-type-comp}) the sample of unique galaxies of each
-catalog, gets smaller by an almost constant proportion (Inner join).
-
-This means there is no bias in the selection of the galaxies.
 
 \section{How are we going to compare the
 data?}\label{how-are-we-going-to-compare-the-data}
@@ -546,7 +589,7 @@ For the linear regression out main tools are scatter plots and \(R^2\)
   \end{quote}
 \end{enumerate}
 
-For the distrabution comparisons we will use histograms and Kernel
+For the distribution comparisons we will use histograms and Kernel
 Density Estimate (KDE) plots. The KDE plots visually represent the
 distribution of data, providing insights into its shape, central
 tendency, and spread.
@@ -561,32 +604,20 @@ Finally, we will examine the percentage change for each galaxy.
   minimum, the maximum and the mean value of the difference.
 \end{itemize}
 
-\[\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%\]
+\[\text{Percentage change} = \frac{V_{Hecate} - V_{LVG}}{V_{Hecate}}\cdot 100 \%\]
 
 \section{Comparable data}\label{comparable-data}
 
 \subsection{Coordinates}\label{coordinates}
 
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2329}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2329}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2329}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3014}}@{}}
+\begin{longtable}[]{@{}ccc@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\centering
-LCV
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-HECATE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Description
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Pearson Correlation {[}-1,1{]}
-\end{minipage} \\
+LVG & HECATE & Description \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Dis & D & Distance & 0.881 \\
+Dis & D & Distance \\
 \end{longtable}
 
 \begin{figure}
@@ -613,29 +644,17 @@ Dis & D & Distance & 0.881 \\
 
 \subsection{Velocities}\label{velocities}
 
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}@{}}
+\begin{longtable}[]{@{}ccc@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\centering
-LCV
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-HECATE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Description
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Linear Correlation
-\end{minipage} \\
+LVG & HECATE & Description \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-RVel (km/s) & V (km/s) & Heliocentric radial velocity & 0.994 \\
-VLG (km/s) & & Radial velocity & \\
-cz (km/s) & & Heliocentric velocity & \\
-& V\_VIR (km/s) & Virgo-infall corrected radial velocity & \\
+RVel (km/s) & V (km/s) & Heliocentric radial velocity \\
+VLG (km/s) & & Radial velocity \\
+cz (km/s) & & Heliocentric velocity \\
+& V\_VIR (km/s) & Virgo-infall corrected radial velocity \\
 \end{longtable}
 
 \begin{figure}
@@ -669,53 +688,47 @@ cz (km/s) & & Heliocentric velocity & \\
 }
 
 \caption{\label{fig-vel-pairplot}The correlation Matrix of the
-Velocities. The lower left triangle is is composed of the scatter plots
-of the various velocities, the diagonal shows their distrubution and the
+Velocities. The lower left triangle is composed of the scatter plots of
+the various velocities, the diagonal shows their distrubution and the
 upper right triangle shows the correlations of the Velocities}
 
 \end{figure}%
 
-{[}?{]} The close correlation between all of the velocities, could be
-due to the fact that all of them measure the velocity of each galaxy,
-but from a different frame of reference.
-
-The strong correlation between the velocities reported by the HECATE and
-LCV catalogs can be attributed to the fact that both measure the same
-intrinsic galaxy velocities but reference them to different frames. For
-instance, velocities can be corrected for the movement of the Earth
-(heliocentric frame) or the for the Virgo-infall. These corrections
-shift the measured velocity slightly, but the fundamental measurement
-remains consistent. This explains why the velocities are highly
-correlated, as they represent the same physical phenomenon but adjusted
-for different reference points.
+{[}?{]} The strong correlation between the velocities reported by the
+HECATE and LVG catalogs (Figure~\ref{fig-vel-pairplot}) can be
+attributed to the fact that both measure the same intrinsic galaxy
+velocities but reference them to different frames. For instance,
+velocities can be corrected for the movement of the Earth (heliocentric
+frame) or the for the Virgo-infall. These corrections shift the measured
+velocity slightly, but the fundamental measurement remains consistent.
+This explains why the velocities are highly correlated, as they
+represent the same physical phenomenon but adjusted for different
+reference points.
 
 \newpage{}
 
 \subsection{Morphology and Geometry}\label{morphology-and-geometry}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3273}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3273}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3455}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
-LCV
+LVG
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 HECATE
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Description
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Pearson Correlation {[}-1,1{]}
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
 TType & T (with errors) & Numerical Hubble type following the de
-Vaucouleurs system & 0.7107 \\
-inc & INCL & Inclination (deg) & 0 \\
-a26\_1 (Major) & R1 (Semi-major axis) & angular diameter (arcmin) & 0 \\
+Vaucouleurs system \\
+inc & INCL & Inclination (deg) \\
+a26\_1 (Major) & R1 (Semi-major axis) & angular diameter (arcmin) \\
 \end{longtable}
 
 \subsubsection{Galaxy Types}
@@ -731,6 +744,15 @@ drastically differ. The classification problem arises as well for the
 spheroidal (Sph) and irregular (Ir)systems. Due to small classification
 errors, such objects may ``jump'' from one end of the T scale to the
 other.'' (Karachentsev, Makarov, and Kaisina (2013))
+
+``as they correspond to types T \textless{} 1. The shortcomings of such
+a simplified classification of dwarf systems have become apparent;
+hence, van den Bergh (1959) proposed a more refined scheme where dwarf
+galaxies were assumed to be divided by luminosity class\ldots Such an
+approach allowed us to avoid unpleasant cases in which a dwarf galaxy of
+intermediate type jumps over due to a misclassification from one end of
+the de Vaucouleurs sequence (T \textless{} 1) to the other (T = 9,
+10).'' (Karachentsev and Kaisina (2013))
 
 \begin{figure}
 
@@ -756,7 +778,7 @@ correction}
 }
 
 \subcaption{\label{fig-types-compare-2}Comparison with the correction
-\(|{T_{HECATE}-T_{LCV}}|<7\)}
+\(|{T_{HECATE}-T_{LVG}}|<σ_{Τ_{LVG}}\)}
 
 \end{minipage}%
 
@@ -770,7 +792,7 @@ correction}
   we can assume that the galaxies from the upper left and lower right
   regions of the plot are classified differently because of this
 \item
-  this might explain the large errors E\_T of HECATE
+  this might explain the large errors \(\delta T\) of HECATE
 \item
   why we see a difference in the distribution of
   (Figure~\ref{fig-type-comp})
@@ -778,7 +800,7 @@ correction}
 
 We can remove the ``problematic'' galaxies by only keeping the ones
 with: \[
-|{T_{HECATE}-T_{LCV}}|<\sigma_{T_{LCV}} = 4.8
+|{T_{HECATE}-T_{LVG}}|<\sigma_{T_{LVG}} = 4.8
 \]
 
 \begin{itemize}
@@ -788,7 +810,7 @@ with: \[
   catalog is \(\overline{\delta T} = \pm 1.4\), so the intercept is
   included in the error.
 \item
-  So we can assume that the Distances are the same
+  So we can assume that the Morphological Types are the same
 \end{itemize}
 
 \subsubsection{Inclination}
@@ -837,14 +859,12 @@ count & 287 & 209 & 202 \\
 mean & 60 & 59 & -0 \\
 std & 19 & 23 & 0 \\
 min & 9 & 0 & -3 \\
-25\% & 47 & 47 & -0 \\
 50\% & 60 & 59 & 0 \\
-75\% & 72 & 78 & 0 \\
 max & 90 & 90 & 1 \\
 \end{longtable}
 
 We can see that for values in the range
-\([\sim 30^\circ,\sim 80^\circ]\), the values of the LCV inclination are
+\([\sim 30^\circ,\sim 80^\circ]\), the values of the LVG inclination are
 higher (Figure~\ref{fig-incl-compare}). However, since their means,
 median, min and maxes are similar and the percentage change is
 practically 0\% (mean, median, \(\sigma\) = 0 with a range
@@ -899,16 +919,18 @@ R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
 \log(R1) = 0.89\log(a_{26})-10^{0.38} = \log(10^{-0.38}a_{26}^{0.89}) = \log(0.41\cdot a_{26}^{0.89})\Rightarrow R1\simeq \frac{a_{26}}{2}
 \]
 
+\newpage{}
+
 \subsection{Luminosities}\label{luminosities}
 
-\begin{longtable}[]{@{}cccc@{}}
+\begin{longtable}[]{@{}ccc@{}}
 \toprule\noalign{}
-LCV & HECATE & Description & Pearson Correlation {[}-1,1{]} \\
+LVG & HECATE & Description \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-logKLum & logL\_K & & 0 \\
+logKLum & logL\_K & \\
 \end{longtable}
 
 \begin{figure}
@@ -944,7 +966,7 @@ galaxies.}
 \end{figure}%
 
 \[
-\log(L_{K,HEC})=1.16\log(L_{K,LCV})-1.78=\log\left(\frac{{L_{K,LCV}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LCV}}^{1.16}
+\log(L_{K,HEC})=1.16\log(L_{K,LVG})-1.78=\log\left(\frac{{L_{K,LVG}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LVG}}^{1.16}
 \]
 
 To assess whether the two galaxy catalogs have a 1-1 correlation, I
@@ -953,8 +975,8 @@ fit. The free fit allows both the slope and intercept to vary freely,
 meaning the line can take on any slope and can cross the y-axis at any
 point. In contrast, for the forced fit, I set the slope to exactly 1 and
 fixed the line to pass through the origin, meaning the equation becomes
-y=xy=x. This forced fit represents a perfect 1-1 relationship, where the
-values from one catalog should match the other exactly, without any
+\(y=x\). This forced fit represents a perfect 1-1 relationship, where
+the values from one catalog should match the other exactly, without any
 shift or scaling.
 
 After fitting the data using both methods, I calculated the \(R^2\)
@@ -984,27 +1006,15 @@ each other.
 
 \subsection{Magnitudes}\label{magnitudes}
 
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}@{}}
+\begin{longtable}[]{@{}ccc@{}}
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\centering
-LCV
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-HECATE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Description
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Pearson Correlation {[}-1,1{]}
-\end{minipage} \\
+LVG & HECATE & Description \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-mag\_B (with errors) & BT (with errors) & & 0 \\
-Kmag & K & 2MASS band magnitude (both) & 0 \\
+mag\_B (with errors) & BT (with errors) & \\
+Kmag & K & 2MASS band magnitude (both) \\
 \end{longtable}
 
 \begin{figure}
@@ -1050,81 +1060,18 @@ galaxies}
   (Figure~\ref{fig-mag-compare})
 \end{itemize}
 
-\includegraphics{compare_files/figure-pdf/cell-26-output-1.pdf}
-
-\includegraphics{compare_files/figure-pdf/cell-26-output-2.pdf}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
-& Percentage Change {[}\%{]} & Percentage Change, after 3 sigma clip
-{[}\%{]} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-count & 70 & 70 \\
-mean & -5 & -5 \\
-std & 12 & 10 \\
-min & -70 & -42 \\
-50\% & -0 & -0 \\
-max & 16 & 16 \\
-\end{longtable}
-
-{[}?{]} this 5\% mean in the difference probably exists because of the
-low number of galaxies we compare, so we can ignore it.
-
-\subsection{SFR}\label{sfr}
-
-\begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2603}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2466}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\centering
-LCV
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-HECATE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Description
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Count
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-& logSFR\_TIR & Decimal logarithm of the total-infrared SFR estimate
-{[}Msol/yr{]} & 21 \\
-& logSFR\_FIR & Decimal logarithm of the far-infrared SFR estimate
-{[}Msol/yr{]} & 22 \\
-& logSFR\_60u & Decimal logarithm of the 60um SFR estimate {[}Msol/yr{]}
-& 48 \\
-& logSFR\_12u & Decimal logarithm of the 12um SFR estimate {[}Msol/yr{]}
-& 26 \\
-& logSFR\_22u & Decimal logarithm of the 22um SFR estimate {[}Msol/yr{]}
-& 23 \\
-& logSFR\_HEC & Decimal logarithm of the homogenised SFR estimate
-{[}Msol/yr{]} & 73 \\
-& logSFR\_GSW & Decimal logarithm of the SFR in GSWLC-2 {[}Msol/yr{]} &
-0 \\
-SFRFUV & & FUV derived integral star formation rate & 220 \\
-SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
-\end{longtable}
-
-\includegraphics{compare_files/figure-pdf/cell-29-output-1.pdf}
-
 \begin{figure}
 
 \begin{minipage}{0.50\linewidth}
 
 \centering{
 
-\includegraphics{compare_files/figure-pdf/fig-sfr-lcv-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/fig-kmag-compare-output-1.pdf}
 
 }
 
-\subcaption{\label{fig-sfr-lcv-1}Linear scale}
+\subcaption{\label{fig-kmag-compare-1}Linear Regression with free
+paramaters, \(y=ax+b\)}
 
 \end{minipage}%
 %
@@ -1132,27 +1079,118 @@ SFRHa & & H\{alpha\} derived integral star formation rate & 223 \\
 
 \centering{
 
-\includegraphics{compare_files/figure-pdf/fig-sfr-lcv-output-2.pdf}
+\includegraphics{compare_files/figure-pdf/fig-kmag-compare-output-2.pdf}
 
 }
 
-\subcaption{\label{fig-sfr-lcv-2}Decimal logarithmic scale}
+\subcaption{\label{fig-kmag-compare-2}Linear Regrassion \(y=x\)}
 
 \end{minipage}%
 
-\caption{\label{fig-sfr-lcv}Comparison of the \(SFR_{FUV}-SFR_{Ha}\) of
-the galaxies}
+\caption{\label{fig-kmag-compare}Comparison of the \(L_K\) of the
+galaxies.}
+
+\end{figure}%
+
+Following the same logic as in Figure~\ref{fig-klum-compare}, we force
+the parameters of the linear regression to be \(y=1\cdot x + 0\).
+
+In this case, the data is such that both the forced fit and the free fit
+explain the variance almost identically
+(Figure~\ref{fig-kmag-compare-2}). This can happen when the data roughly
+follows the pattern \(y≈x\), but with a slight bias that the free fit
+can account for (in this case, a slope slightly greater than 1 and a
+negative intercept).
+
+\newpage{}
+
+\subsection{SFR}\label{sfr}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3273}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3273}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3455}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+LVG
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+HECATE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+& logSFR\_TIR & Decimal logarithm of the total-infrared SFR estimate
+{[}Msol/yr{]} \\
+& logSFR\_FIR & Decimal logarithm of the far-infrared SFR estimate
+{[}Msol/yr{]} \\
+& logSFR\_60u & Decimal logarithm of the 60um SFR estimate
+{[}Msol/yr{]} \\
+& logSFR\_12u & Decimal logarithm of the 12um SFR estimate
+{[}Msol/yr{]} \\
+& logSFR\_22u & Decimal logarithm of the 22um SFR estimate
+{[}Msol/yr{]} \\
+& logSFR\_HEC & Decimal logarithm of the homogenised SFR estimate
+{[}Msol/yr{]} \\
+& logSFR\_GSW & Decimal logarithm of the SFR in GSWLC-2 {[}Msol/yr{]} \\
+SFRFUV & & FUV derived integral star formation rate \\
+SFRHa & & H\{alpha\} derived integral star formation rate \\
+\end{longtable}
+
+\begin{figure}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-pairplot-output-1.pdf}
+
+}
+
+\caption{\label{fig-sfr-pairplot}Comparison of the \(SFR_{i}\) of the
+galaxies}
 
 \end{figure}%
 
 The SFR according to (Kroupa et al. (2020)), can be calculated from the
 mean of SFR from the Ha and FUV, for \(SFR>10^{-3}\ M_\odot\, yr^{-1}\).
-As we can see from the plots (Figure~\ref{fig-sfr-lcv}) it is a good
-aproximation for all SFR's
+As we can see from the plots (Figure~\ref{fig-sfr-lvg}) it could be a
+good aproximation.
 
-\[
+\begin{equation}\phantomsection\label{eq-sfr-mean}{
 SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
-\]
+}\end{equation}
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-lvg-output-1.pdf}
+
+}
+
+\subcaption{\label{fig-sfr-lvg-1}Linear scale}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\includegraphics{compare_files/figure-pdf/fig-sfr-lvg-output-2.pdf}
+
+}
+
+\subcaption{\label{fig-sfr-lvg-2}Decimal logarithmic scale}
+
+\end{minipage}%
+
+\caption{\label{fig-sfr-lvg}Comparison of the \(SFR_{FUV}-SFR_{Ha}\) of
+the galaxies}
+
+\end{figure}%
 
 \begin{figure}
 
@@ -1184,43 +1222,70 @@ SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_
 
 \end{figure}%
 
-{[}?{]}EXPLANATION this low correlation maybe comes from the
-inaccuracy/approximation of (Kroupa et al. (2020))
+The low correlation in Figure~\ref{fig-sfr-compare-1} and the interval
+in Figure~\ref{fig-sfr-compare-2} show that the approximation
+(Equation~\ref{eq-sfr-mean}) is not great. According to Karachentsev and
+Kaisina (2013):
 
-The reason is that this aproximation is accurate if we consider a stable
-SFR over time. However, we tend to observe higher Ha for more recent SF
-activity. (we discussed it in our last meeting, I need a refrence).
+\begin{itemize}
+\item
+  \textbf{Hα and FUV timescales}: \(H_\alpha\) traces short-term star
+  formation (\textasciitilde10 Myr) via massive O-type stars, while FUV
+  traces longer-term star formation (\textasciitilde100 Myr) from B-type
+  stars.
+\item
+  \textbf{Discrepancies due to star formation bursts}: In galaxies with
+  bursty or episodic star formation, Hα can significantly overestimate
+  SFR compared to FUV, which lags in reflecting recent star formation
+  events.
+\item
+  \textbf{Low-mass galaxy variability}: The scatter between
+  \(SFR_{\text{H}\alpha}\) and \(SFR_{\text{FUV}}\) is particularly high
+  in low-mass, dwarf galaxies, where stochastic star formation history
+  causes wide variability between the two indicators.
+\item
+  \textbf{Measurement uncertainties}: Internal extinction, errors in
+  distance estimates, and IMF stochasticity introduce biases in both Hα
+  and FUV fluxes, making simple averaging inappropriate.
+\item
+  \textbf{Conclusion}: The
+  \(SFR_{\text{total}} = \text{mean}(SFR_{\text{H}\alpha}, SFR_{\text{FUV}})\)
+  method oversimplifies the complexity of star formation processes and
+  is not reliable for galaxies with variable star formation or
+  significant measurement uncertainties
+\end{itemize}
+
+\newpage{}
 
 \subsection{Masses}\label{masses}
 
 \begin{longtable}[]{@{}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
-  >{\centering\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\centering\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\centering
-LCV
+LVG
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 HECATE
 \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
 Description
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-Count
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-logM26 & & Log mass within Holmberg radius & 233 \\
-logMHI & & Log mass within Holmberg radius & 233 \\
-& logM\_HEC & Decimal logarithm of the stellar mass {[}Msol{]} & 64 \\
+logM26 & & Log mass within Holmberg radius \\
+logMHI & & Log mass within Holmberg radius \\
+& logM\_HEC & Decimal logarithm of the stellar mass {[}Msol{]} \\
 & logM\_GSW & Decimal logarithm of the stellar mass in GSWLC-2
-{[}Msol{]} & 0 \\
-logStellarMass & & Stellar Mass from \(M_*/L=0.6\) & 287 \\
+{[}Msol{]} \\
+logStellarMass & & Stellar Mass from \(M_*/L=0.6\) \\
 \end{longtable}
 
 \subsubsection{Stellar Masses Comparison}
+
+\newpage{}
 
 \begin{figure}
 
@@ -1236,16 +1301,18 @@ galaxies}
 \end{figure}%
 
 \[
-\log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LCV}}-0.69, \text{ but } \log{M_*}>6\Rightarrow M_{*,HEC}\sim M_{*,LCV}
+\log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LVG}}-0.69, \text{ but } \log{M_*}>6\Rightarrow M_{*,HEC}\sim M_{*,LVG}
 \]
 
 As we can see the aproximation of Mass/Light=const.=0.6 is a pretty good
 approximation, for the calculation of \(\log(M_*/M_\odot)\), especially
 for high-mass galaxies
 
+\newpage{}
+
 \subsubsection{Heatmap}
 
-\includegraphics{compare_files/figure-pdf/cell-35-output-1.pdf}
+\includegraphics{compare_files/figure-pdf/cell-31-output-1.pdf}
 
 The heatmap is used to visually assess the correlations between
 different mass estimates of the galaxies, including the mass within the

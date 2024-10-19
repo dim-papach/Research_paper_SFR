@@ -19,7 +19,7 @@ execute:
 
 # The data
 
-In this script we will compare 2 catalogs, HECATE (@kovlakasHeraklionExtragalacticCatalogue2021) and LCV ([@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013a])
+In this script we will compare 2 catalogs, HECATE (@kovlakasHeraklionExtragalacticCatalogue2021) and LVG ([@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013a])
 
 -   The data have been joined based on their position in the sky (Ra, Dec).
     -   We assume that every galaxy within 2 arc seconds of the initial coordinates is the same galaxy.
@@ -59,15 +59,15 @@ dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
 
 inner = dt
 outer = QTable(ascii.read("../tables/outer_join.ecsv"), masked=True)
-hec_not_lcv = QTable(ascii.read("../tables/HEC_not_LCV_join.ecsv"), masked=True)
-lcv_not_hec = QTable(ascii.read("../tables/LCV_not_HEC_join.ecsv"), masked=True)
+hec_not_lvg = QTable(ascii.read("../tables/HEC_not_LVG_join.ecsv"), masked=True)
+lvg_not_hec = QTable(ascii.read("../tables/LVG_not_HEC_join.ecsv"), masked=True)
  
  
-lcv = QTable(ascii.read("../tables/final_table.ecsv"), masked=True)
+lvg = QTable(ascii.read("../tables/final_table.ecsv"), masked=True)
 hec = QTable(ascii.read("../tables/HECATE_LCV.ecsv"), masked=True)
 ```
 
-The dataset we are going to use for the comparison (inner join) consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)` columns.
+The dataset we are going to use for the comparison (inner join) consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)` columns with their physical  characteristics.
 
 # Catalog Completeness
 
@@ -75,17 +75,21 @@ Checking for completeness in galaxy catalogs is essential to ensure that the dat
 
 Completeness checks are crucial for addressing selection biases, identify gaps in the data and guide follow-up observations, ensuring that the catalog provides a reliable sample for scientific analysis. Without these checks, conclusions drawn from the data may be inaccurate or incomplete.
 
-## Completeness of the LCV Catalog
+## Completeness of the LVG Catalog
 
 The local volume selection has been made by taking into account galaxies with:
 
-1.  Radial velocities of $$
-     V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
-    $$ {#eq-lcv-vel}
+1.  Radial velocities of
 
-2.  Distances of $$
+$$
+     V_{LG}<600 \text{ km}\cdot\text{m}^{-1}
+$$ {#eq-lvg-vel}
+
+1.  Distances of
+
+$$
        D<11\ \text{Mpc}
-       $$ {#eq-lcv-dis}
+$$ {#eq-lvg-dis}
 
 A simultaneous fulfillment of both conditions (1) and (2) is not required.
 
@@ -95,16 +99,28 @@ As explained in (@karachentsevUPDATEDNEARBYGALAXY2013), it is difficult to calcu
 
 1.  Completeness within a 10 Mpc radius is difficult to assess due to: - Variability in galaxy properties (luminosity, size, surface brightness, gas content) - Errors in distance measurements (Tully–Fisher method errors of \~20–25%), especially at the 10 Mpc boundary.
     -   Accurate distances are mainly known within \~5 Mpc.
-    -   Non-Hubble motions (\~300 km/s)[^1] may make up half of the adopted velocity constraint (@eq-lcv-vel)
-    -   Solution for our usage: only keep the galaxies inside a radius of $D=11 Mpc$
+    -   Non-Hubble motions (\~300 km/s)[^1] may make up half of the adopted velocity constraint (@eq-lvg-vel)
+        -   Solution for our usage: only keep the galaxies inside a radius of $D=11 Mpc$
     -   HI sources in surveys with low angular resolution: "The presence around our Galaxy of hundreds of high-velocity clouds with low line-of-sight velocities and small W50 widths also provokes the inclusion of false “nearby” dwarf galaxies in the LV"(@karachentsevUPDATEDNEARBYGALAXY2013)
-2.  Astro-Spam and Survey Errors: - Automatic surveys produce false detections (e.g., stars misclassified as galaxies, high-velocity clouds mistaken for dwarfs).
-3.  Conditional Completeness Estimate: - Galaxies brighter than $M_B^c = -11^m$ or with linear diameters larger than $A_{26} = 1.0$ kpc show (40–60)% completeness. - "among the members of the Local Group (D \< 1 Mpc), only half of the galaxies have absolute magnitudes brighter than −11m. Consequently, more than half of the ultra-faint dwarf companions around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside our field of view."
-4.  Undetected Ultra-Faint Dwarfs: - Many faint dwarf galaxies remain undetected beyond the Local Group. Estimated population of undetected dwarfs could be as large as $10^3–10^4$ within the LV.
-5.  Surface Brightness Distribution: - Surface brightness remains consistent across distances, except for ultra-faint dwarfs ($SB <31 \text{mag}\cdot\text{arcsec}^{-2}$). - Faintest dwarf galaxies are detectable only nearby due to their resolution into individual stars.
-6.  Luminosity-Size Relationship: - Observations align with cosmological models predicting $L\sim A^3$ (@navarroStructureColdDark1996), though deviations occur for extremely low surface brightness galaxies. - "The deviation from it at the extremely low surface brightness end is due to a systematic overestimation of dwarf galaxy sizes, the brightness profiles of which lie entirely below the Holmberg isophote."
 
 [^1]: *Non-Hubble motion refers to the component of a galaxy's velocity that deviates from the uniform expansion of the universe, described by the equation* $V= H_0 d + v_p$,where $V$ is the total velocity, $H_0 d$ represents the Hubble flow, and $v_p$​ is the peculiar velocity. @Essay
+
+2.  Astro-Spam and Survey Errors:
+    -   Automatic surveys produce false detections (e.g., stars misclassified as galaxies, high-velocity clouds mistaken for dwarfs).
+
+3.  Conditional Completeness Estimate: - Galaxies brighter than $M_B^c = -11^m$ or with linear diameters larger than $A_{26} = 1.0$ kpc show (40–60)% completeness.
+    -   "among the members of the Local Group (D \< 1 Mpc), only half of the galaxies have absolute magnitudes brighter than $−11^m$. Consequently, more than half of the ultra-faint dwarf companions around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside our field of view."
+
+4.  Undetected Ultra-Faint Dwarfs:
+    -   Many faint dwarf galaxies remain undetected beyond the Local Group. Estimated population of undetected dwarfs could be as large as $10^3–10^4$ within the LV.
+
+5.  Surface Brightness Distribution:
+    -   Surface brightness remains consistent across distances, except for ultra-faint dwarfs ($SB <31 \text{mag}\cdot\text{arcsec}^{-2}$).
+    -   Faintest dwarf galaxies are detectable only nearby due to their resolution into individual stars.
+
+6.  Luminosity-Size Relationship:
+    -   Observations align with cosmological models predicting $L\sim A^3$ (@navarroStructureColdDark1996), though deviations occur for extremely low surface brightness galaxies.
+    -   "The deviation from it at the extremely low surface brightness end is due to a systematic overestimation of dwarf galaxy sizes, the brightness profiles of which lie entirely below the Holmberg isophote."
 
 ## Completeness of HECATE
 
@@ -146,8 +162,8 @@ In this section we will check the completeness
 #| output: asis
 # Creating a dataframe with the lengths of each table
 data = {
-    "Table": ["Inner join", "Outer join", "LCV", "HECATE", "Unique galaxies in LCV", "Unique Galaxies in Hecate"],
-    "Number of galaxies": [len(dt), len(outer), len(lcv), len(hec), len(lcv_not_hec), len(hec_not_lcv)]
+    "Table": ["Inner join", "Outer join", "LVG", "HECATE", "Unique galaxies in LVG", "Unique Galaxies in Hecate"],
+    "Number of galaxies": [len(dt), len(outer), len(lvg), len(hec), len(lvg_not_hec), len(hec_not_lvg)]
 }
 
 df_lengths = pd.DataFrame(data)
@@ -166,7 +182,7 @@ $$
 
 Completeness (HECATE)= `{python} round(len(dt)/len(hec) *100)` %
 
-Completeness (LCV)= `{python} round(len(dt)/len(lcv) *100)` %
+Completeness (LVG)= `{python} round(len(dt)/len(lvg) *100)` %
 
 ## Completeness in Outer join
 
@@ -174,31 +190,31 @@ $$
 \text{Completeness (X)}=\frac{\text{(Galaxies in Outer Join form X)}}{\text{(Galaxies in X)}}×100\%
 $$
 
-Completeness (HECATE)= `{python} round(len(hec_not_lcv)/len(hec)*100)` %
+Completeness (HECATE)= `{python} round(len(hec_not_lvg)/len(hec)*100)` %
 
-Completeness (LCV)= `{python} round(len(lcv_not_hec)/len(lcv)*100)` %
+Completeness (LVG)= `{python} round(len(lvg_not_hec)/len(lvg)*100)` %
 
-Combined Completeness =$\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LCV}}$= `{python} round(len(outer)/(len(lcv_not_hec)+(len(hec_not_lcv))) * 100)` %
+Combined Completeness =$\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LVG}}$= `{python} round(len(outer)/(len(lvg_not_hec)+(len(hec_not_lvg))) * 100)` %
 
 ## Completeness of the Data
 
 ```{python}
 def table_completeness(dataset_choice, column_name="Dis", description = "Distance", keep_nan = False):
     """
-    Creates a table of counts and percentages for each bin based on the chosen dataset (LCV or HEC).
+    Creates a table of counts and percentages for each bin based on the chosen dataset (LVG or HEC).
     
     Parameters:
-    - dataset_choice: A string indicating which dataset to use ("lcv" or "hec")
+    - dataset_choice: A string indicating which dataset to use ("lvg" or "hec")
     - column_name: The column name in the datasets to analyze (default is "Dis")
     - description: what to show in the title and the axis (default "Distance")
     """
     
-    if dataset_choice == "lcv":
-        main_df, unique_df, label = lcv, lcv_not_hec, "LCV"
-    elif dataset_choice == "hec" and hec is not None and hec_not_lcv is not None:
-        main_df, unique_df, label = hec, hec_not_lcv, "HEC"
+    if dataset_choice == "lvg":
+        main_df, unique_df, label = lvg, lvg_not_hec, "LVG"
+    elif dataset_choice == "hec" and hec is not None and hec_not_lvg is not None:
+        main_df, unique_df, label = hec, hec_not_lvg, "HEC"
     else:
-        raise ValueError("Invalid dataset choice. Please choose 'lcv' or 'hec' with valid datasets.")
+        raise ValueError("Invalid dataset choice. Please choose 'lvg' or 'hec' with valid datasets.")
 
     # Remove NaN values before plotting
     if keep_nan == False:
@@ -216,17 +232,21 @@ def table_completeness(dataset_choice, column_name="Dis", description = "Distanc
     bin_centers = 0.5 * (bin_edges[1:] + bin_edges[:-1])
     table_data = []
 
-    for i in range(len(bin_centers)):
-        if main_counts[i] > 0:
-            unique_pct = (unique_counts[i] / main_counts[i]) * 100
-            inner_pct = (inner_counts[i] / main_counts[i]) * 100
-            table_data.append({
-                "Bin Start": round(bin_edges[i]),
-                "Bin End": round(bin_edges[i+1]),
-                f"Unique %": f'{unique_pct:.0f}%',
-                "Inner %": f'{inner_pct:.0f}%'
-            })
-    table_df = pd.DataFrame(table_data)
+    # Calculate percentages in a vectorized way
+    with np.errstate(divide='ignore', invalid='ignore'):  # Handle division by zero safely
+        unique_pct = np.divide(unique_counts, main_counts, out=np.zeros_like(unique_counts, dtype=float), where=main_counts!=0) * 100
+        inner_pct = np.divide(inner_counts, main_counts, out=np.zeros_like(inner_counts, dtype=float), where=main_counts!=0) * 100
+
+    # Construct the DataFrame in a vectorized manner
+    table_df = pd.DataFrame({
+        "Bin Start": np.round(bin_edges[:-1]),
+        "Bin End": np.round(bin_edges[1:]),
+        "Main Counts": main_counts,
+        "Unique Counts": unique_counts,
+        "Unique %": unique_pct,
+        "Inner Counts": inner_counts,
+        "Inner %": inner_pct
+    })
     return table_df
 ```
 
@@ -235,13 +255,13 @@ def table_completeness(dataset_choice, column_name="Dis", description = "Distanc
 #| layout-ncol: 2
 #| fig-subcap: 
 #| - "HECATE"
-#| - "LCV"
+#| - "LVG"
 #| label: fig-dis-comp
 
 #HECATE
 
 main = hec["D"].data
-unique = hec_not_lcv["D"].data
+unique = hec_not_lvg["D"].data
 counts, bin_edges = np.histogram(main)
 
 main_counts, _ = np.histogram(main, bins=bin_edges)
@@ -263,12 +283,12 @@ ax2.set_yticks(np.arange(min(unique_pct), max(unique_pct) + 1, 5.0))
 # Format the y-tick labels to display as percentages
 y_value = ['{:,.0f}%'.format(x) for x in ax2.get_yticks()]
 ax2.set_yticklabels(y_value)
-ax2.set(xlabel = "Distance [{}]".format(lcv["Dis"].unit), ylabel="Completeness %")
+ax2.set(xlabel = "Distance [{}]".format(lvg["Dis"].unit), ylabel="Completeness %")
 plt.show()
 
-#LCV
-main = lcv["Dis"].data
-unique = lcv_not_hec["Dis"].data
+#LVG
+main = lvg["Dis"].data
+unique = lvg_not_hec["Dis"].data
 counts, bin_edges = np.histogram(main)
 
 main_counts, _ = np.histogram(main, bins=bin_edges)
@@ -276,10 +296,10 @@ unique_counts, _ = np.histogram(unique, bins=bin_edges)
 
 
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-sns.histplot(main, bins = bin_edges, kde = True, label = "LCV", ax = ax1)
-sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for LCV", ax = ax1)
+sns.histplot(main, bins = bin_edges, kde = True, label = "LVG", ax = ax1)
+sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for LVG", ax = ax1)
 ax1.legend()
-ax1.set_title("Completenes of Distance for LCV")
+ax1.set_title("Completenes of Distance for LVG")
 ax1.tick_params(labelbottom=True)
 unique_pct = (unique_counts/main_counts)*100 
 ###
@@ -292,7 +312,7 @@ ax2.set_yticks(np.arange(min(unique_pct), max(unique_pct) + 1, 5.0))
 # Format the y-tick labels to display as percentages
 y_value = ['{:,.0f}%'.format(x) for x in ax2.get_yticks()]
 ax2.set_yticklabels(y_value)
-ax2.set(xlabel = "Distance [{}]".format(lcv["Dis"].unit), ylabel="Completeness %")
+ax2.set(xlabel = "Distance [{}]".format(lvg["Dis"].unit), ylabel="Completeness %")
 plt.show()
 
 plt.close()
@@ -303,11 +323,11 @@ plt.close()
 #| layout-ncol: 2
 #| fig-subcap: 
 #| - "HECATE"
-#| - "LCV"
+#| - "LVG"
 #| label: fig-type-comp
 main = hec["T"].data
 main = main[~np.isnan(main)]
-unique = hec_not_lcv["T"].data
+unique = hec_not_lvg["T"].data
 unique = unique[~np.isnan(unique)]
 counts, bin_edges = np.histogram(main, bins = 12)
 
@@ -336,10 +356,10 @@ ax2.set_yticklabels(y_value)
 ax2.set(xlabel = "Types of galaxies", ylabel="Completeness %")
 plt.show()
 ######
-#LCV
-main = lcv["TType"].data
+#LVG
+main = lvg["TType"].data
 main = main[~np.isnan(main)]
-unique = lcv_not_hec["TType"].data
+unique = lvg_not_hec["TType"].data
 unique = unique[~np.isnan(unique)]
 counts, bin_edges = np.histogram(main)
 
@@ -347,10 +367,10 @@ main_counts, _ = np.histogram(main, bins=bin_edges)
 unique_counts, _ = np.histogram(unique, bins=bin_edges)
 
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-sns.histplot(main, bins = bin_edges, kde = True, label = "LCV", ax = ax1)
-sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for LCV", ax = ax1)
+sns.histplot(main, bins = bin_edges, kde = True, label = "LVG", ax = ax1)
+sns.histplot(unique, bins = bin_edges, kde = True, label = "Unique for LVG", ax = ax1)
 ax1.legend()
-ax1.set_title("Completenes of Types for LCV")
+ax1.set_title("Completenes of Types for LVG")
 ax1.tick_params(labelbottom=True)
 unique_pct = (unique_counts/main_counts)*100 
 
@@ -368,10 +388,11 @@ ax2.set(xlabel = "Types of galaxies", ylabel="Completeness %")
 plt.show()
 ```
 
-As we can see from the histograms (@fig-dis-comp) and (@fig-type-comp) the sample of unique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
+```{=html}
+<!--As we can see from the histograms (@fig-dis-comp) and (@fig-type-comp) the sample of unique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
 
-This means there is no bias in the selection of the galaxies.
-
+This means there is no bias in the selection of the galaxies.-->
+```
 # How are we going to compare the data?
 
 For the comparison of our data we will mainly use two methods: linear regression and comparison of the distributions.
@@ -510,29 +531,29 @@ def pairplot_with_correlation(df, cmap="coolwarm", font_size=12, font_style='ita
 
 ```
 
-For the distrabution comparisons we will use histograms and Kernel Density Estimate (KDE) plots. The KDE plots visually represent the distribution of data, providing insights into its shape, central tendency, and spread.
+For the distribution comparisons we will use histograms and Kernel Density Estimate (KDE) plots. The KDE plots visually represent the distribution of data, providing insights into its shape, central tendency, and spread.
 
 Finally, we will examine the percentage change for each galaxy.
 
 -   Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.
 
-$$\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%$$
+$$\text{Percentage change} = \frac{V_{Hecate} - V_{LVG}}{V_{Hecate}}\cdot 100 \%$$
 
 ```{python}
-def relative_diff(hec, lcv):
+def relative_diff(hec, lvg):
     """
     Calculate the relative difference between two sets of values.
 
     Parameters:
     hec (numpy.ndarray): An array of values representing the HEC dataset.
-    lcv (numpy.ndarray): An array of values representing the LCV dataset.
+    lvg (numpy.ndarray): An array of values representing the LVG dataset.
 
     Returns:
-    numpy.ndarray: An array of relative differences between the HEC and LCV datasets.
-    The relative difference is calculated as ((HEC - LCV) * 100) / |HEC|.
+    numpy.ndarray: An array of relative differences between the HEC and LVG datasets.
+    The relative difference is calculated as ((HEC - LVG) * 100) / |HEC|.
     Any infinite values in the result are replaced with NaN.
     """
-    diff = (hec - lcv) * 100 / np.abs(hec)
+    diff = (hec - lvg) * 100 / np.abs(hec)
     diff[np.isinf(diff)] = np.nan
     return diff
 ```
@@ -541,9 +562,9 @@ def relative_diff(hec, lcv):
 
 ## Coordinates
 
-| LCV | HECATE | Description |              Pearson Correlation \[-1,1\]              |
-|:---------------:|:---------------:|:---------------:|:--------------------:|
-| Dis |   D    |  Distance   | `{python} round(compare_data(dt["Dis"],dt["D"])[3],3)` |
+| LVG | HECATE | Description |
+|:---------------:|:---------------:|:---------------:|
+| Dis |   D    |  Distance   | 
 
 ```{python}
 #| label: fig-coord-compare 
@@ -557,10 +578,10 @@ sns.regplot(x = dt["Dis"].data, y = dt["D"].data,
                  line_kws=dict(alpha=0.7, color='red', linewidth=3))
 ax.errorbar(dt["Dis"].data, dt["D"].data, yerr = dt["E_D"].data, fmt='none', capsize=2, zorder=1, color = "blue", alpha = 0.3)
 results = scipy.stats.linregress(x = dt["Dis"], y=dt["D"])
-plt.xlabel("$D_{LCV}$"+" [{}]".format(dt["Dis"].unit))
+plt.xlabel("$D_{LVG}$"+" [{}]".format(dt["Dis"].unit))
 plt.ylabel("$D_{HEC}$"+" [{}]".format(dt["D"].unit))
 plt.legend(["Data",
-            "$D_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot D_{LCV}+$"+
+            "$D_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot D_{LVG}+$"+
                 f"$({results.intercept:+.2f})$"+
             f"\n $R^2 = {results.rvalue**2*100:.0f}\%$"])
 plt.tight_layout()
@@ -572,16 +593,12 @@ plt.show()
 
 ## Velocities
 
-```{python}
-rvel_corr = round(compare_data(dt["RVel"],dt["V"])[3],3)
-```
-
-|     LCV     |    HECATE    |              Description               |  Linear Correlation  |
-|:----------------:|:-----------------:|:----------------:|:----------------:|
-| RVel (km/s) |   V (km/s)   |      Heliocentric radial velocity      | `{python} rvel_corr` |
-| VLG (km/s)  |              |            Radial velocity             |                      |
-|  cz (km/s)  |              |         Heliocentric velocity          |                      |
-|             | V_VIR (km/s) | Virgo-infall corrected radial velocity |                      |
+|     LVG     |    HECATE    |              Description               |
+|:----------------:|:-----------------:|:----------------:|
+| RVel (km/s) |   V (km/s)   |      Heliocentric radial velocity      |
+| VLG (km/s)  |              |            Radial velocity             |
+|  cz (km/s)  |              |         Heliocentric velocity          |
+|             | V_VIR (km/s) | Virgo-infall corrected radial velocity |
 
 ```{python}
 #| label: fig-vel-compare
@@ -595,10 +612,10 @@ sns.regplot(x = dt["RVel"].data, y = dt["V"].data,
 
 ax.errorbar(dt["RVel"].data, dt["V"].data, yerr = dt["E_V"].data, fmt='none', capsize=2, zorder=1, color = "blue")
 results = scipy.stats.linregress(x = dt["RVel"], y=dt["V"])
-plt.xlabel("$V_{LCV}$"+" [{}]".format(dt["RVel"].unit))
+plt.xlabel("$V_{LVG}$"+" [{}]".format(dt["RVel"].unit))
 plt.ylabel("$V_{HEC}$"+" [{}]".format(dt["V"].unit))
 plt.legend(["Data",
-            "$V_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot V_{LCV}+$"+
+            "$V_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot V_{LVG}+$"+
             f"$({results.intercept:+.2f})$"+
             f"\n $R^2 = {results.rvalue**2*100:.0f}\%$"])
 plt.show()
@@ -613,15 +630,14 @@ vel_data = dt[["RVel", "V", "VLG", "cz", "V_VIR"]].to_pandas()
 
 ```{python}
 #| label: fig-vel-pairplot
-#| fig-cap: "The correlation Matrix of the Velocities. The lower left triangle is is composed of the scatter plots of the various velocities, the diagonal shows their distrubution and the upper right triangle shows the correlations of the Velocities" 
+#| fig-cap: "The correlation Matrix of the Velocities. The lower left triangle is composed of the scatter plots of the various velocities, the diagonal shows their distrubution and the upper right triangle shows the correlations of the Velocities" 
 pairplot_with_correlation(vel_data)
 ```
 
-\[?\] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference.
 
-The strong correlation between the velocities reported by the HECATE and LCV catalogs can be attributed to the fact that both measure the same intrinsic galaxy velocities but reference them to different frames. For instance, velocities can be corrected for the movement of the Earth (heliocentric frame) or the for the Virgo-infall. These corrections shift the measured velocity slightly, but the fundamental measurement remains consistent. This explains why the velocities are highly correlated, as they represent the same physical phenomenon but adjusted for different reference points.
+\[?\] The strong correlation between the velocities reported by the HECATE and LVG catalogs (@fig-vel-pairplot) can be attributed to the fact that both measure the same intrinsic galaxy velocities but reference them to different frames. For instance, velocities can be corrected for the movement of the Earth (heliocentric frame) or the for the Virgo-infall. These corrections shift the measured velocity slightly, but the fundamental measurement remains consistent. This explains why the velocities are highly correlated, as they represent the same physical phenomenon but adjusted for different reference points.
 
-{{<pagebreak>}}
+{{< pagebreak >}}
 
 ## Morphology and Geometry
 
@@ -629,24 +645,18 @@ The strong correlation between the velocities reported by the HECATE and LCV cat
 dt["INCL"].mask = np.isnan(dt["INCL"])
 ```
 
-```{python}
-#| echo: false
- 
-ttype_corr = round(compare_data(dt["TType"], dt["T"])[3], 4)
-inc_corr = round(compare_data(dt["inc"], dt["INCL"], sigma = True)[3], 3)
-a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
-```
-
-|      LCV      |        HECATE        |                        Description                        | Pearson Correlation \[-1,1\] |
-|:----------------:|:----------------:|:-----------------:|:----------------:|
-|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
-|      inc      |         INCL         |                     Inclination (deg)                     |     `{python} inc_corr`      |
-| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
+|      LVG      |        HECATE        |                        Description                        |
+|:----------------:|:----------------:|:-----------------:|
+|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |
+|      inc      |         INCL         |                     Inclination (deg)                     |
+| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |
 
 ::: panel-tabset
 ### Galaxy Types
 
 "Morphological type of galaxy in the numerical code according to the classification by de Vaucouleurs et al. (1991). It should be noted that about three quarters of objects in the LV are dwarf galaxies, which require a more detailed morphological classification. For example, dwarf spheroidal galaxies and normal ellipticals are usually denoted by the same numerical code T \< 0, although their physical properties drastically differ. The classification problem arises as well for the “transient” type dwarf galaxies, T r, which combine the features of spheroidal (Sph) and irregular (Ir)systems. Due to small classification errors, such objects may “jump” from one end of the T scale to the other." (@karachentsevUPDATEDNEARBYGALAXY2013)
+
+"as they correspond to types T \< 1. The shortcomings of such a simplified classification of dwarf systems have become apparent; hence, van den Bergh (1959) proposed a more refined scheme where dwarf galaxies were assumed to be divided by luminosity class...Such an approach allowed us to avoid unpleasant cases in which a dwarf galaxy of intermediate type jumps over due to a misclassification from one end of the de Vaucouleurs sequence (T \< 1) to the other (T = 9, 10)." (@karachentsevSTARFORMATIONPROPERTIES2013a)
 
 ```{python}
 #| label: fig-types-compare
@@ -655,7 +665,7 @@ a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
 #| fig-cap: "Comparison of the Types of galaxies"
 #| fig-subcap: 
 #| - "All the galaxies, without the correction" 
-#| - "Comparison with the correction $|{T_{HECATE}-T_{LCV}}|<7$"
+#| - "Comparison with the correction $|{T_{HECATE}-T_{LVG}}|<σ_{Τ_{LVG}}$"
 
 plt.close()
 fig, ax = plt.subplots()
@@ -667,10 +677,10 @@ ax.errorbar(dt["TType"].data, dt["T"].data, yerr = dt["E_T"].data, fmt='none', c
 temp = dt[["TType", "T"]].to_pandas().dropna()
 results = scipy.stats.linregress(x = temp["TType"],
                                 y = temp["T"])
-plt.xlabel("$Type_{LCV}$")
+plt.xlabel("$Type_{LVG}$")
 plt.ylabel("$Type_{HEC}$")
 plt.legend(["Data",
-            "$T_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot T_{LCV}+$"+
+            "$T_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot T_{LVG}+$"+
             f"$({results.intercept:+.2f})$"+
             f"\n $R^2 = {results.rvalue**2*100:.0f}\%$"])
 plt.show()
@@ -689,26 +699,26 @@ sns.regplot(x = types["TType"].data, y = types["T"].data,
 ax.errorbar(types["TType"].data, types["T"].data, yerr = types["E_T"].data, fmt='none', capsize=2, zorder=1, color = "blue")
 results = scipy.stats.linregress(x= types["TType"].data,
                                 y = types["T"].data)
-plt.xlabel("$Type_{LCV}$")
+plt.xlabel("$Type_{LVG}$")
 plt.ylabel("$Type_{HEC}$")
 plt.legend(["Data",
-            "$T_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot T_{LCV}+$"+
+            "$T_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot T_{LVG}+$"+
             f"$({results.intercept:+.2f})$"+
             f"\n $R^2 = {results.rvalue**2*100:.0f}\%$"])
 plt.show()
 ```
 
 -   we can assume that the galaxies from the upper left and lower right regions of the plot are classified differently because of this
--   this might explain the large errors E_T of HECATE
+-   this might explain the large errors $\delta T$ of HECATE
 -   why we see a difference in the distribution of (@fig-type-comp)
 
 We can remove the "problematic" galaxies by only keeping the ones with: 
 $$
-|{T_{HECATE}-T_{LCV}}|<\sigma_{T_{LCV}} = 4.8
+|{T_{HECATE}-T_{LVG}}|<\sigma_{T_{LVG}} = 4.8
 $$
 
 -   The average uncertainty of the morphological type in the HECATE catalog is $\overline{\delta T} = \pm 1.4$, so the intercept is included in the error.
--   So we can assume that the Distances are the same
+-   So we can assume that the Morphological Types are the same
 
 ### Inclination
 
@@ -724,7 +734,7 @@ plt.close()
 temp = dt[["inc", "INCL"]].to_pandas()
 
 sns.histplot(temp["INCL"], kde = True, label = "HECATE")
-sns.histplot(temp["inc"], kde = True, label = "LCV")
+sns.histplot(temp["inc"], kde = True, label = "LVG")
 plt.legend()
 plt.xlabel("Inclination of galaxies [deg]")
 plt.show()
@@ -736,10 +746,12 @@ plt.show()
 ```
 
 ```{python}
-temp.describe()
+# Display specific statistics, excluding the 25th and 75th percentiles
+summary_stats = temp.describe().drop(['25%', '75%'])
+summary_stats
 ```
 
-We can see that for values in the range $[\sim 30^\circ,\sim 80^\circ]$, the values of the LCV inclination are higher (@fig-incl-compare). However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, $\sigma$ = 0 with a range $[-3\%,1\%]$), we can ignore the differences and assume they are the same values.
+We can see that for values in the range $[\sim 30^\circ,\sim 80^\circ]$, the values of the LVG inclination are higher (@fig-incl-compare). However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, $\sigma$ = 0 with a range $[-3\%,1\%]$), we can ignore the differences and assume they are the same values.
 
 ### Major Axis
 
@@ -759,10 +771,10 @@ sns.regplot(x = dt["a26_1"].data, y = dt["R1"].data,
 temp = dt[["a26_1","R1"]].to_pandas().dropna()
 results = scipy.stats.linregress(x = temp["a26_1"], y = temp["R1"])
 
-plt.xlabel("(Major angular diameter$)_{LCV}$")
+plt.xlabel("(Major angular diameter$)_{LVG}$")
 plt.ylabel("(Semi major axis$)_{HEC}$")
 plt.legend(["Data",
-            "$R1_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot a_{26,LCV}$"+
+            "$R1_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot a_{26,LVG}$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
@@ -776,10 +788,10 @@ p = sns.regplot(x = dt["log_a26"].data, y = dt["log_R1"].data,
 
 temp = dt[["log_a26","log_R1"]].to_pandas().dropna()
 results = scipy.stats.linregress(x = temp["log_a26"], y = temp["log_R1"])
-plt.xlabel("(Major angular diameter$)_{LCV}$"+" [{}]".format(dt["a26_1"].unit))
+plt.xlabel("(Major angular diameter$)_{LVG}$"+" [{}]".format(dt["a26_1"].unit))
 plt.ylabel("(Semi major axis$)_{HEC}$"+" [{}]".format(dt["R1"].unit))
 plt.legend(["Data",
-            "$log_{10}(R1_{HEC})=$" +f"{results.slope:.2f}"+"$\cdot log_{10}(a_{26,LCV})$"+
+            "$log_{10}(R1_{HEC})=$" +f"{results.slope:.2f}"+"$\cdot log_{10}(a_{26,LVG})$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.0f}\%$"])
 plt.show()
@@ -798,6 +810,8 @@ $$
 $$
 :::
 
+{{< pagebreak >}} 
+
 ## Luminosities
 
 ```{python}
@@ -808,9 +822,9 @@ logKLum_corr = round(compare_data(dt["logKLum"], dt["logL_K"], sigma = True)[3],
 
 ```
 
-|   LCV   | HECATE | Description | Pearson Correlation \[-1,1\] |
-|:-------:|:------:|:-----------:|:----------------------------:|
-| logKLum | logL_K |             |   `{python} logKLum_corr`    |
+|   LVG   | HECATE | Description |
+|:-------:|:------:|:-----------:|
+| logKLum | logL_K |             |
 
 ```{python}
 #| label: fig-klum-compare
@@ -827,34 +841,34 @@ sns.regplot(x = dt["logKLum"], y = dt["logL_K"],
                  line_kws=dict(alpha=0.7, color='red', linewidth=3))
 temp = dt[["logKLum","logL_K"]].to_pandas().dropna()
 results = scipy.stats.linregress(x = temp["logKLum"], y = temp["logL_K"])
-plt.xlabel("log($L_{K, LCV} $"+"/{})".format(dt["KLum"].unit.to_string("latex")))
+plt.xlabel("log($L_{K, LVG} $"+"/{})".format(dt["KLum"].unit.to_string("latex")))
 plt.ylabel("log($L_{K, HECATE} $"+"/{})".format(dt["KLum"].unit.to_string("latex")))
 plt.legend(["Data",
-            "$log(L_{K,HEC})=$" +f"{results.slope:.2f}"+"$\cdot log(L_{K,LCV})$"+
+            "$log(L_{K,HEC})=$" +f"{results.slope:.2f}"+"$\cdot log(L_{K,LVG})$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
 
 data = dt[["logKLum", "logL_K"]]
 data = dt[~np.isnan(data["logL_K"])]
-logL_K_LCV = data['logKLum']  # Replace with actual column names
+logL_K_LVG = data['logKLum']  # Replace with actual column names
 logL_K_HECATE = data['logL_K']  # Replace with actual column names
 
 
 # Plot the data and both fits
 plt.figure(figsize=(8, 6))
-plt.scatter(logL_K_LCV, logL_K_HECATE, color='blue', label='Data', alpha =0.5, edgecolors="white")
+plt.scatter(logL_K_LVG, logL_K_HECATE, color='blue', label='Data', alpha =0.5, edgecolors="white")
 
 # Plot free fit (with intercept)
-plt.plot(logL_K_LCV, results.slope * logL_K_LCV + results.intercept, color='green', label='Free Fit: $log(L_{K,HEC})=$'+ f'{results.slope:.2f}'+ "$\cdot log(L_{K,LCV})$"+ f'{results.intercept:.2f}'+f"\n $R^2 = {results.rvalue**2*100:.2f}\%$")
+plt.plot(logL_K_LVG, results.slope * logL_K_LVG + results.intercept, color='green', label='Free Fit: $log(L_{K,HEC})=$'+ f'{results.slope:.2f}'+ "$\cdot log(L_{K,LVG})$"+ f'{results.intercept:.2f}'+f"\n $R^2 = {results.rvalue**2*100:.2f}\%$")
 
 slope_forced = 1
 # Plot forced fit (through the origin)
-results_f = scipy.stats.linregress(x = logL_K_HECATE, y = slope_forced*logL_K_LCV)
-plt.plot(logL_K_LCV, slope_forced * logL_K_LCV, color='red', label='Forced Fit: $log(L_{K,HEC})=$' +f' = {slope_forced:.2f}'"$\cdot log(L_{K,LCV})$"+f"\n $R^2 = {results_f.rvalue**2*100:.2f}\%$")
+results_f = scipy.stats.linregress(x = logL_K_HECATE, y = slope_forced*logL_K_LVG)
+plt.plot(logL_K_LVG, slope_forced * logL_K_LVG, color='red', label='Forced Fit: $log(L_{K,HEC})=$' +f' = {slope_forced:.2f}'"$\cdot log(L_{K,LVG})$"+f"\n $R^2 = {results_f.rvalue**2*100:.2f}\%$")
 
 
-plt.xlabel("log($L_{K, LCV} $"+"/{})".format(dt["KLum"].unit.to_string("latex")))
+plt.xlabel("log($L_{K, LVG} $"+"/{})".format(dt["KLum"].unit.to_string("latex")))
 plt.ylabel("log($L_{K, HECATE} $"+"/{})".format(dt["KLum"].unit.to_string("latex")))
 plt.legend()
 plt.grid(True)
@@ -862,14 +876,14 @@ plt.show()
 ```
 
 $$
-\log(L_{K,HEC})=1.16\log(L_{K,LCV})-1.78=\log\left(\frac{{L_{K,LCV}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LCV}}^{1.16}
+\log(L_{K,HEC})=1.16\log(L_{K,LVG})-1.78=\log\left(\frac{{L_{K,LVG}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LVG}}^{1.16}
 $$
 
-To assess whether the two galaxy catalogs have a 1-1 correlation, I applied two types of linear fits to the data: a free fit and a forced fit. The free fit allows both the slope and intercept to vary freely, meaning the line can take on any slope and can cross the y-axis at any point. In contrast, for the forced fit, I set the slope to exactly 1 and fixed the line to pass through the origin, meaning the equation becomes y=xy=x. This forced fit represents a perfect 1-1 relationship, where the values from one catalog should match the other exactly, without any shift or scaling.
+To assess whether the two galaxy catalogs have a 1-1 correlation, I applied two types of linear fits to the data: a free fit and a forced fit. The free fit allows both the slope and intercept to vary freely, meaning the line can take on any slope and can cross the y-axis at any point. In contrast, for the forced fit, I set the slope to exactly 1 and fixed the line to pass through the origin, meaning the equation becomes $y=x$. This forced fit represents a perfect 1-1 relationship, where the values from one catalog should match the other exactly, without any shift or scaling.
 
 After fitting the data using both methods, I calculated the $R^2$ value for each fit. In this case, both the free fit and the forced fit produced very similar $R^2$ values, around 87.13%[^3], indicating that both fits explain about 87% of the variance in the data (@fig-klum-compare).
 
-[^3]: The difference of the linear regression with the free parameters and the forced regression is $\Delta R^2 = 1.14\cdot 10^{-13}\%$ 
+[^3]: The difference of the linear regression with the free parameters and the forced regression is $\Delta R^2 = 1.14\cdot 10^{-13}\%$
 
 The fact that both the free and forced fits have nearly identical $R^2$ values suggests that the data closely follows a 1-1 relationship. In the free fit, the best-fitting line had a very small intercept, which shows that allowing the line to shift vertically did not significantly improve how well the line fits the data. This strongly indicates that the data from the two catalogs are well-aligned and follow the relationship y=x quite closely, which is what we expect if the catalogs are in good agreement.
 
@@ -884,10 +898,10 @@ mag_B_corr = round(compare_data(dt["mag_B"], dt["BT"], sigma = True)[3], 3)
 Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
 ```
 
-|         LCV         |      HECATE      |         Description         | Pearson Correlation \[-1,1\] |
-|:----------------:|:----------------:|:----------------:|:-----------------:|
-| mag_B (with errors) | BT (with errors) |                             |    `{python} mag_B_corr`     |
-|        Kmag         |        K         | 2MASS band magnitude (both) |     `{python} Kmag_corr`     |
+|         LVG         |      HECATE      |         Description         |
+|:-------------------:|:----------------:|:---------------------------:|
+| mag_B (with errors) | BT (with errors) |                             |
+|        Kmag         |        K         | 2MASS band magnitude (both) |
 
 ```{python}
 #| label: fig-mag-compare
@@ -906,10 +920,10 @@ sns.regplot(x = dt["mag_B"].data, y = dt["BT"].data,
 ax.errorbar(dt["mag_B"].data, dt["BT"].data, xerr = dt["e_mag_B"].data, yerr = dt["E_BT"].data, fmt='none', capsize=2, zorder=1, color = "blue")
 temp = dt[["mag_B","BT"]].to_pandas().dropna()
 results = scipy.stats.linregress(x = temp["mag_B"], y = temp["BT"])
-plt.xlabel("$M_{B,LCV}$"+" [{}]".format(dt["mag_B"].unit.to_string("latex")))
+plt.xlabel("$M_{B,LVG}$"+" [{}]".format(dt["mag_B"].unit.to_string("latex")))
 plt.ylabel("$M_{B,HECATE} $"+" [{}]".format(dt["BT"].unit.to_string("latex")))
 plt.legend(["Data",
-            "$M_{B,HEC}=$" +f"{results.slope:.2f}"+"$\cdot M_{B,LCV}$"+
+            "$M_{B,HEC}=$" +f"{results.slope:.2f}"+"$\cdot M_{B,LVG}$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
@@ -923,10 +937,10 @@ sns.regplot(x = dt["Kmag"].data, y = dt["K"].data,
 ax.errorbar(dt["Kmag"].data, dt["K"].data, yerr = dt["E_K"].data, fmt='none', capsize=2, zorder=1, color = "blue")
 temp = dt[["Kmag","K"]].to_pandas().dropna()
 results = scipy.stats.linregress(x = temp["Kmag"], y = temp["K"])
-plt.xlabel("$M_{K,LCV}$"+" [{}]".format(dt["Kmag"].unit.to_string("latex")))
+plt.xlabel("$M_{K,LVG}$"+" [{}]".format(dt["Kmag"].unit.to_string("latex")))
 plt.ylabel("$M_{K,HECATE} $"+" [{}]".format(dt["K"].unit.to_string("latex")))
 plt.legend(["Data",
-            "$M_{K,HEC}=$" +f"{results.slope:.2f}"+"$\cdot M_{K,LCV}$"+
+            "$M_{K,HEC}=$" +f"{results.slope:.2f}"+"$\cdot M_{K,LVG}$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
@@ -936,35 +950,58 @@ plt.show()
 -   $M_K$: we need to examine it more, since the intercept is bigger than the error $M_{K,HECATE} = 0.09\ mag$ (@fig-mag-compare)
 
 ```{python}
-dt["diff_K_mag"] = relative_diff(dt["Kmag"], dt["K"])
+#| label: fig-kmag-compare
+#| layout-ncol: 2 
+#| fig-cap: "Comparison of the $L_K$ of the galaxies."
+#| fig-subcap: 
+#| - "Linear Regression with free paramaters, $y=ax+b$ "
+#| - "Linear Regrassion $y=x$ "
+ 
+plt.close()
+fig, ax = plt.subplots()
+temp = dt[["Kmag","K"]].to_pandas().dropna()
+K_LVG = temp['Kmag']  # Replace with actual column names
+K_HECATE = temp['K']  # Replace with actual column names
 
-temp = dt[["diff_K_mag"]].to_pandas()
-c = temp["diff_K_mag"]
-up_clip = c.mean() + 3*c.std()
-low_clip = c.mean() - 3*c.std()
-temp["Percentage Change, after 3 sigma clip [%]"] = temp["diff_K_mag"].clip(low_clip, up_clip)
-temp.rename(columns={"diff_K_mag":"Percentage Change [%]"}, inplace=True)
-```
 
-```{python}
-sns.histplot(temp, kde = True)
-plt.title("Percentage change Distribution [%]")
-plt.xlabel(f"K band magnitude [{dt['K'].unit}]")
+sns.regplot(x = K_LVG, y = K_HECATE,
+                 scatter_kws=dict(alpha=0.5, color='blue', edgecolors='white'),
+                 line_kws=dict(alpha=0.7, color='red', linewidth=3))
+results = scipy.stats.linregress(x = temp["Kmag"], y = temp["K"])
+r2_free = results.rvalue
+plt.xlabel("$M_{K,LVG}$"+" [{}]".format(dt["Kmag"].unit.to_string("latex")))
+plt.ylabel("$M_{K,HECATE} $"+" [{}]".format(dt["K"].unit.to_string("latex")))
+plt.legend(["Data",
+            "$M_{K,HEC}=$" +f"{results.slope:.2f}"+"$\cdot M_{K,LVG}$"+
+            f"${results.intercept:+.2f}$"+
+            f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
 
-sns.histplot(dt["Kmag"].data, label = "LCV")
-sns.histplot(dt["K"].data, label = "HECATE")
+# Plot the data and both fits
+plt.figure(figsize=(8, 6))
+plt.scatter(K_LVG, K_HECATE, color='blue', label='Data', alpha =0.5, edgecolors="white")
+
+# Plot free fit (with intercept)
+plt.plot(K_LVG, results.slope * K_LVG + results.intercept, color='green', label='Free Fit: $M_{K,HEC}=$'+ f'{results.slope:.2f}'+ "$\cdot M_{K,LVG}$"+ f'{results.intercept:.2f}'+f"\n $R^2 = {results.rvalue**2*100:.2f}\%$")
+
+slope_forced = 1
+# Plot forced fit (through the origin)
+results_f = pearsonr(x = K_HECATE, y = slope_forced*K_LVG)
+plt.plot(K_LVG, slope_forced * K_LVG, color='red', label='Forced Fit: $M_{K,HEC}=$' +f' = {slope_forced:.2f}'"$\cdot M_{K,LVG}$"+f"\n $R^2 = {results_f.statistic**2*100:.2f}\%$")
+
+
+plt.xlabel("$M_{K,LVG}$"+" [{}]".format(dt["Kmag"].unit.to_string("latex")))
+plt.ylabel("$M_{K,HECATE} $"+" [{}]".format(dt["K"].unit.to_string("latex")))
 plt.legend()
-plt.xlabel(f"K band magnitude [{dt['K'].unit}]")
+plt.grid(True)
 plt.show()
 ```
 
-```{python}
-temp.describe(percentiles=[])
-```
+Following the same logic as in @fig-klum-compare, we force the parameters of the linear regression to be $y=1\cdot x + 0$.
 
-\[?\] this 5% mean in the difference probably exists because of the low number of galaxies we compare, so we can ignore it.
+In this case, the data is such that both the forced fit and the free fit explain the variance almost identically (@fig-kmag-compare-2). This can happen when the data roughly follows the pattern $y≈x$, but with a slight bias that the free fit can account for (in this case, a slope slightly greater than 1 and a negative intercept).
 
+{{< pagebreak >}}
 ## SFR
 
 ```{python}
@@ -977,19 +1014,22 @@ sfr_data = dt[sfr_columns].to_pandas()
 non_nan_counts = sfr_data.notna().sum()
 ```
 
-|  LCV   |   HECATE   |                           Description                            |                  Count                  |
-|:----------------:|:----------------:|:-----------------:|:----------------:|
-|        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] | `{python} non_nan_counts["logSFR_TIR"]` |
-|        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  | `{python} non_nan_counts["logSFR_FIR"]` |
-|        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_60u"]` |
-|        | logSFR_12u |      Decimal logarithm of the 12um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_12u"]` |
-|        | logSFR_22u |      Decimal logarithm of the 22um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_22u"]` |
-|        | logSFR_HEC |  Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]   | `{python} non_nan_counts["logSFR_HEC"]` |
-|        | logSFR_GSW |       Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]        | `{python} non_nan_counts["logSFR_GSW"]` |
-| SFRFUV |            |             FUV derived integral star formation rate             | `{python} non_nan_counts["logSFRFUV"]`  |
-| SFRHa  |            |          H{alpha} derived integral star formation rate           |  `{python} non_nan_counts["logSFRHa"]`  |
+|  LVG   |   HECATE   |                           Description                            |
+|:----------------:|:----------------:|:-----------------:|
+|        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] |
+|        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  |
+|        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      |
+|        | logSFR_12u |      Decimal logarithm of the 12um SFR estimate \[Msol/yr\]      |
+|        | logSFR_22u |      Decimal logarithm of the 22um SFR estimate \[Msol/yr\]      |
+|        | logSFR_HEC |  Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]   |
+|        | logSFR_GSW |       Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]        |
+| SFRFUV |            |             FUV derived integral star formation rate             |
+| SFRHa  |            |          H{alpha} derived integral star formation rate           |
 
 ```{python}
+#| label: fig-sfr-pairplot
+#| layout-align: center
+#| fig-cap: "Comparison of the $SFR_{i}$ of the galaxies"
 #| echo: false
 sfr_data.drop("logSFR_GSW", axis=1, inplace=True)
 
@@ -998,8 +1038,14 @@ pairplot_with_correlation(sfr_data)
 
 ```
 
+The SFR according to (@kroupaConstraintsStarFormation2020), can be calculated from the mean of SFR from the Ha and FUV, for $SFR>10^{-3}\ M_\odot\, yr^{-1}$. As we can see from the plots (@fig-sfr-lvg) it could be a good aproximation.
+
+$$
+SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
+$$ {#eq-sfr-mean}
+
 ```{python}
-#| label: fig-sfr-lcv
+#| label: fig-sfr-lvg
 #| layout-ncol: 2
 #| layout-align: center
 #| fig-cap: "Comparison of the $SFR_{FUV}-SFR_{Ha}$ of the galaxies"
@@ -1010,7 +1056,7 @@ pairplot_with_correlation(sfr_data)
 ##linear
 plt.close()
 fig, ax = plt.subplots()
-temp = lcv[["SFRHa","SFRFUV"]].to_pandas().dropna()
+temp = lvg[["SFRHa","SFRFUV"]].to_pandas().dropna()
 x = temp["SFRHa"]
 y = temp["SFRFUV"]
 sns.regplot(x = x, y = y,
@@ -1048,12 +1094,6 @@ plt.legend(["Data",
 plt.show()
 ```
 
-The SFR according to (@kroupaConstraintsStarFormation2020), can be calculated from the mean of SFR from the Ha and FUV, for $SFR>10^{-3}\ M_\odot\, yr^{-1}$. As we can see from the plots (@fig-sfr-lcv) it is a good aproximation for all SFR's
-
-$$
-SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
-$$
-
 ```{python}
 sfr_fuv = dt['SFRFUV']
 sfr_ha = dt['SFRHa']
@@ -1063,7 +1103,7 @@ dt["SFR_t"].unit = dt["SFRFUV"].unit
 ```
 
 ```{python}
-#| label: fig-SFR-compare
+#| label: fig-sfr-compare
 #| layout-ncol: 2
 #| layout-align: center
 #| fig-cap: "Comparison of the SFR's of the galaxies"
@@ -1080,10 +1120,10 @@ sns.regplot(x = 10**temp["SFR_t"], y = 10**temp["logSFR_HEC"],
                  scatter_kws=dict(alpha=0.5, color='blue', edgecolors='white'),
                  line_kws=dict(alpha=0.7, color='red', linewidth=3))
 results = scipy.stats.linregress(x = 10**temp["SFR_t"], y = 10**temp["logSFR_HEC"])
-plt.xlabel("$SFR_{LCV}$"+" [{}]".format(dt["SFR_t"].unit.to_string("latex")))
+plt.xlabel("$SFR_{LVG}$"+" [{}]".format(dt["SFR_t"].unit.to_string("latex")))
 plt.ylabel("$SFR_{HECATE} $"+" [{}]".format(dt["SFR_t"].unit.to_string("latex")))
 plt.legend(["Data",
-            "$SFR_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot SFR_{LCV}$"+
+            "$SFR_{HEC}=$" +f"{results.slope:.2f}"+"$\cdot SFR_{LVG}$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
@@ -1098,18 +1138,28 @@ sns.regplot(x = temp["SFR_t"], y = temp["logSFR_HEC"],
                  scatter_kws=dict(alpha=0.5, color='blue', edgecolors='white'),
                  line_kws=dict(alpha=0.7, color='red', linewidth=3))
 results = scipy.stats.linregress(x = temp["SFR_t"], y = temp["logSFR_HEC"])
-plt.xlabel("$log(SFR_{LCV})$"+" [{}]".format(dt["logSFR_HEC"].unit.to_string("latex")))
+plt.xlabel("$log(SFR_{LVG})$"+" [{}]".format(dt["logSFR_HEC"].unit.to_string("latex")))
 plt.ylabel("$log(SFR_{HECATE})$"+" [{}]".format(dt["logSFR_HEC"].unit.to_string("latex")))
 plt.legend(["Data",
-            "$log(SFR_{HEC})=$" +f"{results.slope:.2f}"+"$\cdot log(SFR_{LCV})$"+
+            "$log(SFR_{HEC})=$" +f"{results.slope:.2f}"+"$\cdot log(SFR_{LVG})$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
 ```
 
-\[?\]EXPLANATION this low correlation maybe comes from the inaccuracy/approximation of (@kroupaConstraintsStarFormation2020)
+The low correlation in @fig-sfr-compare-1 and the interval in @fig-sfr-compare-2 show that the approximation (@eq-sfr-mean) is not great. According to @karachentsevSTARFORMATIONPROPERTIES2013a:
 
-The reason is that this aproximation is accurate if we consider a stable SFR over time. However, we tend to observe higher Ha for more recent SF activity. (we discussed it in our last meeting, I need a refrence).
+-   **Hα and FUV timescales**: $H_\alpha$ traces short-term star formation (\~10 Myr) via massive O-type stars, while FUV traces longer-term star formation (\~100 Myr) from B-type stars.
+
+-   **Discrepancies due to star formation bursts**: In galaxies with bursty or episodic star formation, Hα can significantly overestimate SFR compared to FUV, which lags in reflecting recent star formation events.
+
+-   **Low-mass galaxy variability**: The scatter between $SFR_{\text{H}\alpha}$ and $SFR_{\text{FUV}}$ is particularly high in low-mass, dwarf galaxies, where stochastic star formation history causes wide variability between the two indicators.
+
+-   **Measurement uncertainties**: Internal extinction, errors in distance estimates, and IMF stochasticity introduce biases in both Hα and FUV fluxes, making simple averaging inappropriate.
+
+-   **Conclusion**: The $SFR_{\text{total}} = \text{mean}(SFR_{\text{H}\alpha}, SFR_{\text{FUV}})$ method oversimplifies the complexity of star formation processes and is not reliable for galaxies with variable star formation or significant measurement uncertainties
+  
+{{< pagebreak >}}
 
 ## Masses
 
@@ -1123,16 +1173,20 @@ mass_data = dt[mass_columns].to_pandas()
 non_nan_counts = mass_data.notna().sum()
 ```
 
-|      LCV       |  HECATE  |                        Description                        |                    Count                    |
-|:----------------:|:----------------:|:----------------:|:----------------:|
-|     logM26     |          |              Log mass within Holmberg radius              |     `{python} non_nan_counts["logM26"]`     |
-|     logMHI     |          |              Log mass within Holmberg radius              |     `{python} non_nan_counts["logMHI"]`     |
-|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       |    `{python} non_nan_counts["logM_HEC"]`    |
-|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |    `{python} non_nan_counts["logM_GSW"]`    |
-| logStellarMass |          |               Stellar Mass from $M_*/L=0.6$               | `{python} non_nan_counts["logStellarMass"]` |
+|      LVG       |  HECATE  |                        Description                        |
+|:----------------:|:----------------:|:----------------:|
+|     logM26     |          |              Log mass within Holmberg radius              |
+|     logMHI     |          |              Log mass within Holmberg radius              |
+|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       |
+|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |
+| logStellarMass |          |               Stellar Mass from $M_*/L=0.6$               |
 
 ::: panel-tabset
+{{< pagebreak >}}
+
 ### Stellar Masses Comparison
+
+{{< pagebreak >}}
 
 ```{python}
 #| label: fig-Mass-compare
@@ -1147,10 +1201,10 @@ sns.regplot(x = x, y = y,
                 scatter_kws=dict(alpha=0.5, color='blue', edgecolors='white'), 
                 line_kws=dict(alpha=0.7, color='red', linewidth=3))
 results = scipy.stats.linregress(x = x, y = y)
-plt.xlabel("$log(M_{*,LCV})$"+" [{}]".format(dt["logM_HEC"].unit.to_string("latex")))
+plt.xlabel("$log(M_{*,LVG})$"+" [{}]".format(dt["logM_HEC"].unit.to_string("latex")))
 plt.ylabel("$log(M_{*,HECATE} )$"+" [{}]".format(dt["logM_HEC"].unit.to_string("latex")))
 plt.legend(["Data",
-            "$log(M_{*,HEC})=$" +f"{results.slope:.2f}"+"$\cdot log(M_{*,LCV})$"+
+            "$log(M_{*,HEC})=$" +f"{results.slope:.2f}"+"$\cdot log(M_{*,LVG})$"+
             f"${results.intercept:+.2f}$"+
             f"\n $R^2 = {results.rvalue**2*100:.2f}\%$"])
 plt.show()
@@ -1158,11 +1212,13 @@ plt.show()
 ```
 
 $$
-\log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LCV}}-0.69, \text{ but } \log{M_*}>6\Rightarrow M_{*,HEC}\sim M_{*,LCV}
+\log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LVG}}-0.69, \text{ but } \log{M_*}>6\Rightarrow M_{*,HEC}\sim M_{*,LVG}
 $$
 
 As we can see the aproximation of Mass/Light=const.=0.6 is a pretty good approximation, for the calculation of $\log(M_*/M_\odot)$, especially for high-mass galaxies
 
+
+{{< pagebreak >}}
 ### Heatmap
 
 ```{python}
