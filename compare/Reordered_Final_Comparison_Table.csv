@@ -1,0 +1,9 @@
+x,y,error,count,description
+Dis,D,E_D,162,Distance
+logKLum,logL_K,,70,Luminosity
+mag_B,BT,E_BT,244,Magnitude (B-band)
+Kmag,K,E_K,67,Magnitude (K-band)
+logStellarMass,logM_HEC,,64,Stellar Mass (HECATE)
+SFR_total,logSFR_HEC,,73,Mean SFR (FUV and Hα)
+inc,INCL,,209,Inclination (deg)
+a26_1,R1,,261,Major Axis (arcmin)
