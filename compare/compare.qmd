@@ -675,6 +675,9 @@ sns.regplot(x = dt["TType"].data, y = dt["T"].data,
 
 ax.errorbar(dt["TType"].data, dt["T"].data, yerr = dt["E_T"].data, fmt='none', capsize=2, zorder=1, color = "blue")
 temp = dt[["TType", "T"]].to_pandas().dropna()
+temp["TType"] = temp["TType"].astype("float64")
+temp["T"] = temp["T"].astype("float64")
+
 results = scipy.stats.linregress(x = temp["TType"],
                                 y = temp["T"])
 plt.xlabel("$Type_{LVG}$")

@@ -171,7 +171,7 @@ window.Quarto = {
 <li>If we see that the data are similar we can use the outer join</li>
 <li>For the comparison we keep the parameters names exactly they are given in the catalogs</li>
 </ul>
-<p>The dataset we are going to use for the comparison (inner join) consists of 288 galaxies and 168 columns.</p>
+<p>The dataset we are going to use for the comparison (inner join) consists of 288 galaxies and 168 columns with their physical characteristics.</p>
 </section>
 <section id="catalog-completeness" class="level1">
 <h1>Catalog Completeness</h1>
@@ -200,41 +200,37 @@ window.Quarto = {
 <li>Completeness within a 10 Mpc radius is difficult to assess due to: - Variability in galaxy properties (luminosity, size, surface brightness, gas content) - Errors in distance measurements (Tully–Fisher method errors of ~20–25%), especially at the 10 Mpc boundary.
 <ul>
 <li>Accurate distances are mainly known within ~5 Mpc.</li>
-<li>Non-Hubble motions (~300 km/s)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> may make up half of the adopted velocity constraint (<a href="#eq-lvg-vel" class="quarto-xref">Equation&nbsp;1</a>)</li>
+<li>Non-Hubble motions (~300 km/s)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> may make up half of the adopted velocity constraint (<a href="#eq-lvg-vel" class="quarto-xref">Equation&nbsp;1</a>)
+<ul>
 <li>Solution for our usage: only keep the galaxies inside a radius of <span class="math inline">D=11 Mpc</span></li>
+</ul></li>
 <li>HI sources in surveys with low angular resolution: “The presence around our Galaxy of hundreds of high-velocity clouds with low line-of-sight velocities and small W50 widths also provokes the inclusion of false “nearby” dwarf galaxies in the LV”(<span class="citation" data-cites="karachentsevUPDATEDNEARBYGALAXY2013">Karachentsev, Makarov, and Kaisina (<a href="#ref-karachentsevUPDATEDNEARBYGALAXY2013" role="doc-biblioref">2013</a>)</span>)</li>
 </ul></li>
-<li>Astro-Spam and Survey Errors:</li>
 </ol>
+<ol start="2" type="1">
+<li>Astro-Spam and Survey Errors:
 <ul>
 <li>Automatic surveys produce false detections (e.g., stars misclassified as galaxies, high-velocity clouds mistaken for dwarfs).</li>
-</ul>
-<ol start="3" type="1">
-<li>Conditional Completeness Estimate: - Galaxies brighter than <span class="math inline">M_B^c = -11^m</span> or with linear diameters larger than <span class="math inline">A_{26} = 1.0</span> kpc show (40–60)% completeness.</li>
-</ol>
+</ul></li>
+<li>Conditional Completeness Estimate: - Galaxies brighter than <span class="math inline">M_B^c = -11^m</span> or with linear diameters larger than <span class="math inline">A_{26} = 1.0</span> kpc show (40–60)% completeness.
 <ul>
-<li>“among the members of the Local Group (D &lt; 1 Mpc), only half of the galaxies have absolute magnitudes brighter than −11m. Consequently, more than half of the ultra-faint dwarf companions around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside our field of view.”</li>
-</ul>
-<ol start="4" type="1">
-<li>Undetected Ultra-Faint Dwarfs:</li>
-</ol>
+<li>“among the members of the Local Group (D &lt; 1 Mpc), only half of the galaxies have absolute magnitudes brighter than <span class="math inline">−11^m</span>. Consequently, more than half of the ultra-faint dwarf companions around normal galaxies, like the Sombrero galaxy (D = 9.3 Mpc), still remain outside our field of view.”</li>
+</ul></li>
+<li>Undetected Ultra-Faint Dwarfs:
 <ul>
 <li>Many faint dwarf galaxies remain undetected beyond the Local Group. Estimated population of undetected dwarfs could be as large as <span class="math inline">10^3–10^4</span> within the LV.</li>
-</ul>
-<ol start="5" type="1">
-<li>Surface Brightness Distribution:</li>
-</ol>
+</ul></li>
+<li>Surface Brightness Distribution:
 <ul>
 <li>Surface brightness remains consistent across distances, except for ultra-faint dwarfs (<span class="math inline">SB &lt;31 \text{mag}\cdot\text{arcsec}^{-2}</span>).</li>
 <li>Faintest dwarf galaxies are detectable only nearby due to their resolution into individual stars.</li>
-</ul>
-<ol start="6" type="1">
-<li>Luminosity-Size Relationship:</li>
-</ol>
+</ul></li>
+<li>Luminosity-Size Relationship:
 <ul>
 <li>Observations align with cosmological models predicting <span class="math inline">L\sim A^3</span> (<span class="citation" data-cites="navarroStructureColdDark1996">Navarro, Frenk, and White (<a href="#ref-navarroStructureColdDark1996" role="doc-biblioref">1996</a>)</span>), though deviations occur for extremely low surface brightness galaxies.</li>
 <li>“The deviation from it at the extremely low surface brightness end is due to a systematic overestimation of dwarf galaxy sizes, the brightness profiles of which lie entirely below the Holmberg isophote.”</li>
-</ul>
+</ul></li>
+</ol>
 </section>
 </section>
 <section id="completeness-of-hecate" class="level2">
@@ -280,11 +276,11 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left;">Outer join</td>
-<td style="text-align: right;">2901</td>
+<td style="text-align: right;">3934</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LVG</td>
-<td style="text-align: right;">1316</td>
+<td style="text-align: right;">1321</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HECATE</td>
@@ -292,7 +288,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Unique galaxies in LVG</td>
-<td style="text-align: right;">1028</td>
+<td style="text-align: right;">1033</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Unique Galaxies in Hecate</td>
@@ -316,7 +312,7 @@ window.Quarto = {
 </span></p>
 <p>Completeness (HECATE)= 90 %</p>
 <p>Completeness (LVG)= 78 %</p>
-<p>Combined Completeness =<span class="math inline">\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LVG}}</span>= 80 %</p>
+<p>Combined Completeness =<span class="math inline">\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LVG}}</span>= 108 %</p>
 </section>
 <section id="completeness-of-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="completeness-of-the-data">Completeness of the Data</h2>
@@ -390,8 +386,9 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 </figcaption>
 </figure>
 </div>
-<p>As we can see from the histograms (<a href="#fig-dis-comp" class="quarto-xref">Figure&nbsp;1</a>) and (<a href="#fig-type-comp" class="quarto-xref">Figure&nbsp;2</a>) the sample of unique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).</p>
-<p>This means there is no bias in the selection of the galaxies.</p>
+<!--As we can see from the histograms (@fig-dis-comp) and (@fig-type-comp) the sample of unique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
+
+This means there is no bias in the selection of the galaxies.-->
 </section>
 </section>
 <section id="how-are-we-going-to-compare-the-data" class="level1">
@@ -409,7 +406,7 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 <p>Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It’s like a color chart that shows us how closely related different variables are. In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.</p>
 </blockquote></li>
 </ol>
-<p>For the distrabution comparisons we will use histograms and Kernel Density Estimate (KDE) plots. The KDE plots visually represent the distribution of data, providing insights into its shape, central tendency, and spread.</p>
+<p>For the distribution comparisons we will use histograms and Kernel Density Estimate (KDE) plots. The KDE plots visually represent the distribution of data, providing insights into its shape, central tendency, and spread.</p>
 <p>Finally, we will examine the percentage change for each galaxy.</p>
 <ul>
 <li>Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.</li>
@@ -421,18 +418,11 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 <section id="coordinates" class="level2">
 <h2 class="anchored" data-anchor-id="coordinates">Coordinates</h2>
 <table class="table">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 23%">
-<col style="width: 23%">
-<col style="width: 30%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Pearson Correlation [-1,1]</th>
 </tr>
 </thead>
 <tbody>
@@ -440,7 +430,6 @@ Figure&nbsp;2: Histograms showing the Type Completeness of the Catalogs
 <td style="text-align: center;">Dis</td>
 <td style="text-align: center;">D</td>
 <td style="text-align: center;">Distance</td>
-<td style="text-align: center;">0.881</td>
 </tr>
 </tbody>
 </table>
@@ -466,18 +455,11 @@ Figure&nbsp;3: Comparison of the Distances
 <section id="velocities" class="level2">
 <h2 class="anchored" data-anchor-id="velocities">Velocities</h2>
 <table class="table">
-<colgroup>
-<col style="width: 24%">
-<col style="width: 26%">
-<col style="width: 24%">
-<col style="width: 24%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Linear Correlation</th>
 </tr>
 </thead>
 <tbody>
@@ -485,29 +467,25 @@ Figure&nbsp;3: Comparison of the Distances
 <td style="text-align: center;">RVel (km/s)</td>
 <td style="text-align: center;">V (km/s)</td>
 <td style="text-align: center;">Heliocentric radial velocity</td>
-<td style="text-align: center;">0.994</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">VLG (km/s)</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">Radial velocity</td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">cz (km/s)</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">Heliocentric velocity</td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">V_VIR (km/s)</td>
 <td style="text-align: center;">Virgo-infall corrected radial velocity</td>
-<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
-<div id="cell-fig-vel-compare" class="cell" data-layout-align="center" data-execution_count="11">
+<div id="cell-fig-vel-compare" class="cell" data-layout-align="center" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div id="fig-vel-compare" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -525,7 +503,7 @@ Figure&nbsp;4: Comparison of the Radial Velocities
 <li>The average error of the radial velocity in the HECATE catalog is <span class="math inline">\overline{\delta V} = \pm 12\text{km}\cdot s^{-1}</span> , so the intercept is included in the error.</li>
 <li>So we can assume that the radial velocities are the same</li>
 </ul>
-<div id="cell-fig-vel-pairplot" class="cell" data-execution_count="13">
+<div id="cell-fig-vel-pairplot" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div id="fig-vel-pairplot" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -533,31 +511,28 @@ Figure&nbsp;4: Comparison of the Radial Velocities
 <img src="compare_files/figure-html/fig-vel-pairplot-output-1.png" width="1181" height="1181" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vel-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: The correlation Matrix of the Velocities. The lower left triangle is is composed of the scatter plots of the various velocities, the diagonal shows their distrubution and the upper right triangle shows the correlations of the Velocities
+Figure&nbsp;5: The correlation Matrix of the Velocities. The lower left triangle is composed of the scatter plots of the various velocities, the diagonal shows their distrubution and the upper right triangle shows the correlations of the Velocities
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>[?] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference.</p>
-<p>The strong correlation between the velocities reported by the HECATE and LVG catalogs can be attributed to the fact that both measure the same intrinsic galaxy velocities but reference them to different frames. For instance, velocities can be corrected for the movement of the Earth (heliocentric frame) or the for the Virgo-infall. These corrections shift the measured velocity slightly, but the fundamental measurement remains consistent. This explains why the velocities are highly correlated, as they represent the same physical phenomenon but adjusted for different reference points.</p>
+<p>[?] The strong correlation between the velocities reported by the HECATE and LVG catalogs (<a href="#fig-vel-pairplot" class="quarto-xref">Figure&nbsp;5</a>) can be attributed to the fact that both measure the same intrinsic galaxy velocities but reference them to different frames. For instance, velocities can be corrected for the movement of the Earth (heliocentric frame) or the for the Virgo-infall. These corrections shift the measured velocity slightly, but the fundamental measurement remains consistent. This explains why the velocities are highly correlated, as they represent the same physical phenomenon but adjusted for different reference points.</p>
 <div style="page-break-after: always;"></div>
 </section>
 <section id="morphology-and-geometry" class="level2">
 <h2 class="anchored" data-anchor-id="morphology-and-geometry">Morphology and Geometry</h2>
 <table class="table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 26%">
-<col style="width: 24%">
+<col style="width: 32%">
+<col style="width: 32%">
+<col style="width: 34%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Pearson Correlation [-1,1]</th>
 </tr>
 </thead>
 <tbody>
@@ -565,19 +540,16 @@ Figure&nbsp;5: The correlation Matrix of the Velocities. The lower left triangle
 <td style="text-align: center;">TType</td>
 <td style="text-align: center;">T (with errors)</td>
 <td style="text-align: center;">Numerical Hubble type following the de Vaucouleurs system</td>
-<td style="text-align: center;">0.7107</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">inc</td>
 <td style="text-align: center;">INCL</td>
 <td style="text-align: center;">Inclination (deg)</td>
-<td style="text-align: center;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">a26_1 (Major)</td>
 <td style="text-align: center;">R1 (Semi-major axis)</td>
 <td style="text-align: center;">angular diameter (arcmin)</td>
-<td style="text-align: center;">0</td>
 </tr>
 </tbody>
 </table>
@@ -586,6 +558,7 @@ Figure&nbsp;5: The correlation Matrix of the Velocities. The lower left triangle
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>“Morphological type of galaxy in the numerical code according to the classification by de Vaucouleurs et al.&nbsp;(1991). It should be noted that about three quarters of objects in the LV are dwarf galaxies, which require a more detailed morphological classification. For example, dwarf spheroidal galaxies and normal ellipticals are usually denoted by the same numerical code T &lt; 0, although their physical properties drastically differ. The classification problem arises as well for the “transient” type dwarf galaxies, T r, which combine the features of spheroidal (Sph) and irregular (Ir)systems. Due to small classification errors, such objects may “jump” from one end of the T scale to the other.” (<span class="citation" data-cites="karachentsevUPDATEDNEARBYGALAXY2013">Karachentsev, Makarov, and Kaisina (<a href="#ref-karachentsevUPDATEDNEARBYGALAXY2013" role="doc-biblioref">2013</a>)</span>)</p>
+<p>“as they correspond to types T &lt; 1. The shortcomings of such a simplified classification of dwarf systems have become apparent; hence, van den Bergh (1959) proposed a more refined scheme where dwarf galaxies were assumed to be divided by luminosity class…Such an approach allowed us to avoid unpleasant cases in which a dwarf galaxy of intermediate type jumps over due to a misclassification from one end of the de Vaucouleurs sequence (T &lt; 1) to the other (T = 9, 10).” (<span class="citation" data-cites="karachentsevSTARFORMATIONPROPERTIES2013a">Karachentsev and Kaisina (<a href="#ref-karachentsevSTARFORMATIONPROPERTIES2013a" role="doc-biblioref">2013</a>)</span>)</p>
 <div id="fig-types-compare" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-types-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -609,7 +582,7 @@ Figure&nbsp;5: The correlation Matrix of the Velocities. The lower left triangle
 <img src="compare_files/figure-html/fig-types-compare-output-2.png" data-ref-parent="fig-types-compare" width="591" height="433" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-types-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Comparison with the correction <span class="math inline">|{T_{HECATE}-T_{LVG}}|&lt;7</span>
+(b) Comparison with the correction <span class="math inline">|{T_{HECATE}-T_{LVG}}|&lt;σ_{Τ_{LVG}}</span>
 </figcaption>
 </figure>
 </div>
@@ -623,7 +596,7 @@ Figure&nbsp;6: Comparison of the Types of galaxies
 </div>
 <ul>
 <li>we can assume that the galaxies from the upper left and lower right regions of the plot are classified differently because of this</li>
-<li>this might explain the large errors E_T of HECATE</li>
+<li>this might explain the large errors <span class="math inline">\delta T</span> of HECATE</li>
 <li>why we see a difference in the distribution of (<a href="#fig-type-comp" class="quarto-xref">Figure&nbsp;2</a>)</li>
 </ul>
 <p>We can remove the “problematic” galaxies by only keeping the ones with: <span class="math display">
@@ -631,7 +604,7 @@ Figure&nbsp;6: Comparison of the Types of galaxies
 </span></p>
 <ul>
 <li>The average uncertainty of the morphological type in the HECATE catalog is <span class="math inline">\overline{\delta T} = \pm 1.4</span>, so the intercept is included in the error.</li>
-<li>So we can assume that the Distances are the same</li>
+<li>So we can assume that the Morphological Types are the same</li>
 </ul>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
@@ -670,8 +643,8 @@ Figure&nbsp;7: Comparison of the Inclination of the galaxies
 </figcaption>
 </figure>
 </div>
-<div id="b454f455" class="cell" data-execution_count="18">
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div id="7a0da738" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <div>
 <div>
 
@@ -711,21 +684,9 @@ Figure&nbsp;7: Comparison of the Inclination of the galaxies
 <td>-3</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">25%</td>
-<td>47</td>
-<td>47</td>
-<td>-0</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">50%</td>
 <td>60</td>
 <td>59</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">75%</td>
-<td>72</td>
-<td>78</td>
 <td>0</td>
 </tr>
 <tr class="even">
@@ -790,6 +751,7 @@ R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
 </div>
 </div>
 </div>
+<div style="page-break-after: always;"></div>
 </section>
 <section id="luminosities" class="level2">
 <h2 class="anchored" data-anchor-id="luminosities">Luminosities</h2>
@@ -799,7 +761,6 @@ R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Pearson Correlation [-1,1]</th>
 </tr>
 </thead>
 <tbody>
@@ -807,7 +768,6 @@ R_1 = 0.48\cdot a_{26}-0.34 \sim \frac{1}{2}a_{26}
 <td style="text-align: center;">logKLum</td>
 <td style="text-align: center;">logL_K</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">0</td>
 </tr>
 </tbody>
 </table>
@@ -849,7 +809,7 @@ Figure&nbsp;9: Comparison of the <span class="math inline">L_K</span> of the gal
 <p><span class="math display">
 \log(L_{K,HEC})=1.16\log(L_{K,LVG})-1.78=\log\left(\frac{{L_{K,LVG}}^{1.16}}{10^{1.78}}\right) \Leftrightarrow L_{K,HEC}=0.02\cdot{L_{K,LVG}}^{1.16}
 </span></p>
-<p>To assess whether the two galaxy catalogs have a 1-1 correlation, I applied two types of linear fits to the data: a free fit and a forced fit. The free fit allows both the slope and intercept to vary freely, meaning the line can take on any slope and can cross the y-axis at any point. In contrast, for the forced fit, I set the slope to exactly 1 and fixed the line to pass through the origin, meaning the equation becomes y=xy=x. This forced fit represents a perfect 1-1 relationship, where the values from one catalog should match the other exactly, without any shift or scaling.</p>
+<p>To assess whether the two galaxy catalogs have a 1-1 correlation, I applied two types of linear fits to the data: a free fit and a forced fit. The free fit allows both the slope and intercept to vary freely, meaning the line can take on any slope and can cross the y-axis at any point. In contrast, for the forced fit, I set the slope to exactly 1 and fixed the line to pass through the origin, meaning the equation becomes <span class="math inline">y=x</span>. This forced fit represents a perfect 1-1 relationship, where the values from one catalog should match the other exactly, without any shift or scaling.</p>
 <p>After fitting the data using both methods, I calculated the <span class="math inline">R^2</span> value for each fit. In this case, both the free fit and the forced fit produced very similar <span class="math inline">R^2</span> values, around 87.13%<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, indicating that both fits explain about 87% of the variance in the data (<a href="#fig-klum-compare" class="quarto-xref">Figure&nbsp;9</a>).</p>
 <p>The fact that both the free and forced fits have nearly identical <span class="math inline">R^2</span> values suggests that the data closely follows a 1-1 relationship. In the free fit, the best-fitting line had a very small intercept, which shows that allowing the line to shift vertically did not significantly improve how well the line fits the data. This strongly indicates that the data from the two catalogs are well-aligned and follow the relationship y=x quite closely, which is what we expect if the catalogs are in good agreement.</p>
 <p>While these results are promising, it’s important to note that achieving an <span class="math inline">R^2</span> of 87%—while high—doesn’t necessarily prove a perfect 1-1 correlation. There may still be small discrepancies or uncertainties in the data that prevent a perfect match. Nonetheless, the fact that fixing the slope to 1 and forcing the line through the origin gave such a good result suggests that the two catalogs are very consistent with each other.</p>
@@ -857,18 +817,11 @@ Figure&nbsp;9: Comparison of the <span class="math inline">L_K</span> of the gal
 <section id="magnitudes" class="level2">
 <h2 class="anchored" data-anchor-id="magnitudes">Magnitudes</h2>
 <table class="table">
-<colgroup>
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 26%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Pearson Correlation [-1,1]</th>
 </tr>
 </thead>
 <tbody>
@@ -876,13 +829,11 @@ Figure&nbsp;9: Comparison of the <span class="math inline">L_K</span> of the gal
 <td style="text-align: center;">mag_B (with errors)</td>
 <td style="text-align: center;">BT (with errors)</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Kmag</td>
 <td style="text-align: center;">K</td>
 <td style="text-align: center;">2MASS band magnitude (both)</td>
-<td style="text-align: center;">0</td>
 </tr>
 </tbody>
 </table>
@@ -925,91 +876,58 @@ Figure&nbsp;10: Comparison of the Magnitudes of the galaxies
 <li><span class="math inline">M_B</span>: it is a 1-1 correlation, since the average error <span class="math inline">M_{B,HECATE} = 0.4\ mag</span>, so the itercept is smaller than the error (<a href="#fig-mag-compare" class="quarto-xref">Figure&nbsp;10</a>)</li>
 <li><span class="math inline">M_K</span>: we need to examine it more, since the intercept is bigger than the error <span class="math inline">M_{K,HECATE} = 0.09\ mag</span> (<a href="#fig-mag-compare" class="quarto-xref">Figure&nbsp;10</a>)</li>
 </ul>
-<div id="4a699e02" class="cell" data-execution_count="25">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-26-output-1.png" width="591" height="454" class="figure-img"></p>
+<div id="fig-kmag-compare" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kmag-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-kmag-compare" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-kmag-compare-1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-kmag-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-kmag-compare-output-1.png" data-ref-parent="fig-kmag-compare" width="589" height="434" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-kmag-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Linear Regression with free paramaters, <span class="math inline">y=ax+b</span>
+</figcaption>
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-26-output-2.png" width="587" height="432" class="figure-img"></p>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-kmag-compare" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-kmag-compare-2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-kmag-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-kmag-compare-output-2.png" data-ref-parent="fig-kmag-compare" width="663" height="508" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-kmag-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Linear Regrassion <span class="math inline">y=x</span>
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="27e57036" class="cell" data-execution_count="26">
-<div class="cell-output cell-output-display" data-execution_count="26">
-<div>
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Percentage Change [%]</th>
-<th data-quarto-table-cell-role="th">Percentage Change, after 3 sigma clip [%]</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">count</td>
-<td>70</td>
-<td>70</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">mean</td>
-<td>-5</td>
-<td>-5</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">std</td>
-<td>12</td>
-<td>10</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">min</td>
-<td>-70</td>
-<td>-42</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">50%</td>
-<td>-0</td>
-<td>-0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">max</td>
-<td>16</td>
-<td>16</td>
-</tr>
-</tbody>
-</table>
-
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kmag-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Comparison of the <span class="math inline">L_K</span> of the galaxies.
+</figcaption>
+</figure>
 </div>
-</div>
-</div>
-<p>[?] this 5% mean in the difference probably exists because of the low number of galaxies we compare, so we can ignore it.</p>
+<p>Following the same logic as in <a href="#fig-klum-compare" class="quarto-xref">Figure&nbsp;9</a>, we force the parameters of the linear regression to be <span class="math inline">y=1\cdot x + 0</span>.</p>
+<p>In this case, the data is such that both the forced fit and the free fit explain the variance almost identically (<a href="#fig-kmag-compare-2" class="quarto-xref">Figure&nbsp;11 (b)</a>). This can happen when the data roughly follows the pattern <span class="math inline">y≈x</span>, but with a slight bias that the free fit can account for (in this case, a slope slightly greater than 1 and a negative intercept).</p>
+<div style="page-break-after: always;"></div>
 </section>
 <section id="sfr" class="level2">
 <h2 class="anchored" data-anchor-id="sfr">SFR</h2>
 <table class="table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 26%">
-<col style="width: 24%">
+<col style="width: 32%">
+<col style="width: 32%">
+<col style="width: 34%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Count</th>
 </tr>
 </thead>
 <tbody>
@@ -1017,67 +935,67 @@ Figure&nbsp;10: Comparison of the Magnitudes of the galaxies
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_TIR</td>
 <td style="text-align: center;">Decimal logarithm of the total-infrared SFR estimate [Msol/yr]</td>
-<td style="text-align: center;">21</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_FIR</td>
 <td style="text-align: center;">Decimal logarithm of the far-infrared SFR estimate [Msol/yr]</td>
-<td style="text-align: center;">22</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_60u</td>
 <td style="text-align: center;">Decimal logarithm of the 60um SFR estimate [Msol/yr]</td>
-<td style="text-align: center;">48</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_12u</td>
 <td style="text-align: center;">Decimal logarithm of the 12um SFR estimate [Msol/yr]</td>
-<td style="text-align: center;">26</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_22u</td>
 <td style="text-align: center;">Decimal logarithm of the 22um SFR estimate [Msol/yr]</td>
-<td style="text-align: center;">23</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_HEC</td>
 <td style="text-align: center;">Decimal logarithm of the homogenised SFR estimate [Msol/yr]</td>
-<td style="text-align: center;">73</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logSFR_GSW</td>
 <td style="text-align: center;">Decimal logarithm of the SFR in GSWLC-2 [Msol/yr]</td>
-<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">SFRFUV</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">FUV derived integral star formation rate</td>
-<td style="text-align: center;">220</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">SFRHa</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">H{alpha} derived integral star formation rate</td>
-<td style="text-align: center;">223</td>
 </tr>
 </tbody>
 </table>
-<div id="4c8a038b" class="cell" data-execution_count="28">
+<div id="cell-fig-sfr-pairplot" class="cell" data-layout-align="center" data-execution_count="24">
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="compare_files/figure-html/cell-29-output-1.png" width="1887" height="1887" class="figure-img"></p>
+<div id="fig-sfr-pairplot" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sfr-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="compare_files/figure-html/fig-sfr-pairplot-output-1.png" width="1887" height="1887" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sfr-pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Comparison of the <span class="math inline">SFR_{i}</span> of the galaxies
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p>The SFR according to (<span class="citation" data-cites="kroupaConstraintsStarFormation2020">Kroupa et al. (<a href="#ref-kroupaConstraintsStarFormation2020" role="doc-biblioref">2020</a>)</span>), can be calculated from the mean of SFR from the Ha and FUV, for <span class="math inline">SFR&gt;10^{-3}\ M_\odot\, yr^{-1}</span>. As we can see from the plots (<a href="#fig-sfr-lvg" class="quarto-xref">Figure&nbsp;13</a>) it could be a good aproximation.</p>
+<p><span id="eq-sfr-mean"><span class="math display">
+SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
+\tag{3}</span></span></p>
 <div id="fig-sfr-lvg" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sfr-lvg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1109,14 +1027,10 @@ Figure&nbsp;10: Comparison of the Magnitudes of the galaxies
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sfr-lvg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Comparison of the <span class="math inline">SFR_{FUV}-SFR_{Ha}</span> of the galaxies
+Figure&nbsp;13: Comparison of the <span class="math inline">SFR_{FUV}-SFR_{Ha}</span> of the galaxies
 </figcaption>
 </figure>
 </div>
-<p>The SFR according to (<span class="citation" data-cites="kroupaConstraintsStarFormation2020">Kroupa et al. (<a href="#ref-kroupaConstraintsStarFormation2020" role="doc-biblioref">2020</a>)</span>), can be calculated from the mean of SFR from the Ha and FUV, for <span class="math inline">SFR&gt;10^{-3}\ M_\odot\, yr^{-1}</span>. As we can see from the plots (<a href="#fig-sfr-lvg" class="quarto-xref">Figure&nbsp;11</a>) it is a good aproximation for all SFR’s</p>
-<p><span class="math display">
-SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_i,\ i= FUV,\, H\alpha
-</span></p>
 <div id="fig-sfr-compare" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-sfr-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1148,28 +1062,33 @@ SFR = \frac{SFR_{FUV}+SFR_{H\alpha}}{2}, \text{if both exist, else: } SFR = SFR_
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sfr-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;12: Comparison of the SFR’s of the galaxies
+Figure&nbsp;14: Comparison of the SFR’s of the galaxies
 </figcaption>
 </figure>
 </div>
-<p>[?]EXPLANATION this low correlation maybe comes from the inaccuracy/approximation of (<span class="citation" data-cites="kroupaConstraintsStarFormation2020">Kroupa et al. (<a href="#ref-kroupaConstraintsStarFormation2020" role="doc-biblioref">2020</a>)</span>)</p>
-<p>The reason is that this aproximation is accurate if we consider a stable SFR over time. However, we tend to observe higher Ha for more recent SF activity. (we discussed it in our last meeting, I need a refrence).</p>
+<p>The low correlation in <a href="#fig-sfr-compare-1" class="quarto-xref">Figure&nbsp;14 (a)</a> and the interval in <a href="#fig-sfr-compare-2" class="quarto-xref">Figure&nbsp;14 (b)</a> show that the approximation (<a href="#eq-sfr-mean" class="quarto-xref">Equation&nbsp;3</a>) is not great. According to <span class="citation" data-cites="karachentsevSTARFORMATIONPROPERTIES2013a">Karachentsev and Kaisina (<a href="#ref-karachentsevSTARFORMATIONPROPERTIES2013a" role="doc-biblioref">2013</a>)</span>:</p>
+<ul>
+<li><p><strong>Hα and FUV timescales</strong>: <span class="math inline">H_\alpha</span> traces short-term star formation (~10 Myr) via massive O-type stars, while FUV traces longer-term star formation (~100 Myr) from B-type stars.</p></li>
+<li><p><strong>Discrepancies due to star formation bursts</strong>: In galaxies with bursty or episodic star formation, Hα can significantly overestimate SFR compared to FUV, which lags in reflecting recent star formation events.</p></li>
+<li><p><strong>Low-mass galaxy variability</strong>: The scatter between <span class="math inline">SFR_{\text{H}\alpha}</span> and <span class="math inline">SFR_{\text{FUV}}</span> is particularly high in low-mass, dwarf galaxies, where stochastic star formation history causes wide variability between the two indicators.</p></li>
+<li><p><strong>Measurement uncertainties</strong>: Internal extinction, errors in distance estimates, and IMF stochasticity introduce biases in both Hα and FUV fluxes, making simple averaging inappropriate.</p></li>
+<li><p><strong>Conclusion</strong>: The <span class="math inline">SFR_{\text{total}} = \text{mean}(SFR_{\text{H}\alpha}, SFR_{\text{FUV}})</span> method oversimplifies the complexity of star formation processes and is not reliable for galaxies with variable star formation or significant measurement uncertainties</p></li>
+</ul>
+<div style="page-break-after: always;"></div>
 </section>
 <section id="masses" class="level2">
 <h2 class="anchored" data-anchor-id="masses">Masses</h2>
 <table class="table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">LVG</th>
 <th style="text-align: center;">HECATE</th>
 <th style="text-align: center;">Description</th>
-<th style="text-align: center;">Count</th>
 </tr>
 </thead>
 <tbody>
@@ -1177,31 +1096,26 @@ Figure&nbsp;12: Comparison of the SFR’s of the galaxies
 <td style="text-align: center;">logM26</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">Log mass within Holmberg radius</td>
-<td style="text-align: center;">233</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">logMHI</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">Log mass within Holmberg radius</td>
-<td style="text-align: center;">233</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logM_HEC</td>
 <td style="text-align: center;">Decimal logarithm of the stellar mass [Msol]</td>
-<td style="text-align: center;">64</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"></td>
 <td style="text-align: center;">logM_GSW</td>
 <td style="text-align: center;">Decimal logarithm of the stellar mass in GSWLC-2 [Msol]</td>
-<td style="text-align: center;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">logStellarMass</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">Stellar Mass from <span class="math inline">M_*/L=0.6</span></td>
-<td style="text-align: center;">287</td>
 </tr>
 </tbody>
 </table>
@@ -1209,7 +1123,8 @@ Figure&nbsp;12: Comparison of the SFR’s of the galaxies
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Stellar Masses Comparison</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Heatmap</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="cell-fig-Mass-compare" class="cell" data-execution_count="33">
+<div style="page-break-after: always;"></div>
+<div id="cell-fig-Mass-compare" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-display">
 <div id="fig-mass-compare" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1217,7 +1132,7 @@ Figure&nbsp;12: Comparison of the SFR’s of the galaxies
 <img src="compare_files/figure-html/fig-mass-compare-output-1.png" width="589" height="434" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mass-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13: Comparison of the Stellar Masses of the galaxies
+Figure&nbsp;15: Comparison of the Stellar Masses of the galaxies
 </figcaption>
 </figure>
 </div>
@@ -1227,13 +1142,14 @@ Figure&nbsp;13: Comparison of the Stellar Masses of the galaxies
 \log{M_{*,HECATE}}=1.07\cdot\log{M_{*,LVG}}-0.69, \text{ but } \log{M_*}&gt;6\Rightarrow M_{*,HEC}\sim M_{*,LVG}
 </span></p>
 <p>As we can see the aproximation of Mass/Light=const.=0.6 is a pretty good approximation, for the calculation of <span class="math inline">\log(M_*/M_\odot)</span>, especially for high-mass galaxies</p>
+<div style="page-break-after: always;"></div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div id="96d6fcdd" class="cell" data-execution_count="34">
+<div id="ba2267fe" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="compare_files/figure-html/cell-35-output-1.png" width="946" height="946" class="figure-img"></p>
+<p><img src="compare_files/figure-html/cell-31-output-1.png" width="946" height="946" class="figure-img"></p>
 </figure>
 </div>
 </div>

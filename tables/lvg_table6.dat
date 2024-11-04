@@ -274,6 +274,7 @@ Pictoris 1         20.30 0.15   HB 2015ApJ...805..130K
 CamB               27.72 0.16 TRGB 2016EDD...........S
 NGC1705            28.79 0.04 TRGB 2016EDD...........S
 HIPASS J0457-42    29.21 0.08 TRGB 2016EDD...........S
+LV J0459-2529      29.86       NAM 2020LVG.Distance..K
 NGC1744            30.00        TF 2011LVG.Distance..K
 ESO486-021         30.00       mem 2011LVG.Distance..K
 NGC1800            29.52        TF 2011LVG.Distance..K
@@ -1178,6 +1179,7 @@ DDO161             28.90 0.09 TRGB 2018ApJ...858...62K
 ESO269-037         27.49 0.06 TRGB 2016EDD...........S
 KK180              28.22       mem 2011LVG.Distance..K
 KK182              28.87 0.13 TRGB 2016EDD...........S
+PGC886203          28.61       NAM 2024LVG.Distance..K
 NGC4945            27.70 0.02 TRGB 2016EDD...........S
 dw1305+41          29.78       mem 2017A&A...602A.119M
 KDG218             30.50      TRGB 2018ApJ...858...62K
@@ -1306,6 +1308,7 @@ ESO444-084         28.32 0.19 TRGB 2002A&A...385...21K
 HIPASS J1337-39    28.53 0.11 TRGB 2016EDD...........S
 NGC5237            27.61 0.01 TRGB 2016EDD...........S
 dw1337-41          27.78       mem 2016LVG.Distance..K
+ESO577-016         28.59        TF 2024LVG.Distance..K
 dw1338+50          29.62       mem 2017A&A...602A.119M
 UGC08638           28.16 0.03 TRGB 2016EDD...........S
 Dw1339+39          30.00       txt 2024Ap.....66..441K
@@ -1486,6 +1489,7 @@ IC5152             26.46 0.04 TRGB 2016EDD...........S
 Dw2215-4528        30.09       mem 2022AstBu..77..372K
 Dw2216-4539        30.09       mem 2022AstBu..77..372K
 Dw2217-4633        30.09       mem 2022AstBu..77..372K
+LV J2218-4613      30.09       mem 2022AstBu..77..372K
 IC5201             30.16      TRGB 2021AJ....162...80A
 Dw2221-4608        30.09       mem 2022AstBu..77..372K
 ESO289-020         30.09       mem 2022AstBu..77..372K
