@@ -1,0 +1,18 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|64f24e04e4a9b40b|||||||||||||||
+csv_file_path|stem|1ee00f512eba1295|e4d50afe77f565a1|2c530c1562a7fbd1|1008951838|test_galaxies.csv|t20015.9361063091s|c3142e3a75515cc7|585|file|local|vector|||0.217||
+extract_posterior_predictions|function|36f51f3ccdb8d773|||||||||||||||
+iiinit_function|function|1d35ce4eb63cc381|||||||||||||||
+init_function|function|677f8f61fed68129|||||||||||||||
+parameter_estimates|stem|4ff9310ee04f47ea|c11d41ea6a7efc21|517edaf4c64c5002|2143920866||t20025.8722293982s|20406c2094bd9e13|2548|fst_tbl|local|vector|||0.073||
+posterior_predictions|stem|63eca42e61e227ee|53c9e9cbcd86ea2f|bdb10ef7baeaf743|562865004||t20025.8722769442s|1c413edefddc586b|1805|rds|local|vector|||0.056|Dropping draws_df class as required metadata was removed.|
+prepare_data|function|a03ed25f0a00e3aa|||||||||||||||
+print_rows|stem|d7c66c2484908486|b9532dfbc177d4d0|b7b6c7cc088b1a34|-81757117||t20025.8614681447s|3afeaaa6061de512|49|rds|local|vector|||0||
+read_data|stem|e1e8113dda25d725|327d83c9b9dd125b|59154643a38820f4|1949791771||t20025.8614679017s|87a23a8ad9d13a09|622|rds|local|vector|||0.002||
+sfr_data|stem|67661c59bc96136c|03434fca9cf2c641|be230465d1f230b6|114586177||t20025.8614680984s|c0119327fdf11954|827|rds|local|vector|||0.012||
+stan_fit_data|stem|ffd63db27c7378aa|da329b0ffeef9a76|b7b6c7cc088b1a34|-1776478089||t20025.8614682373s|3f1ea365301ba13c|424|qs|local|vector|||0||
+stan_fit_diagnostics_x|stem|4ef919e357636ca4|50b10d111cc09e55|517edaf4c64c5002|941894401||t20025.8722306135s|3d1c3ef0f5adceb5|265196|fst_tbl|local|vector|||0.001||
+stan_fit_draws_x|stem|4f2a301cb1ba9501|e71eb91907285cad|517edaf4c64c5002|7149120||t20025.8722301505s|95082d91d612440d|17013676|fst_tbl|local|vector|||0.027||
+stan_fit_file_x|stem|5767e63a404c15c2|459f661641d63f55|2c530c1562a7fbd1|248078128|x.stan|t20025.5230926067s|a0bbc8b822b96866|1204|file|local|vector|||0||
+stan_fit_mcmc_x|stem|f1a10984f1df62d9|6a17c89eee4c0f87|621b860b64c4932b|-652905197||t20025.8722279052s|91cd7d20e5cf9dd9|13190695|qs|local|vector|||35.059||
+stan_fit_summary_x|stem|bffce4df1774800a|118f3b7b04094f76|29c410c97fda4c66|-736525398||t20025.8722762498s|3b8c24c1c4e4c9c8|15323|fst_tbl|local|vector|||3.938||
