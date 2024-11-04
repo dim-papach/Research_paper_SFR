@@ -21,6 +21,7 @@ def prepare_data(file_path):
     # Convert to DataFrame and drop missing values
     data = dt[["logSFR_HEC_Gyr", "logM_HEC"]].to_pandas().dropna()
     print(data)
+    data.to_csv("test_galaxies.csv")
     del dt
     gc.collect()
     return data
@@ -88,6 +89,6 @@ def run_mcmc_for_sample(data, sample_fraction=0.2, save_file="mcmc_results.csv")
 
 # Run the MCMC process
 if __name__ == "__main__":
-    data = prepare_data("./tables/outer_join.ecsv")
+    data = prepare_data("../tables/outer_join.ecsv")
     results_df = run_mcmc_for_sample(data, sample_fraction=0.2)
     print(results_df)
