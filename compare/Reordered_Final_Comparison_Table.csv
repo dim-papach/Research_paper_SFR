@@ -1,5 +1,6 @@
 x,y,error,count,description
 Dis,D,E_D,162,Distance
+TType,T,E_T,, Hubble Morphology
 logKLum,logL_K,,70,Luminosity
 mag_B,BT,E_BT,244,Magnitude (B-band)
 Kmag,K,E_K,67,Magnitude (K-band)
