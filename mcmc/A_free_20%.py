@@ -90,5 +90,5 @@ def run_mcmc_for_sample(data, sample_fraction=0.2, save_file="mcmc_results.csv")
 # Run the MCMC process
 if __name__ == "__main__":
     data = prepare_data("../tables/outer_join.ecsv")
-    results_df = run_mcmc_for_sample(data, sample_fraction=0.2)
+    results_df = run_mcmc_for_sample(data, sample_fraction=1)
     print(results_df)
