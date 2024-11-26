@@ -59,7 +59,7 @@ import plotly.express as px
 #+end_src
 
 #+begin_src python :results none
-dt = QTable.read("./tables/final_table.ecsv")
+dt = QTable.read("./tables/outer_join.ecsv")
 
 #+end_src
 
@@ -94,7 +94,7 @@ According to [cite:@kraan-kortewegCatalogueGalaxiesIo1979] the Local Cosmologica
 
 7. *Extension to 11 Mpc*: Galaxies with distance estimates beyond 10 Mpc may still be included due to uncertainties in distance measurements and the potential influence of coherent motions and large-scale structures.
 
-8. *Sample Composition*: The LV sample comprises src_python[:results value org]{len(dt)} {{{results(src_org{1448})}}} galaxies, with considerations for galaxies near the boundaries of the selection criteria and the potential influence of measurement errors.
+8. *Sample Composition*: The LV sample comprises src_python[:results value org]{len(dt)} {{{results(src_org{3934})}}} galaxies, with considerations for galaxies near the boundaries of the selection criteria and the potential influence of measurement errors.
 
    #+begin_src python :results file drawer value
 hubble = (ggplot(dt.to_pandas())
@@ -165,13 +165,13 @@ filename+".png"
 
 #+RESULTS:
 :results:
-[[file:figure/mapping.png]]
+[[file:]]
 :end:
 
 
 ** Types of galaxies
 
-Using the dataset of src_python[:results value org :exports results]{len(dt)} {{{results(src_org{1448})}}}
+Using the dataset of src_python[:results value org :exports results]{len(dt)} {{{results(src_org{3934})}}}
 galaxies, we can study the morphology of the galaxies in the LCV
 
 *** Morphology
@@ -253,7 +253,7 @@ The catalog consists of 8 tables
 
 We want several measurments from those lists so we will join them according to the name of the galaxy.
 
-This catalog consists of src_python[:results value org]{len(dt)+1} {{{results(src_org{1449})}}} galaxies
+This catalog consists of src_python[:results value org]{len(dt)+1} {{{results(src_org{3935})}}} galaxies
 
 ** Understanding the limit flags
 
@@ -281,23 +281,19 @@ for column in dt.columns:
 
 #+RESULTS:
 #+begin_example
-All masks in l_FUVmag are also masks in FUVmag
-All masks in l_Hamag are also masks in Hamag
-All masks in f_Kmag are also masks in Kmag
-All masks in l_21mag are also masks in 21mag
+We have no mask for f_Kmag
 We have no mask for f_Dis
-All masks in l_logMHI are also masks in logMHI
-All masks in l_mag_B are also masks in mag_B
-All masks in l_mag_FUV are also masks in mag_FUV
-All masks in l_mag_HI are also masks in mag_HI
-All masks in l_mag_Ha are also masks in mag_Ha
-All masks in l_mag_Ks are also masks in mag_Ks
-All masks in l_SFRHa are also masks in SFRHa
-All masks in l_PHa are also masks in PHa
-All masks in l_FHa are also masks in FHa
-All masks in l_SFRFUV are also masks in SFRFUV
-All masks in l_PFUV are also masks in PFUV
-All masks in l_FFUV are also masks in FFUV
+We have no mask for l_logMHI
+We have no mask for l_mag_B
+We have no mask for l_mag_FUV
+We have no mask for l_mag_HI
+We have no mask for l_mag_Ha
+We have no mask for l_SFRHa
+We have no mask for l_PHa
+We have no mask for l_FHa
+We have no mask for l_SFRFUV
+We have no mask for l_PFUV
+We have no mask for l_FFUV
 #+end_example
 
 
@@ -322,7 +318,7 @@ We should use some standart consistent values for our analysis.
 3. Main Sequence z = 5
 
 #+begin_src python :results none
-t_sf = 12 * u.Gyr
+t_sf = 13.6 * u.Gyr
 zeta = 1.3
 z = 5
 #+end_src
@@ -345,10 +341,9 @@ dt["M_g"].info()
 : name = M_g
 : dtype = float64
 : unit = solMass
-: description = Linear hydrogen mass
-: class = MaskedQuantity
-: n_bad = 501
-: length = 1448
+: class = Quantity
+: n_bad = 3110
+: length = 3934
 
 The K-band values are converted to the total Stellar Masses of each galaxy according to the mass-to-light ratio of 0.6 ($M_\odot/Lum$)[cite:@lelliSPARCMASSMODELS2016]
 
@@ -362,10 +357,9 @@ dt["StellarMass"].info()
 : name = StellarMass
 : dtype = float64
 : unit = solMass
-: description = Linear K_S_ band luminosity
-: class = MaskedQuantity
-: n_bad = 12
-: length = 1448
+: class = Quantity
+: n_bad = 2626
+: length = 3934
 
 The total barionic mass can be calcuated as the sum of the total gas mass of the galaxy with the Stellar mass
 
@@ -378,10 +372,9 @@ dt["BarMass"].info()
 : name = BarMass
 : dtype = float64
 : unit = solMass
-: description = Linear hydrogen mass
-: class = MaskedQuantity
-: n_bad = 513
-: length = 1448
+: class = Quantity
+: n_bad = 3121
+: length = 3934
 
 *** Ratio of M_g and StellarMass
 
@@ -391,19 +384,15 @@ dt["mass_ratio"].info(["attributes", "stats"])
 #+end_src
 
 #+RESULTS:
-#+begin_example
-/home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in divide
-name = mass_ratio
-dtype = float64
-description = Linear hydrogen mass
-class = MaskedQuantity
-mean = 2.13272
-std = 3.81136
-min = 7.51105e-05
-max = 58.3043
-n_bad = 513
-length = 1448
-#+end_example
+: name = mass_ratio
+: dtype = float64
+: class = Quantity
+: mean = 2.07787
+: std = 3.47845
+: min = 7.51105e-05
+: max = 43.2216
+: n_bad = 3121
+: length = 3934
 
 Histogram of dt["mass_ratio"]
 
@@ -453,91 +442,8 @@ plt.close()
 
 #+RESULTS:
 :results:
-[[file:./figure/color_index.png]]
+[[file:]]
 :end:
-
-** Fixing the SFRs
-
-
-*** SFR units
-
-#+begin_src python :results none
-SFR_unit = u.Msun/u.year
-#+end_src
-
-#+RESULTS:
-: None
-*** log to linear
-
-they are the power in logarithmic scale. SO lets fix them
-
-
-#+begin_src python
-dt.rename_column("SFRFUV", "logSFRFUV")
-#+end_src
-
-#+RESULTS:
-
-
-#+begin_src python
-# Calculate SFRFUV from logSFRFUV using np.power
-sfr_ha_values = np.power(10, dt["logSFRFUV"]) * SFR_unit
-
-# Create a MaskedColumn for SFRFUV, inheriting the mask and description from logSFRFUV
-dt["SFRFUV"] = MaskedColumn(sfr_ha_values, mask=dt["logSFRFUV"].mask, description=dt["logSFRFUV"].description)
-
-# Display statistical information about SFRFUV
-dt["SFRFUV"].info("stats")
-
-#+end_src
-
-#+RESULTS:
-: name = SFRFUV
-: mean = 0.0738724 solMass / yr
-: std = 0.349917 solMass / yr
-: min = 2.13796e-10 solMass / yr
-: max = 5.7544 solMass / yr
-: n_bad = 321
-: length = 1448
-
-#+begin_src python
-dt.rename_column("SFRHa", "logSFRHa")
-#+end_src
-
-#+RESULTS:
-
-#+begin_src python
-# Calculate SFRHa from logSFRHa using np.power
-sfr_ha_values = np.power(10, dt["logSFRHa"]) * SFR_unit
-
-# Create a MaskedColumn for SFRHa, inheriting the mask and description from logSFRHa
-dt["SFRHa"] = MaskedColumn(sfr_ha_values, mask=dt["logSFRHa"].mask, description=dt["logSFRHa"].description)
-
-# Display statistical information about SFRHa
-dt["SFRHa"].info()
-#+end_src
-
-#+RESULTS:
-: name = SFRHa
-: dtype = float64
-: unit = solMass / yr
-: description = H{alpha} derived integral star formation rate (1)
-: class = MaskedQuantity
-: n_bad = 712
-: length = 1448
-
-#+begin_src python
-
-dt[["SFRFUV", 'SFRHa']].info(["stats"])
-#+end_src
-
-#+RESULTS:
-: <QTable length=1448>
-:  name           mean                   std                    min                    max         n_bad
-: ------ ---------------------- --------------------- ------------------------ ------------------- -----
-: SFRFUV 0.0738724 solMass / yr 0.349917 solMass / yr 2.13796e-10 solMass / yr 5.7544 solMass / yr   321
-:  SFRHa  0.116644 solMass / yr 0.408421 solMass / yr 1.38038e-10 solMass / yr 4.2658 solMass / yr   712
-
 
 ** SFR_0
 
@@ -586,27 +492,16 @@ print("[[./figure/log_SFR_FUV_Ha.png]]")
 :end:
 
 
-create the average SFR_0 from SFRHa SFRFUV with np.ma.average
+create the average SFR_0 from SFRHa SFRFUV with np.ma.average (already done)
 
 #+begin_src python
 # Calculate the mean of SFRHa and SFRFUV, ignoring masked values
 
-SFR_0 = np.ma.mean(np.ma.array([dt["SFRHa"], dt["SFRFUV"]]), axis=0)
-# Store the result in the table, applying the SFR unit
-dt["SFR_0"] = MaskedColumn(SFR_0, unit = SFR_unit)
-
-# Display statistical information about SFR_0, SFRFUV, and SFRHa
-dt[["SFR_0", "SFRFUV", "SFRHa"]].info("stats")
+SFR_0 = dt["SFR_UNGC"]
 
 #+end_src
 
 #+RESULTS:
-: <QTable length=1448>
-:  name           mean                   std                    min                    max          n_bad
-: ------ ---------------------- --------------------- ------------------------ -------------------- -----
-:  SFR_0 0.0722542 solMass / yr 0.316258 solMass / yr 1.75917e-10 solMass / yr 4.38718 solMass / yr   190
-: SFRFUV 0.0738724 solMass / yr 0.349917 solMass / yr 2.13796e-10 solMass / yr  5.7544 solMass / yr   321
-:  SFRHa  0.116644 solMass / yr 0.408421 solMass / yr 1.38038e-10 solMass / yr  4.2658 solMass / yr   712
 
 
 ** Applying the cut SFR_0 >= 1e-3 solMass/yr
@@ -615,64 +510,41 @@ keep only the SFR_0 data were >1e-3
 
 #+begin_src python
 dc = dt.copy()
-dc = dc[dc["SFR_0"].value >= 1e-3]
+dc = dc[dc["SFR_UNGC"].value >= 1e-3]
 
-print(dc["SFR_0"].info())
+print(dc["SFR_UNGC"].info())
 #+end_src
 
 #+RESULTS:
-#+begin_example
-[0;33mWARNING[0m: column logKLum has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-[0;33mWARNING[0m: column logM26 has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-[0;33mWARNING[0m: column logMHI has a unit but is kept as a MaskedColumn as an attempt to convert it to Quantity failed with:
-UnitTypeError("MaskedQuantity instances require normal units, not <class 'astropy.units.function.logarithmic.DexUnit'> instances.") [astropy.table.table]
-name = SFR_0
-dtype = float64
-unit = solMass / yr
-class = MaskedQuantity
-n_bad = 0
-length = 607
-None
-#+end_example
+: name = SFR_UNGC
+: dtype = float64
+: unit = solMass / yr
+: description = Average Star Formation Rate, from the Ha and FUV
+: class = Quantity
+: n_bad = 0
+: length = 518
+: None
 
 #+begin_src python
 
-dc[["SFR_0","SFRFUV", 'SFRHa']].info("stats")
+dc[["SFR_UNGC","SFRFUV", 'SFRHa']].info("stats")
 #+end_src
 
 #+RESULTS:
-: <QTable length=607>
-:  name           mean                  std                    min                    max          n_bad
-: ------ --------------------- --------------------- ------------------------ -------------------- -----
-:  SFR_0 0.149597 solMass / yr 0.442412 solMass / yr  0.00102329 solMass / yr 4.38718 solMass / yr     0
-: SFRFUV 0.161775 solMass / yr 0.504243 solMass / yr 6.60693e-05 solMass / yr  5.7544 solMass / yr    93
-:  SFRHa 0.172679 solMass / yr  0.48719 solMass / yr 2.04174e-05 solMass / yr  4.2658 solMass / yr   110
+: <QTable length=518>
+:   name            mean                  std                    min                    max          n_bad
+: -------- --------------------- --------------------- ------------------------ -------------------- -----
+: SFR_UNGC 0.152153 solMass / yr 0.457533 solMass / yr  0.00102329 solMass / yr 4.38718 solMass / yr     0
+:   SFRFUV 0.163954 solMass / yr 0.530241 solMass / yr 6.60693e-05 solMass / yr  5.7544 solMass / yr    82
+:    SFRHa 0.176991 solMass / yr 0.496778 solMass / yr 2.04174e-05 solMass / yr  4.2658 solMass / yr    94
 
 
 
 Histogram of SFR_0
 
-#+begin_src python
-#log of SFR_0
-dc["logSFR_0"] =MaskedColumn(np.log10(dc["SFR_0"].value),unit = SFR_unit)
-dc["logSFR_0"].info()
-#+end_src
-
-#+RESULTS:
-: name = logSFR_0
-: dtype = float64
-: unit = solMass / yr
-: class = MaskedQuantity
-: n_bad = 0
-: length = 607
-
-
-
 #+begin_src python :results value file
 
-hist(dc["logSFR_0"].value, bins = "freedman")
+hist(dc["logSFR_UNGC"].value, bins = "freedman")
 
 plt.title("Histogram of $SFR_0$")
 plt.xlabel(r"$\log(SFR_0/[{}])$".format(dc["SFR_0"].unit.to_string("unicode")))
@@ -685,14 +557,14 @@ fname
 #+end_src
 
 #+RESULTS:
-[[file:figure/log_SFR_0_hist.png]]
+[[file:]]
 
 ** How does the morphology change
 
 
 ** Types of galaxies
 
-Using the dataset of src_python[:results value org :exports results]{len(dt)} {{{results(src_org{1448})}}}
+Using the dataset of src_python[:results value org :exports results]{len(dt)} {{{results(src_org{3934})}}}
 galaxies, we can study the morphology of the galaxies in the LCV
 
 *** Morphology
@@ -725,11 +597,12 @@ def morphology_hist_cut(x_data, label):
     return "[[./"+fname+"]]"
 
 
-morphology_hist("TType", "Morphology type code")
+morphology_hist_cut("TType", "Morphology type code")
 #+end_src
 
 #+RESULTS: morphology_cut
 :results:
+[[./figure/TType_cut.png]]
 :end:
 
 **** Morphology of dwarf galaxies
@@ -767,7 +640,7 @@ $$
     \overline{SFR}=\frac{\zeta M_*}{t_{sf}}
 $$
 
-where ζ is the mass-loss through stellar evolution and we assume that $\zeta\approx 1.3$ (see explanation in the paper`), M* is the stellar mass of each galaxy and we assume that is   $t_{sf}=12.5\ Gyr$
+where ζ is the mass-loss through stellar evolution and we assume that $\zeta\approx 1.3$ (see explanation in the paper`), M* is the stellar mass of each galaxy and we assume that is   $t_{sf}=13.6\ Gyr$
 
 #+begin_src python
 
@@ -779,14 +652,13 @@ dc["av_SFR_theor"].info()
 : name = av_SFR_theor
 : dtype = float64
 : unit = solMass / yr
-: description = Linear K_S_ band luminosity
-: class = MaskedQuantity
+: class = Quantity
 : n_bad = 1
-: length = 607
+: length = 518
 
 #+begin_src python
 
-plt.scatter(y = dc["av_SFR_theor"],x = dc["SFR_0"], c = dc["color"].value)
+plt.scatter(y = dc["av_SFR_theor"],x = dc["SFR_UNGC"], c = dc["color"].value)
 #colobar
 plt.colorbar()
 
@@ -803,7 +675,7 @@ plt.show()
 Now we have to calculate the ratio $\frac{\overline{SFR}}{SFR_0}$
 
 #+begin_src python
-dc["SFR_ratio"] = dc["av_SFR_theor"] / dc["SFR_0"]
+dc["SFR_ratio"] = dc["av_SFR_theor"] / dc["SFR_UNGC"]
 
 #log10 of ratio
 dc["logSFR_ratio"] = np.log10(dc["SFR_ratio"])
@@ -812,12 +684,11 @@ dc[["SFR_ratio", "logSFR_ratio"]].info(["attributes","stats"])
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/astropy/utils/masked/core.py:879: RuntimeWarning: divide by zero encountered in log10
-: <QTable length=607>
-:     name      dtype          description             class         mean     std       min      max   n_bad
-: ------------ ------- --------------------------- -------------- --------- -------- --------- ------- -----
-:    SFR_ratio float64 Linear K_S_ band luminosity MaskedQuantity   5.77922  45.5965 0.0325391 1054.18     1
-: logSFR_ratio float64 Linear K_S_ band luminosity MaskedQuantity 0.0646566 0.515905  -1.48759 3.02291     1
+: <QTable length=518>
+:     name      dtype   class      mean      std       min      max   n_bad
+: ------------ ------- -------- ---------- -------- --------- ------- -----
+:    SFR_ratio float64 Quantity     4.8743  42.7901 0.0287109 930.156     1
+: logSFR_ratio float64 Quantity -0.0103318 0.500618  -1.54195 2.96856     1
 
 **** Histogram of SFR ratio
 
@@ -868,7 +739,7 @@ plt.close()
 
 #+RESULTS:
 :results:
-[[file:figure/ratio_vs_color.png]]
+[[file:]]
 :end:
 
 
@@ -884,18 +755,18 @@ where Mg is the neutral gas mass at the desired time and $\dot{M_*}$ is the SFR 
 
 #+begin_src python
 
-dc["tau_g"] = dc["M_g"]/dc["SFR_0"].to(u.solMass/u.Gyr)
+dc["tau_g"] = dc["M_g"]/dc["SFR_UNGC"].to(u.solMass/u.Gyr)
 dc["tau_g"].info("stats")
 #+end_src
 
 #+RESULTS:
 : name = tau_g
-: mean = 16.5347 Gyr
-: std = 30.8891 Gyr
-: min = 0.210766 Gyr
+: mean = 15.4527 Gyr
+: std = 28.4194 Gyr
+: min = 0.401654 Gyr
 : max = 461.16 Gyr
-: n_bad = 41
-: length = 607
+: n_bad = 38
+: length = 518
 
 #+begin_src python :results file value
 plt.close("all")
@@ -960,20 +831,20 @@ After that the equation of ratio
 can be solved numerically for x and using the equations (\Ref{eq:SFR}) and (\Ref{eq:av_SFR-x}) the $Adel$ and of each galaxy are found.
 
 #+begin_src python
-dc["SFR_0", "SFR_ratio", "StellarMass"].info()
+dc["SFR_UNGC", "SFR_ratio", "StellarMass"].info()
 #+end_src
 
 #+RESULTS:
-: <QTable length=607>
-:     name     dtype      unit             description             class      n_bad
-: ----------- ------- ------------ --------------------------- -------------- -----
-:       SFR_0 float64 solMass / yr                             MaskedQuantity     0
-:   SFR_ratio float64              Linear K_S_ band luminosity MaskedQuantity     1
-: StellarMass float64      solMass Linear K_S_ band luminosity MaskedQuantity     1
+: <QTable length=518>
+:     name     dtype      unit                       description                     class   n_bad
+: ----------- ------- ------------ ------------------------------------------------ -------- -----
+:    SFR_UNGC float64 solMass / yr Average Star Formation Rate, from the Ha and FUV Quantity     0
+:   SFR_ratio float64                                                               Quantity     1
+: StellarMass float64      solMass                                                  Quantity     1
 
 #+begin_src python
 ratio_array = np.array(dc["SFR_ratio"])
-sfr_array = np.array(dc["SFR_0"])
+sfr_array = np.array(dc["SFR_UNGC"])
 mass_array = np.array(dc["StellarMass"])
 av_array = np.array(dc["av_SFR_theor"])
 
@@ -1001,7 +872,7 @@ for i in range(len(dc)-1):
     x2[i] = sol.root
 
 dc["x_n"] = x2
-dc["A_n"] =MaskedColumn(dc["SFR_0"]*t_sf.to(u.yr)*np.exp(dc["x_n"])/(dc["x_n"]**2))
+dc["A_n"] =MaskedColumn(dc["SFR_UNGC"]*t_sf.to(u.yr)*np.exp(dc["x_n"])/(dc["x_n"]**2))
 # A_n = nan where inf
 
 dc["x_n"] = np.where(np.isinf(dc["x_n"]), np.nan, dc["x_n"])
@@ -1010,18 +881,18 @@ dc["A_n"] = np.where(np.isinf(dc["A_n"]), np.nan, dc["A_n"])
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/scipy/optimize/_root_scalar.py:315: RuntimeWarning: Derivative was zero.
+: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
 
 #+begin_src python
 print(dc["x_n", "A_n"].info("stats"))
 #+end_src
 
 #+RESULTS:
-: <QTable length=607>
-: name         mean                std                 min                 max
-: ---- ------------------- ------------------- ------------------- -------------------
-:  x_n             1.66518             2.91531            -29.6974             11.9164
-:  A_n 5.27714e+10 solMass 5.20772e+11 solMass 1.60997e-08 solMass 8.60539e+12 solMass
+: <QTable length=518>
+: name        mean               std                 min                 max
+: ---- ------------------ ------------------ ------------------- -------------------
+:  x_n            1.20898            3.17842            -33.7994             11.7659
+:  A_n 1.0472e+12 solMass 2.1989e+13 solMass 2.32981e-10 solMass 4.99763e+14 solMass
 : None
 
 *** fsolve
@@ -1045,13 +916,13 @@ for i in range(len(dc)-1):
         f = np.zeros(2)
         f[0] = ratio - (np.exp(x) - x - 1) / x**2
         #f[0] = av*tsf - A * [1-(1-x)*np.exp(-x)]
-        f[1] = sfr - A * x * tsf * np.exp(-x) / x
+        f[1] = sfr - A*10**(-9) * x * tsf * np.exp(-x) / x
         return f
 
     # Solve the equation
     z = fsolve(sfrx, [3,1e+8])
     x[i] = z[0]
-    A[i] = z[1]
+    A[i] = z[1]*10**9
 
     ## mask If sfr ratio or mass is nan
     if np.isnan(ratio) or np.isnan(mass):
@@ -1063,9 +934,7 @@ dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-7hf2gn/python-AkP2wD:23: RuntimeWarning: The iteration is not making good progress, as measured by the
-:   improvement from the last five Jacobian evaluations.
-: /tmp/babel-7hf2gn/python-AkP2wD:23: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-9IyVj7/python-KWvMhe:23: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last ten iterations.
 
 #+begin_src python
@@ -1073,11 +942,11 @@ print(dc["x_f","A_f"].info(["attributes" ,"stats"]))
 #+end_src
 
 #+RESULTS:
-: <QTable length=607>
-: name  dtype    unit      class           mean              std                min              max
-: ---- ------- ------- -------------- -------------- ------------------- ------------------ -------------
-:  x_f float64           MaskedColumn         1.5824             2.94119           -29.6974       9.79911
-:  A_f float64 solMass MaskedQuantity 658979 solMass 8.09096e+06 solMass -0.0496767 solMass 1e+08 solMass
+: <QTable length=518>
+: name  dtype    unit      class              mean                std                 min                  max
+: ---- ------- ------- -------------- ------------------- ------------------- -------------------- -------------------
+:  x_f float64           MaskedColumn             1.16944             3.12235             -33.7994             11.7659
+:  A_f float64 solMass MaskedQuantity 5.34269e+08 solMass 2.68206e+09 solMass -1.21983e+07 solMass 3.35987e+10 solMass
 : None
 
 *** Compare the methods
@@ -1112,11 +981,11 @@ print(dc["x_f","x_n"].info(["attributes" ,"stats"]))
 
 #+RESULTS:
 :results:
-<QTable length=607>
+<QTable length=518>
 name  dtype     class       mean    std     min      max
 ---- ------- ------------ ------- ------- -------- -------
- x_f float64 MaskedColumn  1.5824 2.94119 -29.6974 9.79911
- x_n float64       Column 1.66518 2.91531 -29.6974 11.9164
+ x_f float64 MaskedColumn 1.16944 3.12235 -33.7994 11.7659
+ x_n float64       Column 1.20898 3.17842 -33.7994 11.7659
 None
 :end:
 
@@ -1155,7 +1024,7 @@ print("MIN of x_f:", dc["Name"][np.argmin(dc["x_f"])])
 #+RESULTS:
 : MAX of x_n: Maffei1
 : MIN of x_n: AGC124056
-: MAX of x_f: NGC2787
+: MAX of x_f: Maffei1
 : MIN of x_f: AGC124056
 
 What are those galaxies?
@@ -1166,8 +1035,8 @@ print("MIN of SFR Ratio:", dc["Name"][np.argmin(dc["SFR_ratio"])])
 #+end_src
 
 #+RESULTS:
-: MAX of SFR Ratio: Maffei1
-: MIN of SFR Ratio: AGC124056
+: MAX of SFR Ratio: ESO289-020
+: MIN of SFR Ratio: ESO289-020
 
 *** Compare for A
 
@@ -1177,11 +1046,11 @@ print(dc["A_f","A_n"].info(["attributes" ,"stats"]))
 #+end_src
 
 #+RESULTS:
-: <QTable length=607>
-: name  dtype    unit      class              mean                std                 min                 max
-: ---- ------- ------- -------------- ------------------- ------------------- ------------------- -------------------
-:  A_f float64 solMass MaskedQuantity      658979 solMass 8.09096e+06 solMass  -0.0496767 solMass       1e+08 solMass
-:  A_n float64 solMass MaskedQuantity 5.27714e+10 solMass 5.20772e+11 solMass 1.60997e-08 solMass 8.60539e+12 solMass
+: <QTable length=518>
+: name  dtype    unit      class              mean                std                 min                  max
+: ---- ------- ------- -------------- ------------------- ------------------- -------------------- -------------------
+:  A_f float64 solMass MaskedQuantity 5.34269e+08 solMass 2.68206e+09 solMass -1.21983e+07 solMass 3.35987e+10 solMass
+:  A_n float64 solMass MaskedQuantity  1.0472e+12 solMass  2.1989e+13 solMass  2.32981e-10 solMass 4.99763e+14 solMass
 : None
 
 
@@ -1227,43 +1096,47 @@ plt.close()
 
 #+begin_src python
 
-dc['tau'] = t_sf/dc["x_n"]
+dc['tau'] = t_sf/dc["x_f"]
+
 
 print(dc["tau"].info(["attributes", "stats"]))
 #+end_src
 
 #+RESULTS:
 #+begin_example
+/home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: overflow encountered in divide
 name = tau
 dtype = float64
 unit = Gyr
 class = Quantity
-mean = 6.29351 Gyr
-std = 77.3656 Gyr
-min = -1036.91 Gyr
-max = 988.964 Gyr
-n_bad = 0
-length = 607
+mean = -9.26834 Gyr
+std = 308.395 Gyr
+min = -4750.87 Gyr
+max = 2412.26 Gyr
+n_bad = 1
+length = 518
 None
 #+end_example
 
 #+begin_src python :results file value
 plt.close("all")
-sns.displot(np.log10(dc["tau"].value))
+sns.displot((dc["tau"].value))
 #mean line
-#plt.axvline(np.log10(6.3), color = "black", linestyle = "--", alpha = 0.8)
+plt.axvline(-9.27, color = "black", linestyle = "--", alpha = 0.8)
 #mean line
-plt.axvline(np.log10(np.mean(dc["tau"].value)), color = "black", linestyle = "--", alpha = 0.8)
+#plt.axvline((np.mean(dc["tau"].value)), color = "black", linestyle = "--", alpha = 0.8)
 #text next to mean line "Mean = mean.value"
-plt.text(np.log10(np.mean(dc["tau"].value))*1.1, plt.ylim()[1]-4, r"Mean = {:.2f}".format(np.mean(dc["tau"])), color = "blue")
+#plt.text((np.mean(dc["tau"].value))*1.1, plt.ylim()[1]-4, r"Mean = {:.2f}".format(np.mean(dc["tau"])), color = "blue")
+plt.text(-9.2, plt.ylim()[1]-4, r"Mean = {:.2f}".format(-9.27), color = "blue")
 
 #text next to mean line "Mean = mean.value"
 #plt.text(np.log10(6.3)*1.1, 65, r"Mean = 6.29 Gyr", color = "blue")
 
 plt.xlabel(r'$\tau$ '+"[{}]".format(dc["tau"].unit.to_string("latex")))
 plt.ylabel("Number of galaxies")
-plt.title(r'Histogram of $\tau$')
+plt.title(r'Histogram of $\tau$ [Gyr]')
 plt.tight_layout()
+plt.xlim(-40,60)
 #save
 plt.savefig("figure/tau-hist.png")
 plt.close()
@@ -1275,21 +1148,6 @@ plt.close()
 [[file:figure/tau-hist.png]]
 
 
-*****  Min and Max of A_{del}
-
-
-#+begin_src python :results drawer
-print(r"MAX of $A_{del}$:", dc["Name"][np.argmax(dc["A_n"])])
-print(r"MIN of $A_{del}$:", dc["Name"][np.argmin(dc["A_n"])])
-#+end_src
-
-#+RESULTS:
-:results:
-MAX of $A_{del}$: A0554+07
-MIN of $A_{del}$: A0554+07
-:end:
-
-
 *** TODO Add zoom and theoretical lines
 
 #+begin_src python
@@ -1299,6 +1157,8 @@ fig.show()
 #+end_src
 
 #+RESULTS:
+: Gtk-[1;32mMessage[0m: [34m21:55:54.040[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m21:55:54.042[0m: Failed to load module "canberra-gtk-module"
 
 #+begin_src python :results value file
 
@@ -1378,7 +1238,8 @@ def func(x, a):
     return zeta * a*np.exp(12/x)/(np.exp(12/x)-1-12/x)
 
 x_values = np.linspace(plt.xlim()[0], plt.xlim()[1], len(dc["StellarMass"]))
-a_value = dc["StellarMass"].mean().value
+#a_value = dc["StellarMass"].mean().value
+a_value = 3.57e9
 
 for i in range(0,5):
     y_values = func(x_values, (a_value) * 0.2**i )
@@ -1403,11 +1264,12 @@ filename
 [[file:figure/tau-A_zoom.png]]
 :end:
 
-Scatter of SFR_0 vs x_n
+
+*** Scatter of SFR_0 vs x_n
 
 #+begin_src python :results value file
 
-plt.scatter( x=dc["x_n"], y=dc["SFR_0"], c = np.log10(dc["av_SFR_theor"].value), cmap = "viridis")
+plt.scatter( x=dc["x_n"], y=dc["SFR_UNGC"], c = np.log10(dc["av_SFR_theor"].value), cmap = "viridis")
 plt.colorbar(label = r"$\overline{SFR}$ "+ "[{}]".format(dc["av_SFR_theor"].unit.to_string("latex")))
 
 
@@ -1426,7 +1288,7 @@ plt.xscale("log")
 plt.yscale("log")
 plt.ylim(0.5*10**-3,10)
 plt.xlabel(r"x")
-plt.ylabel(r"$SFR_0$ [{}]".format(dc["SFR_0"].unit.to_string("latex")))
+plt.ylabel(r"$SFR_UNGC$ [{}]".format(dc["SFR_UNGC"].unit.to_string("latex")))
 plt.tight_layout()
 plt.savefig("figure/SFR-x.png")
 plt.close()
@@ -1537,37 +1399,39 @@ fig.write_html("figure/correlation.html")
 #+end_src
 
 #+RESULTS:
+: Gtk-[1;32mMessage[0m: [34m21:56:00.288[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m21:56:00.291[0m: Failed to load module "canberra-gtk-module"
 
-Pairplot with StellarMass, MHI, SFR_0 and av_SFR, M26
+Pairplot with StellarMass, MHI, SFR_UNGC and av_SFR, M26
 
 #+begin_src python
-#PairGrid with StellarMass, MHI, SFR_0 and av_SFR_theor, M26
+#PairGrid with StellarMass, MHI, SFR_UNGC and av_SFR_theor, M26
 #log scale axes
 
-sns.pairplot(correlation_matrix, vars=["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26"], kind="reg", diag_kind="kde")
+sns.pairplot(correlation_matrix, vars=["StellarMass", "MHI", "SFR_UNGC", "av_SFR_theor", "M26"], kind="reg", diag_kind="kde")
 plt.tight_layout()
 plt.savefig("figure/pairplot")
 plt.close("all")
-print(correlation_matrix[["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A_f"]].corr())
+print(correlation_matrix[["StellarMass", "MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f"]].corr())
 #+end_src
 
 #+RESULTS:
-:               StellarMass       MHI     SFR_0  av_SFR_theor       M26       M_g       tau       A_f
-: StellarMass      1.000000  0.878513  0.893497      1.000000  0.991270  0.878513 -0.229484  0.473412
-: MHI              0.878513  1.000000  0.980795      0.878513  0.887238  1.000000 -0.245085  0.223906
-: SFR_0            0.893497  0.980795  1.000000      0.893497  0.898983  0.980795 -0.255432  0.202507
-: av_SFR_theor     1.000000  0.878513  0.893497      1.000000  0.991270  0.878513 -0.229484  0.473412
-: M26              0.991270  0.887238  0.898983      0.991270  1.000000  0.887238 -0.238870  0.472547
-: M_g              0.878513  1.000000  0.980795      0.878513  0.887238  1.000000 -0.245085  0.223906
-: tau             -0.229484 -0.245085 -0.255432     -0.229484 -0.238870 -0.245085  1.000000 -0.103207
-: A_f              0.473412  0.223906  0.202507      0.473412  0.472547  0.223906 -0.103207  1.000000
+:               StellarMass       MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f
+: StellarMass      1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
+: MHI              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
+: SFR_UNGC         0.911743  0.975992  1.000000      0.911743  0.925263  0.975992 -0.126696  0.769262
+: av_SFR_theor     1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
+: M26              0.981763  0.911023  0.925263      0.981763  1.000000  0.911023 -0.076677  0.900513
+: M_g              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
+: tau             -0.069947 -0.095762 -0.126696     -0.069947 -0.076677 -0.095762  1.000000 -0.043090
+: A_f              0.932965  0.764614  0.769262      0.932965  0.900513  0.764614 -0.043090  1.000000
 
 #+begin_src python :exports none :results none
 #define a new dataframe
 df_log = pd.DataFrame()
 
 temp = pd.DataFrame()
-for i in ["StellarMass", "MHI", "SFR_0", "av_SFR_theor", "M26", "tau", "A_f", "M_g", "tau_g", "BarMass"]:
+for i in ["StellarMass", "MHI", "SFR_UNGC", "av_SFR_theor", "M26", "tau", "A_f", "M_g", "tau_g", "BarMass"]:
     temp [i] =dff[i]
     temp[i].loc[temp[i] == 0] = np.nan
     df_log[i] = np.log(temp[i].dropna())
@@ -1577,10 +1441,10 @@ for i in ["TType", "Tdw1", "Tdw2"]:
 #+end_src
 
 #+begin_src python
-#PairGrid with StellarMass, MHI, SFR_0 and av_SFR_theor, M26
+#PairGrid with StellarMass, MHI, SFR_UNGC and av_SFR_theor, M26
 #log scale axes
 
-sns.pairplot(df_log, vars=["StellarMass", "MHI", "SFR_0", "M26", "BarMass", "A_f"], kind="reg", diag_kind="kde")
+sns.pairplot(df_log, vars=["StellarMass", "MHI", "SFR_UNGC", "M26", "BarMass", "A_f"], kind="reg", diag_kind="kde")
 plt.tight_layout()
 plt.savefig("figure/pairplot.png")
 plt.close("all")
@@ -1593,24 +1457,24 @@ plt.close("all")
 #+RESULTS:
 
 #+begin_src python
-print(df_log[["MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "tau_g"]].corr())
+print(df_log[["MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "tau_g"]].corr())
 
 #+end_src
 
 #+RESULTS:
-:                    MHI     SFR_0  av_SFR_theor       M26       M_g       tau       A_f     tau_g
-: MHI           1.000000  0.861085      0.784292  0.850949  1.000000 -0.050360  0.115054 -0.040938
-: SFR_0         0.861085  1.000000      0.855756  0.854753  0.861085 -0.027812 -0.065974 -0.543286
-: av_SFR_theor  0.784292  0.855756      1.000000  0.894117  0.784292 -0.369653  0.392335 -0.428340
-: M26           0.850949  0.854753      0.894117  1.000000  0.850949 -0.227629  0.234974 -0.285532
-: M_g           1.000000  0.861085      0.784292  0.850949  1.000000 -0.050360  0.115054 -0.040938
-: tau          -0.050360 -0.027812     -0.369653 -0.227629 -0.050360  1.000000 -0.561142 -0.022606
-: A_f           0.115054 -0.065974      0.392335  0.234974  0.115054 -0.561142  1.000000  0.257164
-: tau_g        -0.040938 -0.543286     -0.428340 -0.285532 -0.040938 -0.022606  0.257164  1.000000
+:                    MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f     tau_g
+: MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028400 -0.067180
+: SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.012002 -0.544876
+: av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.056170 -0.430786
+: M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.063593 -0.280310
+: M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028400 -0.067180
+: tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.065421  0.031146
+: A_f           0.028400  0.012002      0.056170  0.063593  0.028400  0.065421  1.000000  0.023520
+: tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.023520  1.000000
 
 #+begin_src python :results file value
 #heatmap of masses and luminosities
-sns.heatmap(df_log[["MHI", "SFR_0", "av_SFR_theor", "M26", "M_g", "BarMass","tau", "A_f", "tau_g"]].corr(), annot = True)
+sns.heatmap(df_log[["MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "BarMass","tau", "A_f", "tau_g"]].corr(), annot = True)
 plt.tight_layout()
 fname = "figure/heatmap_mass_sfr_a_t.png"
 plt.savefig(fname)
