@@ -10,7 +10,7 @@ library(stantargets)
 
 # Set target options:
 tar_option_set(
-  packages = c("readr", "dplyr", "tidyr", "stringr", "posterior"),
+  packages = c("readr", "dplyr", "tidyr", "stringr", "posterior","bayesplot", "loo","ggplot2"),
   # format = "qs", # Optionally set the default storage format. qs is fast.
   #
   # Pipelines that take a long time to run may benefit from
@@ -22,7 +22,7 @@ tar_option_set(
   # which run as local R processes. Each worker launches when there is work
   # to do and exits if 60 seconds pass with no tasks to run.
   #
-  #   controller = crew::crew_controller_local(workers = 2, seconds_idle = 60)
+  #controller = crew::crew_controller_local(workers = 2)
   #
   # Alternatively, if you want workers to run on a high-performance computing
   # cluster, select a controller from the {crew.cluster} package.
@@ -55,7 +55,7 @@ list(
   # Step 1: Load and prepare data
   tar_target(
     csv_file_path,
-    "test_galaxies.csv",
+    "outer_join.csv",
     format = "file"
   ),
   tar_target(
@@ -66,10 +66,6 @@ list(
     sfr_data,
     prepare_data(read_data)
   ),
-  tar_target(
-    print_rows,
-    print(nrow(sfr_data))
-  ),
   
   # Step 2: Fit the Stan model
   tar_stan_mcmc(
@@ -77,30 +73,72 @@ list(
     stan_files = "x.stan",
     data = list(
       N = nrow(sfr_data),
-      logSFR_HEC_Gyr = sfr_data$logSFR_HEC_Gyr,
-      logM_HEC = sfr_data$logM_HEC
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
     ),
     chains = 5,
     parallel_chains = 5,
-    iter_sampling = 2500,
-    iter_warmup = 1500,
-    init = init_function(5,24)
+    iter_sampling = 3000,
+    iter_warmup = 2500,
+    init = init_function(5,1137)
   ),
   
-  # Step 3: Extract summary statistics for key parameters
   tar_stan_summary(
-    name = parameter_estimates,
+    id_summary,
     fit = stan_fit_mcmc_x,
-    variables = c("t_today", "logA", "logtau"),
-    summaries = list(
-      mean = ~mean(.x),
-      sd = ~sd(.x)
-    )
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "id"
   ),
   
-  # Step 4: Compute residuals and standardized residuals for each data point
+  tar_stan_summary(
+    sfr_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "logSFR_today"
+  ),
+
+  tar_stan_summary(
+    t_sf_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "t_sf"),
+    
+  tar_stan_summary(
+    tau_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "tau"
+  ),
+  
+  tar_stan_summary(
+    A_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "A"
+  ),
+  
   tar_target(
-    posterior_predictions,
-    extract_posterior_predictions(stan_fit_mcmc_x, sfr_data),
+    divergences,
+    stan_fit_diagnostics_x$divergent__
   )
 )

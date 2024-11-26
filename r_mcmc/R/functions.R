@@ -3,26 +3,20 @@
 # Function to load and prepare the data
 prepare_data <- function(data_csv) {
   dt <- data_csv %>%
-    mutate(
-      SFR_HEC = 10^logSFR_HEC_Gyr
-    ) %>%
-    drop_na(logSFR_HEC_Gyr, logM_HEC)
+    mutate(id_number = row_number()) %>%
+    select(logSFR_UNGC_Gyr, id_number) %>%
+    filter(
+      !is.na(logSFR_UNGC_Gyr),
+      !is.nan(logSFR_UNGC_Gyr),
+      is.finite(logSFR_UNGC_Gyr)
+      )
   return(dt)
 }
 
 # Function to define initial values for the Stan model
-iiinit_function <- function() {
-  list( 
-   list(
-      t_today = 13.6,            # Initial guess for t_today
-      logtau = log10(6.3),       # Initial guess for log(tau)
-      logA = log10(5.268e+10)    # Initial guess for log(A)
-    )
-  )
-}
 init_function <-function(chains, N) {
   lapply(1:chains, function(i) list(
-    t_today = rep(13.6, N),
+    t_sf = rep(13.6, N),
     logtau = rep(log10(6.3), N),
     logA = rep(log10(5.268e+10), N)
   ))
@@ -52,7 +46,7 @@ extract_posterior_predictions <- function(stan_fit, sfr_data) {
       mean = mean(value),
       sd = sd(value)
     )
-  
+  # 
   # Extract the index from variable names
   pred_summaries <- pred_summaries %>%
     mutate(
