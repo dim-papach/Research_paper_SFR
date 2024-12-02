@@ -18,9 +18,9 @@ data {
 }
 
 parameters {
-  vector<lower=10, upper=15>[N] t_sf;     // Time of star formation for each galaxy in Gyr
+  vector<lower=10, upper=13.8>[N] t_sf;     // Time of star formation for each galaxy in Gyr
   vector<lower=-3, upper=3>[N] logtau;    // log10(tau) for each galaxy
-  vector<lower=-3, upper=12>[N] logA;     // log10(A) for each galaxy
+  vector<lower=-2, upper=12>[N] logA;     // log10(A) for each galaxy
 }
 
 transformed parameters {
@@ -52,7 +52,7 @@ model {
   */
 
   // Priors: Uniform distributions for each parameter
-  logA ~ uniform(-3, 12);                 // Prior for log10(A)
+  logA ~ uniform(-2, 12);                 // Prior for log10(A)
   logtau ~ uniform(-3, 4);                // Prior for log10(tau)
   t_sf ~ uniform(10, 15);                 // Prior for t_sf (time of star formation)
 

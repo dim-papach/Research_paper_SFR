@@ -10,7 +10,7 @@ library(stantargets)
 
 # Set target options:
 tar_option_set(
-  packages = c("readr", "dplyr", "tidyr", "stringr", "posterior","bayesplot", "loo","ggplot2"),
+  packages = c("readr", "tidyverse","tibble", "stringr", "posterior","bayesplot", "loo","ggplot2"),
   # format = "qs", # Optionally set the default storage format. qs is fast.
   #
   # Pipelines that take a long time to run may benefit from
@@ -76,11 +76,11 @@ list(
       logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
       id_numbers = sfr_data$id_number
     ),
-    chains = 5,
-    parallel_chains = 5,
-    iter_sampling = 3000,
-    iter_warmup = 2500,
-    init = init_function(5,1137)
+    chains = 6,
+    parallel_chains = 6,
+    iter_sampling = 3500,
+    iter_warmup = 3500,
+    init = init_function(6,1137)
   ),
   
   tar_stan_summary(
@@ -127,6 +127,16 @@ list(
   ),
   
   tar_stan_summary(
+    logtau_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "logtau"
+  ),
+  tar_stan_summary(
     A_summary,
     fit = stan_fit_mcmc_x,
     data = list(
@@ -140,5 +150,99 @@ list(
   tar_target(
     divergences,
     stan_fit_diagnostics_x$divergent__
+  ),
+  
+  # Define the list of variables
+  tar_target(
+    summary_variables,
+    c("logSFR_today", "t_sf", "tau", "A", "logtau") # List of variables
+  ),
+  
+  # Compute plots dynamically for mean vs median
+  tar_target(
+    mean_median_plots,
+    {
+      # Extract summary data for the variable
+      summary_data <- switch(summary_variables,
+                             "A" = A_summary,
+                             "tau" = tau_summary,
+                             "t_sf" = t_sf_summary,
+                             "logSFR_today" = sfr_summary,
+                             "id" = id_summary,
+                             "logtau" = logtau_summary)
+      
+      # Generate the plot
+      ggplot(summary_data, aes(x = mean, y = median)) +
+        geom_point() +
+        labs(
+          title = paste("Mean vs. Median of", summary_variables),
+          x = "Mean",
+          y = "Median"
+        ) 
+      ggsave(sprintf("plots/Mean-Median/%s.png", summary_variables))
+    },
+    pattern = map(summary_variables) # Branch over variables
+  ),
+  
+  # Compute plots dynamically for mean vs median
+  tar_target(
+      histograms,
+    {
+      # Extract summary data for the variable
+      summary_data <- switch(summary_variables,
+                             "A" = A_summary,
+                             "tau" = tau_summary,
+                             "t_sf" = t_sf_summary,
+                             "logSFR_today" = sfr_summary,
+                             "id" = id_summary,
+                             "logtau" = logtau_summary)
+      max_count <- max(ggplot_build(
+        ggplot(summary_data, aes(x = mean)) +
+          geom_histogram(bins = 30)
+      )$data[[1]]$count, na.rm = TRUE)
+      
+      ggplot(summary_data, aes(x = mean)) +
+        geom_histogram(alpha = 0.7, bins = 30, fill = "blue", color = "black") +
+        geom_vline(aes(xintercept = mean(mean)), color = "red", linetype = "dashed", size = 1) +
+        geom_text(
+          aes(
+            x = mean(mean), 
+            label = format(mean(mean), scientific = TRUE, digits = 2) # Scientific notation, 2 decimal points
+          ), 
+          y = max_count + 1, # Place the text slightly above the maximum bar
+          inherit.aes = FALSE,
+          vjust = 0, # Above the bar 
+          hjust = 0.5 # Centered above the mean line
+        ) +
+        labs(
+          title = paste("Histogram of Mean for", summary_variables),
+          x = "Mean",
+          y = "Count"
+        ) 
+      
+      
+      ggsave(sprintf("plots/Hists/%s.png", summary_variables))
+     },
+    
+    pattern = map(summary_variables) # Branch over variables
+  ),
+  
+
+  # Prepare the metric data
+
+  tar_target(
+    metrics,
+    c("rhat", "ess_bulk", "ess_tail")
+  ),
+  
+  tar_target(
+    hist_metrics,
+    {
+      ggplot(data = stan_fit_summary_x, aes(x = metrics))+
+        geom_histogram(bins = 30)
+      ggsave(sprintf("plots/%s.png",metrics))
+    },
+  pattern = map(metrics),
+  format = "file"
   )
 )
