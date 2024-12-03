@@ -3,7 +3,10 @@
 # Function to load and prepare the data
 prepare_data <- function(data_csv) {
   dt <- data_csv %>%
-    mutate(id_number = row_number()) %>%
+    mutate(id_number = row_number(),
+           logM_HEC = ifelse(is.na(logM_HEC), 0.822 * K, logM_HEC), # Replace missing logM_HEC with 0.8 * K
+           logM_HEC = ifelse(is.na(logM_HEC), 0.822 * KLum, logM_HEC) # Replace missing logM_HEC with 0.8 * KLum
+           ) %>%
     select(logSFR_UNGC_Gyr, id_number, logM_HEC) %>%
     filter(
       logSFR_UNGC_Gyr >=-3,

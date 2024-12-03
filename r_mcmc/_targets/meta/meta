@@ -1,5 +1,5 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|902d41607d00e6ea|||||||||||||||
+.Random.seed|object|7f22ac40fa513989|||||||||||||||
 A_summary|stem|780267f2a3aa5889|1566151753e0f56c|e849156f9932abf3|-53252812||t20054.0755534417s|4339908ec9137838|91122|fst_tbl|local|vector|||38.936||
 csv_file_path|stem|d2a3cce0240a4898|884530776c2de54b|2c530c1562a7fbd1|1008951838|outer_join.csv|t20044.9537337853s|0c05d108d6d7ba61|1966699|file|local|vector|||0.428||
 divergences|stem|7863e251a36978f4|2e64c2682e03bf66|0ff89f4604a02a84|1363929483||t20054.0766028011s|d4e1dc8172cd9f87|229|rds|local|vector|||0.001||
@@ -11,10 +11,10 @@ generated_quantities_data_51a4c5b4e579c4ad|branch|df2f8abb080708db|cf8f225d1ad16
 generated_quantities_file_x|stem|e45ff3d09a90f1fe|8d68ae5a7cc7c80b|2c530c1562a7fbd1|134546480|x.stan*x|t20047.8194115981s|391296f8458a2334|2828549|file|local|vector|||0.351||
 generated_quantities_x|pattern|2b34abf0e4d0df82|05693b89a85053d5||-1846640019||||143796|fst_tbl|local|vector||generated_quantities_x_cccf261ba301301e|166.345||
 generated_quantities_x_cccf261ba301301e|branch|69c8090321934b6a|05693b89a85053d5|ba3357b915bb3a6c|98587814||t20047.9332411191s|1892f782e3b030e1|143796|fst_tbl|local|vector|generated_quantities_x||166.345||
-hist_metrics|pattern|221457c194471ffd|118fe91d6d26d4a3||1852125543||||161387|file|local|vector||hist_metrics_c13ee46f52201f5c*hist_metrics_f7c5fee0880a1976*hist_metrics_282d3c7a7b454154|0.876||
-hist_metrics_282d3c7a7b454154|branch|dc01dfb23c854b43|118fe91d6d26d4a3|423e20a9bf62b6d4|1050276279|plots/ess_tail.png|t20059.9618337627s|7a31965efd485d6c|54457|file|local|vector|hist_metrics||0.231||
-hist_metrics_c13ee46f52201f5c|branch|8c41c624c4b18c6a|118fe91d6d26d4a3|423e20a9bf62b6d4|-409612808|plots/rhat.png|t20059.9618278484s|7d40cd50efff3c6b|49545|file|local|vector|hist_metrics||0.374|aes_string was deprecated in ggplot2 3.0.0.ℹ Please use tidy evaluation idioms with aes.ℹ See also vignetteggplot2inpackages for more information.. Using size aesthetic for lines was deprecated in ggplot2 3.4.0.ℹ Please use linewidth instead.|
-hist_metrics_f7c5fee0880a1976|branch|af25404d538f1a44|118fe91d6d26d4a3|423e20a9bf62b6d4|1848156038|plots/ess_bulk.png|t20059.9618310428s|8203ec4ab3093f76|57385|file|local|vector|hist_metrics||0.271||
+hist_metrics|pattern|5c632e193bc7a035|0310be34af3f868e||1852125543||||147459|file|local|vector||hist_metrics_c13ee46f52201f5c*hist_metrics_f7c5fee0880a1976*hist_metrics_282d3c7a7b454154|1.059||
+hist_metrics_282d3c7a7b454154|branch|7ab42d8bd9be7d20|0310be34af3f868e|2a7257275c5227bc|1050276279|plots/ess_tail.png|t20060.9290678493s|52cecf146b1843a3|33484|file|local|vector|hist_metrics||0.216|Removed 5661 rows containing nonfinite outside the scale range stat_bin.. Removed 5661 rows containing missing values or values outside the scale rangegeom_vline.. Removed 1 row containing missing values or values outside the scale rangegeom_text.|
+hist_metrics_c13ee46f52201f5c|branch|778bc583005286fa|0310be34af3f868e|2a7257275c5227bc|-409612808|plots/rhat.png|t20060.9290619234s|9af5efe19741f92c|57661|file|local|vector|hist_metrics||0.557|aes_string was deprecated in ggplot2 3.0.0.ℹ Please use tidy evaluation idioms with aes.ℹ See also vignetteggplot2inpackages for more information.. Using size aesthetic for lines was deprecated in ggplot2 3.4.0.ℹ Please use linewidth instead.. Removed 4921 rows containing nonfinite outside the scale range stat_bin.|
+hist_metrics_f7c5fee0880a1976|branch|a061fd825770c8b6|0310be34af3f868e|2a7257275c5227bc|1848156038|plots/ess_bulk.png|t20060.9290652914s|99142b2cafb3f014|56314|file|local|vector|hist_metrics||0.286|Removed 4921 rows containing nonfinite outside the scale range stat_bin.|
 histogram_mcmc_metrics|stem|2215f1a2687e951c|5defc2012796584c|40710e661cb19a5a|-150279055||t20053.9475508844s|afe1c0564fcfafab|85|rds|local|vector|||0.568|Using size aesthetic for lines was deprecated in ggplot2 3.4.0.ℹ Please use linewidth instead.. Removed 3414 rows containing nonfinite outside the scale range stat_bin.|
 histograms|pattern|4e727e082858660c|ac05aee54efb943b||1923189409||||366|rds|local|vector||histograms_7d1072f7c0f69ff5*histograms_d908a086c1abb129*histograms_c520b10f2273818c*histograms_171979441cf6ee90*histograms_ec7064dc0fd90eb6|1.904||
 histograms_171979441cf6ee90|branch|341796b6ec97a5e7|901564fe17fbf398|622e225c5712d13b|-855584176||t20053.9367603997s|bab37a9db0a801a3|69|rds|local|vector|histograms||0.306|All aesthetics have length 1, but the data has 1137 rows.ℹ Please consider using annotate or provide this layer with data containing  a single row.|
@@ -41,18 +41,18 @@ plot_metrics|stem|d43cc153c1199bd5|f605b285c03b4a3a|40710e661cb19a5a|-385225938|
 posterior_predictions|stem|c95647ce0b8bca8f|39c8a4f5b4ad5e1f|6d1c1fd6a7d0c587|562865004||t20046.007994315s||11149|rds|local|vector|||0.014|Unknown or uninitialised column draws.|attempt to apply nonfunction
 posterior_predictive_check|stem||6f6c9ae0e10e7201|c98204e9b237cd35|-1812191231||t20047.9047154206s||0|rds|local|vector|||0.004||object posterior_predictive_samples not found
 posterior_predictive_samples|stem||dac0d222c5fcd60d|df3116af84be6f78|1178349342||t20046.0295490265s||0|rds|local|vector|||0.005||posterior_predict is not an exported object from namespaceposterior
-prepare_data|function|c941bb92f006a7b9|||||||||||||||
+prepare_data|function|5dc184510577f280|||||||||||||||
 print_rows|stem|c44979c1f6dd6c6a|b9532dfbc177d4d0|c98204e9b237cd35|-81757117||t20047.7778337859s|948ebae6388656f3|51|rds|local|vector|||0||
 read_data|stem|25fba92551643eaf|327d83c9b9dd125b|d0de568dc59c94a7|1949791771||t20046.6793862086s|305c71861c26091a|768848|rds|local|vector|||0.31||
 rhat_values|stem|b196efb9ccd1ca04|990fb0fad1f345fc|6c0263e5dac4e23f|1865488005||t20046.0172358373s|d9400560ac21db5c|1096|rds|local|vector|||0||
-sfr_data|stem|226cbc40aa18d8ee|03434fca9cf2c641|2b4e18bf8abf1cc7|114586177||t20059.9049824211s|561d3cb44a6122bf|1212|rds|local|vector|||0.013||
+sfr_data|stem|9d4a8ff19b6e1e80|03434fca9cf2c641|442ccc2661b88da6|114586177||t20060.1113615183s|3a7bb0ad8d9bb640|13878|rds|local|vector|||0.046||
 sfr_summary|stem|9d0a9f95b5a47d8f|7bd491e83329de10|e849156f9932abf3|1531852784||t20054.0766025927s|7e1d0e9e2c7b902a|90712|fst_tbl|local|vector|||41.038||
-stan_fit_data|stem|75570a1771b16ef8|eb6e873dc2ac4c93|6ea7c51c25c4def4|-1776478089||t20059.9100545787s|7ab1ff5d5b6ade7d|1044|qs|local|vector|||0||
-stan_fit_diagnostics_x|stem|6c34c4de4f72e7e0|50b10d111cc09e55|ae58c2cf5a0dd849|941894401||t20059.9616970039s|cc0b6db9c747f232|397312|fst_tbl|local|vector|||0.002||
-stan_fit_draws_x|stem|ac69afed8d568ab4|e71eb91907285cad|ae58c2cf5a0dd849|7149120||t20059.961695696s|738352c8fc7e2d58|51550684|fst_tbl|local|vector|||0.1||
-stan_fit_file_x|stem|070590ef5c9f6726|459f661641d63f55|2c530c1562a7fbd1|248078128|x.stan|t20059.9497190103s|b3e2ad83fe13803b|1790|file|local|vector|||0.001||
-stan_fit_mcmc_x|stem|1b4fb931ba625e6e|21b10ef727a8c6f3|197b51c59031dd96|-652905197||t20059.9616928141s|6ce8503e4567e782|40329380|qs|local|vector|||21.458||
-stan_fit_summary_x|stem|07ffb50b59414fd8|118f3b7b04094f76|120ffbfc91ee6413|-736525398||t20059.9618234502s|d3fd6fed6b83a26c|26416|fst_tbl|local|vector|||10.918||
+stan_fit_data|stem|ba7b154d242f604b|b76f42a067aa1d48|a89def6c591298d4|-1776478089||t20060.9393095294s|8c83f594ca713a79|1145|qs|local|vector|||0||
+stan_fit_diagnostics_x|stem|485f31f355311962|50b10d111cc09e55|29683fff95bd84f8|941894401||t20060.9354702275s|e4b8164254e4aca4|120170|fst_tbl|local|vector|||0.002||
+stan_fit_draws_x|stem|a813010dfe3057a9|e71eb91907285cad|29683fff95bd84f8|7149120||t20060.9354700886s|f614ae20026280ae|4408426|fst_tbl|local|vector|||0.968||
+stan_fit_file_x|stem|ee6314ebf3d4bb17|459f661641d63f55|2c530c1562a7fbd1|248078128|x.stan|t20060.9416614961s|4e840f9f7f32c8f5|2488|file|local|vector|||0||
+stan_fit_mcmc_x|stem|b8aeae2a56fe0dc1|509879ce0e725a89|9f658714912df914|-652905197||t20060.9354556094s||263468|qs|local|vector|||13.961||Missing input data for the following data variables n, sfr_obs.
+stan_fit_summary_x|stem|ff81fe66e0ffd13c|118f3b7b04094f76|4d4ed03c5352a9bc|-736525398||t20060.9290552452s|9d5a19cbfb3e3559|117534|fst_tbl|local|vector|||32.473||
 stan_summary_per_variable_82f18693ad42d331|branch||d962ba977949a13f|4c7dcb146d5527b0|1727234193||t20053.8590576905s||0|rds|local|vector|stan_summary_per_variable||0.035||x has empty character strings.
 stan_summary_per_variable_d820cc0e9717a391|branch||94107adbea425fd8|4c7dcb146d5527b0|23343692||t20053.8603899258s||0|rds|local|vector|stan_summary_per_variable||0.022||x has empty character strings.
 summary_variables|stem|e473a9863a4331f5|280d9e868a1064ef|2c530c1562a7fbd1|1405503017||t20053.9199148722s|3ad7ccf74607cc42|88|rds|local|vector||summary_variables_69f109166f74e59b*summary_variables_be143490902bdded*summary_variables_92fe76d7d4b4b4a4*summary_variables_86a299f21816d1eb*summary_variables_d88ed4903998bd12|0.587||

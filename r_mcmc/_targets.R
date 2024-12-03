@@ -10,7 +10,7 @@ library(stantargets)
 
 # Set target options:
 tar_option_set(
-  packages = c("readr", "tidyverse","tibble", "stringr", "posterior","bayesplot", "loo","ggplot2"),
+  packages = c("readr", "tidyverse","tibble", "stringr", "posterior","bayesplot", "loo","ggplot2", "scales"),
   # format = "qs", # Optionally set the default storage format. qs is fast.
   #
   # Pipelines that take a long time to run may benefit from
@@ -73,15 +73,17 @@ list(
     stan_files = "x.stan",
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      #logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
       id_numbers = sfr_data$id_number,
-      mass = sfr_data$logM_HEC
+      #mass = sfr_data$logM_HEC
+      mass = sfr_data$StellarMass,
+      SFR_obs = sfr_data$SFR_UNGC_Gyr
     ),
-    chains = 6,
+    chains = 3,
     parallel_chains = 6,
     iter_sampling = 3500,
-    iter_warmup = 3500,
-    init = init_function(6,61)
+    iter_warmup = 2500,
+    init = init_function(3,1132)
   ),
   # 
   # tar_stan_summary(
@@ -252,11 +254,14 @@ list(
           label = sprintf("Mean: %.2f", mean_value), 
           vjust = 2, color = "red", size = 4
         ) +
+        scale_x_continuous(trans='log10',
+                           breaks=trans_breaks('log10', function(x) 10^x),
+                           labels=trans_format('log10', math_format(10^.x))) +
         labs(
           title = sprintf("Histogram of %s", metrics),
           x = metrics,
           y = "Frequency"
-        ) 
+        )
       
       ggsave(sprintf("plots/%s.png", metrics))
     },
