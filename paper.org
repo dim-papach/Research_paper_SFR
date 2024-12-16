@@ -691,6 +691,19 @@ dc[["SFR_ratio", "logSFR_ratio"]].info(["attributes","stats"])
 : logSFR_ratio float64 Quantity -0.0103318 0.500618  -1.54195 2.96856     1
 
 **** Histogram of SFR ratio
+#+begin_src python :results output
+dc["logSFR_ratio"].info("stats")
+
+#+end_src
+
+#+RESULTS:
+: name = logSFR_ratio
+: mean = -0.0103318
+: std = 0.500618
+: min = -1.54195
+: max = 2.96856
+: n_bad = 1
+: length = 518
 
 #+begin_src python :results value file
 
@@ -698,9 +711,9 @@ dc[["SFR_ratio", "logSFR_ratio"]].info(["attributes","stats"])
 sns.displot(dc.to_pandas(), x="logSFR_ratio")
 
 #plt.xscale("log")
-plt.axvline((np.mean(dc["logSFR_ratio"].value)), color = "black", linestyle = "--", alpha = 0.8)
+plt.axvline(-0.01, color = "black", linestyle = "--", alpha = 0.8)
 #text next to mean line "Mean = mean.value"
-plt.text(np.log10(np.mean(dc["logSFR_ratio"].value))+1.3, plt.ylim()[1]-4, r"Mean of ratio = {:.2f}".format(np.mean(dc["SFR_ratio"])), color = "blue")
+plt.text(0.1, plt.ylim()[1]-4, r"Mean of ratio = 4.87", color = "blue")
 
 
 plt.title(r"Histogram of $\frac{\overline{SFR}}{SFR_0}$")
@@ -881,7 +894,9 @@ dc["A_n"] = np.where(np.isinf(dc["A_n"]), np.nan, dc["A_n"])
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
+: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning:
+:
+: divide by zero encountered in divide
 
 #+begin_src python
 print(dc["x_n", "A_n"].info("stats"))
@@ -934,7 +949,9 @@ dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-9IyVj7/python-KWvMhe:23: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-U1HWkT/python-cY3cqT:23: RuntimeWarning:
+:
+: The iteration is not making good progress, as measured by the
 :   improvement from the last ten iterations.
 
 #+begin_src python
@@ -1099,24 +1116,19 @@ plt.close()
 dc['tau'] = t_sf/dc["x_f"]
 
 
-print(dc["tau"].info(["attributes", "stats"]))
+print(dc[["tau"]].info("stats"))
 #+end_src
 
 #+RESULTS:
-#+begin_example
-/home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: overflow encountered in divide
-name = tau
-dtype = float64
-unit = Gyr
-class = Quantity
-mean = -9.26834 Gyr
-std = 308.395 Gyr
-min = -4750.87 Gyr
-max = 2412.26 Gyr
-n_bad = 1
-length = 518
-None
-#+end_example
+: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning:
+:
+: overflow encountered in divide
+:
+: <QTable length=518>
+: name     mean         std         min          max     n_bad
+: ---- ------------ ----------- ------------ ----------- -----
+:  tau -9.26834 Gyr 308.395 Gyr -4750.87 Gyr 2412.26 Gyr     1
+: None
 
 #+begin_src python :results file value
 plt.close("all")
@@ -1157,8 +1169,8 @@ fig.show()
 #+end_src
 
 #+RESULTS:
-: Gtk-[1;32mMessage[0m: [34m21:55:54.040[0m: Failed to load module "canberra-gtk-module"
-: Gtk-[1;32mMessage[0m: [34m21:55:54.042[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m18:40:56.073[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m18:40:56.077[0m: Failed to load module "canberra-gtk-module"
 
 #+begin_src python :results value file
 
@@ -1227,7 +1239,7 @@ filename + ".png"
 
 filename = "figure/tau-A_zoom.png"
 
-plt.scatter(dc["tau"], dc["A_n"], c=np.log10(dc["StellarMass"]/dc["StellarMass"].unit), cmap = "viridis")
+plt.scatter(dc["tau"], dc["A_f"], c=np.log10(dc["StellarMass"]/dc["StellarMass"].unit), cmap = "viridis")
 
 plt.colorbar(label = "$\log(M_*/$" +"[{}])".format(dc["StellarMass"].unit.to_string("latex")))
 
@@ -1235,15 +1247,16 @@ plt.ylim(10**3, 10**11.7)
 plt.xlim(-27,27)
 
 def func(x, a):
-    return zeta * a*np.exp(12/x)/(np.exp(12/x)-1-12/x)
+    tt = 13.6
+    return zeta * a*np.exp(tt/x)/(np.exp(tt/x)-1-tt/x)
 
-x_values = np.linspace(plt.xlim()[0], plt.xlim()[1], len(dc["StellarMass"]))
+x_values = np.linspace(plt.xlim()[0], plt.xlim()[1], len(dc["StellarMass"])+1)
 #a_value = dc["StellarMass"].mean().value
 a_value = 3.57e9
 
-for i in range(0,5):
-    y_values = func(x_values, (a_value) * 0.2**i )
-    plt.plot(x_values, y_values, label = r"$M_* = $"+ "{:.2e}".format((a_value+5) * 0.2**i))
+for i in range(0,6):
+    y_values = func(x_values, (a_value) * 0.1**i )
+    plt.plot(x_values, y_values, label = r"$M_* = $"+ "{:.1e}".format((a_value+5) * 0.2**i))
 
 
 plt.title(r'Scatter plot of A vs $\tau$, zoom in')
@@ -1251,7 +1264,7 @@ plt.xlabel(r'$\tau$ '+ f'[{dc["tau"].unit:latex}]')
 plt.ylabel(r'$A_{del}$ '+ f'[{dc["A_f"].unit:latex}]')
 plt.yscale("log")
 
-plt.legend()
+plt.legend(loc = "upper left")
 
 plt.savefig(filename)
 plt.close()
@@ -1266,6 +1279,13 @@ filename
 
 
 *** Scatter of SFR_0 vs x_n
+#+begin_src python :results value
+
+dc["av_SFR_theor"].mean()
+#+end_src
+
+#+RESULTS:
+: <Quantity nan solMass / yr>
 
 #+begin_src python :results value file
 
@@ -1277,7 +1297,8 @@ def func(x, a):
     return  a * x**2/(np.exp(x) - x - 1)
 
 x_values = np.linspace(0.01, 10, 1000)
-a_value = dc["av_SFR_theor"].mean().value
+#a_value = dc["av_SFR_theor"].mean().value
+a_value = 0.342195
 
 for i in range(0,6):
     y_values = func(x_values, (a_value+5) * 0.2**i )
@@ -1288,7 +1309,7 @@ plt.xscale("log")
 plt.yscale("log")
 plt.ylim(0.5*10**-3,10)
 plt.xlabel(r"x")
-plt.ylabel(r"$SFR_UNGC$ [{}]".format(dc["SFR_UNGC"].unit.to_string("latex")))
+plt.ylabel(r"$SFR_{UNGC}$"+" [{}]".format(dc["SFR_UNGC"].unit.to_string("latex")))
 plt.tight_layout()
 plt.savefig("figure/SFR-x.png")
 plt.close()
@@ -1399,8 +1420,8 @@ fig.write_html("figure/correlation.html")
 #+end_src
 
 #+RESULTS:
-: Gtk-[1;32mMessage[0m: [34m21:56:00.288[0m: Failed to load module "canberra-gtk-module"
-: Gtk-[1;32mMessage[0m: [34m21:56:00.291[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m18:41:02.596[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m18:41:02.600[0m: Failed to load module "canberra-gtk-module"
 
 Pairplot with StellarMass, MHI, SFR_UNGC and av_SFR, M26
 
@@ -1414,17 +1435,6 @@ plt.savefig("figure/pairplot")
 plt.close("all")
 print(correlation_matrix[["StellarMass", "MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f"]].corr())
 #+end_src
-
-#+RESULTS:
-:               StellarMass       MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f
-: StellarMass      1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
-: MHI              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
-: SFR_UNGC         0.911743  0.975992  1.000000      0.911743  0.925263  0.975992 -0.126696  0.769262
-: av_SFR_theor     1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
-: M26              0.981763  0.911023  0.925263      0.981763  1.000000  0.911023 -0.076677  0.900513
-: M_g              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
-: tau             -0.069947 -0.095762 -0.126696     -0.069947 -0.076677 -0.095762  1.000000 -0.043090
-: A_f              0.932965  0.764614  0.769262      0.932965  0.900513  0.764614 -0.043090  1.000000
 
 #+begin_src python :exports none :results none
 #define a new dataframe
@@ -1463,14 +1473,14 @@ print(df_log[["MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "ta
 
 #+RESULTS:
 :                    MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f     tau_g
-: MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028400 -0.067180
-: SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.012002 -0.544876
-: av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.056170 -0.430786
-: M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.063593 -0.280310
-: M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028400 -0.067180
-: tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.065421  0.031146
-: A_f           0.028400  0.012002      0.056170  0.063593  0.028400  0.065421  1.000000  0.023520
-: tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.023520  1.000000
+: MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.025866 -0.067180
+: SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.009545 -0.544876
+: av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.052345 -0.430786
+: M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.060531 -0.280310
+: M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.025866 -0.067180
+: tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.067127  0.031146
+: A_f           0.025866  0.009545      0.052345  0.060531  0.025866  0.067127  1.000000  0.024187
+: tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.024187  1.000000
 
 #+begin_src python :results file value
 #heatmap of masses and luminosities

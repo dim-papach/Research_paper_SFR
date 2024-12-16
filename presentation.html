@@ -1,881 +1,1077 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<title>Investigations of the galaxies in the LCV</title>
-<meta name="author" content=""/>
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<style type="text/css">
-.underline { text-decoration: underline; }
-</style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css"/>
+<html lang="en"><head>
+<script src="presentation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="presentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.4.554">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/moon.css" id="theme"/>
-
-
-<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-<script>
-    if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = 'https://cdn.jsdelivr.net/npm/reveal.js/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
+  <meta name="author" content="Δημήτρης Παπαχριστόπουλος">
+  <title>Παρουσιαση πτυχιακης</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
     }
-</script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
 </head>
-<body>
-<div class="reveal">
-<div class="slides">
-<section id="sec-title-slide"><h1 class="title">Investigations of the galaxies in the LCV</h1><p class="subtitle">Finding the normalization constant of \(SFR_{del}\) and the relations between the parameters of the Galaxies</p>
-<p class="date">Created: 2024-05-22 Wed 03:46</p>
-</section>
-<section id="sec-table-of-contents"><div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#/slide-org4e1bacb">1. Abstract</a></li>
-<li><a href="#/slide-org6891e69">2. Τι είναι το LCV</a></li>
-<li><a href="#/slide-org9f7c9ba">3. Τα δεδομένα</a>
-<ul>
-<li><a href="#/slide-org138eb7d">3.1. Σταθερά μεγέθη</a></li>
-<li><a href="#/slide-org55b11bc">3.2. Έξτρα δεδομένα</a>
-<ul>
-<li><a href="#/slide-org5d91f2c">3.2.1. Μάζες</a></li>
-<li><a href="#/slide-org6eb27a8">3.2.2. Δείκτης χρώματος</a></li>
-<li><a href="#/slide-org14c8531">3.2.3. SFR</a></li>
-</ul>
-</li>
-<li><a href="#/slide-orgd2175f4">3.3. The gas depletion timescale &tau;<sub>g</sub></a></li>
-<li><a href="#/slide-org36f1aac">3.4. Limit flags και σφαλματα</a></li>
-</ul>
-</li>
-<li><a href="#/slide-orgd7693fb">4. Οι Γαλαξιες μας</a>
-<ul>
-<li><a href="#/slide-orgf2c68b1">4.1. Χαρτογράφηση</a></li>
-<li><a href="#/slide-orgcc37b74">4.2. Μορφολογια</a></li>
-</ul>
-</li>
-<li><a href="#/slide-orgff344f7">5. \(SFR_0 \geq 10^{-3}\ M_\odot/yr\) cut</a>
-<ul>
-<li><a href="#/slide-org6dcb5df">5.1. Αλλαγές στην Μορφολογία</a></li>
-</ul>
-</li>
-<li><a href="#/slide-org92214b7">6. The Delayed-&tau; model</a>
-<ul>
-<li><a href="#/slide-org05ae5d4">6.1. Υπολογισμός της \(A_{del}\)</a>
-<ul>
-<li><a href="#/slide-org2006363">6.1.1. Συγκριση μεθοδων</a></li>
-</ul>
-</li>
-<li><a href="#/slide-orgfda056b">6.2. Υπολογισμος \(\tau\)</a></li>
-</ul>
-</li>
-<li><a href="#/slide-org0621279">7. Βρισκοντας τις συσχετισεις</a></li>
-<li><a href="#/slide-org6951395">8. Πρόβλημα με την προσεγγιση</a>
-<ul>
-<li><a href="#/slide-orga16c8bf">8.1. Πιθανή λύση</a></li>
-</ul>
-</li>
-<li><a href="#/slide-orge597e88">9. Σταθερό χ</a></li>
-</ul>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Παρουσιαση πτυχιακης</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Δημήτρης Παπαχριστόπουλος 
 </div>
 </div>
-</section>
-
-
-<section>
-<section id="slide-org4e1bacb">
-<h2 id="org4e1bacb"><span class="section-number-2">1.</span> Abstract</h2>
-<div class="abstract" id="org2d3bd88">
-<p>
-The paper investigates the properties of galaxies in the Local Cosmological Volume (LCV), using the Catalogue of Neighboring Galaxies(, ) and its updated version from the &ldquo;Catalog &amp; Atlas of the LV galaxies&rdquo; database(, a).
-</p>
-
-<p>
-The paper aims to understand the distribution and correlation of these properties in the sample of galaxies in the LCV, and how they relate to current astrophysical theories (delayed-\(\tau\) model).
-</p>
-
 </div>
 
-</section>
 </section>
 <section>
-<section id="slide-org6891e69">
-<h2 id="org6891e69"><span class="section-number-2">2.</span> Τι είναι το LCV</h2>
+<section id="γαλαξιες" class="title-slide slide level1 center">
+<h1>Γαλαξιες</h1>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>\(D \leq 10 Mpc\)</li>
-<li><p>
-Ακτινικές ταχύτητες \(V_{lg} \le 500 \, km \cdot s^{-1}\)
-</p>
-
-<p>
-Κρατάμε και γαλαξίες που πλησιάζουν τα 11 Mpc, κρατώντας και το αντίστοιχο σφάλμα
-</p></li>
-
-</ul>
-
-
-</section>
-</section>
-<section>
-<section id="slide-org9f7c9ba">
-<h2 id="org9f7c9ba"><span class="section-number-2">3.</span> Τα δεδομένα</h2>
-<ol>
-<li>Catalog of Nearby Galaxies</li>
-<li>Global Parameters of the Nearby Galaxies</li>
-<li>List of Apparent Magnitudes</li>
-<li>List of Heliocentric Velocities</li>
-<li>List of Inner Kinematics</li>
-<li>List of Distances</li>
-<li>List of the nearby galaxies with measured SFR</li>
-<li>List of Bibliographic References</li>
-
-</ol>
-
-
-<p>
-Ο καταλογος αποτελείται από 1449 γαλαξίες
-</p>
-
-</section>
-<section id="slide-org138eb7d">
-<h3 id="org138eb7d"><span class="section-number-3">3.1.</span> Σταθερά μεγέθη</h3>
-<p>
-Θα πρέπει να χρησιμοποιήσουμε κάποιες σταθερές τιμές για την ανάλυσή μας.
-</p>
-
-<ol>
-<li>Σύμφωνα με τα (, a) και (, a) η τιμή \(t_{sf} = 12\, Gyr\) αποτελεί έναν ισχυρό και συνεπή περιορισμό της εξέλιξης των γαλαξιών, σε πολλές μελέτες. Ενώ άλλοι ερευνητές υιοθετούν ένα t<sub>sf</sub>= 13.6 Gyr(, a), εμείς χρησιμοποιούμε την υπόθεση των 12 Gyr ακολουθώντας το πλαίσιο του SP14</li>
-
-</ol>
-
-</section>
-<section id="slide-org138eb7d-split">
-<ol>
-<li>Το \(\zeta =\) απώλεια μάζας μέσω της αστρικής εξέλιξης. Σύμφωνα με τη θεωρία IGIMF οι γαλαξίες του LCV αναμένεται να έχουν 1&lt; \(\zeta\) &lt;1.3, οπότε υιοθετώντας \(\zeta =1.3\) εργαζόμαστε συντηρητικά.</li>
-
-<li><p>
-Κύρια ακολουθία με z = 5
-</p>
-
-<p>
-\[\log(SFR) = \alpha \log(M_*)+\beta\]
-</p></li>
-
-</ol>
-
-</section>
-<section id="slide-org55b11bc">
-<h3 id="org55b11bc"><span class="section-number-3">3.2.</span> Έξτρα δεδομένα</h3>
-<div class="outline-text-3" id="text-3-2">
-</div>
-</section>
-<section id="slide-org5d91f2c">
-<h4 id="org5d91f2c"><span class="section-number-4">3.2.1.</span> Μάζες</h4>
+<li>Οι γαλαξίες είναι τεράστιες δομές που περιέχουν:
 <ul>
-<li>Συνολική μάζα του αερίου
-\(M_g=1.33\cdot MHI\)</li>
-<li>Αστρικές μάζες
-\(M_* = 0.6 \cdot K_{Lum}\, [M_\odot/Lum]\)</li>
-<li>Συνολική βαρυονική Μάζα
-\(M_t = M_g + M_*\)</li>
-
-</ul>
-
-</section>
-<section id="slide-org6eb27a8">
-<h4 id="org6eb27a8"><span class="section-number-4">3.2.2.</span> Δείκτης χρώματος</h4>
-
-<div id="org1116a6c" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/color_index.png" alt="color_index.png" />
-</p>
-</div>
-</section>
-<section id="slide-org14c8531">
-<h4 id="org14c8531"><span class="section-number-4">3.2.3.</span> SFR</h4>
-<p>
-\[
-    SFR_o=\frac{SFR_{FUV}+SFR_{Ha}}{2}
-\]
-</p>
-
-
-<div id="orgd421a77" class="figure">
-<p><img src="file:///home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 22-46-40.png" alt="Screenshot from 2024-05-21 22-46-40.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-org14c8531-split">
-
-<div id="org2202520" class="figure">
-<p><img src="./figure/SFR_FUV-Ha.png" alt="SFR_FUV-Ha.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-org14c8531-split">
-
-
-<div id="org1611571" class="figure">
-<p><img src="./figure/log_SFR_FUV_Ha.png" alt="log_SFR_FUV_Ha.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-org14c8531-split">
-<ol class="org-ol">
-<li><a id="orgdb340fe"></a>\(\overline{SFR}\)<br />
-<p>
-\[
-    \overline{SFR}=\frac{\zeta M_*}{t_{sf}}
-\]
-</p>
-<ul>
-<li>Το \(\zeta =\) απώλεια μάζας μέσω της αστρικής εξέλιξης \(\approx 1.3\).</li>
-<li><p>
-\(t_{sf}=\) χρόνος αστρογένεσης \(\approx 12\ Gyr\)
-</p>
-
-</section>
-<section id="slide-orgd792ea6-split"></li>
-
-</ul>
-
-
-<div id="org5b9bbb9" class="figure">
-<p><img src="figure/SFR_ratio_hist.png" alt="SFR_ratio_hist.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orgdb340fe-split">
-
-
-<div id="org631dcd9" class="figure">
-<p><img src="figure/ratio_vs_color.png" alt="ratio_vs_color.png" />
-</p>
-</div>
-</li>
-</ol>
-
-
-</section>
-<section id="slide-orgd2175f4">
-<h3 id="orgd2175f4"><span class="section-number-3">3.3.</span> The gas depletion timescale &tau;<sub>g</sub></h3>
-<p>
-&ldquo;The gas depletion timescale τg measures the time taken by a galaxy to exhaust its gas content Mg given the current SFR (Pflamm-Altenburg &amp; Kroupa 2009).
-</p>
-
-<p>
-\[
-\tau_g = \frac{M_g}{\dot{M_*}}
-\]
-</p>
-
-<p>
-where Mg is the neutral gas mass at the desired time and \(\dot{M_*}\) is the SFR then.&ldquo; (, a)
-</p>
-
-
-</section>
-<section id="slide-orgd2175f4-split">
-
-
-<div id="orgc090eeb" class="figure">
-<p><img src="figure/tau_g-hist.png" alt="tau_g-hist.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-org36f1aac">
-<h3 id="org36f1aac"><span class="section-number-3">3.4.</span> Limit flags και σφαλματα</h3>
-<p>
-Ορισμένες από αυτές τις τιμές περιέχουν σημάνσεις ορίου, τις οποίες θα αποκρύψουμε για την παρούσα ανάλυσή μας. Ωστόσο, οι τιμές αυτές θα εμφανιστούν στα διαγράμματα και στη συνέχεια θα συγκριθούν με τις θεωρητικές τιμές.
-</p>
-
-<p>
-Οι σημάνσεις οριακών τιμών τοποθετούνται σε τιμές όπου η αβεβαιότητα της τιμής είναι υψηλή, συνήθως λόγω της ακρίβειας της μέτρησης (πολύ υψηλή ή χαμηλή τιμή).
-</p>
-
-</section>
-<section id="slide-org36f1aac-split">
-<p>
-Μπορούμε να υποθέσουμε ότι όλες μας οι μετρήσεις, έχουν το ίδιο σφάλμα, επομένως είναι και ισοβαρής
-</p>
-
-
-</section>
-</section>
-<section>
-<section id="slide-orgd7693fb">
-<h2 id="orgd7693fb"><span class="section-number-2">4.</span> Οι Γαλαξιες μας</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-</section>
-<section id="slide-orgf2c68b1">
-<h3 id="orgf2c68b1"><span class="section-number-3">4.1.</span> Χαρτογράφηση</h3>
-
-<div id="org8683c14" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/mapping.png" alt="mapping.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orgcc37b74">
-<h3 id="orgcc37b74"><span class="section-number-3">4.2.</span> Μορφολογια</h3>
-
-<div id="orgb57a3b8" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/Types.png" alt="Types.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orgcc37b74-split">
-
-<div id="org97264d8" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/Tdw1.png" alt="Tdw1.png" />
-</p>
-</div>
-</section>
-<section id="slide-orgcc37b74-split">
-
-<div id="org2f9ccde" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/Tdw2.png" alt="Tdw2.png" />
-</p>
-</div>
-
-</section>
-</section>
-<section>
-<section id="slide-orgff344f7">
-<h2 id="orgff344f7"><span class="section-number-2">5.</span> \(SFR_0 \geq 10^{-3}\ M_\odot/yr\) cut</h2>
-</section>
-<section id="slide-orgff344f7-split">
-<ul>
-<li><b><b>Επίδραση top-Light gwIMF</b></b>:
-<ul>
-<li>Οι τιμές του SFRo μπορεί να είναι ανακριβείς λόγω της αρχικής συνάρτησης μάζας του γαλαξία (gwIMF).</li>
-<li>Αυτό οδηγεί σε SFRo,Hα &lt; SFRo,FUV.</li>
-<li>Παρατηρείται σε νάνους γαλαξίες όπως ο DDO 154.</li>
-<li>Η τάση επιβεβαιώνεται σε πιο μαζικούς γαλαξίες, υποδηλώνοντας παρόμοια αποτελεσματικότητα αστρογένεσης.</li>
-
+<li>Αστέρια</li>
+<li>Αέρια και σκόνη που συμβάλλουν στη δημιουργία νέων άστρων.</li>
+<li>Αστρικά και πλανητικά συστήματα</li>
+<li>Απομεινάρια άστρων (λευκοί νάνοι, αστέρες νετρονίων και μαύρες τρύπες)</li>
 </ul></li>
-
 </ul>
-
-</section>
-<section id="slide-orgff344f7-split">
-<ul>
-<li><b><b>Στοχαστικός σχηματισμός αστέρων</b></b>:
-<ul>
-<li>Ο σχηματισμός αστέρων περιγράφεται ως στοχαστικός.</li>
-<li>Οι χαμηλοί SFRs στους νάνους γαλαξίες μπορεί να προκαλέσουν υποδειγματοληψία του gwIMF.</li>
-<li><p>
-Διαχρονικές μεταβολές των SFRs πιθανόν στους νάνους γαλαξίες.
-</p>
-</section>
-<section id="slide-orgdbb0911-split"></li>
-
-</ul></li>
-<li><b><b>Στοχαστικός σχηματισμός αστέρων</b></b>:
-<ul>
-<li>Ο σχηματισμός αστέρων στους γαλαξίες μπορεί να συμβεί με τυχαίο, απρόβλεπτο τρόπο αντί να ακολουθεί μια ομαλή, συνεχή διαδικασία.</li>
-<li>Αυτή η τυχαιότητα μπορεί να οδηγήσει σε σημαντικές διακυμάνσεις στον αριθμό και στους τύπους των αστέρων που σχηματίζονται με την πάροδο του χρόνου και σε διάφορες περιοχές ενός γαλαξία.</li>
-
-</ul></li>
-
-</ul>
-
-</section>
-<section id="slide-orgff344f7-split">
-<ul>
-<li>Υποδειγματοληψία του gwIMF:
-<ul>
-<li>Σε γαλαξίες με χαμηλούς ρυθμούς σχηματισμού αστέρων (SFRs), η τυχαία φύση του σχηματισμού αστέρων μπορεί να οδηγήσει σε ελλιπή ή μεροληπτική δειγματοληψία της (gwIMF).</li>
-<li>Αυτό σημαίνει ότι δεν σχηματίζονται όλοι οι τύποι αστέρων, ιδιαίτερα οι μαζικοί, σε αναλογία με τον αναμενόμενο αριθμό τους με βάση την gwIMF, οδηγώντας σε αποκλίσεις στις μετρήσεις του SFR.</li>
-
-</ul></li>
-
-</ul>
-
-</section>
-<section id="slide-orgff344f7-split">
-<ul>
-<li><b><b>Μεροληψίες μέτρησης</b></b>:
-<ul>
-<li>Οι ροές Hα και UV μπορεί να επηρεάζονται από:
-<ul>
-<li>Διαρροή φωτονίων</li>
-<li>Σκίαση λόγω σκόνης</li>
-<li>Ερυθροποίηση</li>
-
-</ul></li>
-<li>Οι συστηματικές διακυμάνσεις στο gwIMF διορθώνονται για αυτές τις μεροληψίες στην έρευνα.</li>
-
-</ul></li>
-
-</ul>
-
-</section>
-<section id="slide-orgff344f7-split">
-<ul>
-<li><b><b>Ανενεργοί γαλαξίες - δορυφόροι</b></b>:
-<ul>
-<li>Πολλοί γαλαξίες χαμηλής μάζας είναι δορυφόροι που σταμάτησαν να σχηματίζουν αστέρια πριν από δισεκατομμύρια χρόνια.</li>
-<li>Χάνουν αέριο όταν βρίσκονται κοντά σε μεγάλους γαλαξίες.</li>
-<li>Οι νάνοι γαλαξίες μακριά από τους μεγάλους συμπεριφέρονται σαν δισκοειδείς γαλαξίες, διατηρώντας τον σχηματισμό άστρων.</li>
-
-</ul></li>
-
-</ul>
-
-
-
-</section>
-<section id="slide-org6dcb5df">
-<h3 id="org6dcb5df"><span class="section-number-3">5.1.</span> Αλλαγές στην Μορφολογία</h3>
-
-<div id="orgcf25c83" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/TType_cut.png" alt="TType_cut.png" />
-</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/1308px-NGC_4414_(NASA-med).jpg"></p>
+<figcaption>NGC 4414</figcaption>
+</figure>
 </div>
-
-</section>
-<section id="slide-org6dcb5df-split">
-
-
-<div id="org02bc63e" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/Tdw1_cut.png" alt="Tdw1_cut.png" />
-</p>
+</div><p><strong>Κρατιούνται ενωμένα από τη δύναμη της βαρύτητας.</strong></p>
 </div>
-
 </section>
-<section id="slide-org6dcb5df-split">
-
-
-<div id="orge8d6a61" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/Tdw2_cut.png" alt="Tdw2_cut.png" />
-</p>
-</div>
-
-</section>
-</section>
-<section>
-<section id="slide-org92214b7">
-<h2 id="org92214b7"><span class="section-number-2">6.</span> The Delayed-&tau; model</h2>
+<section id="μορφολογια" class="slide level2 center">
+<h2>Μορφολογια</h2>
+<div class="columns">
+<div class="column">
 <ul>
-<li>Το delayed-\(\tau\) model περιγράφει την ιστορία σχηματισμού αστέρων (SFH) ενός γαλαξία, υποθέτοντας ότι οι ρυθμοί σχηματισμού αστέρων (SFRs) συνήθως αυξάνονται στην αρχική φάση εξέλιξης του γαλαξία και βαθμιαία μειώνονται.</li>
-
-<li><b>Speagle et al. (2014):</b> Το SFH γαλαξιών της κύρια ακολουθίας, μπορεί να παραμετροποιηθεί με ακρίβεια βάση αυτού του μοντέλου</li>
-
+<li><strong>Σπειροειδείς</strong></li>
+<li><strong>Ελλειπτικοί</strong></li>
+<li><strong>Ακανόνιστοι</strong></li>
 </ul>
-
+</div><div class="column">
+<ul>
+<li><strong>Νάνοι γαλαξίες:</strong> <span class="math inline">\(M_*\lessapprox 10^7\ M_\odot\)</span></li>
+</ul>
+</div><div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/1280px-Hubble_-_de_Vaucouleurs_Galaxy_Morphology_Diagram.png" width="600"></p>
+<figcaption>By Antonio Ciccolella / M. De Leo</figcaption>
+</figure>
+</div>
+</div>
+</section></section>
+<section id="αστρογενεση" class="title-slide slide level1 center">
+<h1>Αστρογενεση</h1>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Η αστρογένεση</strong> είναι η διαδικασία κατά την οποία πυκνές περιοχές εντός μοριακών νεφών καταρρέουν</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/evolution.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Ο ρυθμός αστρογένεσης</strong> (SFR = Star Formation Rate) ορίζεται ως το σύνολο της αέριας μάζας ενός γαλαξία που μετατρέπεται σε άστρα σε ένα συγκεκριμένο χρονικό διάστημα.</p>
+<p>Συνήθως εκφράζεται σε ηλιακές μάζες ανά έτος (<span class="math inline">\(M_\odot\cdot yr^{-1}\)</span>)</p>
+</div>
+</div>
 </section>
-<section id="slide-org92214b7-split">
+
+<section id="εμμεσος-υπολογισμος-sfr" class="title-slide slide level1 center">
+<h1>Εμμεσος υπολογισμος SFR</h1>
 <div>
-\begin{equation}
-        \label{eq:SFR} SFR_{0,del}=\frac{A_{del}xe^{-x}}{\tau},\text{ where } x=\frac{tsf}{\tau}
-\end{equation}
-
-</div>
-
-
-<div>
-\begin{equation}
-        \label{eq:av_SFR-x} \overline{SFRdel}=\frac{Adel}{tsf}[1-(1+x)e^{-x}]
-\end{equation}
-
-</div>
-
-<div>
-\begin{equation}\label{eq:av_SFR M*}
-        \overline{SFR}=\frac{\zeta M_*}{tsf}
-\end{equation}
-
-</div>
-
-</section>
-<section id="slide-org05ae5d4">
-<h3 id="org05ae5d4"><span class="section-number-3">6.1.</span> Υπολογισμός της \(A_{del}\)</h3>
-<p>
-Σύστημα 2 εξισώσεων και 2 μεταβλητών (\(A_{del},\ \tau\)), κρατώντας το \(t_{sf}\) σταθερό.
-</p>
-
-<p>
-Λύση με υπολογιστικές μεθόδους
-</p>
-
 <ul>
-<li>Newton Raphson:\(\frac{\overline{SFRdel}}{SFR0,del} = \frac{e^x-x-1}{x^2}, \text{where } x =\frac{t_{sf}}{\tau}\)</li>
-
-<li>Python fsolve: Ψάχνει λύσεις και για τις δύο εξισώσεις ταυτόχρονα.</li>
-
+<li class="fragment"><p><strong>Ροή στο Hα</strong></p></li>
+<li class="fragment"><p><strong>Ροή στο μακρινό υπεριώδες (FUV)</strong></p></li>
+<li class="fragment"><p><strong>Ροή στο υπέρυθρο (IR)</strong></p></li>
+<li class="fragment"><p>Ραδιοφωνική συνεχής εκπομπή</p></li>
+<li class="fragment"><p>Εκπομπή ακτίνων Χ</p></li>
 </ul>
-
-</section>
-<section id="slide-org2006363">
-<h4 id="org2006363"><span class="section-number-4">6.1.1.</span> Συγκριση μεθοδων</h4>
-<div class="outline-text-4" id="text-6-1-1">
 </div>
-<ol class="org-ol">
-<li><a id="org3a8523e"></a>X<br />
-<!-- This HTML table template is generated by emacs 29.3 -->
-<table border="1">
-  <tr>
-    <td align="left" valign="top">
-      name&nbsp;
-    </td>
-    <td align="left" valign="top">
-      mean&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      &nbsp;std&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      &nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      &nbsp;max&nbsp;&nbsp;&nbsp;
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-      &nbsp;x_f&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      1.5824&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      2.94119<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      -29.6974<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      9.79911<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-      &nbsp;x_n&nbsp;
-    </td>
-    <td align="left" valign="top">
-      1.66244
-    </td>
-    <td align="left" valign="top">
-      2.91609
-    </td>
-    <td align="left" valign="top">
-      -29.6974
-    </td>
-    <td align="left" valign="top">
-      11.9164
-    </td>
-  </tr>
+<aside class="notes">
+<p>Εκτιμάται με διάφορες φωτομετρικές ή φασματικές μεθόδους, βάση της λαμπρότητας τουλάχιστον ενός φάσματος φωτός ή την ένταση μιας φασματικής γραμμής. Οι διαφορετικές λαμπρότητες/εντάσεις έχουν διαφορετικές πηγές οι οποίες μπορούν να μας προσφέρουν διαφορετικές πληροφορίες για τους μηχανισμούς εκπομπής, αλλά και για τις πηγές ακτινοβολίας του εκάστοτε γαλαξία.</p>
+<ul>
+<li><p><em>Εκπομπή Hα</em> : Παρέχει πληροφορίες για τον αριθμό των ιονίζοντων φωτονίων, με την υπόθεση ότι όλα τα ιοντίζοντα φωτόνια χρησιμοποιούνται πλήρως και επανεκπέμπονται. Αυτά τα φωτόνια προέρχονται κυρίως από θερμά άστρα μεγάλης μάζας, στα αρχικά στάδια ζωής τους (νέα άστρα τύπου Ο, ηλικίας ~10 Myr). Η παρουσία σκόνης μπορεί να επηρεάσει σημαντικά τις παρατηρήσεις. Ανήκει στο οπτικό φάσμα (wavelength: ~6563 Å).</p></li>
+<li><p><em>Ροή στο μακρινό υπεριώδες (FUV)</em>: Εκπέμπεται κυρίως από νεαρά (θερμά) άστρα, τα οποία είναι παλαιότερα ή λιγότερο μαζικά άστρα (άστρα τύπου Β, ηλικίας ~100 Myr), σε σχέση με αυτά που είναι υπεύθυνα για την εκπομπή Hα. Επίσης η παρουσία σκόνης μπορεί να επηρεάσει σημαντικά τις παρατηρήσεις. υπεριώδες φάσμα (wavelength: ~1300–2000 Å).</p></li>
+<li><p><em>Ροή στο υπέρυθρο (IR)</em>: Υποθέτει ότι ένα σταθερό ποσοστό της εκπεμπόμενης αστρικής ακτινοβολίας απορροφάται από τη σκόνη, η οποία στη συνέχεια την επανεκπέμπεται σε υπέρυθρα μήκη κύματος, ενισχύοντας τη συνολική υπέρυθρη ακτινοβολία. Ανήκει στο υπέρυθρο φάσμα (wavelength: ~8–1000 μm).</p></li>
+<li><p><em>Ραδιοφωνική συνεχής εκπομπή</em>: Παρουσιάζει υψηλή συσχέτιση με την υπέρυθρη ακτινοβολία (IR). Η προέλευση αυτής της εκπομπής είναι πολύπλοκη, καθώς οφείλεται στη σύγχροτρον ακτινοβολία από σχετικιστικά ηλεκτρόνια και τη θερμική ακτινοβολία Bremsstrahlung από θερμό αέριο. Ανήκει στο ραδιοφωνικό φάσμα (wavelength: ~cm to m range).</p></li>
+<li><p><em>Εκπομπή ακτίνων Χ</em>: Σε γαλαξίες με έντονη αστρογένεση, οι ακτίνες Χ προέρχονται κυρίως από διπλά συστήματα υψηλής μάζας (Αστέρας νετρονίων ή Μελανή Οπή με μαζικό συνοδό αστέρα) και θερμό αέριο από εκρήξεις υπερκαινοφανών, με τη φωτεινότητα τους να συσχετίζεται στατιστικά με τον ρυθμό αστρογένεσης (SFR) έως το redshift <span class="math inline">\(z~4\)</span>. Ένα σημαντικό πλεονέκτημα των ακτίνων Χ είναι ότι δεν επηρεάζονται από τη σκόνη, επιτρέποντας ακριβείς παρατηρήσεις σε υψηλά redshifts. Ανήκει στο ακτίνων Χ φάσμα (wavelength: ~0.01–10 nm, ή ενέργεια: ~0.1–10 keV).</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+
+<section>
+<section id="νομος-του-hubble" class="title-slide slide level1 center">
+<h1>Νομος του Hubble</h1>
+<ul>
+<li><strong>Νόμος του Hubble</strong>:
+<ul>
+<li>Οι γαλαξίες <strong>απομακρύνονται</strong> μεταξύ τους καθώς το Σύμπαν διαστέλλεται.</li>
+<li><span class="math inline">\(V = H_0\times d\)</span>, όπου <span class="math inline">\(H_0 \approx 69.8 \text{ km/s/Mpc}\)</span> είναι η σταθερά του Hubble.</li>
+</ul></li>
+<li><strong>Ερυθρομετατόπιση (Redshift)</strong>:
+<ul>
+<li>Το φως από απομακρυνόμενους γαλαξίες:
+<ul>
+<li>εμφανίζεται μετατοπισμένο προς το κόκκινο μέρος του φάσματος.</li>
+<li>χρειάζεται περισσότερο χρόνο για να φτάσει σε εμάς (βλέπουμε στο παρελθόν).</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+
+<img data-src="figure/Age_by_redshift.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section id="lilly-madau-plot" class="title-slide slide level1 center">
+<h1>Lilly-Madau Plot</h1>
+
+<img data-src="./figure/lily-madau.png" class="r-stretch quarto-figure-center"><p class="caption"><span class="citation" data-cites="madau2014">Madau and Dickinson (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span></p></section>
+
+<section id="delayed-τ-model" class="title-slide slide level1 center">
+<h1>Delayed-<span class="math inline">\(τ\)</span> model</h1>
+<p><span class="math display">\[
+SFR_{del}=A_{del}\frac{t_{sf}}{\tau^2}e^{-\frac{t_{sf}}{\tau}}\ \left[\frac{M_\odot}{yr} \right],\ t_{sf} = T_{\text{universe}} - t_{\text{start}}
+\]</span></p>
+
+<img data-src="figure/Screenshot%20from%202024-12-08%2000-12-51.png" class="quarto-figure quarto-figure-center r-stretch" width="600"><div class="fragment fade-in">
+<p><span class="math display">\[\int_0^{t_{sf}}\text{SFR(t)} \text{dt} = Μ_*\]</span></p>
+</div>
+<aside class="notes">
+<ul>
+<li><p><strong>Το delayed-</strong><span class="math inline">\(\tau\)</span> model περιγράφει την ιστορία σχηματισμού αστέρων (SFH) ενός γαλαξία, υποθέτοντας ότι οι ρυθμοί σχηματισμού αστέρων (SFRs) συνήθως αυξάνονται στην αρχική φάση εξέλιξης του γαλαξία και βαθμιαία μειώνονται.</p></li>
+<li><p>Κρουπα χρησιμοποίησε δεδομένα για στο sfr kai M_* και υπολόγισε τις παραμέτρους του μοντέλου, για να δείξει την ασυμφωνία του με το lilly madau</p></li>
+<li><p><strong>Speagle et al.&nbsp;(2014):</strong><span class="citation" data-cites="speagle2014">(<a href="#/references" role="doc-biblioref" onclick="">Speagle et al. 2014</a>)</span> Το SFH γαλαξιών της κύρια ακολουθίας, μπορεί να παραμετροποιηθεί με ακρίβεια βάση αυτού του μοντέλου</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+
+<section id="δεδομενα" class="title-slide slide level1 center">
+<h1>Δεδομενα</h1>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Γαλαξίες του Local Cosmological Volume</p>
+<ul>
+<li><span class="math inline">\(D \leq 10\)</span> Mpc</li>
+<li>Redshift: <span class="math inline">\(z = 0 \rightarrow t_{sf} = 13.8-t_{\text{start}}\)</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="fragment fade-in">
+<ul>
+<li>Για αυτούς τους γαλαξίες έχουμε:
+<ul>
+<li>SFR από Hα, FUV και IR</li>
+<li>Αστρικές μάζες</li>
+</ul></li>
+</ul>
+</div>
+</div><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Table</th>
+<th style="text-align: right;">Number of galaxies</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">UNGC <span class="citation" data-cites="karachentsev2013">(<a href="#/references" role="doc-biblioref" onclick="">Karachentsev, Makarov, and Kaisina 2013</a>)</span></td>
+<td style="text-align: right;">1321</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HECATE <span class="citation" data-cites="kovlakas2021">(<a href="#/references" role="doc-biblioref" onclick="">Kovlakas et al. 2021</a>)</span></td>
+<td style="text-align: right;">2901</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Join</td>
+<td style="text-align: right;"><strong>3934</strong></td>
+</tr>
+</tbody>
 </table>
-
-</section>
-<section id="slide-org3a8523e-split">
-
-<div id="orgeca692b" class="figure">
-<p><img src="figure/x-hist.png" alt="x-hist.png" />
-</p>
 </div>
-
 </section>
-<section id="slide-org3a8523e-split">
 
-
-<div id="org5c15fe7" class="figure">
-<p><img src="figure/x-scatter.png" alt="x-scatter.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-org3a8523e-split">
-</li>
-
-<li><a id="orgc94cf09"></a>\(A_{del}\)<br />
-<!-- This HTML table template is generated by emacs 29.3 -->
-<table border="1">
-  <tr>
-    <td align="left" valign="top">
-      name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      mean&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      &nbsp;std&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      &nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-    <td align="left" valign="top">
-      &nbsp;max&nbsp;&nbsp;&nbsp;<br />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    </td>
-  </tr>
-  <tr>
-    <td align="left" valign="top">
-      A_n/solMass
-    </td>
-    <td align="left" valign="top">
-      5.268e+10
-    </td>
-    <td align="left" valign="top">
-      5.203e+11
-    </td>
-    <td align="left" valign="top">
-      1.61e-08
-    </td>
-    <td align="left" valign="top">
-      8.6e+12
-    </td>
-  </tr>
-</table>
-
-
-</section>
-<section id="slide-orgc94cf09-split">
-
-
-<div id="org1750d2e" class="figure">
-<p><img src="figure/A_n-hist.png" alt="A_n-hist.png" />
-</p>
-</div>
-
-
-</section>
-<section id="slide-orgc94cf09-split">
-
-
-<div id="org5ef5882" class="figure">
-<p><img src="figure/x-A.png" alt="x-A.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orgc94cf09-split">
-
-
-<div id="orgd900a38" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/SFR-x.png" alt="SFR-x.png" />
-</p>
-</div>
-</li>
-</ol>
-
-</section>
-<section id="slide-orgfda056b">
-<h3 id="orgfda056b"><span class="section-number-3">6.2.</span> Υπολογισμος \(\tau\)</h3>
-<p>
-\(\tau = \frac{t_{sf}}{x} = \frac{12}{x}\text{Gyr}\)
-</p>
-
-<pre class="example">
-mean = 6.29 Gyr
-std = 77.37 Gyr
-min = -1036.91 Gyr
-max = 988.964 Gyr
-</pre>
-
-
-
-</section>
-<section id="slide-orgfda056b-split">
-
-<div id="org6b01629" class="figure">
-<p><img src="figure/tau-hist.png" alt="tau-hist.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orgfda056b-split">
-
-<div id="orgad0ee6b" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/tau-A.png" alt="tau-A.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orgfda056b-split">
-
-<div id="orge39a52a" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/tau-A_zoom.png" alt="tau-A_zoom.png" />
-</p>
-</div>
-
-</section>
-</section>
 <section>
-<section id="slide-org0621279">
-<h2 id="org0621279"><span class="section-number-2">7.</span> Βρισκοντας τις συσχετισεις</h2>
-<p>
-<a href="file:///home/dp/Documents/Research_paper_SFR/figure/correlation.html">file:///home/dp/Documents/Research_paper_SFR/figure/correlation.html</a>
-</p>
-
-
-</section>
-<section id="slide-org0621279-split">
-
-<div id="org8fc6d27" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/heatmap_mass_sfr_a_t.png" alt="heatmap_mass_sfr_a_t.png" />
-</p>
-</div>
-</section>
-<section id="slide-org0621279-split">
-
-</section>
-</section>
-<section>
-<section id="slide-org6951395">
-<h2 id="org6951395"><span class="section-number-2">8.</span> Πρόβλημα με την προσεγγιση</h2>
-<p>
-Περιμένουμε:
-</p>
+<section id="πρωτη-προσεγγιση" class="title-slide slide level1 center">
+<h1>Πρωτη προσεγγιση</h1>
 <ul>
-<li>\(3.5<\tau<4.5\)</li>
-<li>\(2.7 < x < 3.4\) και</li>
-<li>\(1.5<\frac{\overline{SFR}}{SFR_0}<2.3\)</li>
-
-</ul>
-
-</section>
-<section id="slide-org6951395-split">
-
-<h2><span class="section-number-2">8</span> Πρόβλημα με την προσεγγιση</h2>
+<li>Σύστημα 2 εξισώσεων και 2 μεταβλητών (<span class="math inline">\(A_{del},\ \tau\)</span>), κρατώντας το <span class="math inline">\(t_{sf} = 13.6\)</span> Gyr σταθερό.</li>
+<li>Λύση με υπολογιστικές μεθόδους
 <ul>
-<li>Διώρθωση θεωρώντας \(t_{sf} = 13.6\) Gyr
-<ul>
-<li><a href="https://doi.org/10.1093/mnras/stad2032">&ldquo;JWST early Universe observations and ΛCDM cosmology&rdquo;</a> \(\rightarrow \ T_0=26.7\) Gyr</li>
-
+<li>Python fsolve</li>
 </ul></li>
-
+<li>Θα γίνει για <em>όλους</em> τους γαλαξίες του τελικού καταλόγου.</li>
 </ul>
+<aside class="notes">
+<p>Η συνάρτηση fsolve της βιβλιοθήκης SciPy χρησιμοποιεί τη μέθοδο του Powell, η οποία συνδυάζει τις μεθόδους Newton-Raphson και κλίσης, για την εύρεση των ριζών ενός συστήματος μη γραμμικών εξισώσεων</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="slide-org6951395-split">
-
-<h2><span class="section-number-2">8</span> Πρόβλημα με την προσεγγιση</h2>
+<section id="υπολογισμος-tau" class="slide level2 center">
+<h2>Υπολογισμος <span class="math inline">\(\tau\)</span></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figure/tau-hist.png"></p>
+</div><div class="column" style="width:50%;">
+<div>
 <ul>
-<li>Ενώ υπάρχει βιβλιογραφία που υποστηρίζει την προσέγγιση \(t_{sf} = 12\, \text{Gyr}\), αποκλείει την περίπτωση κάποιοι γαλαξίες να έχουν διαφορετικό \(t_{sf}\)
+<li class="fragment"><strong>Προβλήματα Μεθόδου:</strong>
 <ul>
-<li>Μια μικρή μεταβολή του \(t_{sf}\) μπορεί να δώσει αρκετά λάθος προσέγγιση για το \(\tau\), λόγω της αστάθειας των συναρτήσεων του \(SFR_{del},\, \overline{SFR}\)</li>
-
+<li class="fragment">Επιτρέπει την ύπαρξη αρνητικών <span class="math inline">\(\tau\)</span></li>
+<li class="fragment"><span class="math inline">\(t_{sf} = 13.6\, \text{Gyr}\)</span>, αποκλείει την περίπτωση κάποιοι γαλαξίες να έχουν διαφορετικό <span class="math inline">\(t_{sf}\)</span></li>
 </ul></li>
-
 </ul>
-
-</section>
-<section id="slide-orga16c8bf">
-<h3 id="orga16c8bf"><span class="section-number-3">8.1.</span> Πιθανή λύση</h3>
-
-<div id="orgfe7e3fc" class="figure">
-<p><img src="file:///home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 21-57-11.png" alt="Screenshot from 2024-05-21 21-57-11.png" />
-</p>
 </div>
-
-
-<p>
-The integral \(\int SFR dt=\) The total mass that is turned into stars.
-</p>
-
-
-</section>
-<section id="slide-orga16c8bf-split">
-
-
-<div id="org3373a29" class="figure">
-<p><img src="file:///home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 21-55-49.png" alt="Screenshot from 2024-05-21 21-55-49.png" />
-</p>
 </div>
-
-</section>
-<section id="slide-orga16c8bf-split">
-
-<p>
-Άρα μπορούμε να γράψουμε:
-</p>
-
-<p>
-\[ A_{del} = \zeta\cdot M_* \cdot f(x)\]
-</p>
-
-<p>
-όπου \(f(x) = \frac{e^x}{e^x-x-1}\)
-</p>
-
-</section>
-<section id="slide-orga16c8bf-split">
-
-
-<div id="orgd6f11e6" class="figure">
-<p><img src="file:///home/dp/Documents/Research_paper_SFR/figure/AzM_*-x.png" alt="AzM_*-x.png" />
-</p>
 </div>
-</section>
-<section id="slide-orga16c8bf-split">
-
-
-
-<div id="org998f136" class="figure">
-<p><img src="file:///home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 22-25-01.png" alt="Screenshot from 2024-05-21 22-25-01.png" />
-</p>
-</div>
-
-</section>
-<section id="slide-orga16c8bf-split">
-
-
-<div id="org0f507ca" class="figure">
-<p><img src="file:///home/dp/Pictures/Screenshots/Screenshot from 2024-05-21 22-27-33.png" alt="Screenshot from 2024-05-21 22-27-33.png" />
-</p>
-</div>
-
-</section>
-</section>
+</section></section>
 <section>
-<section id="slide-orge597e88">
-<h2 id="orge597e88"><span class="section-number-2">9.</span> Σταθερό χ</h2>
+<section id="markov-chain-monte-carlo" class="title-slide slide level1 center">
+<h1>Markov Chain Monte Carlo</h1>
 <ul>
-<li>Αφήνουμε τους γαλαξίες να έχουν διαφορετική ηλικία και \(\tau\)</li>
-<li>Για \(x>2.7\) έχουμε μεγάλη ευστάθεια στις συναρτήσεις μας</li>
-<li>Υποθέτουμε ότι όλοι οι γαλαξίες του LCV είναι στην ίδια εξελικτική τους φάση</li>
+<li>Υπολογίζει και τις 3 μεταβλητές ταυτόχρονα</li>
+<li>Σύστημα 2 εξισώσεων και 3 μεταβλητών (<span class="math inline">\(A_{del},\ \tau, t_{sf}\)</span>), δεν κρατάμε το <span class="math inline">\(t_{sf} = 13.6\)</span> Gyr σταθερό.</li>
+<li>Mας δίνει σφάλματα για τα αποτελέσματα</li>
+<li>Μπορούμε να περιορίσουμε το διάστημα των τιμών</li>
+</ul>
+<aside class="notes">
+<p>Αλυσίδες Markov: Σειρές καταστάσεων όπου η επόμενη κατάσταση εξαρτάται μόνο από την τρέχουσα.</p>
+<p>Δειγματοληψία Monte Carlo: Χρήση τυχαίων δειγμάτων για την εκτίμηση στατιστικών μεγεθών.</p>
+<p>Συνδυασμός MCMC: Δημιουργία αλυσίδων Markov που παράγουν δείγματα από την επιθυμητή κατανομή.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section class="slide level2 center">
 
+<div class="columns">
+<div class="column" style="width:70%;">
+<p><img data-src="r_mcmc/plots/Hists/logA.png"></p>
+</div><div class="column" style="width:30%;">
+<p>Εύρος <span class="math inline">\(A_{del}\)</span> από προηγούμενη μέθοδο:</p>
+<p><span class="math inline">\(log(A_{del}) = [-1,13]\)</span></p>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<div class="columns">
+<div class="column" style="width:70%;">
+<p><img data-src="r_mcmc/plots/Hists/logtau.png"></p>
+</div><div class="column" style="width:30%;">
+<p>Δεν υπάρχουν αρνητικές τιμές για το <span class="math inline">\(\tau\)</span></p>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<div class="columns">
+<div class="column" style="width:70%;">
+<p><img data-src="r_mcmc/plots/Hists/t_sf.png"></p>
+</div><div class="column" style="width:30%;">
+<p>Έχουμε γαλαξίες με <span class="math inline">\(t_{sf}\neq 13.6\)</span> Gyr</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="μελλοντικα-σχεδια" class="title-slide slide level1 center">
+<h1>Μελλοντικα σχεδια</h1>
+<ul>
+<li>Να τρέξω τον κώδικα με όλα τα δεδομένα</li>
+<li>Να κάνω την τελική σύγκριση των δύο μεθόδων (1-1 γαλαξία)</li>
+<li>Να δω πως το <span class="math inline">\(t_{sf}\)</span> επηρεάζεται από την μάζα των γαλαξιών και από τον τύπο του γαλαξία</li>
 </ul>
 </section>
-</section>
+<section class="slide level2 smaller scrollable" id="references">
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+
 </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-karachentsev2013" class="csl-entry" role="listitem">
+Karachentsev, Igor D., Dmitry I. Makarov, and Elena I. Kaisina. 2013. <span>“UPDATED NEARBY GALAXY CATALOG.”</span> <em>The Astronomical Journal</em> 145 (4): 101. <a href="https://doi.org/10.1088/0004-6256/145/4/101">https://doi.org/10.1088/0004-6256/145/4/101</a>.
+</div>
+<div id="ref-kovlakas2021" class="csl-entry" role="listitem">
+Kovlakas, K., A. Zezas, J. J. Andrews, A. Basu-Zych, T. Fragos, A. Hornschemeier, K. Kouroumpatzakis, B. Lehmer, and A. Ptak. 2021. <span>“The Heraklion Extragalactic Catalogue (HECATE): A Value-Added Galaxy Catalogue for Multimessenger Astrophysics.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 506 (September): 1896–1915. <a href="https://doi.org/10.1093/mnras/stab1799">https://doi.org/10.1093/mnras/stab1799</a>.
+</div>
+<div id="ref-madau2014" class="csl-entry" role="listitem">
+Madau, Piero, and Mark Dickinson. 2014. <span>“Cosmic Star Formation History.”</span> <em>Annual Review of Astronomy and Astrophysics</em> 52 (1): 415–86. <a href="https://doi.org/10.1146/annurev-astro-081811-125615">https://doi.org/10.1146/annurev-astro-081811-125615</a>.
+</div>
+<div id="ref-speagle2014" class="csl-entry" role="listitem">
+Speagle, Joshua S., Charles L. Steinhardt, Peter L. Capak, and John D. Silverman. 2014. <span>“A Highly Consistent Framework for the Evolution of the Star-Forming <span>"</span>Main Sequence<span>"</span> from z&nbsp;0-6.”</span> <em>The Astrophysical Journal Supplement Series</em> 214 (2): 15. <a href="https://doi.org/10.1088/0067-0049/214/2/15">https://doi.org/10.1088/0067-0049/214/2/15</a>.
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
 
-<script>
-// Full list of configuration options available here:
-// https://github.com/hakimel/reveal.js#configuration
-Reveal.initialize({
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="presentation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
 
-// Optional libraries used to extend on reveal.js
-dependencies: [
- { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+  <script src="presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
-});
+  <script>
 
-</script>
-</body>
-</html>
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
