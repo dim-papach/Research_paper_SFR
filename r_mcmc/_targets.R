@@ -71,165 +71,178 @@ list(
   tar_stan_mcmc(
     stan_fit,
     stan_files = "x.stan",
+    #stdout = "out.txt",
+    #stderr = "error.txt",
     data = list(
       N = nrow(sfr_data),
-      #logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
       id_numbers = sfr_data$id_number,
-      #mass = sfr_data$logM_HEC
-      mass = sfr_data$StellarMass,
-      SFR_obs = sfr_data$SFR_UNGC_Gyr
+      M_star = sfr_data$logM_HEC
     ),
     chains = 3,
     parallel_chains = 6,
-    iter_sampling = 3500,
-    iter_warmup = 2500,
-    init = init_function(3,1132)
+    iter_sampling = 2000,
+    iter_warmup = 1500,
+    init = init_function(3,1132),
+    
   ),
-  # 
-  # tar_stan_summary(
-  #   id_summary,
-  #   fit = stan_fit_mcmc_x,
-  #   data = list(
-  #     N = nrow(sfr_data),
-  #     logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
-  #     id_numbers = sfr_data$id_number
-  #   ),
-  #   variables = "id"
-  # ),
-  # 
-  # tar_stan_summary(
-  #   sfr_summary,
-  #   fit = stan_fit_mcmc_x,
-  #   data = list(
-  #     N = nrow(sfr_data),
-  #     logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
-  #     id_numbers = sfr_data$id_number
-  #   ),
-  #   variables = "logSFR_today"
-  # ),
-  # 
-  # tar_stan_summary(
-  #   t_sf_summary,
-  #   fit = stan_fit_mcmc_x,
-  #   data = list(
-  #     N = nrow(sfr_data),
-  #     logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
-  #     id_numbers = sfr_data$id_number
-  #   ),
-  #   variables = "t_sf"),
-  #   
-  # tar_stan_summary(
-  #   tau_summary,
-  #   fit = stan_fit_mcmc_x,
-  #   data = list(
-  #     N = nrow(sfr_data),
-  #     logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
-  #     id_numbers = sfr_data$id_number
-  #   ),
-  #   variables = "tau"
-  # ),
-  # 
-  # tar_stan_summary(
-  #   logtau_summary,
-  #   fit = stan_fit_mcmc_x,
-  #   data = list(
-  #     N = nrow(sfr_data),
-  #     logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
-  #     id_numbers = sfr_data$id_number
-  #   ),
-  #   variables = "logtau"
-  # ),
-  # tar_stan_summary(
-  #   A_summary,
-  #   fit = stan_fit_mcmc_x,
-  #   data = list(
-  #     N = nrow(sfr_data),
-  #     logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
-  #     id_numbers = sfr_data$id_number
-  #   ),
-  #   variables = "A"
-  # ),
-  # 
-  # tar_target(
-  #   divergences,
-  #   stan_fit_diagnostics_x$divergent__
-  # ),
-  # 
-  # # Define the list of variables
-  # tar_target(
-  #   summary_variables,
-  #   c("logSFR_today", "t_sf", "tau", "A", "logtau") # List of variables
-  # ),
-  # 
-  # # Compute plots dynamically for mean vs median
-  # tar_target(
-  #   mean_median_plots,
-  #   {
-  #     # Extract summary data for the variable
-  #     summary_data <- switch(summary_variables,
-  #                            "A" = A_summary,
-  #                            "tau" = tau_summary,
-  #                            "t_sf" = t_sf_summary,
-  #                            "logSFR_today" = sfr_summary,
-  #                            "id" = id_summary,
-  #                            "logtau" = logtau_summary)
-  #     
-  #     # Generate the plot
-  #     ggplot(summary_data, aes(x = mean, y = median)) +
-  #       geom_point() +
-  #       labs(
-  #         title = paste("Mean vs. Median of", summary_variables),
-  #         x = "Mean",
-  #         y = "Median"
-  #       ) 
-  #     ggsave(sprintf("plots/Mean-Median/%s.png", summary_variables))
-  #   },
-  #   pattern = map(summary_variables) # Branch over variables
-  # ),
-  # 
-  # # Compute plots dynamically for mean vs median
-  # tar_target(
-  #     histograms,
-  #   {
-  #     # Extract summary data for the variable
-  #     summary_data <- switch(summary_variables,
-  #                            "A" = A_summary,
-  #                            "tau" = tau_summary,
-  #                            "t_sf" = t_sf_summary,
-  #                            "logSFR_today" = sfr_summary,
-  #                            "id" = id_summary,
-  #                            "logtau" = logtau_summary)
-  #     max_count <- max(ggplot_build(
-  #       ggplot(summary_data, aes(x = mean)) +
-  #         geom_histogram(bins = 30)
-  #     )$data[[1]]$count, na.rm = TRUE)
-  #     
-  #     ggplot(summary_data, aes(x = mean)) +
-  #       geom_histogram(alpha = 0.7, bins = 30, fill = "blue", color = "black") +
-  #       geom_vline(aes(xintercept = mean(mean)), color = "red", linetype = "dashed", size = 1) +
-  #       geom_text(
-  #         aes(
-  #           x = mean(mean), 
-  #           label = format(mean(mean), scientific = TRUE, digits = 2) # Scientific notation, 2 decimal points
-  #         ), 
-  #         y = max_count + 1, # Place the text slightly above the maximum bar
-  #         inherit.aes = FALSE,
-  #         vjust = 0, # Above the bar 
-  #         hjust = 0.5 # Centered above the mean line
-  #       ) +
-  #       labs(
-  #         title = paste("Histogram of Mean for", summary_variables),
-  #         x = "Mean",
-  #         y = "Count"
-  #       ) 
-  #     
-  #     
-  #     ggsave(sprintf("plots/Hists/%s.png", summary_variables))
-  #    },
-  #   
-  #   pattern = map(summary_variables) # Branch over variables
-  # ),
-  # 
+
+  tar_stan_summary(
+    id_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "id"
+  ),
+
+  tar_stan_summary(
+    sfr_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "logSFR_today"
+  ),
+
+  tar_stan_summary(
+    t_sf_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "t_sf"),
+  
+    tar_stan_summary(
+    log_tsf_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "log_tsf"),
+
+  tar_stan_summary(
+    tau_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "tau"
+  ),
+
+  tar_stan_summary(
+    logtau_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "logtau"
+  ),
+  tar_stan_summary(
+    A_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "logA"
+  ),
+
+  tar_target(
+    divergences,
+    stan_fit_diagnostics_x$divergent__
+  ),
+
+  # Define the list of variables
+  tar_target(
+    summary_variables,
+    c("logSFR_today","log_tsf", "t_sf", "tau", "logA", "logtau") # List of variables
+  ),
+
+  # Compute plots dynamically for mean vs median
+  tar_target(
+    mean_median_plots,
+    {
+      # Extract summary data for the variable
+      summary_data <- switch(summary_variables,
+                             "logA" = A_summary,
+                             "tau" = tau_summary,
+                             "t_sf" = t_sf_summary,
+                             "log_tsf" = log_tsf_summary,
+                             "logSFR_today" = sfr_summary,
+                             "id" = id_summary,
+                             "logtau" = logtau_summary)
+
+      # Generate the plot
+      ggplot(summary_data, aes(x = mean, y = median)) +
+        geom_point() +
+        labs(
+          title = paste("Mean vs. Median of", summary_variables),
+          x = "Mean",
+          y = "Median"
+        )
+      ggsave(sprintf("plots/Mean-Median/%s.png", summary_variables))
+    },
+    pattern = map(summary_variables) # Branch over variables
+  ),
+
+  # Compute plots dynamically for mean vs median
+  tar_target(
+      histograms,
+    {
+      # Extract summary data for the variable
+      summary_data <- switch(summary_variables,
+                             "logA" = A_summary,
+                             "tau" = tau_summary,
+                             "t_sf" = t_sf_summary,
+                             "log_tsf" = log_tsf_summary,
+                             "logSFR_today" = sfr_summary,
+                             "id" = id_summary,
+                             "logtau" = logtau_summary)
+      max_count <- max(ggplot_build(
+        ggplot(summary_data, aes(x = mean)) +
+          geom_histogram(bins = 30)
+      )$data[[1]]$count, na.rm = TRUE)
+
+      ggplot(summary_data, aes(x = mean)) +
+        geom_histogram(alpha = 0.7, bins = 40, fill = "blue", color = "black") +
+        geom_vline(aes(xintercept = mean(mean)), color = "red", linetype = "dashed", size = 1) +
+        geom_text(
+          aes(
+            x = mean(mean),
+            label = format(mean(mean), scientific = TRUE, digits = 2) # Scientific notation, 2 decimal points
+          ),
+          y = max_count + 1, # Place the text slightly above the maximum bar
+          inherit.aes = FALSE,
+          vjust = 0, # Above the bar
+          hjust = 0.5 # Centered above the mean line
+        ) +
+        labs(
+          title = paste("Histogram of Mean for", summary_variables),
+          x = "Mean",
+          y = "Count"
+        )
+
+
+      ggsave(sprintf("plots/Hists/%s.png", summary_variables))
+     },
+
+    pattern = map(summary_variables) # Branch over variables
+  ),
+
 
   # Prepare the metric data
 
@@ -268,6 +281,5 @@ list(
     pattern = map(metrics),
     format = "file"
   )
-  
-  
+
 )

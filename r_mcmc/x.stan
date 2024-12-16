@@ -14,47 +14,46 @@
 data {
   int<lower=1> N;                   // Number of data points
   vector[N] logSFR_UNGC_Gyr;        // Observed log SFR in Gyr
-  vector[N] id_numbers;                // Row identifiers for the data points
+  vector[N] id_numbers;             // Row identifiers for the data points
+  vector[N] M_star;                 // Stellar masses (input data)
 }
 
 parameters {
-  vector<lower=0, upper=13.8>[N] t_sf;     // Time of star formation for each galaxy in Gyr
-  vector<lower=-3, upper=2>[N] logtau;    // log10(tau) for each galaxy
-  vector<lower=-2, upper=12>[N] logA;     // log10(A) for each galaxy
+  vector<lower=0.1, upper=13.8>[N] t_sf;     // Time of star formation for each galaxy in Gyr
+  vector<lower=-3, upper=2>[N] logtau;      // log10(tau) for each galaxy
+  vector<lower=-3, upper=12>[N] logA;     // log10(A) for each galaxy
+  vector<lower=1,upper=2>[N] zeta;        // Mass-loss
 }
 
 transformed parameters {
-  /*
-    Derived parameters based on transformations:
-    - tau: Linear scale of tau (10^logtau).
-    - A: Linear scale of A (10^logA).
-    - logSFR_today: Modeled log SFR at the present time.
-
-    Includes constant for converting between natural log and base-10 log.
-  */
-  vector[N] tau = pow(10, logtau);         // Tau in linear scale
+  vector[N] log_tsf = log10(t_sf);
+  vector[N] tau = pow(10, logtau);          // Tau in linear scale
   vector[N] A = pow(10, logA);             // A in linear scale
-  vector[N] logSFR_today;                  // Modeled log SFR for each data point
-  real log10_e = log10(exp(1));            // Constant for ln to log10 conversion (log10(e))
+  vector[N] logSFR_today;                   // Modeled log SFR for each data point
+  real log10_e = log10(exp(1));             // Constant for ln to log10 conversion (log10(e))
+
+  // Compute A for each galaxy using the full normalization equation
+  A = (M_star .* zeta) ./ (1 - ((t_sf ./ tau) + 1) .* exp(-t_sf ./ tau));
 
   // Calculate modeled log SFR at the present time for each galaxy
-  logSFR_today = logA
+  logSFR_today = log10(A)
                  + log10(t_sf)
                  - 2 * logtau
                  - (t_sf ./ tau) * log10_e; // Subtract exponential decay term
 }
 
 model {
-  /*
+  /* 
     Bayesian model specification:
-    - Priors on parameters (t_sf, logtau, logA).
+    - Priors on parameters (t_sf, logtau).
     - Likelihood: Observed log SFR is modeled as normally distributed around the predicted value.
   */
 
   // Priors: Uniform distributions for each parameter
-  logA ~ uniform(-2, 12);                 // Prior for log10(A)
-  logtau ~ uniform(-3, 4);                // Prior for log10(tau)
-  t_sf ~ uniform(10, 15);                 // Prior for t_sf (time of star formation)
+  logA ~ uniform(-3, 12);                 // Prior for log10(A) 
+  logtau ~ uniform(-2, 2);                 // Prior for log10(tau)
+  t_sf ~ uniform(0.1, 13.8);                // Prior for t_sf (time of star formation)
+  zeta ~ normal(1.3, 0.01);
 
   // Likelihood: Observed log SFR compared to modeled log SFR
   logSFR_UNGC_Gyr ~ normal(logSFR_today, 0.1); // Assume small measurement error (std = 0.1)
@@ -67,14 +66,15 @@ generated quantities {
     - Pass-through of row identifiers for post-modeling analysis.
   */
   vector[N] logSFR_today_pred;            // Predicted log SFR for each data point
-  vector[N] id;                              // Row identifiers
+  vector[N] id;                          // Row identifiers
 
   // Predict log SFR using the same formula as in `transformed parameters`
-  logSFR_today_pred = logA
-                      + log10(t_sf)       // log10(t_sf)
-                      - 2 * logtau        // Subtract 2 * log10(tau)
-                      - (t_sf ./ tau) * log10_e; // Subtract exponential decay term
+  logSFR_today_pred = log10(A)
+                      + log10(t_sf)
+                      - 2 * logtau
+                      - (t_sf ./ tau) * log10_e;
 
   // Assign row identifiers for reference
   id = id_numbers;
 }
+
