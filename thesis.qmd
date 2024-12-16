@@ -1,0 +1,172 @@
+---
+title: "thesis"
+author: "Dimitris Papachristopoulos"
+format: 
+  pdf: default
+  #logo: ./figure/
+  arxiv-pdf:
+    keep-tex: true    
+toc: true
+toc-depth: 3
+theme: minti
+bibliography: ./My_Library.bib
+execute: 
+  echo: false
+  eval: true
+  warning: false
+editor: visual
+---
+
+
+{{<pagebreak>}}
+
+# Abstract
+
+The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the Star Formation Rates (SFR) of galaxies as a function with a rising SFR at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
+
+@haslbauer2023 argues that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madau2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses [^1] from the UNGC catalog (@karachentsev2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LCV), allows the investigation of the SFR throughout the life each galaxy and so we can find the expected time of peak of the SFR.
+
+[^1]: They calculated the Stellar Masses by using a Mass to Light ratio of 0.6
+
+In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
+
+**Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Markov Chain Monte Carlo (MCMC).
+
+
+{{<pagebreak>}}
+
+
+# Galaxy Morphology and Star-Forming Regions
+
+## Galaxy Ingridients
+
+## Galaxy Classification
+
+### Hubble-de Vacouler Classification
+
+### Dwarf Galaxies
+
+## Star-Formnig Regions
+
+# Star Formation History (SFH)
+
+The SFH of a galaxy describes the evolution of its star formation rate over time. By selecting an appropriate model for SFH, we can analyze stellar production, predict periods of active or quiescent star formation, and determine when SFR stabilizes.
+
+
+
+Understanding SFH models is crucial for interpreting internal and external processes affecting galaxies and identifying conditions for intense star formation in their early stages.Star Formation Rate
+
+
+
+## Star Formation Rate
+
+The star formation rate (SFR) is defined as the total gas mass of a galaxy converted into stars over a specific time interval. It is typically expressed in solar masses per year ($M_\odot \cdot \text{yr}^{-1}$).
+
+The SFR varies significantly over time, and its integration over time provides the total stellar mass formed during the galaxy’s history of star formation. Specifically:
+
+where $\zeta$ accounts for mass loss, approximately $\zeta \approx 1.3$ (@kroupaConstraintsStarFormation2020).
+
+### Estimating SFR from Spectra
+
+SFR can be estimated using various photometric or spectroscopic methods based on the luminosity of at least one spectral band or the intensity of a spectral line. Different luminosities and intensities trace distinct emission mechanisms, offering insights into a galaxy’s radiation sources. Below are common methods:
+
+- **H\boldmath${\alpha}$ Emission**: Traces the number of ionizing photons, assuming full usage and re-emission. These photons mainly originate from hot, massive stars (O-type stars, \~10 Myr). Dust can significantly affect observations.
+
+- **Infrared (IR) Flux**: Assumes a fixed fraction of stellar radiation is absorbed by dust, re-emitted at infrared wavelengths, and enhances total IR radiation.
+
+- **Radio Continuum Emission**: Strongly correlated with IR. Its origin is complex, involving synchrotron radiation from relativistic electrons and thermal Bremsstrahlung from hot gas.
+
+- **Far-Ultraviolet (FUV) Flux**: Mainly emitted by young, hot stars (e.g., B-type stars, \~100 Myr). Dust presence can also significantly affect observations.
+
+- **X-Ray Emission**: In star-forming galaxies, X-rays arise from high-mass binary systems (neutron star or black hole with massive stellar companion) and hot gas from supernovae, correlating with SFR up to redshift $z \sim 4$. X-rays are dust-insensitive, enabling accurate high-redshift observations.
+
+SFR for different luminosities $L_i$ can be calculated as:
+
+$$
+\text{SFR} = \mathcal{K}_i\times L_i
+$$ {#eq-sfr-spectra}
+
+where $\mathcal{K}_i$ is a constant specific to each $L_i$ ($i =$ H$α$, IR, radio, FUV, X). In our analysis, we lack radio and X-ray data.
+
+For FUV and H$α$ observations, which are affected by dust, corrections or models accounting for dust absorption are applied. Generally:
+
+Following @madauCosmicStarFormation2014, this method may underestimate true SFRs, as different galaxy populations exhibit varying absorption mechanisms.
+
+A more robust estimate of total SFR is:
+
+where $L_{\text{FUV}}$ is uncorrected for absorption.
+
+## Main Sequence Galaxies
+
+The SFR and stellar mass of a galaxy are tightly correlated by the relationship:
+
+$$
+\log(\text{SFR}) = \alpha \log(M_*)+\beta
+$$
+
+where $\alpha(t)$ and $\beta(t)$ depend on time and redshift $z$ (@speagleHighlyConsistentFramework2014):
+
+### Star Formation History Models
+
+Parameterized SFH models are commonly used, offering simplicity through a few parameters (@carnallHowMeasureGalaxy2019a):
+
+1. **Exponential Decline (τ Model)**:
+
+   where $\tau$ is the timescale and $t_{\text{sf}} = t - T_0$ is the star formation time.
+
+2. **Delayed Exponential (τ Model)**:
+
+   accounting for an initial rise in SFR before declining. Here, $\tau$ is the time to reach maximum SFR.
+
+3. **Log-Normal Model**:
+
+   with $\tau$ and $T_0$ as free parameters.
+
+4. **Double Power Law**:
+
+   where $\tau$ is the timescale, and $\alpha$, $\beta$ govern the SFR rise and fall.
+
+Non-parametric models are also available, providing flexibility for galaxies with complex SFH patterns.
+
+
+## Delayed-$τ$ Model
+
+The delayed $τ$ model is widely used for describing an initial starburst followed by a gradual decline in SFR. This places galaxies on the main sequence. It is particularly effective for massive galaxies (@haslbauerCosmologicalStarFormation2023). However, it assumes smooth SFR evolution and may overestimate peak SFR in high-redshift galaxies.
+
+Using the delayed τ model, we compute $\tau$, $t_{\text{sf}}$, and normalization constant $A_{\text{del}}$ with:
+
+$$
+\text{SFR}_0 = \text{SFR}(t_{sf}) = A_{del}\frac{t_{sf}}{\tau^2}e^{-t_{sf}/\tau}
+$$ {#eq-delayed-current}
+
+where $\text{SFR}_0$ is given in the catalogs.
+
+
+# Hubble Law
+
+## Redshift 
+## Lookback time
+
+# Lilly-Madau Plot
+
+# Delayed-$\tau$ model
+
+# Computational Methods 
+
+## Newton-Raphson
+## Markov Chain Monte Carlo
+
+# Prepering the Catalogs
+
+UNGC HECATE join etc...
+
+## Catalog Completeness
+## Comparing the Catalogs
+## The "special" case of the Star Formation Rates
+
+# Calculating the parameters 
+
+## According to pre-existing bibliography
+### Problems with the method
+
+## MCMC
