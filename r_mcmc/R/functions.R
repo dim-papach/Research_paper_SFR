@@ -24,6 +24,7 @@ prepare_data <- function(data_csv) {
 init_function <-function(chains, N) {
   lapply(1:chains, function(i) list(
     t_sf = rep(13.6, N),
+    #x = rep(3, N),
     logtau = rep(log10(4), N), # MS galaxies 3.5<tau<4.5
     logA = rep(5.5, N),
     tau = rep(4,N),

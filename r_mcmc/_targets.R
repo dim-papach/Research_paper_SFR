@@ -79,11 +79,11 @@ list(
       id_numbers = sfr_data$id_number,
       M_star = sfr_data$logM_HEC
     ),
-    chains = 3,
-    parallel_chains = 6,
-    iter_sampling = 2000,
-    iter_warmup = 1500,
-    init = init_function(3,1132),
+    chains = 10,
+    parallel_chains = 8,
+    iter_sampling = 5000,
+    iter_warmup = 3500,
+    init = init_function(10,1132),
     
   ),
 
@@ -160,7 +160,17 @@ list(
     ),
     variables = "logA"
   ),
-
+  
+  tar_stan_summary(
+    x_summary,
+    fit = stan_fit_mcmc_x,
+    data = list(
+      N = nrow(sfr_data),
+      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      id_numbers = sfr_data$id_number
+    ),
+    variables = "x"
+  ),
   tar_target(
     divergences,
     stan_fit_diagnostics_x$divergent__
@@ -183,7 +193,6 @@ list(
                              "t_sf" = t_sf_summary,
                              "log_tsf" = log_tsf_summary,
                              "logSFR_today" = sfr_summary,
-                             "id" = id_summary,
                              "logtau" = logtau_summary)
 
       # Generate the plot
@@ -210,7 +219,6 @@ list(
                              "t_sf" = t_sf_summary,
                              "log_tsf" = log_tsf_summary,
                              "logSFR_today" = sfr_summary,
-                             "id" = id_summary,
                              "logtau" = logtau_summary)
       max_count <- max(ggplot_build(
         ggplot(summary_data, aes(x = mean)) +

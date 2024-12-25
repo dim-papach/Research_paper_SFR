@@ -20,38 +20,40 @@ data {
 
 parameters {
   vector<lower=0.1, upper=13.8>[N] t_sf;     // Time of star formation for each galaxy in Gyr
-  vector<lower=-3, upper=2>[N] logtau;      // log10(tau) for each galaxy
+  vector<lower=0.1, upper=20>[N] tau;      // log10(tau) for each galaxy
   vector<lower=-3, upper=12>[N] logA;     // log10(A) for each galaxy
   vector<lower=1,upper=2>[N] zeta;        // Mass-loss
 }
 
 transformed parameters {
+  
+  vector[N] x = t_sf./tau;
   vector[N] log_tsf = log10(t_sf);
-  vector[N] tau = pow(10, logtau);          // Tau in linear scale
+  vector[N] logtau = log10(tau);          // Tau in linear scale
   vector[N] A = pow(10, logA);             // A in linear scale
   vector[N] logSFR_today;                   // Modeled log SFR for each data point
   real log10_e = log10(exp(1));             // Constant for ln to log10 conversion (log10(e))
 
   // Compute A for each galaxy using the full normalization equation
-  A = (M_star .* zeta) ./ (1 - ((t_sf ./ tau) + 1) .* exp(-t_sf ./ tau));
+  A = (M_star .* zeta) ./ (1 - (x + 1) .* exp(-x));
 
   // Calculate modeled log SFR at the present time for each galaxy
   logSFR_today = log10(A)
-                 + log10(t_sf)
-                 - 2 * logtau
-                 - (t_sf ./ tau) * log10_e; // Subtract exponential decay term
+                 + log10(x)
+                 - logtau
+                 - (x) * log10_e; // Subtract exponential decay term
 }
 
 model {
   /* 
     Bayesian model specification:
     - Priors on parameters (t_sf, logtau).
-    - Likelihood: Observed log SFR is modeled as normally distributed around the predicted value.
+    - Likelihood: Observed log SFR is modeled as normally distriiiibuted around the predicted value.
   */
 
   // Priors: Uniform distributions for each parameter
   logA ~ uniform(-3, 12);                 // Prior for log10(A) 
-  logtau ~ uniform(-2, 2);                 // Prior for log10(tau)
+  tau ~ uniform(0.1, 20);                 // Prior for log10(tau)
   t_sf ~ uniform(0.1, 13.8);                // Prior for t_sf (time of star formation)
   zeta ~ normal(1.3, 0.01);
 
@@ -70,10 +72,9 @@ generated quantities {
 
   // Predict log SFR using the same formula as in `transformed parameters`
   logSFR_today_pred = log10(A)
-                      + log10(t_sf)
+                      + log_tsf
                       - 2 * logtau
                       - (t_sf ./ tau) * log10_e;
-
   // Assign row identifiers for reference
   id = id_numbers;
 }
