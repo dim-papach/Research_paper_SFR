@@ -79,11 +79,11 @@ list(
       id_numbers = sfr_data$id_number,
       M_star = sfr_data$logM_HEC
     ),
-    chains = 10,
+    chains = 4,
     parallel_chains = 8,
     iter_sampling = 5000,
     iter_warmup = 3500,
-    init = init_function(10,1132),
+    init = init_function(4,1132),
     
   ),
 
