@@ -1,6 +1,6 @@
 ---
-title: "thesis"
-author: "Dimitris Papachristopoulos"
+title: "Analysis of observational data, to calculate the Delayed-Tau model parameters"
+author: "Dimitrios Papachristopoulos"
 format: 
   pdf: default  
   # arxiv-pdf:
@@ -24,7 +24,7 @@ editor: visual
 
 The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the Star Formation Rates (SFR) of galaxies as a function with a rising SFR at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
 
-@haslbauerCosmologicalStarFormation2023 argue that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses \[\^1\] from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LCV), allows the investigation of the SFR throughout the life each galaxy and so we can find the expected time of peak of the SFR.
+@haslbauerCosmologicalStarFormation2023 argue that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LCV), allows the investigation of the SFR throughout the life each galaxy and so we can find the expected time of peak of the SFR.
 
 In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
 
@@ -80,13 +80,13 @@ This expanded framework also embraces **early-type** and **late-type** galaxies 
 
 -   **Early-type galaxies** (E and S0):
 
-    -   Smooth, featureless appearance.
+    -   Smooth appearance.
 
     -   Predominantly older stellar populations.
 
     -   Minimal amounts of gas and dust.
 
-    -   Often assigned negative T-values ($-6 \le T < 0$).
+    -   Assigned negative T-values ($-6 \le T < 0$).
 
 -   **Late-type galaxies** (Spirals and Irregulars):
 
@@ -96,7 +96,7 @@ This expanded framework also embraces **early-type** and **late-type** galaxies 
 
     -   Smaller bulges and more open arms from Sa/SBa to Sc/SBc.
 
-    -   Assigned positive T-values , extending to +10 for extreme irregulars.
+    -   Assigned positive T-values , extending to +11 for extreme irregulars.
 
 By offering extra designations for bar strength, ring features, and transitional morphologies, de Vaucouleurs’ system paints a more complete picture of galaxies and how they evolve. It allows researchers to quantify where a galaxy lies along the continuum, rather than forcing it into a single rigid label.
 
@@ -108,7 +108,7 @@ By offering extra designations for bar strength, ring features, and transitional
 
 ### Dwarf Galaxies
 
-Despite the usefulness of de Vaucouleurs’ numerical T-type system , we run into practical issues when classifying dwarf galaxies. These galaxies need a more detailed classification systeme, since the T-Type system can denote galaxies, whose physical properties drastically differ, with by the same number. For instance, dwarf spheroidals and normal ellipticals both end up with a T-value below zero (T \< 0), even though their properties are vastly different. Then there are “transient” dwarf galaxies (Tr), whose features bridge spheroidal (Sph)(Sph) and irregular (Ir)(Ir) types. Inaccuracies in classification can cause these hybrids to “jump” from one extreme of the T-scale to the other with only a small error in morphology.
+Despite the usefulness of de Vaucouleurs’ numerical T-type system , we run into practical issues when classifying dwarf galaxies. These galaxies need a more detailed classification system, since the T-Type system can denote galaxies, whose physical properties drastically differ, with by the same number. For instance, dwarf spheroidals and normal ellipticals both end up with a T-value below zero (T \< 0), even though their properties are vastly different. Then there are “transient” dwarf galaxies (Tr), whose features bridge spheroidal (Sph)(Sph) and irregular (Ir)(Ir) types. Inaccuracies in classification can cause these hybrids to “jump” from one extreme of the T-scale to the other with only a small error in morphology.
 
 To address this, van den Bergh suggested dividing dwarf galaxies by luminosity class, which prevents them from leaping between extreme categories. This refined approach better reflects the intrinsic diversity of dwarf systems, ensuring that subtle morphological differences are more accurately captured and reducing the risk of placing galaxies at the wrong end of the classification scale [@karachentsevUPDATEDNEARBYGALAXY2013]
 
@@ -300,6 +300,8 @@ t_L = T_0-t_\text{emitted}
 $$
 
 ## Lilly-Madau Plot
+
+![](figure/lily-madau.png){fig-align="center" width="450"}
 
 # Delayed-$\tau$ model
 
