@@ -1,0 +1,14 @@
+#!/bin/bash
+
+stilts tpipe \
+  in=outer_join.ecsv \
+  omode=out out=filled.ecsv \
+  cmd='addcol -units "Mpc" -desc "Merge Distance" merge_D "NULL_D ? Dis : D"' \
+  cmd='addcol -units "km/h" -desc "Merge radial velocity" merge_V "NULL_V ? RVel : V"' \
+  cmd='addcol -desc "Merge numerical Hubble Type" merge_T "NULL_T ? TType : T"' \
+  cmd='addcol -units "log(Lsol)" -desc "Merge logK" merge_logKLum "NULL_logL_K ? logKLum : logL_K"' \
+  cmd='addcol -units "mag" -desc "Merge K mag" merge_Kmag "NULL_K ? Kmag : K"' \
+  cmd='addcol -units "mag" -desc "Merge B mag" merge_Bmag "NULL_BT ? mag_B : BT"' \
+  cmd='addcol -units "log(Msol/yr)" -desc "Merge of log SFR" logSFR_total "NULL_logSFR_HEC ? 0.7*logSFR_UNGC : logSFR_HEC"'\
+  cmd='addcol -units "Msol/yr" -desc "Total SFR in linear scale" SFR_total "exp10(logSFR_total)"'\
+  cmd='addcol -units "log(Msol)" -desc "" logSFR_total "NULL_logSFR_HEC ? 0.7*logSFR_UNGC : logSFR_HEC"'\

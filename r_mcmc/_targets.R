@@ -7,6 +7,8 @@
 library(targets)
 library(tarchetypes) # Load other packages as needed.
 library(stantargets)
+library(crew)
+library(future)
 
 # Set target options:
 tar_option_set(
@@ -51,11 +53,12 @@ tar_source()
 
 # Replace the target list below with your own:
 # Define the pipeline
-list(
+#list(
+tar_plan(
   # Step 1: Load and prepare data
   tar_target(
     csv_file_path,
-    "outer_join.csv",
+    "filled.csv",
     format = "file"
   ),
   tar_target(
@@ -75,15 +78,15 @@ list(
     #stderr = "error.txt",
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number,
       M_star = sfr_data$logM_HEC
     ),
-    chains = 4,
+    chains = 7,
     parallel_chains = 8,
-    iter_sampling = 5000,
-    iter_warmup = 3500,
-    init = init_function(4,1132),
+    iter_sampling = 4500,
+    iter_warmup = 3000,
+    init = init_function(7,1761),
     
   ),
 
@@ -92,7 +95,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "id"
@@ -103,7 +106,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "logSFR_today"
@@ -114,7 +117,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "t_sf"),
@@ -124,7 +127,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "log_tsf"),
@@ -134,7 +137,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "tau"
@@ -145,7 +148,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "logtau"
@@ -155,7 +158,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "logA"
@@ -166,7 +169,7 @@ list(
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_UNGC_Gyr = sfr_data$logSFR_UNGC_Gyr,
+      logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
     variables = "x"

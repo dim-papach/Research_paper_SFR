@@ -7,12 +7,12 @@ prepare_data <- function(data_csv) {
            logM_HEC = ifelse(is.na(logM_HEC), 0.822 * K, logM_HEC), # Replace missing logM_HEC with 0.8 * K
            logM_HEC = ifelse(is.na(logM_HEC), 0.822 * KLum, logM_HEC) # Replace missing logM_HEC with 0.8 * KLum
            ) %>%
-    select(logSFR_UNGC_Gyr, id_number, logM_HEC) %>%
+    select(logSFR_total, id_number, logM_HEC) %>%
     filter(
-      logSFR_UNGC_Gyr >=-3,
-      !is.na(logSFR_UNGC_Gyr),
-      !is.nan(logSFR_UNGC_Gyr),
-      is.finite(logSFR_UNGC_Gyr),
+      #iogSFR_total >=-3,
+      !is.na(logSFR_total),
+      !is.nan(logSFR_total),
+      is.finite(logSFR_total),
       !is.na(logM_HEC),
       !is.nan(logM_HEC),
       is.finite(logM_HEC)
