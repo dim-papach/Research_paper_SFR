@@ -1,6 +1,7 @@
 ---
 title: "Analysis of observational data, to calculate the Delayed-Tau model parameters"
 author: "Dimitrios Papachristopoulos"
+fontfamily: fontenc
 format: 
   pdf: default  
   # arxiv-pdf:
@@ -9,28 +10,27 @@ format:
   #    link-bibliography: true
   #    runninghead: ""
 toc: true
+toc-expand: true
 toc-depth: 3
+number-sections: true
+appendix-style: plain
 bibliography: ./My_Library.bib
+
 execute: 
   echo: false
   eval: true
   warning: false
 editor: visual
+
+abstract: |
+  The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the Star Formation Rates (SFR) of galaxies as a function with a rising SFR at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
+
+  @haslbauerCosmologicalStarFormation2023 argue that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life each galaxy and so we can find the expected time of peak of the SFR.
+
+  In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
+  
+  **Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Markov Chain Monte Carlo (MCMC).
 ---
-
-{{<pagebreak>}}
-
-# Abstract
-
-The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the Star Formation Rates (SFR) of galaxies as a function with a rising SFR at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
-
-@haslbauerCosmologicalStarFormation2023 argue that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LCV), allows the investigation of the SFR throughout the life each galaxy and so we can find the expected time of peak of the SFR.
-
-In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
-
-**Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Markov Chain Monte Carlo (MCMC).
-
-{{<pagebreak>}}
 
 # Galaxy Morphology and Star-Forming Regions
 
@@ -307,7 +307,7 @@ Using observational data from UV and IR traces for the SFR for galaxies of diffe
 
 -   **Peak Star Formation** ($z \sim 2$): Often dubbed “cosmic noon,” this epoch exhibits the highest SFRD in cosmic history when the Universe was $\sim 3.5$ Gyr old. Galaxies are vigorously converting gas into stars, and many of the most massive galaxy systems today formed much of their stellar content during this phase.
 
--   **Decline to Present Day **(SFRD$\propto (1+z)^{2.7},z\lesssim 2$): After $z \sim 2$, the global SFRD drops by about an order of magnitude towards the present day ($z=0$).
+-   **Decline to Present Day** (SFRD$\propto (1+z)^{2.7},z\lesssim 2$): After $z \sim 2$, the global SFRD drops by about an order of magnitude towards the present day ($z=0$).
 
 The best-fit function of the comoving SFRD($z$):
 
@@ -334,9 +334,17 @@ where $\text{SFR}_0$ is given in the catalogs.
 
 ## Markov Chain Monte Carlo
 
-# Prepering the Catalogs
+# Data of the Local Cosmological Volume
 
-UNGC HECATE join etc...
+In our current analysis, we will use two different catalogs of galaxies, containing galaxies within the Local Cosmological Volume (LV), which is defined as a sphere with a radius of 11 Mpc centred around the Milky Way, to remain consistent with with the analysis of @kroupaConstraintsStarFormation2020 and @haslbauerCosmologicalStarFormation2023. The reason we focus on the LV and thus only at small distances is because we want to understand the SFR of the galaxies as they are today and since the redshift depends on distance, we can assume that the redshift of our galaxy sample is $z = 0 \Rightarrow t_\text{emitted}=T_0 = 13.8$ Gyr.
+
+The observational data of galaxies located inside the LV are extracted from the catalogs:
+
+-   **HECATE** [@kovlakasHeraklionExtragalacticCatalogue2021]**:** The Heraklion Extragalactic Catalogue (HECATE) is an all-sky value-added galaxy catalog containing 204,733 galaxies with redshifts up to 0.047 (D ≤ 200 Mpc), from which 2901 are in the LV. It incorporates data from multiple surveys and databases, providing information on positions, sizes, distances, morphological classifications, star formation rates, stellar masses, metallicities, and nuclear activity classifications. HECATE is well-suited for multi-wavelength and multi-messenger astrophysics, including demographic studies and transient event follow-up.
+
+-   **UNGC Catalog** [@karachentsevUPDATEDNEARBYGALAXY2013; @karachentsevSTARFORMATIONPROPERTIES2013]**:** The Updated Nearby Galaxy Catalog (UNGC)[^5] provides a distance-limited within 11 Mpc or radial velocities of $V < 600\ km \cdot s^{−1}$. Selecting galaxies whith $D\leq 11$ Mpc, we get a sample of 1321 galaxies. It offers detailed star formation rate estimates derived from H$\alpha$ and far-ultraviolet (FUV) fluxes, making it particularly valuable for studying nearby galaxies and local star formation processes. The UNGC catalog focuses on galaxies with well-determined distances and includes detailed environmental and morphological data.
+
+[^5]: The UNGC tables can be downloaded using the following link: <https://www.sao.ru/lv/lvgdb/introduction.php>. Here, we use the latest update from 17.01.2025.
 
 ## Catalog Completeness
 
@@ -351,3 +359,14 @@ UNGC HECATE join etc...
 ### Problems with the method
 
 ## MCMC
+
+{{<pagebreak>}}
+
+# Linear Comparison of the catalogs {.appendix}
+
+{{<pagebreak>}}
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
