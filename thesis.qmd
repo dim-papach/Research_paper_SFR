@@ -122,7 +122,7 @@ The location of the star forming regions within a galaxy depend on the morpholog
 
 In elliptical galaxies, on the other hand, star formation is minimal because they lack the cold gas reservoirs needed for new stars to form. Irregular galaxies, with their chaotic structures, often have patchy but vigorous star-forming regions, as they retain significant amounts of gas.
 
-A special case are the starburst galaxies, who have a extremely active star forming regions, and seem to convert the gas into stars extremely fast (even 100 times faster than the Milky Way). These starbursts often concentrate their intense star-formation activity in compact regions about 1 kpc in size (typically in galaxy nuclei). Due to their high star-formation rates, starbursts host large numbers of young stars.
+A special case are the starburst galaxies, which have extremely active star-forming regions, and seem to convert the gas into stars extremely fast (even 100 times faster than the Milky Way). These starbursts often concentrate their intense star-formation activity in compact regions about 1 kpc in size (typically in galaxy nuclei). Due to their high star-formation rates, starbursts host large numbers of young stars.
 
 # Star Formation History (SFH)
 
@@ -217,7 +217,7 @@ where $\alpha(t)$ and $\beta(t)$ depend on time and redshift $z$ (@speagleHighly
 
 ### Star Formation History Models
 
-![Star Formation Rate over the time of star formation, for different parametric models](figure/sfr-models.png){fig-align="center" width="350"}
+![Star Formation Rate over the time of star formation, for different parametric models](figure/sfr-models.png){fig-align="center" width="300"}
 
 Parameterized SFH models are commonly used, offering simplicity through a few parameters [@carnallHowMeasureGalaxy2019a]:
 
@@ -342,15 +342,56 @@ The observational data of galaxies located inside the LV are extracted from the 
 
 -   **HECATE** [@kovlakasHeraklionExtragalacticCatalogue2021]**:** The Heraklion Extragalactic Catalogue (HECATE) is an all-sky value-added galaxy catalog containing 204,733 galaxies with redshifts up to 0.047 (D ≤ 200 Mpc), from which 2901 are in the LV. It incorporates data from multiple surveys and databases, providing information on positions, sizes, distances, morphological classifications, star formation rates, stellar masses, metallicities, and nuclear activity classifications. HECATE is well-suited for multi-wavelength and multi-messenger astrophysics, including demographic studies and transient event follow-up.
 
--   **UNGC Catalog** [@karachentsevUPDATEDNEARBYGALAXY2013; @karachentsevSTARFORMATIONPROPERTIES2013]**:** The Updated Nearby Galaxy Catalog (UNGC)[^5] provides a distance-limited within 11 Mpc or radial velocities of $V < 600\ km \cdot s^{−1}$. Selecting galaxies whith $D\leq 11$ Mpc, we get a sample of 1321 galaxies. It offers detailed star formation rate estimates derived from H$\alpha$ and far-ultraviolet (FUV) fluxes, making it particularly valuable for studying nearby galaxies and local star formation processes. The UNGC catalog focuses on galaxies with well-determined distances and includes detailed environmental and morphological data.
+-   **UNGC Catalog** [@karachentsevUPDATEDNEARBYGALAXY2013; @karachentsevSTARFORMATIONPROPERTIES2013]**:** The Updated Nearby Galaxy Catalog (UNGC)[^5] provides a distance-limited sample of galaxies, within 11 Mpc or radial velocities of $V < 600\ km \cdot s^{−1}$. Selecting galaxies with $D\leq 11$ Mpc, we get a sample of 1321 galaxies. It offers detailed star formation rate estimates derived from H$\alpha$ and far-ultraviolet (FUV) fluxes, making it particularly valuable for studying nearby galaxies and local star formation processes. The UNGC catalog focuses on galaxies with well-determined distances and includes detailed environmental and morphological data.
 
 [^5]: The UNGC tables can be downloaded using the following link: <https://www.sao.ru/lv/lvgdb/introduction.php>. Here, we use the latest update from 17.01.2025.
 
+We will join the two catalogs, based on the coordinates of the galaxies, so we could assure a bigger and more coplete sample size for our analysis. But first we need to undestand them and examine if there are any inconsistances between UNGC and HECATE.
+
 ## Catalog Completeness
+
+The Completeness of a catalog refers to the extent to which a catalog includes all the galaxies within a specified region of the sky, distance, or luminosity range. A complete catalog accurately represents the true population of galaxies, which eleminates the bias of the sample. No catalog could trully be $100\%$ complete, but by understanding the shortcomings of the the catalog, we can account for the possible biases that can occur in our analysis.
+
+The *HECATE* catalog is designed to be a more comprehensive resource, covering a broader range of distances and luminosities.
+
+-   **Luminosity and Distance Dependence:** The HECATE catalog is more complete for brighter galaxies (with luminosities above $10^{9.5} L_{B,\odot}$) and distances within 33 Mpc, which includes the LV. For galaxies with luminosities around $10^{10} L_{B,\odot}$)​, the catalog remains complete up to distances of 100 Mpc.
+-   **Luminosity Density:** The catalog's completeness is also estimated based on the luminosity density in the B-band. Within 30 Mpc, the catalog is over 100% complete due to the high density of galaxies around the Milky Way. However, at distances around 170 Mpc, the completeness drops to approximately 50%, indicating that many galaxies are missing.
+-   **Star Formation Rate and Stellar Mass:** The completeness of SFR is around 50% for distances between 30 and 150 Mpc, primarily due to limitations in the WISE survey coverage. Similarly, the completeness of stellar mass estimates is comparable to that of the B-band luminosity, with overdensities at short distances and a sharp cutoff at larger distances.
+
+The *UNGC* catalog focuses on galaxies within the LV, specifically those with radial velocities less than 600 km/s and distances within 11 Mpc. It is around $40\%-60\%$ complete for galaxies with B-band magnitude $M_B^c < -11^m$. In the Local Group ($D \leq 10 \, \text{Mpc}$) only half the galaxies have $M_B^c > -11^m$ and it is expected that for distances $\sim 9 \, \text{Mpc}$ more than half of the ultra-faint galaxies are missing. Specifically, it is estimated that around $10^3–10^4$ galaxies of the LV are not included in UNGC.
+
+The incompleteness for ultra-faint galaxies is primarily due to their low surface brightness, making them difficult to detect beyond the Local Group. This limitation is particularly significant for studies of dwarf galaxies and the faint end of the galaxy luminosity function
 
 ## Comparing the Catalogs
 
-## The "special" case of the Star Formation Rates
+Before we merge the two catalogs we need to compare the corresponding quantities to ensure that there are no major incompatabilities. The quantities that are comparable are:
+
+-   Distances \[Mpc\]
+-   Radial Velocities \[km/s\]
+-   Morphology and Geometry of the galaxies
+    -   Morphological type (Numerical Hubble)
+    -   Inclination \[degrees\]
+    -   Angular Diameter of the Major and Semi-major axis \[arcmin\]
+-   K-band Luminosity \[$L_\odot$\]
+-   K and B-band Magnitudes \[mag\]
+-   Star Formation Rates \[$M_\odot/yr$\]
+
+For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^6]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is succesfull.
+
+[^6]: $R^2$ Measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be atleast $80\%$
+
+All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs,who need more detailed analysis. 
+
+To begin with the morphological types of the galaxies we first need to understand possible incompatabilities of the given types of each catalog.
+
+
+::: {#fig-TTypes layout-ncol=2}
+![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png) 
+
+![After the clipping of the transient types](compare/quickplots/Type_clip.png)
+
+Scatter plots and the residuals of the Hubble Numerical morphological types
+:::
 
 # Calculating the parameters
 
@@ -362,7 +403,23 @@ The observational data of galaxies located inside the LV are extracted from the 
 
 {{<pagebreak>}}
 
-# Linear Comparison of the catalogs {.appendix}
+# Appendix A: Scatter plots of the comparisons {#sec-regressions .appendix}
+
+::: {layout-ncol="2"}
+![Linear Regression of the Distances in Mpc](compare/quickplots/Distance.png){width="300"}
+
+![Linear Regression of the Radial Velocities in km/s](compare/quickplots/Heliocentric%20radial%20velocity.png){width="300"}
+:::
+
+::: {#fig-elephants layout-ncol="2"}
+![Linear Regression of the K-band luminosity in $L_\odot$](compare/quickplots/K-Luminosity.png){width="300"}
+
+![Linear Regression of the B-Band Magnitude](compare/quickplots/Magnitude%20(B-band).png){width="300"}
+
+![Linear Regression of the K-Band Magnitude](compare/quickplots/Magnitude%20(K-band).png){width="300"}
+
+![Linear Regression of the Angular Diameter of the Major and Semi-major axis in arciminutes](compare/quickplots/Major%20Axis%20(arcmin).png){width="300"}
+:::
 
 {{<pagebreak>}}
 
