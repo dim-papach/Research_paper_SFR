@@ -146,7 +146,9 @@ It is also important to define the Star Formation Density (SFRD):
 
 $$
 \text{SFRD} = \frac{1}{V}\sum^N_{i=1}\text{SFR}_{o,i},
-$$ where $V$ is the comoving volume [^2] of a region of the universe, $N$ is the number of galaxies of the regions and SFR$_{0,i}$ is the current SFR of each galaxy $i$.
+$$
+
+where $V$ is the comoving volume [^2] of a region of the universe, $N$ is the number of galaxies of the regions and SFR$_{0,i}$ is the current SFR of each galaxy $i$.
 
 [^2]: Comoving volume factors out the expansion of the universe, it remains a constant measure of “space” over time, making it possible to compare star formation at different epochs
 
@@ -279,7 +281,9 @@ In special relativity, $z$ is related to radial velocity $v$ by [@hoggDistanceMe
 
 $$
 1+z = \sqrt{\frac{1+v/c}{1-v/c}}
-$$ {#eq-z-rel} For small $v/c$ we can rewrite @eq-z-rel, as:
+$$ {#eq-z-rel}
+
+For small $v/c$ we can rewrite @eq-z-rel, as:
 
 $$
 z \approx \frac{V}{c} = \frac{H_0\times d}{c}
@@ -320,13 +324,27 @@ $$
 
 The delayed $τ$ model is widely used for describing an initial starburst followed by a gradual decline in SFR. This places galaxies on the main sequence. It is particularly effective for massive galaxies (@haslbauerCosmologicalStarFormation2023). However, it assumes smooth SFR evolution and may overestimate peak SFR in high-redshift galaxies.
 
-Using the delayed τ model, we compute $\tau$, $t_{\text{sf}}$, and normalization constant $A_{\text{del}}$ with:
+Using the delayed-$\tau$ model, we compute $\tau$, $t_{\text{sf}}$, and normalization constant $A_{\text{del}}$ with:
 
 $$
 \text{SFR}_0 = \text{SFR}(t_{sf}) = A_{del}\frac{t_{sf}}{\tau^2}e^{-t_{sf}/\tau}
 $$ {#eq-delayed-current}
 
-where $\text{SFR}_0$ is given in the catalogs.
+where $\text{SFR}_0$ is given in the catalogs. According to these model the timescale, at which the SFR peaks, is around $3.5\lessapprox\tau\lessapprox 4.5$ [@speagleHighlyConsistentFramework2014]. If we intergrate the SFR(t), we can calculate the present day averaged SFR:
+
+$$
+\overline{\text{SFR}_\text{del}} = \frac{1}{t_{sf}}\int^{t_\text{end}}_{t_\text{start}}\text{SFR}_{del}(t)dt = \frac{A_{del}}{t_{sf}}\left[1-\left(1+\frac{t_{sf}}{\tau}\right)\exp\left(-\frac{t_{sf}}{\tau}\right)\right]
+$$ {#eq-delayed-current-averaged}
+
+Where $\overline{\text{SFR}}$ can be calculated by the stellar masses of the galaxy of interest:
+
+$$
+\overline{\text{SFR}_\text{del}} = \frac{\zeta M_*}{t_sf}
+$$ {#eq-averaged-SFR-M*}
+
+and $\zeta$ accounts for the mass-loss through stellar evolution, and is $\zeta \approx 1.3$ [@kroupaConstraintsStarFormation2020].
+
+Using these two equations @haslbauerCosmologicalStarFormation2023 calculated the parameters $\tau,\ A_{del}$ of the model, for a constant $t_{sf}$ for all the galaxies, and thus they were able to approximate Cosmic SFRD of the LV. They found that the SFHs implied from the LV galaxies systematically underestimate the SFRDs at $z \lesssim 3$ and overestimates the SFRDs at $z\gtrsim 6$ as in comparison to those of MD14. In particular, the SFRD at the peak of the Lilly-Madau plot is $2.16 \pm 0.32$ lower in the case of the delayed-$\tau$. However, since they assume that all the galaxies begin at the same time and their sample size is not representative of the observed Universe, better calculations could potentially fix these discrepancies. However, these parametrization of the SFH could also be inadequate to describe galaxy evolution, especially for galaxies with $M_*<10^{10}\ M_\odot$, as discussed in @haslbauerCosmologicalStarFormation2023.
 
 # Computational Methods
 
@@ -380,17 +398,16 @@ For the comparison of our data we will use linear regression, accounting for the
 
 [^6]: $R^2$ Measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be atleast $80\%$
 
-All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs,who need more detailed analysis. 
+All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs,who need more detailed analysis.
 
-To begin with the morphological types of the galaxies we first need to understand possible incompatabilities of the given types of each catalog.
+To begin with the morphological types of the galaxies we first need to understand possible incompatibilities of the given types of each catalog.
 
-
-::: {#fig-TTypes layout-ncol=2}
-![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png) 
+::: {#fig-TTypes layout-ncol="2"}
+![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png)
 
 ![After the clipping of the transient types](compare/quickplots/Type_clip.png)
 
-Scatter plots and the residuals of the Hubble Numerical morphological types
+Scatter plots and the residuals of the Hubble Numerical morphological types show a good correlation between the two datasets, if we ignore the transient galaxies.
 :::
 
 # Calculating the parameters
