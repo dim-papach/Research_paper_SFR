@@ -382,17 +382,17 @@ The incompleteness for ultra-faint galaxies is primarily due to their low surfac
 
 ## Comparing the Catalogs
 
-Before we merge the two catalogs we need to compare the corresponding quantities to ensure that there are no major incompatabilities. The quantities that are comparable are:
+Before we merge the two catalogs we need to compare the corresponding quantities of the 288 common galaxies to ensure that there are no major incompatabilities. The quantities that are comparable are:
 
--   Distances \[Mpc\]
--   Radial Velocities \[km/s\]
+-   Distances \[Mpc\] (288/288 galaxies)
+-   Radial Velocities \[km/s\] (286/288 galaxies)
 -   Morphology and Geometry of the galaxies
-    -   Morphological type (Numerical Hubble)
-    -   Inclination \[degrees\]
-    -   Angular Diameter of the Major and Semi-major axis \[arcmin\]
--   K-band Luminosity \[$L_\odot$\]
--   K and B-band Magnitudes \[mag\]
--   Star Formation Rates \[$M_\odot/yr$\]
+    -   Morphological type (229/288 galaxies)
+    -   Inclination \[degrees\] (209/288 galaxies)
+    -   Angular Diameter of the Major and Semi-major axis \[arcmin\] (261/288 galaxies)
+-   K-band Luminosity \[$L_\odot$\] and Magnitude (70/288 galaxies)
+-   B-band Magnitudes \[mag\] (244/288 galaxies)
+-   Star Formation Rates \[$M_\odot/yr$\] (73/288 galaxies)
 
 For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^6]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is succesfull.
 
