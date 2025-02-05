@@ -1,12 +1,11 @@
-x,y,y_error,x_error,description,log_x,log_y
-Dis,D,E_D,,Distance,False,False
-RVel,V,E_V,,Heliocentric radial velocity,False,False
-TType,T,E_T,,Hubble Morphology,False,False
-logKLum,logL_K,,,K-Luminosity,False,False
-mag_B,BT,E_BT,e_mag_B,Magnitude (B-band),False,False
-Kmag,K,E_K,,Magnitude (K-band),False,False
-logStellarMass,logM_HEC,,,Stellar Mass,False,False
-logSFR_mean,logSFR_HEC,,,SFR,False,False
-inc,INCL,,,Inclination (deg),False,False
-a26_1,R1,,,Major Axis (arcmin),True,True
-
+x,y,units,y_error,x_error,description,log_x,log_y
+Dis,D,Mpc,E_D,,Distance,False,False
+RVel,V,km/s,E_V,,Heliocentric radial velocity,False,False
+TType,T,,E_T,,Hubble Morphology,False,False
+logKLum,logL_K,$\log_{10}(L_\odot)$,,,K-Luminosity,False,False
+mag_B,BT,mag,E_BT,e_mag_B,Magnitude (B-band),False,False
+Kmag,K,mag,E_K,,Magnitude (K-band),False,False
+logStellarMass,logM_HEC,$\log_{10}(M_\odot)$,,,Stellar Mass,False,False
+logSFR_mean,logSFR_HEC,$\log_{10}(M_\odot/yr)$,,,SFR,False,False
+inc,INCL,deg,,,Inclination (deg),False,False
+a26_1,R1,arcmin,,,Major Axis (arcmin),True,True

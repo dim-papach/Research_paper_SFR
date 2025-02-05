@@ -400,8 +400,7 @@ For the comparison of our data we will use linear regression, accounting for the
 
 All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs,who need more detailed analysis.
 
-To begin with the morphological types of the galaxies, we first need to address possible potential inconsistencies in the classifications of the two catalogs. As we can see in @fig-TType-all, some galaxies "jump" from one side of the classification to the other side, depending on the catalog. These galaxies are dwarf galaxies, so we can safely assume that they are Tr type galaxies, as discussed in @sec-dwarves. For the rest of the analysis we will adopt the Numerical Morphological Type from the HECATE catalog, since it includes a larger number of galaxies, ensuring better
-data compatibility. Additionally, the HECATE catalog boasts an accuracy of 0.1 and provides errors in comparison with the UNGC.
+To begin with the morphological types of the galaxies, we first need to address possible potential inconsistencies in the classifications of the two catalogs. As we can see in @fig-TType-all, some galaxies "jump" from one side of the classification to the other side, depending on the catalog. These galaxies are dwarf galaxies, so we can safely assume that they are Tr type galaxies, as discussed in @sec-dwarves. For the rest of the analysis we will adopt the Numerical Morphological Type from the HECATE catalog, since it includes a larger number of galaxies, ensuring better data compatibility. Additionally, the HECATE catalog boasts an accuracy of 0.1 and provides errors in comparison with the UNGC.
 
 ::: {#fig-TTypes layout-ncol="2"}
 ![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png){#fig-TType-all}

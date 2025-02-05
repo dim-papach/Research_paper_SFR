@@ -55,6 +55,7 @@ data["logSFR_mean"] = np.log10(data["SFR_mean"])
 def perform_linear_regression_analysis_fixed(
     x,
     y,
+    unit = None,
     desc=None,
     x_error=None,
     y_error=None,
@@ -71,6 +72,8 @@ def perform_linear_regression_analysis_fixed(
         col for col in [x, y, x_error, y_error, "mass_type"] if col in data.columns
     ]
     aligned_data = data[error_cols].dropna()
+    total_sample_size = len(aligned_data)
+
 
     # Proceed only if there's sufficient data
     if len(aligned_data) < 2:
@@ -105,10 +108,10 @@ def perform_linear_regression_analysis_fixed(
     results = model.fit()
 
     # Fit parameters
-    slope = results.params[1]
-    intercept = results.params[0]
-    slope_err = results.bse[1]
-    intercept_err = results.bse[0]
+    slope = results.params.iloc[1]  # Use .iloc for positional indexing
+    intercept = results.params.iloc[0]
+    slope_err = results.bse.iloc[1]
+    intercept_err = results.bse.iloc[0]
     r_squared = results.rsquared
 
     # Calculate residuals
@@ -123,6 +126,7 @@ def perform_linear_regression_analysis_fixed(
     # Scatter plot with fit
     for name, group in groups:
         marker_shape = marker_dict[name] if marker_dict and name in marker_dict else "o"
+        sample_size = len(group)  # Count the number of points in the group
 
         x_data_g = group[x] if log_transform_x is False else np.log10(group[x])
         y_data_g = group[y] if log_transform_y is False else np.log10(group[y])
@@ -137,7 +141,7 @@ def perform_linear_regression_analysis_fixed(
             fmt=marker_shape,
             ecolor="grey",
             capsize=3,
-            label=name,
+            label=f"{name} (N = {sample_size})",
         )
     # Plot the fitted line
     x_range = axs[0].get_xlim()
@@ -149,27 +153,37 @@ def perform_linear_regression_analysis_fixed(
         color="red",
         label=f"Fit: y = ({slope:.3f} ± {slope_err:.3f})x + ({intercept:.3f} ± {intercept_err:.3f})",
     )
-    axs[0].set_xlabel(
-        f"UNGC({'log10(' if log_transform_x else ''}{x}{')' if log_transform_x else ''})"
-    )
-    axs[0].set_ylabel(
-        f"HECATE({'log10(' if log_transform_y else ''}{y}{')' if log_transform_y else ''})"
-    )
-    axs[0].set_title(f"Linear Fit of {desc}\n$R^2$ = {r_squared:.2f}")
+    # Set x-axis label with LaTeX math notation and units (if available)
+    x_label = f"UNGC({'log$_{10}$(' if log_transform_x else ''}{x}{')' if log_transform_x else ''})"
+    if unit and not pd.isna(unit):  # Check if units are provided and not NaN
+        x_label += f" [{unit}]"
+    axs[0].set_xlabel(x_label)   
+
+    # Set y-axis label with LaTeX math notation and units (if available)
+    y_label = f"HECATE({'log$_{10}$(' if log_transform_y else ''}{y}{')' if log_transform_y else ''})"
+    if unit and not pd.isna(unit):  # Check if units are provided and not NaN
+        y_label += f" [{unit}]"
+    axs[0].set_ylabel(y_label)    
+    axs[0].set_title(f"Linear Fit of {desc}\n$R^2$ = {r_squared:.2f}\n Sample size = {total_sample_size}")
     axs[0].legend()
     axs[0].grid(True)
 
     # Residuals plot
     for name, group in groups:
         marker_shape = marker_dict.get(name, "o") if marker_dict else "o"
+        sample_size = len(group)  # Count the number of points in the group
+
         x_data_g = group[x] if log_transform_x is False else np.log10(group[x])
         residuals_g = group[y] - (intercept + slope * group[x])
-        axs[1].scatter(x_data_g, residuals_g, marker=marker_shape, label=name)
+        axs[1].scatter(x_data_g, residuals_g, marker=marker_shape, label=f"{name} (N = {sample_size})")
 
     axs[1].axhline(0, color="red", linestyle="--", label="Zero Residual Line")
-    axs[1].set_xlabel(
-        f"UNGC({'log10(' if log_transform_x else ''}{x}{')' if log_transform_x else ''})"
-    )
+    # Set x-axis label for residuals plot with LaTeX math notation and units (if available)
+    residual_x_label = f"UNGC({'log$_{10}$(' if log_transform_x else ''}{x}{')' if log_transform_x else ''})"
+    if unit and not pd.isna(unit):  # Check if units are provided and not NaN
+        residual_x_label += f" [{unit}]"
+
+    axs[1].set_xlabel(residual_x_label)
     axs[1].set_ylabel("Residuals")
     axs[1].set_title("Residuals of the Linear Fit")
     axs[1].legend()
@@ -202,6 +216,7 @@ for _, row in cols.iterrows():
     perform_linear_regression_analysis_fixed(
         x=row["x"],
         y=row["y"],
+        unit=row["units"],
         x_error=row["x_error"],
         y_error=row["y_error"],
         log_transform_x=row["log_x"],
