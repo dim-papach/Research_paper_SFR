@@ -106,7 +106,7 @@ By offering extra designations for bar strength, ring features, and transitional
 
 : This table was based on the \LaTeX files of [@RC3ThirdReference]
 
-### Dwarf Galaxies
+### Dwarf Galaxies {#sec-dwarves}
 
 Despite the usefulness of de Vaucouleurs’ numerical T-type system , we run into practical issues when classifying dwarf galaxies. These galaxies need a more detailed classification system, since the T-Type system can denote galaxies, whose physical properties drastically differ, with by the same number. For instance, dwarf spheroidals and normal ellipticals both end up with a T-value below zero (T \< 0), even though their properties are vastly different. Then there are “transient” dwarf galaxies (Tr), whose features bridge spheroidal (Sph)(Sph) and irregular (Ir)(Ir) types. Inaccuracies in classification can cause these hybrids to “jump” from one extreme of the T-scale to the other with only a small error in morphology.
 
@@ -396,18 +396,19 @@ Before we merge the two catalogs we need to compare the corresponding quantities
 
 For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^6]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is succesfull.
 
-[^6]: $R^2$ Measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be atleast $80\%$
+[^6]: $R^2$ Measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be higher than $80\%$, or close to it if $\overline{\text{Residuals}}\approx 0$
 
 All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs,who need more detailed analysis.
 
-To begin with the morphological types of the galaxies we first need to understand possible incompatibilities of the given types of each catalog.
+To begin with the morphological types of the galaxies, we first need to address possible potential inconsistencies in the classifications of the two catalogs. As we can see in @fig-TType-all, some galaxies "jump" from one side of the classification to the other side, depending on the catalog. These galaxies are dwarf galaxies, so we can safely assume that they are Tr type galaxies, as discussed in @sec-dwarves. For the rest of the analysis we will adopt the Numerical Morphological Type from the HECATE catalog, since it includes a larger number of galaxies, ensuring better
+data compatibility. Additionally, the HECATE catalog boasts an accuracy of 0.1 and provides errors in comparison with the UNGC.
 
 ::: {#fig-TTypes layout-ncol="2"}
-![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png)
+![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png){#fig-TType-all}
 
 ![After the clipping of the transient types](compare/quickplots/Type_clip.png)
 
-Scatter plots and the residuals of the Hubble Numerical morphological types show a good correlation between the two datasets, if we ignore the transient galaxies.
+Scatter plots and the residuals of the Hubble Numerical morphological types show a good correlation between the two datasets, if we ignore the Transient dwarf galaxies.
 :::
 
 # Calculating the parameters
