@@ -154,13 +154,13 @@ where $V$ is the comoving volume [^2] of a region of the universe, $N$ is the nu
 
 For the Local Cosmological Volume, which we will focus on, the volume is the sphere with its center at the Milky Way and a radius of 11 Mpc $V = \frac{4}{3}\pi(11\, \text{Mpc})^3\approx 5575.3\, \text{Mpc}^3$.
 
-### Estimating SFR from Spectra
+### Estimating SFR from Spectra {#sec-SFR-est}
 
 SFR can be estimated using various photometric or spectroscopic methods based on the luminosity of at least one spectral band or the intensity of a spectral line. Different luminosities and intensities trace distinct emission mechanisms, offering insights into a galaxy’s radiation sources. Below are common methods:[^3]
 
 [^3]: @calzettiStarFormationRate2012, @mushotzkyASTR620GalaxiesFall2017
 
--   **Hα** \boldmath$\alpha$ **Emission**: Young, hot, massive stars (O-type stars, \~10 Myr, \~20 $M_\odot$) produce a number of ionizing photons, which they ionize the surrounding hydrogen rich gas. The hydorgen undergoes recombination cascades which produce Balmer emission lines of $H\alpha$ (0.6563 $\mu m$) and $H\beta$ (0.4861 $\mu m$). Dust can significantly affect observations.
+-   **H**\boldmath$\alpha$ **Emission**: Young, hot, massive stars (O-type stars, \~10 Myr, \~20 $M_\odot$) produce a number of ionizing photons, which they ionize the surrounding hydrogen rich gas. The hydorgen undergoes recombination cascades which produce Balmer emission lines of $H\alpha$ (0.6563 $\mu m$) and $H\beta$ (0.4861 $\mu m$). Dust can significantly affect observations.
 
 -   **Far-Ultraviolet (FUV) Flux**: Mainly emitted by young, hot stars ( B-type stars, \~100 Myr). Dust presence can also significantly affect observations.
 
@@ -188,7 +188,7 @@ $$ {#eq-SFR_comb}
 
 where $L_{\text{FUV}}$ and $L_{\text{H}\alpha}$ are corrected for dust attenuation.
 
-![Plot showing the linear relation $\log_{10}\text{SFR}_{FUV} = \log_{10}\text{SFR}_{H\alpha}$, as well as their distrubutions](figure/log_SFR_FUV_Ha.png){fig-align="center" width="500"}
+![Plot showing the linear relation $\log_{10}\text{SFR}_{FUV} = \log_{10}\text{SFR}_{H\alpha}$, as well as their distributions, based on the data from UNGC](figure/log_SFR_FUV_Ha.png){#fig-SFR-Ha-FUV fig-align="center" width="500"}
 
 According to [@madauCosmicStarFormation2014], this method often underestimates the SFR, since different galaxy populations may systematically follow distinct absorption mechanisms depending on their characteristics.
 
@@ -203,7 +203,7 @@ Following the same reasoning as the previous formula, the total SFR can be expre
 $$
 SFR_{\text{total}} = \text{mean}\left(\mathcal{K}_{\text{FUV}} \cdot L_{\text{FUV}}, \mathcal{K}_{\text{H}\alpha} \cdot L_{\text{H}\alpha}\right) + \mathcal{K}_{\text{IR}} \cdot L_{\text{IR}} \\
 = SFR_{\text{FUV},H\alpha}+ SFR_{\text{IR}}
-$$
+$$ {#eq-SFR-tot-mean}
 
 where $L_{\text{FUV}}$ and $L_{\text{H}\alpha}$ are not corrected for dust absorption. However, since we do not have enough galaxies with both traces, we will use a different method of calculating the total SFR, which we will discuss later.
 
@@ -384,23 +384,25 @@ The incompleteness for ultra-faint galaxies is primarily due to their low surfac
 
 Before we merge the two catalogs we need to compare the corresponding quantities of the 288 common galaxies to ensure that there are no major incompatabilities. The quantities that are comparable are:
 
--   Distances \[Mpc\] (288/288 galaxies)
--   Radial Velocities \[km/s\] (286/288 galaxies)
+-   Distances \[Mpc\] (288/288 common galaxies)
+-   Radial Velocities \[km/s\] (286/288 common galaxies)
 -   Morphology and Geometry of the galaxies
-    -   Morphological type (229/288 galaxies)
-    -   Inclination \[degrees\] (209/288 galaxies)
-    -   Angular Diameter of the Major and Semi-major axis \[arcmin\] (261/288 galaxies)
--   K-band Luminosity \[$L_\odot$\] and Magnitude (70/288 galaxies)
--   B-band Magnitudes \[mag\] (244/288 galaxies)
--   Star Formation Rates \[$M_\odot/yr$\] (73/288 galaxies)
+    -   Morphological type (229/288 common galaxies)
+    -   Inclination \[degrees\] (209/288 common galaxies)
+    -   Angular Diameter of the Major and Semi-major axis \[arcmin\] (261/288 common galaxies)
+-   K-band Luminosity \[$L_\odot$\] and Magnitude (70/288 common galaxies)
+-   B-band Magnitudes \[mag\] (244/288 common galaxies)
+-   Star Formation Rates \[$M_\odot/yr$\] (73/288 common galaxies)
 
-For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^6]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is succesfull.
+For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^6]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is considered succesfull.
 
-[^6]: $R^2$ Measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be higher than $80\%$, or close to it if $\overline{\text{Residuals}}\approx 0$
+[^6]: $R^2$ measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be higher than $80\%$, or close to it if $\overline{\text{Residuals}}\approx 0$
 
-All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs,who need more detailed analysis.
+All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs, that need more detailed analysis.[^7]
 
-To begin with the morphological types of the galaxies, we first need to address possible potential inconsistencies in the classifications of the two catalogs. As we can see in @fig-TType-all, some galaxies "jump" from one side of the classification to the other side, depending on the catalog. These galaxies are dwarf galaxies, so we can safely assume that they are Tr type galaxies, as discussed in @sec-dwarves. For the rest of the analysis we will adopt the Numerical Morphological Type from the HECATE catalog, since it includes a larger number of galaxies, ensuring better data compatibility. Additionally, the HECATE catalog boasts an accuracy of 0.1 and provides errors in comparison with the UNGC.
+[^7]: The names of the x and y axes are written as they are given in the corresponding catalog, except the ones in decimal logarithmic scale, that are notated appropriately.
+
+To begin with the morphological types of the galaxies, we first need to address potential inconsistencies in the classifications of the two catalogs. As we can see in @fig-TType-all, some galaxies "jump" from one side of the classification to the other side, depending on the catalog. These galaxies are dwarf galaxies, so we can safely assume that they are Tr type galaxies, as discussed in @sec-dwarves. For the rest of the analysis we will adopt the Numerical Morphological Type from the HECATE catalog, since it includes a larger number of galaxies, ensuring better data compatibility. Additionally, the HECATE catalog boasts an accuracy of 0.1 and provides errors, while the UNGC provides a rigid categorization of the galaxies with no errors.
 
 ::: {#fig-TTypes layout-ncol="2"}
 ![Before the clipping of the transient types](compare/quickplots/Hubble%20Morphology.png){#fig-TType-all}
@@ -409,6 +411,12 @@ To begin with the morphological types of the galaxies, we first need to address 
 
 Scatter plots and the residuals of the Hubble Numerical morphological types show a good correlation between the two datasets, if we ignore the Transient dwarf galaxies.
 :::
+
+Next we need to analyze the SFR from the two catalogs. The catalogs provide different SFR estimators, H$\alpha$ and FUV from UNGC and the total IR from HECATE. As already discussed in @sec-SFR-est, the two estimators FUV and H$\alpha$ can be combined using their average ($\text{mean}(SFR_{FUV},SFR_{H\alpha})$), however both estimators and their average can potentially underestimate the SFR due to dust attenuation ($SFR_{TIR}$ is not affected by this), and this is exactly what is observed in @fig-SFR-comparison.
+
+![Scatter plot and the residuals of the $\text{mean}(SFR_{FUV},SFR_{H\alpha})$ from the UNGC catalog and the $SFR_{TIR}$. The SFR estimation from the FUV and H$\alpha$ is systematically lower than the $SFR_{TIR}$ estimator as expected. The $R^2$ is smaller than 80% however due to $\overline{\text{Residuals}}=0$ we can assume that the quantities are comparable.](images/paste-1.png){#fig-SFR-comparison width="60%"}
+
+In reality those estimators compliment each other and this is exactly why we they are not equal. The total SFR could potentially be calculated by @eq-SFR-tot-mean, however due to the lack of samples with both traces the calculation of $\text{SFR}_\text{total}$ is not possible without introducing biases to our data. Due to the underestimation from the estimators of UNGC, the main estimator used in our analysis will be the $TIR$ estimator and the $\text{mean}(SFR_{FUV},SFR_{H\alpha})$ will be transformed into the expected $\text{SFR}_\text{TIR}$ according to the linear regression of @fig-SFR-comparison.
 
 # Calculating the parameters
 
