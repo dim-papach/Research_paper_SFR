@@ -219,7 +219,7 @@ where $\alpha(t)$ and $\beta(t)$ depend on time and redshift $z$ (@speagleHighly
 
 ### Star Formation History Models
 
-![Star Formation Rate over the time of star formation, for different parametric models](figure/sfr-models.png){fig-align="center" width="300"}
+![Star Formation Rate over the time of star formation, for different parametric models](images/sfr-models.png){fig-align="center" width="300"}
 
 Parameterized SFH models are commonly used, offering simplicity through a few parameters [@carnallHowMeasureGalaxy2019a]:
 
@@ -303,7 +303,7 @@ $$
 
 ## Lilly-Madau Plot
 
-![The history of cosmic star formation as shown in @madauCosmicStarFormation2014](figure/lily-madau.png){fig-align="center" width="450"}
+![The history of cosmic star formation as shown in @madauCosmicStarFormation2014](images/lily-madau.png){fig-align="center" width="450"}
 
 Using observational data from UV and IR traces for the SFR for galaxies of different redshifts ($z$) @madauCosmicStarFormation2014 where able to calculate the cosmic SFRD, at different ages of the universe, and reveals three periods of the universe.
 
@@ -414,7 +414,7 @@ Scatter plots and the residuals of the Hubble Numerical morphological types show
 
 Next we need to analyze the SFR from the two catalogs. The catalogs provide different SFR estimators, H$\alpha$ and FUV from UNGC and the total IR from HECATE. As already discussed in @sec-SFR-est, the two estimators FUV and H$\alpha$ can be combined using their average ($\text{mean}(SFR_{FUV},SFR_{H\alpha})$), however both estimators and their average can potentially underestimate the SFR due to dust attenuation ($SFR_{TIR}$ is not affected by this), and this is exactly what is observed in @fig-SFR-comparison.
 
-![Scatter plot and the residuals of the $\text{mean}(SFR_{FUV},SFR_{H\alpha})$ from the UNGC catalog and the $SFR_{TIR}$. The SFR estimation from the FUV and H$\alpha$ is systematically lower than the $SFR_{TIR}$ estimator as expected. The $R^2$ is smaller than 80% however due to $\overline{\text{Residuals}}=0$ we can assume that the quantities are comparable.](images/paste-1.png){#fig-SFR-comparison width="60%"}
+![Scatter plot and the residuals of the $\text{mean}(SFR_{FUV},SFR_{H\alpha})$ from the UNGC catalog and the $SFR_{TIR}$. The SFR estimation from the FUV and H$\alpha$ is systematically lower than the $SFR_{TIR}$ estimator as expected. The $R^2$ is smaller than 80% however due to $\overline{\text{Residuals}}=0$ we can assume that the quantities are comparable.](compare/quickplots/SFR.png){#fig-SFR-comparison width="60%"}
 
 In reality those estimators compliment each other and this is exactly why we they are not equal. The total SFR could potentially be calculated by @eq-SFR-tot-mean, however due to the lack of samples with both traces the calculation of $\text{SFR}_\text{total}$ is not possible without introducing biases to our data. Due to the underestimation from the estimators of UNGC, the main estimator used in our analysis will be the $TIR$ estimator and the $\text{mean}(SFR_{FUV},SFR_{H\alpha})$ will be transformed into the expected $\text{SFR}_\text{TIR}$ according to the linear regression of @fig-SFR-comparison.
 
