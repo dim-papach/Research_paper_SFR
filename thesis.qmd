@@ -38,7 +38,7 @@ This thesis will focus on how a specific parametric model tries to explain the S
 
 The study of galaxies is a very active field of astronomy since it is a relatively young discipline. Until 1920, astronomers who observed spiral nebulae were not certain what they were. In 1921, two papers were published: one argued that the Milky Way constituted the whole Universe and that the spiral nebulae were part of it, while the second argued that each spiral nebula was, in fact, a distinct "island universe" [@shapleyScaleUniverse1921]. This debate became known as the Great Debate[^1].
 
-[^1]: @hoskinGreatDebateWhat1976
+[^1]: The chain is homogeneous if $T \forall x^{(i)}$ remains invariant (the probability of moving from $x^{(i−1)}$ to $x^{(i)}$ does not depend on the iteration number $i$.) and $\sum_{x^{(i)}} T\bigl(x^{(j)} \mid x^{(i-1)}\bigr) = 1$.
 
 In 1925, Edwin Hubble put an end to the debate by showing that the distances to the spiral nebulae were far too great compared to other objects within the Milky Way. The method he used involved observing Cepheid variable stars in these nebulae. By applying the period-luminosity relationship, which had been discovered by Henrietta Swan Leavitt [@leavitt1777VariablesMagellanic1907], Hubble was able to determine their distances. This groundbreaking discovery confirmed that spiral nebulae were indeed separate galaxies, marking the beginning of extragalactic astronomy and revolutionizing our understanding of the Universe.
 
@@ -378,14 +378,46 @@ $$
 
 if both conditional probabilities are well defined, that is, if $\Pr(X_1=x_1,\ldots,X_n=x_n)>0$.
 
-A great example of such a chain is the board game snake and ladders. The dice has a uniform probabiliy  distribution across 6 stages (integers 1 to 6). The players have a position on the board, but their next position on the board is only based on the current position and the random roll of the dice. The one dimension random walk algorithm is also a Markov Chain.
+A great example of such a chain is the board game snake and ladders. The dice has a uniform probabiliy distribution across 6 stages (integers 1 to 6). The players have a position on the board, but their next position on the board is only based on the current position and the random roll of the dice. The one dimension random walk algorithm is also a Markov Chain.
 
 The *Monte Carlo* method is a computational method that uses random values from a given probability distribution to approximate the features of the given distribution [@vanravenzwaaijSimpleIntroductionMarkov2018]. For example, if we want to calculate the mean of a normal distribution we can to draw a large number of random samples from the distribution, and calculate the sample mean of those, instead of calculating it directly.
 
+*MCMC* combines the properties of Markov chains and Monte Carlo, allowing the approximation of aspects of posterior distributions that cannot be directly calculated.
 
+Let $x^{(i)}$ be a homoguneous Markov chain[^5] inside a high-dimensional space $X$ of the set of possible configurations of a system and the space on which the posterior is defined, $x^{(i)}\in X = {x_1,x_2,...}$.
 
+[^5]: The chain is homogeneous if $T \forall x^{(i)}$ remains invariant (the probability of moving from $x^{(i−1)}$ to $x^{(i)}$ does not depend on the iteration number $i$.) and $\sum_{x^{(i)}} T\bigl(x^{(j)} \mid x^{(i-1)}\bigr) = 1$.
 
+The chain is described by the formula:
 
+$$
+p\bigl(x^{(i)} \mid x^{(i-1)},\dots,x^{(1)}\bigr) = T\bigl(x^{(i)} \mid x^{(i-1)}\bigr),
+$$
+
+where $T$ is the transition matrix and $p$ is the probability, following Bayes' rule $p(x|D) \propto p(D|x)\cdot p(x)$ ($D$ indicates the data). We chose $T$ in such a way that its stationary distribution is the posterior $p$:
+
+$$
+p\bigl(x^{(i)}\bigr)
+\;=\;
+\sum_{x^{(i-1)}} 
+p\bigl(x^{(i-1)}\bigr)\;T\bigl(x^{(i)} \mid x^{(i-1)}\bigr).
+$$
+
+$T$ should be *irreducible*, so any state of the chain has a positive probability of visiting all the other states, meaning that $T$ cannot be broken into smaller tables, and *aperiodic*, so the chain does not get trapped in cycles.
+
+In continuous state spaces, the transition matrix $T$ becomes an integral kernel $K$ and $p(x)$ becomes the corresponding eigenfunction
+
+$$
+ p\bigl(x^{(i)}\bigr) = \int p\bigl(x^{(i-1)}\bigr)\,K\bigl(x^{(i)} \mid x^{(i-1)}\bigr)\,dx^{(i-1)} .
+$$
+
+$K$ is the conditional density of $x^{(i)}$, and it is chosen by the corresponding MCMC algorithm, such as the Metropolis-Hastings algorithm.
+
+In practice, this means that given a prior distribution for the parameters of the examed model (in our case we assume priors for the parameters $t_{sf},\ \tau,\ A_{del}$ from the delayed-$\tau$ model) and the likelihood based on observed data (we have experimental data for the SFR and $M_*$), a MCMC algorithm can calculate the posterior probability of the model and thus approximate the distribution of the parameters. From these distributions, their mean values are the values of the parameters and their variance is the error.
+
+To calculate these, the algorithm firstly initializes some chains in the parameter space ($t_{sf},\ \tau,\ A_{del}$) and begins sampling the posterior distribution based on the values of the parameters. The first iterations are discarded, since if the sampling begins in a low probability region it can significantly affect the variance of results (burn-in period)[@andrieuIntroductionMCMCMachine2003]. Eventually, the chains should converge. To examine this we use the diagnostics $\hat{R}<1.01$ and ESS\>100. The diagnostics indicate if different chains have converged to the same posterior region and if the sample of draws autocorrelates, respectively.[^6]
+
+[^6]: For more information about the metrics used by the Stan software you can visit <https://mc-stan.org/docs/2_36/reference-manual/analysis.html#effective-sample-size.section>
 
 # Data of the Local Cosmological Volume
 
@@ -395,9 +427,9 @@ The observational data of galaxies located inside the LV are extracted from the 
 
 -   **HECATE** [@kovlakasHeraklionExtragalacticCatalogue2021]**:** The Heraklion Extragalactic Catalogue (HECATE) is an all-sky value-added galaxy catalog containing 204,733 galaxies with redshifts up to 0.047 (D ≤ 200 Mpc), from which 2901 are in the LV. It incorporates data from multiple surveys and databases, providing information on positions, sizes, distances, morphological classifications, star formation rates, stellar masses, metallicities, and nuclear activity classifications. HECATE is well-suited for multi-wavelength and multi-messenger astrophysics, including demographic studies and transient event follow-up.
 
--   **UNGC Catalog** [@karachentsevUPDATEDNEARBYGALAXY2013; @karachentsevSTARFORMATIONPROPERTIES2013]**:** The Updated Nearby Galaxy Catalog (UNGC)[^5] provides a distance-limited sample of galaxies, within 11 Mpc or radial velocities of $V < 600\ km \cdot s^{−1}$. Selecting galaxies with $D\leq 11$ Mpc, we get a sample of 1321 galaxies. It offers detailed star formation rate estimates derived from H$\alpha$ and far-ultraviolet (FUV) fluxes, making it particularly valuable for studying nearby galaxies and local star formation processes. The UNGC catalog focuses on galaxies with well-determined distances and includes detailed environmental and morphological data.
+-   **UNGC Catalog** [@karachentsevUPDATEDNEARBYGALAXY2013; @karachentsevSTARFORMATIONPROPERTIES2013]**:** The Updated Nearby Galaxy Catalog (UNGC)[^7] provides a distance-limited sample of galaxies, within 11 Mpc or radial velocities of $V < 600\ km \cdot s^{−1}$. Selecting galaxies with $D\leq 11$ Mpc, we get a sample of 1321 galaxies. It offers detailed star formation rate estimates derived from H$\alpha$ and far-ultraviolet (FUV) fluxes, making it particularly valuable for studying nearby galaxies and local star formation processes. The UNGC catalog focuses on galaxies with well-determined distances and includes detailed environmental and morphological data.
 
-[^5]: The UNGC tables can be downloaded using the following link: <https://www.sao.ru/lv/lvgdb/introduction.php>. Here, we use the latest update from 17.01.2025.
+[^7]: The UNGC tables can be downloaded using the following link: <https://www.sao.ru/lv/lvgdb/introduction.php>. Here, we use the latest update from 17.01.2025.
 
 We will join the two catalogs, based on the coordinates of the galaxies, so we could assure a bigger and more coplete sample size for our analysis. But first we need to undestand them and examine if there are any inconsistances between UNGC and HECATE.
 
@@ -407,13 +439,13 @@ The Completeness of a catalog refers to the extent to which a catalog includes a
 
 The *HECATE* catalog is designed to be a more comprehensive resource, covering a broader range of distances and luminosities.
 
--   **Luminosity and Distance Dependence:** The HECATE catalog is more complete for brighter galaxies (with luminosities above $10^{9.5} L_{B,\odot}$) and distances within 33 Mpc, which includes the LV. For galaxies with luminosities around $10^{10} L_{B,\odot}$)​, the catalog remains complete up to distances of 100 Mpc.
+-   **Luminosity and Distance Dependence:** The HECATE catalog is more complete for brighter galaxies (with luminosities above $10^{9.5} L_{B,\odot}$) and distances within 33 Mpc, which includes the LV. For galaxies with luminosities around $10^{10} L_{B,\odot}$, the catalog remains complete up to distances of 100 Mpc.
 -   **Luminosity Density:** The catalog's completeness is also estimated based on the luminosity density in the B-band. Within 30 Mpc, the catalog is over 100% complete due to the high density of galaxies around the Milky Way. However, at distances around 170 Mpc, the completeness drops to approximately 50%, indicating that many galaxies are missing.
 -   **Star Formation Rate and Stellar Mass:** The completeness of SFR is around 50% for distances between 30 and 150 Mpc, primarily due to limitations in the WISE survey coverage. Similarly, the completeness of stellar mass estimates is comparable to that of the B-band luminosity, with overdensities at short distances and a sharp cutoff at larger distances.
 
 The *UNGC* catalog focuses on galaxies within the LV, specifically those with radial velocities less than 600 km/s and distances within 11 Mpc. It is around $40\%-60\%$ complete for galaxies with B-band magnitude $M_B^c < -11^m$. In the Local Group ($D \leq 10 \, \text{Mpc}$) only half the galaxies have $M_B^c > -11^m$ and it is expected that for distances $\sim 9 \, \text{Mpc}$ more than half of the ultra-faint galaxies are missing. Specifically, it is estimated that around $10^3–10^4$ galaxies of the LV are not included in UNGC.
 
-The incompleteness for ultra-faint galaxies is primarily due to their low surface brightness, making them difficult to detect beyond the Local Group. This limitation is particularly significant for studies of dwarf galaxies and the faint end of the galaxy luminosity function
+The incompleteness for ultra-faint galaxies is primarily due to their low surface brightness, making them difficult to detect beyond the Local Group. This limitation is particularly significant for studies of dwarf galaxies and the faint end of the galaxy luminosity function.
 
 ## Comparing the Catalogs
 
@@ -429,13 +461,13 @@ Before we merge the two catalogs we need to compare the corresponding quantities
 -   B-band Magnitudes \[mag\] (244/288 common galaxies)
 -   Star Formation Rates \[$M_\odot/yr$\] (73/288 common galaxies)
 
-For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^6]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is considered succesfull.
+For the comparison of our data we will use linear regression, accounting for the errors of the observed data, where $R^2$ and the slope of the fitted line should be close to 1[^8]. We will also plot the residuals ($y_\text{Regression}-y_\text{observed}$) and if the mean value $\overline{\text{Residuals}}\approx 0$, then the linear regression is considered succesfull.
 
-[^6]: $R^2$ measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be higher than $80\%$, or close to it if $\overline{\text{Residuals}}\approx 0$
+[^8]: $R^2$ measures the proportion of variance explained by the linear model. For a model to be acceptable the $R^2$ should be higher than $80\%$, or close to it if $\overline{\text{Residuals}}\approx 0$
 
-All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs, that need more detailed analysis.[^7]
+All the results are shown in @sec-regressions, except the comparisons of the Morphological Types and of the SFRs, that need more detailed analysis.[^9]
 
-[^7]: The names of the x and y axes are written as they are given in the corresponding catalog, except the ones in decimal logarithmic scale, that are notated appropriately.
+[^9]: The names of the x and y axes are written as they are given in the corresponding catalog, except the ones in decimal logarithmic scale, that are notated appropriately.
 
 To begin with the morphological types of the galaxies, we first need to address potential inconsistencies in the classifications of the two catalogs. As we can see in @fig-TType-all, some galaxies "jump" from one side of the classification to the other side, depending on the catalog. These galaxies are dwarf galaxies, so we can safely assume that they are Tr type galaxies, as discussed in @sec-dwarves. For the rest of the analysis we will adopt the Numerical Morphological Type from the HECATE catalog, since it includes a larger number of galaxies, ensuring better data compatibility. Additionally, the HECATE catalog boasts an accuracy of 0.1 and provides errors, while the UNGC provides a rigid categorization of the galaxies with no errors.
 
@@ -454,8 +486,6 @@ Next we need to analyze the SFR from the two catalogs. The catalogs provide diff
 In reality those estimators compliment each other and this is exactly why we they are not equal. The total SFR could potentially be calculated by @eq-SFR-tot-mean, however due to the lack of samples with both traces the calculation of $\text{SFR}_\text{total}$ is not possible without introducing biases to our data. Due to the underestimation from the estimators of UNGC, the main estimator used in our analysis will be the $TIR$ estimator and the $\text{mean}(SFR_{FUV},SFR_{H\alpha})$ will be transformed into the expected $\text{SFR}_\text{TIR}$ according to the linear regression of @fig-SFR-comparison.
 
 After the merging of the two catalogs we get a final sample of 3934 galaxies out of each only 288 are included in both catalogs and where used for the comparison. 1033 are unique galaxies in the UNGC and the remaining 2613 are unique in the HECATE catalogs. Additionally, 1842 galaxies have SFR data (778 from HECATE and 1137 from UNGC), and 3042 galaxies have Stellar Mass data (1605 from HECATE, with the rest estimated using a mass-to-light ratio of 0.82 as provided by HECATE). 1761 galaxies have both SFR and $M_*$ data.
-
-
 
 # Calculating the parameters
 
