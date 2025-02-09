@@ -100,13 +100,22 @@ tar_plan(
     ),
     variables = "id"
   ),
-
+ # tar_stan_summary(
+ #    sfr_summary_t,
+ #    fit = stan_fit_mcmc_x,
+ #    data = list(
+ #      N = nrow(sfr_data),
+ #      logSFR_total = sfr_data$logSFR_total,
+ #      id_numbers = sfr_data$id_number
+ #    ),
+ #    variables = "logSFR_total"
+ #  ),
   tar_stan_summary(
     sfr_summary,
     fit = stan_fit_mcmc_x,
     data = list(
       N = nrow(sfr_data),
-      logSFR_total = sfr_data$logSFR_total,
+      logSFR_today = sfr_data$logSFR_today,
       id_numbers = sfr_data$id_number
     ),
     variables = "logSFR_today"
@@ -196,6 +205,7 @@ tar_plan(
                              "t_sf" = t_sf_summary,
                              "log_tsf" = log_tsf_summary,
                              "logSFR_today" = sfr_summary,
+                             #"logSFR_total" = sfr_summary_t,
                              "logtau" = logtau_summary)
 
       # Generate the plot

@@ -58,7 +58,7 @@ model {
   zeta ~ normal(1.3, 0.01);
 
   // Likelihood: Observed log SFR compared to modeled log SFR
-  logSFR_today ~ normal(logSFR_today, 0.1); // Assume small measurement error (std = 0.1)
+  logSFR_total ~ normal(logSFR_today, 0.1); // Assume small measurement error (std = 0.1)
 }
 
 generated quantities {
