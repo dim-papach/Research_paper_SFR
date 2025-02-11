@@ -25,7 +25,7 @@ editor: visual
 abstract: |
   The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the Star Formation Rates (SFR) of galaxies as a function with a rising SFR at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
 
-  @haslbauerCosmologicalStarFormation2023 argue that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life each galaxy and so we can find the expected time of peak of the SFR.
+  @haslbauerCosmologicalStarFormation2023 argue that the Delayed-$\tau$ model is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life of each galaxy and so we can find the expected time of peak of the SFR.
 
   In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
   
@@ -48,7 +48,7 @@ Today we know that galaxies are large-scale structures containing, Stars, gas an
 
 One of the most common methods of classification is the *Hubble classification [@hubbleCepheidsSpiralNebulae1925]* , which categorizes galaxies based on their morphology.
 
--   **Elliptical Galaxies (E):** Ellipsoidal shapes with smooth brightness profiles, containing older stars and minimal interstellar matter. Their eccentricity takes values from 0 to 0.7, so we can categorize them even further, form E0 to E7
+-   **Elliptical Galaxies (E):** Ellipsoidal shapes with smooth brightness profiles, containing older stars and minimal interstellar matter. Their eccentricity takes values from 0 to 0.7, so we can categorize them even further, from E0 to E7
 
 -   **Lenticular Galaxies (S0):** Intermediate between elliptical and spiral galaxies, featuring a central bulge and disk but lacking significant spiral structure.
 
@@ -160,7 +160,7 @@ SFR can be estimated using various photometric or spectroscopic methods based on
 
 [^3]: @calzettiStarFormationRate2012, @mushotzkyASTR620GalaxiesFall2017
 
--   **H**\boldmath$\alpha$ **Emission**: Young, hot, massive stars (O-type stars, \~10 Myr, \~20 $M_\odot$) produce a number of ionizing photons, which they ionize the surrounding hydrogen rich gas. The hydorgen undergoes recombination cascades which produce Balmer emission lines of $H\alpha$ (0.6563 $\mu m$) and $H\beta$ (0.4861 $\mu m$). Dust can significantly affect observations.
+-   **H**\boldmath$\alpha$ **Emission**: Young, hot, massive stars (O-type stars, \~10 Myr, \~20 $M_\odot$) produce a number of ionizing photons, which they ionize the surrounding hydrogen rich gas. The hydrogen undergoes recombination cascades which produce Balmer emission lines of $H\alpha$ (0.6563 $\mu m$) and $H\beta$ (0.4861 $\mu m$). Dust can significantly affect observations.
 
 -   **Far-Ultraviolet (FUV) Flux**: Mainly emitted by young, hot stars ( B-type stars, \~100 Myr). Dust presence can also significantly affect observations.
 
@@ -289,7 +289,7 @@ $$
 z \approx \frac{V}{c} = \frac{H_0\times d}{c}
 $$
 
-But, because light takes time to cover the distance $d$ between two galaxies, when the light finally reaches as, we will see the observed galaxy, as it was when the light was emitted, and not how it is at this moment. If we substitute time that it took the light to reach us over the distance, then we arrive at the relation [@longairGalaxyFormation1998]:
+But, because light takes time to cover the distance $d$ between two galaxies, when the light finally reaches us, we will see the observed galaxy, as it was when the light was emitted, and not how it is at this moment. If we substitute time that it took the light to reach us over the distance, then we arrive at the relation [@longairGalaxyFormation1998]:
 
 $$
 t_\text{emitted} \propto z^{-3/2}
@@ -350,9 +350,9 @@ Using these two equations @haslbauerCosmologicalStarFormation2023 calculated the
 
 ## Newton-Raphson
 
-The Newton-Raphson method is one of the most common numerical methods for estimating the root of a real-valued function. This method is based on the concept of linear approximation, where the function is locally approximated by its tangent line. It starts with initial guess of the root and iteratively refines the result using a formula that involves derivative of the function.
+The Newton-Raphson method is one of the most common numerical methods for estimating the root of a real-valued function. This method is based on the concept of linear approximation, where the function is locally approximated by its tangent line. It starts with an initial guess of the root and iteratively refines the result using a formula that involves derivative of the function.
 
-Let $x_n$ be the n-th approximation of the root and $f(x), f'(x)$ the function and the derivative, respectivelly. Then the refined approximation of the root $x_{n+1}$ is given by the formula
+Let $x_n$ be the n-th approximation of the root and $f(x), f'(x)$ the function and the derivative, respectively. Then the refined approximation of the root $x_{n+1}$ is given by the formula
 
 $$
 x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)},\ n\in \mathbb{N}
@@ -378,13 +378,13 @@ $$
 
 if both conditional probabilities are well defined, that is, if $\Pr(X_1=x_1,\ldots,X_n=x_n)>0$.
 
-A great example of such a chain is the board game snake and ladders. The dice has a uniform probabiliy distribution across 6 stages (integers 1 to 6). The players have a position on the board, but their next position on the board is only based on the current position and the random roll of the dice. The one dimension random walk algorithm is also a Markov Chain.
+A great example of such a chain is the board game "Snake and Ladders". The dice has a uniform probability distribution across 6 stages (integers 1 to 6). The players have a position on the board, but their next position on the board is only based on the current position and the random roll of the dice. The one dimension random walk algorithm is also a Markov Chain.
 
 The *Monte Carlo* method is a computational method that uses random values from a given probability distribution to approximate the features of the given distribution [@vanravenzwaaijSimpleIntroductionMarkov2018]. For example, if we want to calculate the mean of a normal distribution we can to draw a large number of random samples from the distribution, and calculate the sample mean of those, instead of calculating it directly.
 
 *MCMC* combines the properties of Markov chains and Monte Carlo, allowing the approximation of aspects of posterior distributions that cannot be directly calculated.
 
-Let $x^{(i)}$ be a homoguneous Markov chain[^5] inside a high-dimensional space $X$ of the set of possible configurations of a system and the space on which the posterior is defined, $x^{(i)}\in X = {x_1,x_2,...}$.
+Let $x^{(i)}$ be a homogeneous Markov chain[^5] inside a high-dimensional space $X$ of the set of possible configurations of a system and the space on which the posterior is defined, $x^{(i)}\in X = {x_1,x_2,...}$.
 
 [^5]: The chain is homogeneous if $T \forall x^{(i)}$ remains invariant (the probability of moving from $x^{(i−1)}$ to $x^{(i)}$ does not depend on the iteration number $i$.) and $\sum_{x^{(i)}} T\bigl(x^{(j)} \mid x^{(i-1)}\bigr) = 1$.
 
@@ -413,7 +413,7 @@ $$
 
 $K$ is the conditional density of $x^{(i)}$, and it is chosen by the corresponding MCMC algorithm, such as the Metropolis-Hastings algorithm.
 
-In practice, this means that given a prior distribution for the parameters of the examed model (in our case we assume priors for the parameters $t_{sf},\ \tau,\ A_{del}$ from the delayed-$\tau$ model) and the likelihood based on observed data (we have experimental data for the SFR and $M_*$), a MCMC algorithm can calculate the posterior probability of the model and thus approximate the distribution of the parameters. From these distributions, their mean values are the values of the parameters and their variance is the error.
+In practice, this means that given a prior distribution for the parameters of the examined model (in our case we assume priors for the parameters $t_{sf},\ \tau,\ A_{del}$ from the delayed-$\tau$ model) and the likelihood based on observed data (we have experimental data for the SFR and $M_*$), a MCMC algorithm can calculate the posterior probability of the model and thus approximate the distribution of the parameters. From these distributions, their mean values are the values of the parameters and their variance is the error.
 
 To calculate these, the algorithm firstly initializes some chains in the parameter space ($t_{sf},\ \tau,\ A_{del}$) and begins sampling the posterior distribution based on the values of the parameters. The first iterations are discarded, since if the sampling begins in a low probability region it can significantly affect the variance of results (burn-in period)[@andrieuIntroductionMCMCMachine2003]. Eventually, the chains should converge. To examine this we use the diagnostics $\hat{R}<1.01$ and ESS\>100. The diagnostics indicate if different chains have converged to the same posterior region and if the sample of draws autocorrelates, respectively.[^6]
 
@@ -431,7 +431,7 @@ The observational data of galaxies located inside the LV are extracted from the 
 
 [^7]: The UNGC tables can be downloaded using the following link: <https://www.sao.ru/lv/lvgdb/introduction.php>. Here, we use the latest update from 17.01.2025.
 
-We will join the two catalogs, based on the coordinates of the galaxies, so we could assure a bigger and more coplete sample size for our analysis. But first we need to undestand them and examine if there are any inconsistances between UNGC and HECATE.
+We will join the two catalogs, based on the coordinates of the galaxies, so we could assure a bigger and more complete sample size for our analysis. But first we need to undestand them and examine if there are any inconsistances between UNGC and HECATE.
 
 ## Catalog Completeness
 
