@@ -135,8 +135,9 @@ sfr_comparison_plot <- function(sfr_diff, logSFR_pred, logSFR_total) {
     xlim(-8, 1) +
     labs(
       title = TeX("Comparison of $log_{10}SFR_{pred}$ and $log_{10}SFR_{obs}$"),
-      x = TeX("$log_{10}\\left[\\frac{SFR_{obs}}{M_o/yr} \\right]$"),
-      y = TeX("$log_{10}\\left[\\frac{SFR_{pred}}{M_o/yr} \\right]$")
+      # x = TeX("$log_{10}\\left[\\frac{SFR_{obs}}{M_\u2299/yr} \\right]$"),
+      x = expression(log[10] * bgroup("[", frac(SFR[obs], M["\u2299"] / yr), "]")),
+      y = expression(log[10] * bgroup("[", frac(SFR[pred], M["\u2299"] / yr), "]"))
     ) +
     ggeasy::easy_center_title() +
     ggeasy::easy_legend_at("top")

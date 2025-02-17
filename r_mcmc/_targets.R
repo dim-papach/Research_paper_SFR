@@ -212,12 +212,12 @@ tar_plan(
     summary_names, # in latex2exp format
     {
       switch(summary_variables,
-        "logSFR_pred" = TeX("$\\log_{10}\\left[\\frac{SFR_{pred}}{M_o/yr}\\right]$"),
-        "log_tsf" = TeX("$log_{10}\\left[\\frac{t_{sf}}{Gyr}\\right]$"),
-        "t_sf" = TeX("$t_{sf}$ [Gyr]"),
-        "tau" = TeX("$\\tau$ [Gyr]"),
-        "logA" = TeX("$\\log\\left[\\frac{A_{del}}{M_o/yr}\\right]$"),
-        "logtau" = TeX("$log_{10}\\left[\\frac{\\tau}{Gyr}\\right]$")
+        logSFR_pred = expression(log[10] * bgroup("[", frac(SFR[obs], M["\u2299"] / yr), "]")),
+        log_tsf = expression(log[10] * bgroup("[", frac(t[sf], "Gyr"), "]")),
+        t_sf = expression(t[sf] * " [Gyr]"),
+        tau = expression(tau * " [Gyr]"),
+        logA = expression(log * bgroup("[", frac(A[del], M["\u2299"] / yr), "]")),
+        logtau = expression(log[10] * bgroup("[", frac(tau, "Gyr"), "]"))
       )
     },
     pattern = map(summary_variables) # Branch over variables
@@ -299,13 +299,7 @@ tar_plan(
       joined_data
     }
   ),
-  tar_target(
-    save_joined_data,
-    {
-      # Save the joined data
-      write.csv(joined_data, "joined_data.csv")
-    }
-  ),
+
 
   #### Comparisons####
 
@@ -328,4 +322,11 @@ tar_plan(
     sfr_diff_plot,
     sfr_comparison_plot(sfr_diff, logSFR_pred, logSFR_total)
   ),
+  tar_target(
+    save_joined_data,
+    {
+      # Save the joined data
+      write.csv(sfr_diff, "joined_data.csv")
+    }
+  )
 )
