@@ -107,3 +107,39 @@ plot_metrics <- function(summary_data, summary_variables, metrics) {
 
   ggsave(sprintf("plots/metrics/%s.png", fname))
 }
+
+
+sfr_comparison_plot <- function(sfr_diff, logSFR_pred, logSFR_total) {
+  default_colors <- scales::hue_pal()(2)
+  # Create a scatter plot of logSFR_pred vs logSFR_total
+  ggplot(sfr_diff, aes(y = logSFR_pred, x = logSFR_total, color = flag)) +
+    geom_point(size = 0.9) +
+    # Error bar for x based on _sigma
+    geom_errorbar(
+      aes(
+        ymin = logSFR_pred - logSFR_pred_sigma,
+        ymax = logSFR_pred + logSFR_pred_sigma
+      ),
+      width = 0.1
+    ) +
+    # legend for keep and discard = "Kept data", "Discarded data"+ the number of points for eac
+    scale_color_manual(
+      values = c("Keep" = default_colors[2], "Discard" = default_colors[1]),
+      breaks = c("Keep", "Discard"),
+      labels = c(
+        paste("Kept data (n =", sum(sfr_diff$flag == "Keep"), ")"),
+        paste("Discarded data (n =", sum(sfr_diff$flag == "Discard"), ")")
+      )
+    ) +
+    geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
+    xlim(-8, 1) +
+    labs(
+      title = TeX("Comparison of $log_{10}SFR_{pred}$ and $log_{10}SFR_{obs}$"),
+      x = TeX("$log_{10}\\left[\\frac{SFR_{obs}}{M_o/yr} \\right]$"),
+      y = TeX("$log_{10}\\left[\\frac{SFR_{pred}}{M_o/yr} \\right]$")
+    ) +
+    ggeasy::easy_center_title() +
+    ggeasy::easy_legend_at("top")
+
+  ggsave("plots/sfr_diff_plot.png")
+}

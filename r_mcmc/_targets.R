@@ -308,30 +308,24 @@ tar_plan(
   ),
 
   #### Comparisons####
-  # target to compare sfr_pred and sfr_obs visually
-  tar_target(
-    sfr_comparison,
-    {
-      # Create a scatter plot of logSFR_pred vs logSFR_total
-      ggplot(joined_data, aes(y = logSFR_pred, x = logSFR_total)) +
-        geom_point(size = 0.9) +
-        # Error bar for x based on _sigma
-        geom_errorbar(
-          aes(
-            ymin = logSFR_pred - logSFR_pred_sigma,
-            ymax = logSFR_pred + logSFR_pred_sigma
-          ),
-          width = 0.1
-        ) +
-        geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
-        xlim(-8, 1) +
-        labs(
-          title = "Comparison of logSFR_pred and logSFR_total",
-          x = TeX("$log_{10}\\left[\\frac{SFR_{total}}{M_o/yr} \\right]$"),
-          y = TeX("$log_{10}\\left[\\frac{SFR_{pred}}{M_o/yr} \\right]$")
-        )
 
-      ggsave("plots/sfr_comparison.png")
+  # SFRs should be almost equal. Target to flag the rows with big differences
+  tar_target(
+    sfr_diff,
+    {
+      # Flag the rows with big differences
+      joined_data %>%
+        mutate(
+          diff = logSFR_pred - logSFR_total,
+          flag = ifelse(abs(diff) < 2, "Keep", "Discard")
+        ) %>%
+        # return joined with all the columns + the new column SFR_flag
+        select(everything())
     }
-  )
+  ),
+  # plot the all SFRs and color based on flag
+  tar_target(
+    sfr_diff_plot,
+    sfr_comparison_plot(sfr_diff, logSFR_pred, logSFR_total)
+  ),
 )

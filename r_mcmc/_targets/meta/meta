@@ -1,7 +1,8 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|b3c6ddaf8faf6a85|||||||||||||||
+.Random.seed|object|245a52a183ffdfdb|||||||||||||||
 A_summary|stem|5afe7244ba56691d|d9fa9cc9404097c1|cad22625c28a9ea9|-53252812||t20131.0757101478s|4ff988dfbf6120e9|139505|fst_tbl|local|vector|||76.772||
 all_means|stem|960406fca3add950|fababda5b37c8ef7|0e9377ab29835c2a|343413404||t20136.7993537791s|033f7e8304392ad2|191473|rds|local|vector|||0.579||
+big_diffs|stem|c6f8957aa6e0862d|f78a9948673ab0c6|09fdeb5e127a51cf|324138918||t20136.8180802996s|e16752dc69150e3d|81422|rds|local|vector|||0.515||
 csv_file|stem|78af4fa5436f2925|5d8116dbd27b787a|2c530c1562a7fbd1|261075209|filled.csv|t20105.8178928454s|c744aa3e476a2af7|2223346|file|local|vector|||0.833||
 csv_file_path|stem|78af4fa5436f2925|5d8116dbd27b787a|2c530c1562a7fbd1|1008951838|filled.csv|t20105.8178928454s|c744aa3e476a2af7|2223346|file|local|vector|||0.544||
 diagnostics|stem|c80e088ea167bce0|12ed9680c8fcfc19|e26da5ea6534ec1c|1806411824||t20130.9817689163s|cf7aa924f3ed9ba7|168|qs|local|vector|||1.052||
@@ -250,8 +251,11 @@ raw_data|stem|2bde8449e1a31133|565b5835f0f5fc1a|b195cba05100a370|-1101284392||t2
 read_data|stem|3015f12b24b61639|327d83c9b9dd125b|11f08a8c59380272|1949791771||t20130.9990308192s|0e4ba9f7043349d2|850381|rds|local|vector|||0.09||
 rhat_values|stem|b196efb9ccd1ca04|990fb0fad1f345fc|6c0263e5dac4e23f|1865488005||t20046.0172358373s|d9400560ac21db5c|1096|rds|local|vector|||0||
 save_joined_data|stem|b5c21cffc0aba66f|db21c5654ba42a50|09fdeb5e127a51cf|-1044446977||t20136.7993587791s|d21be8cf0dd771ce|44|rds|local|vector|||0.02||
-sfr_comparison|stem|dbcd37b677b60c20|ee1653040e4a029c|09fdeb5e127a51cf|250677799||t20136.8085990205s|04fcf8b2530d31e5|77|rds|local|vector|||1.024|Removed 1 row containing missing values or values outside the scale rangegeom_point.|
+sfr_comparison|stem|dbcd37b677b60c20|1d199d8093c46ee3|09fdeb5e127a51cf|250677799||t20136.8169430363s|04fcf8b2530d31e5|77|rds|local|vector|||1.062|Removed 1 row containing missing values or values outside the scale rangegeom_point.|
+sfr_comparison_plot|function|14eb6b71c94dc17f|||||||||||||||
 sfr_data|stem|084062f2c213ff77|6a0477afa89cb169|2495fd697b4efd09|114586177||t20131.0457746213s|e08469153a017062|22013|rds|local|vector|||0.011||
+sfr_diff|stem|2e2da65438080ba7|68e538aacedaf295|09fdeb5e127a51cf|1382875249||t20136.8915367618s|1bed6f4f7d6933a7|222299|rds|local|vector|||0.513||
+sfr_diff_plot|stem|2b7876683e5dad43|424011c9b42de3f3|287dc1ca0f35d332|967590615||t20136.9001463872s|4be831169559909a|74|rds|local|vector|||1.112|Removed 1 row containing missing values or values outside the scale rangegeom_point.|
 sfr_summary|stem|54f714b25934274c|2f45358274b2f1ac|cad22625c28a9ea9|1531852784||t20136.5519117813s|efd0a74d4b2cad25|139547|fst_tbl|local|vector|||76.915||
 sfr_summary_t|stem||08ab8684b363e4b0|62e30923c63f612a|2107076831||t20128.0938871847s||0|fst_tbl|local|vector|||0.005||Cant find the following variables in the output logSFR_total
 stan_file|stem|459517c9759b1432|459f661641d63f55|2c530c1562a7fbd1|-1619811803|x.stan|t20130.9983150862s|1656353d5470ffb5|3098|file|local|vector|||0.811||
