@@ -59,7 +59,7 @@ import plotly.express as px
 #+end_src
 
 #+begin_src python :results none
-dt = QTable.read("./tables/outer_join.ecsv")
+dt = QTable.read("../tables/outer_join.ecsv")
 
 #+end_src
 
@@ -419,7 +419,7 @@ Here we calculate the color indexes <FUV-B>
 
 #+begin_src python
 
-dt["color"] = dt["FUVmag"]-dt["Bmag"]
+dt["color"] = dt["mag_FUV"]-dt["mag_B"]
 
 #+end_src
 
@@ -442,7 +442,7 @@ plt.close()
 
 #+RESULTS:
 :results:
-[[file:]]
+[[file:./figure/color_index.png]]
 :end:
 
 ** SFR_0
@@ -547,7 +547,7 @@ Histogram of SFR_0
 hist(dc["logSFR_UNGC"].value, bins = "freedman")
 
 plt.title("Histogram of $SFR_0$")
-plt.xlabel(r"$\log(SFR_0/[{}])$".format(dc["SFR_0"].unit.to_string("unicode")))
+plt.xlabel(r"$\log(SFR_0/[{}])$".format(SFR_0.unit.to_string("unicode")))
 plt.ylabel("Number of Galaxies")
 #save fig, plt close and print fig file name
 fname = "figure/log_SFR_0_hist.png"
@@ -557,7 +557,7 @@ fname
 #+end_src
 
 #+RESULTS:
-[[file:]]
+[[file:figure/log_SFR_0_hist.png]]
 
 ** How does the morphology change
 
@@ -664,7 +664,7 @@ plt.colorbar()
 
 plt.xscale("log")
 plt.yscale("log")
-plt.show()
+plt.close()
 #+end_src
 
 #+RESULTS:
@@ -752,7 +752,7 @@ plt.close()
 
 #+RESULTS:
 :results:
-[[file:]]
+[[file:figure/ratio_vs_color.png]]
 :end:
 
 
@@ -894,7 +894,6 @@ dc["A_n"] = np.where(np.isinf(dc["A_n"]), np.nan, dc["A_n"])
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
 
 #+begin_src python
 print(dc["x_n", "A_n"].info("stats"))
@@ -904,7 +903,7 @@ print(dc["x_n", "A_n"].info("stats"))
 : <QTable length=518>
 : name        mean               std                 min                 max
 : ---- ------------------ ------------------ ------------------- -------------------
-:  x_n            1.20898            3.17842            -33.7994             11.7659
+:  x_n             1.2122            3.17804            -33.7994             11.7659
 :  A_n 1.0472e+12 solMass 2.1989e+13 solMass 2.32981e-10 solMass 4.99763e+14 solMass
 : None
 
@@ -947,7 +946,7 @@ dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 #+end_src
 
 #+RESULTS:
-: /tmp/babel-etXArC/python-M39CsK:23: RuntimeWarning: The iteration is not making good progress, as measured by the
+: /tmp/babel-TSdjHw/python-KyS0GB:23: RuntimeWarning: The iteration is not making good progress, as measured by the
 :   improvement from the last ten iterations.
 
 #+begin_src python
@@ -958,7 +957,7 @@ print(dc["x_f","A_f"].info(["attributes" ,"stats"]))
 : <QTable length=518>
 : name  dtype    unit      class              mean                std                 min                  max
 : ---- ------- ------- -------------- ------------------- ------------------- -------------------- -------------------
-:  x_f float64           MaskedColumn             1.16944             3.12235             -33.7994             11.7659
+:  x_f float64           MaskedColumn                 inf                  --             -33.7994                 inf
 :  A_f float64 solMass MaskedQuantity 5.34269e+08 solMass 2.68206e+09 solMass -1.21983e+07 solMass 3.35987e+10 solMass
 : None
 
@@ -995,10 +994,10 @@ print(dc["x_f","x_n"].info(["attributes" ,"stats"]))
 #+RESULTS:
 :results:
 <QTable length=518>
-name  dtype     class       mean    std     min      max
----- ------- ------------ ------- ------- -------- -------
- x_f float64 MaskedColumn 1.16944 3.12235 -33.7994 11.7659
- x_n float64       Column 1.20898 3.17842 -33.7994 11.7659
+name  dtype     class      mean    std     min      max
+---- ------- ------------ ------ ------- -------- -------
+ x_f float64 MaskedColumn    inf      -- -33.7994     inf
+ x_n float64       Column 1.2122 3.17804 -33.7994 11.7659
 None
 :end:
 
@@ -1116,12 +1115,6 @@ print(dc[["tau"]].info("stats"))
 #+end_src
 
 #+RESULTS:
-: /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: overflow encountered in divide
-: <QTable length=518>
-: name     mean         std         min          max     n_bad
-: ---- ------------ ----------- ------------ ----------- -----
-:  tau -9.26834 Gyr 308.395 Gyr -4750.87 Gyr 2412.26 Gyr     1
-: None
 
 #+begin_src python :results file value
 plt.close("all")
@@ -1162,15 +1155,8 @@ fig.show()
 #+end_src
 
 #+RESULTS:
-: Gtk-[1;32mMessage[0m: [34m00:08:33.411[0m: Failed to load module "canberra-gtk-module"
-: Gtk-[1;32mMessage[0m: [34m00:08:33.414[0m: Failed to load module "canberra-gtk-module"
-: Gtk-[1;32mMessage[0m: [34m00:08:34.657[0m: Failed to load module "canberra-gtk-module"
-: Gtk-[1;32mMessage[0m: [34m00:08:34.658[0m: Failed to load module "canberra-gtk-module"
-: ATTENTION: default value of option mesa_glthread overridden by environment.
-: [Parent 2, Main Thread] WARNING: Failed to enumerate devices of org.freedesktop.UPower: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown
-: : 'glib warning', file /home/runner/work/desktop/desktop/engine/toolkit/xre/nsSigHandlers.cpp:187
-:
-: ** (zen-alpha:2): [1;33mWARNING[0m **: [34m00:08:34.797[0m: Failed to enumerate devices of org.freedesktop.UPower: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown
+: Gtk-[1;32mMessage[0m: [34m04:24:23.012[0m: Failed to load module "canberra-gtk-module"
+: Gtk-[1;32mMessage[0m: [34m04:24:23.013[0m: Failed to load module "canberra-gtk-module"
 
 #+begin_src python :results value file
 
@@ -1208,7 +1194,7 @@ plt.close()
 #+end_src
 
 #+RESULTS:
-[[file:figure/x-A.png]]
+[[file:]]
 
 
 #+begin_src python :results value file drawer
@@ -1231,7 +1217,7 @@ filename + ".png"
 
 #+RESULTS:
 :results:
-[[file:figure/tau-A.png]]
+[[file:]]
 :end:
 
 
@@ -1317,7 +1303,7 @@ plt.close()
 #+end_src
 
 #+RESULTS:
-[[file:figure/SFR-x.png]]
+[[file:]]
 
 
 #+begin_src python :results value file
@@ -1344,7 +1330,7 @@ fname
 #+end_src
 
 #+RESULTS:
-[[file:figure/AzM_*-x.png]]
+[[file:]]
 
 * PROJ The relations of the Masses
 Since the aim of the paper is to find the SFR lets first understand and calculate the masses of the galaxies and see if we can find any relation with the SFR.
@@ -1420,8 +1406,6 @@ fig.write_html("figure/correlation.html")
 #+end_src
 
 #+RESULTS:
-: Gtk-[1;32mMessage[0m: [34m00:08:46.739[0m: Failed to load module "canberra-gtk-module"
-: Gtk-[1;32mMessage[0m: [34m00:08:46.741[0m: Failed to load module "canberra-gtk-module"
 
 Pairplot with StellarMass, MHI, SFR_UNGC and av_SFR, M26
 
@@ -1437,15 +1421,6 @@ print(correlation_matrix[["StellarMass", "MHI", "SFR_UNGC", "av_SFR_theor", "M26
 #+end_src
 
 #+RESULTS:
-:               StellarMass       MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f
-: StellarMass      1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
-: MHI              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
-: SFR_UNGC         0.911743  0.975992  1.000000      0.911743  0.925263  0.975992 -0.126696  0.769262
-: av_SFR_theor     1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
-: M26              0.981763  0.911023  0.925263      0.981763  1.000000  0.911023 -0.076677  0.900513
-: M_g              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
-: tau             -0.069947 -0.095762 -0.126696     -0.069947 -0.076677 -0.095762  1.000000 -0.043090
-: A_f              0.932965  0.764614  0.769262      0.932965  0.900513  0.764614 -0.043090  1.000000
 
 #+begin_src python :exports none :results none
 #define a new dataframe
@@ -1484,14 +1459,14 @@ print(df_log[["MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "ta
 
 #+RESULTS:
 :                    MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f     tau_g
-: MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028412 -0.067180
-: SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.012013 -0.544876
-: av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.056187 -0.430786
-: M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.063607 -0.280310
-: M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028412 -0.067180
-: tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.065413  0.031146
-: A_f           0.028412  0.012013      0.056187  0.063607  0.028412  0.065413  1.000000  0.023517
-: tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.023517  1.000000
+: MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028422 -0.067180
+: SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.012022 -0.544876
+: av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.056201 -0.430786
+: M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.063618 -0.280310
+: M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028422 -0.067180
+: tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.065407  0.031146
+: A_f           0.028422  0.012022      0.056201  0.063618  0.028422  0.065407  1.000000  0.023514
+: tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.023514  1.000000
 
 #+begin_src python :results file value
 #heatmap of masses and luminosities
@@ -1505,7 +1480,7 @@ fname
 #+end_src
 
 #+RESULTS:
-[[file:figure/heatmap_mass_sfr_a_t.png]]
+[[file:]]
 
 * TODO The relations of the Data
 
@@ -1538,7 +1513,7 @@ print(filename)
 #+end_src
 
 #+RESULTS:
-[[file:figure/heatmap_mags.png]]
+[[file:]]
 
 ** TODO Luminosity and Masses
 
