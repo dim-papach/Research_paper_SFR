@@ -724,9 +724,7 @@ dc["A_n"] = np.where(np.isinf(dc["A_n"]), np.nan, dc["A_n"])
 
 
 # #+RESULTS:
-# : /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning:
-# :
-# : divide by zero encountered in divide
+# : /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: divide by zero encountered in divide
 
 
 # [[file:paper.org::*Newton][Newton:2]]
@@ -775,9 +773,7 @@ dc["A_f"] = MaskedColumn(A, name = "A", unit = u.solMass)
 
 
 # #+RESULTS:
-# : /tmp/babel-U1HWkT/python-cY3cqT:23: RuntimeWarning:
-# :
-# : The iteration is not making good progress, as measured by the
+# : /tmp/babel-etXArC/python-M39CsK:23: RuntimeWarning: The iteration is not making good progress, as measured by the
 # :   improvement from the last ten iterations.
 
 
@@ -938,10 +934,7 @@ print(dc[["tau"]].info("stats"))
 
 
 # #+RESULTS:
-# : /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning:
-# :
-# : overflow encountered in divide
-# :
+# : /home/dp/.local/lib/python3.10/site-packages/astropy/units/quantity.py:671: RuntimeWarning: overflow encountered in divide
 # : <QTable length=518>
 # : name     mean         std         min          max     n_bad
 # : ---- ------------ ----------- ------------ ----------- -----
@@ -987,8 +980,15 @@ fig.show()
 
 
 # #+RESULTS:
-# : Gtk-[1;32mMessage[0m: [34m18:40:56.073[0m: Failed to load module "canberra-gtk-module"
-# : Gtk-[1;32mMessage[0m: [34m18:40:56.077[0m: Failed to load module "canberra-gtk-module"
+# : Gtk-[1;32mMessage[0m: [34m00:08:33.411[0m: Failed to load module "canberra-gtk-module"
+# : Gtk-[1;32mMessage[0m: [34m00:08:33.414[0m: Failed to load module "canberra-gtk-module"
+# : Gtk-[1;32mMessage[0m: [34m00:08:34.657[0m: Failed to load module "canberra-gtk-module"
+# : Gtk-[1;32mMessage[0m: [34m00:08:34.658[0m: Failed to load module "canberra-gtk-module"
+# : ATTENTION: default value of option mesa_glthread overridden by environment.
+# : [Parent 2, Main Thread] WARNING: Failed to enumerate devices of org.freedesktop.UPower: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown
+# : : 'glib warning', file /home/runner/work/desktop/desktop/engine/toolkit/xre/nsSigHandlers.cpp:187
+# :
+# : ** (zen-alpha:2): [1;33mWARNING[0m **: [34m00:08:34.797[0m: Failed to enumerate devices of org.freedesktop.UPower: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown
 
 
 # [[file:paper.org::*Add zoom and theoretical lines][Add zoom and theoretical lines:2]]
@@ -1246,8 +1246,8 @@ fig.write_html("figure/correlation.html")
 
 
 # #+RESULTS:
-# : Gtk-[1;32mMessage[0m: [34m18:41:02.596[0m: Failed to load module "canberra-gtk-module"
-# : Gtk-[1;32mMessage[0m: [34m18:41:02.600[0m: Failed to load module "canberra-gtk-module"
+# : Gtk-[1;32mMessage[0m: [34m00:08:46.739[0m: Failed to load module "canberra-gtk-module"
+# : Gtk-[1;32mMessage[0m: [34m00:08:46.741[0m: Failed to load module "canberra-gtk-module"
 
 # Pairplot with StellarMass, MHI, SFR_UNGC and av_SFR, M26
 
@@ -1262,6 +1262,20 @@ plt.savefig("figure/pairplot")
 plt.close("all")
 print(correlation_matrix[["StellarMass", "MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f"]].corr())
 # The relations of the Masses:5 ends here
+
+
+
+# #+RESULTS:
+# :               StellarMass       MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f
+# : StellarMass      1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
+# : MHI              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
+# : SFR_UNGC         0.911743  0.975992  1.000000      0.911743  0.925263  0.975992 -0.126696  0.769262
+# : av_SFR_theor     1.000000  0.895269  0.911743      1.000000  0.981763  0.895269 -0.069947  0.932965
+# : M26              0.981763  0.911023  0.925263      0.981763  1.000000  0.911023 -0.076677  0.900513
+# : M_g              0.895269  1.000000  0.975992      0.895269  0.911023  1.000000 -0.095762  0.764614
+# : tau             -0.069947 -0.095762 -0.126696     -0.069947 -0.076677 -0.095762  1.000000 -0.043090
+# : A_f              0.932965  0.764614  0.769262      0.932965  0.900513  0.764614 -0.043090  1.000000
+
 
 # [[file:paper.org::*The relations of the Masses][The relations of the Masses:6]]
 #define a new dataframe
@@ -1303,14 +1317,14 @@ print(df_log[["MHI", "SFR_UNGC", "av_SFR_theor", "M26", "M_g", "tau", "A_f", "ta
 
 # #+RESULTS:
 # :                    MHI  SFR_UNGC  av_SFR_theor       M26       M_g       tau       A_f     tau_g
-# : MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.025866 -0.067180
-# : SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.009545 -0.544876
-# : av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.052345 -0.430786
-# : M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.060531 -0.280310
-# : M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.025866 -0.067180
-# : tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.067127  0.031146
-# : A_f           0.025866  0.009545      0.052345  0.060531  0.025866  0.067127  1.000000  0.024187
-# : tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.024187  1.000000
+# : MHI           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028412 -0.067180
+# : SFR_UNGC      0.873227  1.000000      0.867858  0.860180  0.873227 -0.020644  0.012013 -0.544876
+# : av_SFR_theor  0.807654  0.867858      1.000000  0.895931  0.807654 -0.334168  0.056187 -0.430786
+# : M26           0.864241  0.860180      0.895931  1.000000  0.864241 -0.188427  0.063607 -0.280310
+# : M_g           1.000000  0.873227      0.807654  0.864241  1.000000 -0.017130  0.028412 -0.067180
+# : tau          -0.017130 -0.020644     -0.334168 -0.188427 -0.017130  1.000000  0.065413  0.031146
+# : A_f           0.028412  0.012013      0.056187  0.063607  0.028412  0.065413  1.000000  0.023517
+# : tau_g        -0.067180 -0.544876     -0.430786 -0.280310 -0.067180  0.031146  0.023517  1.000000
 
 
 # [[file:paper.org::*The relations of the Masses][The relations of the Masses:9]]
