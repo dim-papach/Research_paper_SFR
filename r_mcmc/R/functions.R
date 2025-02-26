@@ -3,21 +3,17 @@
 # Function to load and prepare the data
 prepare_data <- function(data_csv) {
   dt <- data_csv %>%
-    mutate(
-      logM_HEC = ifelse(is.na(logM_HEC), 0.822 * K, logM_HEC), # Replace missing logM_HEC with 0.8 * K
-      logM_HEC = ifelse(is.na(logM_HEC), 0.822 * KLum, logM_HEC) # Replace missing logM_HEC with 0.8 * KLum
-    ) %>%
-    select(logSFR_total, id_number, logM_HEC) %>%
+    select(logSFR_total, id_number, logM_total, M_total) %>%
     filter(
       # iogSFR_total >=-3,
       !is.na(logSFR_total),
       !is.nan(logSFR_total),
       is.finite(logSFR_total),
-      !is.na(logM_HEC),
-      !is.nan(logM_HEC),
-      is.finite(logM_HEC)
-    )
-  return(dt)
+      !is.na(logM_total),
+      !is.nan(logM_total),
+      is.finite(logM_total)
+    ) %>%
+    return(dt)
 }
 
 # Function to define initial values for the Stan model

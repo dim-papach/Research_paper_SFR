@@ -27,8 +27,6 @@ parameters {
 transformed parameters {
   
   vector[N] x = t_sf./tau;
-  vector[N] log_tsf = log10(t_sf);
-  vector[N] logtau = log10(tau);          // Tau in linear scale
   vector[N] logSFR_today;                   // Modeled log SFR for each data point
   real log10_e = log10(exp(1));             // Constant for ln to log10 conversion (log10(e))
 
@@ -36,7 +34,7 @@ transformed parameters {
   vector[N]  A = (M_star .* zeta) ./ (1 - (x + 1) .* exp(-x));
   
   // Calculate modeled log SFR at the present time for each galaxy
-  logSFR_today = log10(A) - 9 + log10(x)- logtau- (x) * log10_e; 
+  logSFR_today = log10(A) -9 + log10(x)- log10(tau)- (x) * log10_e; 
   // 1/yr=10^9/Gyr from SFR// Subtract exponential decay term
 }
 
@@ -64,12 +62,11 @@ generated quantities {
   */
   vector[N] logSFR_today_pred;            // Predicted log SFR for each data point
   vector[N] id;                          // Row identifiers
-  vector[N] logA = log10(A);
 
   // Predict log SFR using the same formula as in `transformed parameters`
-  logSFR_today_pred = log10(A) - 9
-                      + log_tsf
-                      - 2 * logtau
+  logSFR_today_pred = log10(A) -9
+                      + log(x)
+                      - log(tau)
                       - (t_sf ./ tau) * log10_e;
   // Assign row identifiers for reference
   id = id_numbers;

@@ -24,7 +24,7 @@ tar_option_set(
   # which run as local R processes. Each worker launches when there is work
   # to do and exits if 60 seconds pass with no tasks to run.
   #
-  controller = crew::crew_controller_local(workers = 6)
+  # controller = crew::crew_controller_local(workers = 6)
   #
   # Alternatively, if you want workers to run on a high-performance computing
   # cluster, select a controller from the {crew.cluster} package.
@@ -59,7 +59,7 @@ tar_plan(
   #### Load and prepare data####
   tar_target(
     csv_file_path,
-    "filled.csv",
+    "../tables/filled.csv",
     format = "file"
   ),
   tar_target(
@@ -71,7 +71,7 @@ tar_plan(
     id_data,
     {
       data <- read_data
-      data$id_number <- 1:nrow(data)
+      data$id_number <- seq_len(nrow(data))
       data
     }
   ),
@@ -90,13 +90,13 @@ tar_plan(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number,
-      M_star = sfr_data$logM_HEC
+      M_star = sfr_data$M_total
     ),
-    chains = 7,
+    chains = 5,
     parallel_chains = 8,
-    iter_sampling = 5000,
-    iter_warmup = 2500,
-    init = init_function(7, 1761),
+    iter_sampling = 4500,
+    iter_warmup = 2000,
+    init = init_function(5, 1761),
   ),
 
   ######## summaries#######
@@ -132,16 +132,6 @@ tar_plan(
     variables = "t_sf"
   ),
   tar_stan_summary(
-    log_tsf_summary,
-    fit = stan_fit_mcmc_x,
-    data = list(
-      N = nrow(sfr_data),
-      logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
-    ),
-    variables = "log_tsf"
-  ),
-  tar_stan_summary(
     tau_summary,
     fit = stan_fit_mcmc_x,
     data = list(
@@ -152,16 +142,6 @@ tar_plan(
     variables = "tau"
   ),
   tar_stan_summary(
-    logtau_summary,
-    fit = stan_fit_mcmc_x,
-    data = list(
-      N = nrow(sfr_data),
-      logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
-    ),
-    variables = "logtau"
-  ),
-  tar_stan_summary(
     A_summary,
     fit = stan_fit_mcmc_x,
     data = list(
@@ -169,7 +149,7 @@ tar_plan(
       logSFR_total = sfr_data$logSFR_total,
       id_numbers = sfr_data$id_number
     ),
-    variables = "logA"
+    variables = "A"
   ),
   tar_stan_summary(
     x_summary,
@@ -189,19 +169,17 @@ tar_plan(
   ######## Define the list of variables########
   tar_target(
     summary_variables,
-    c("logSFR_pred", "log_tsf", "t_sf", "tau", "logA", "logtau") # List of variables
+    c("logSFR_pred", "t_sf", "tau", "A") # List of variables
   ),
   tar_target(
     summary_data,
     {
       summary_data <- switch(summary_variables,
-        "logA" = A_summary,
+        "A" = A_summary,
         "tau" = tau_summary,
         "t_sf" = t_sf_summary,
-        "log_tsf" = log_tsf_summary,
         "logSFR_pred" = sfr_summary,
         # "logSFR_total" = sfr_summary_t,
-        "logtau" = logtau_summary
       )
 
       summary_data
@@ -269,16 +247,12 @@ tar_plan(
         id_number = id_summary$mean, # Assuming id is the identifier
         logSFR_pred = sfr_summary$mean,
         logSFR_pred_sigma = sfr_summary$sd,
-        log_tsf = log_tsf_summary$mean,
-        log_tsf_sigma = log_tsf_summary$sd,
         t_sf = t_sf_summary$mean,
         t_sf_sigma = t_sf_summary$sd,
         tau = tau_summary$mean,
         tau_sigma = tau_summary$sd,
-        logtau = logtau_summary$mean,
-        logtau_sigma = logtau_summary$sd,
-        logA = A_summary$mean,
-        logA_sigma = A_summary$sd,
+        A = A_summary$mean,
+        A_sigma = A_summary$sd,
         x = x_summary$mean,
         x_sigma = x_summary$sd
       )
