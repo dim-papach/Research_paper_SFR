@@ -3,7 +3,7 @@
 # Function to load and prepare the data
 prepare_data <- function(data_csv) {
   dt <- data_csv %>%
-    select(logSFR_total, id_number, logM_total, M_total) %>%
+    select(logSFR_total, ID, logM_total, M_total) %>%
     filter(
       # iogSFR_total >=-3,
       !is.na(logSFR_total),

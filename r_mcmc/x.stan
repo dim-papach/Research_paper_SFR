@@ -14,7 +14,7 @@
 data {
   int<lower=1> N;                   // Number of data points
   vector[N] logSFR_total;        // Observed log SFR in Gyr
-  vector[N] id_numbers;             // Row identifiers for the data points
+  vector[N] ID;             // Row identifiers for the data points
   vector[N] M_star;                 // Stellar masses (input data)
 }
 
@@ -69,6 +69,6 @@ generated quantities {
                       - log(tau)
                       - (t_sf ./ tau) * log10_e;
   // Assign row identifiers for reference
-  id = id_numbers;
+  id = ID;
 }
 

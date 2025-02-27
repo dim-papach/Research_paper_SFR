@@ -66,18 +66,9 @@ tar_plan(
     read_data,
     read.csv(csv_file_path)
   ),
-  # add id_number to the data
-  tar_target(
-    id_data,
-    {
-      data <- read_data
-      data$id_number <- seq_len(nrow(data))
-      data
-    }
-  ),
   tar_target(
     sfr_data,
-    prepare_data(id_data)
+    prepare_data(read_data)
   ),
 
   #### Fit the Stan model####
@@ -89,14 +80,14 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number,
+      ID = sfr_data$ID,
       M_star = sfr_data$M_total
     ),
-    chains = 5,
+    chains = 6,
     parallel_chains = 8,
     iter_sampling = 4500,
     iter_warmup = 2000,
-    init = init_function(5, 1761),
+    init = init_function(6, 1761),
   ),
 
   ######## summaries#######
@@ -107,7 +98,7 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
+      ID = sfr_data$ID
     ),
     variables = "id"
   ),
@@ -117,7 +108,7 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_today = sfr_data$logSFR_today,
-      id_numbers = sfr_data$id_number
+      ID = sfr_data$ID
     ),
     variables = "logSFR_today"
   ),
@@ -127,7 +118,7 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
+      ID = sfr_data$ID
     ),
     variables = "t_sf"
   ),
@@ -137,7 +128,7 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
+      ID = sfr_data$ID
     ),
     variables = "tau"
   ),
@@ -147,7 +138,7 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
+      ID = sfr_data$ID
     ),
     variables = "A"
   ),
@@ -157,7 +148,7 @@ tar_plan(
     data = list(
       N = nrow(sfr_data),
       logSFR_total = sfr_data$logSFR_total,
-      id_numbers = sfr_data$id_number
+      ID = sfr_data$ID
     ),
     variables = "x"
   ),
@@ -244,7 +235,7 @@ tar_plan(
     {
       # Create a tibble with mean values from each summary, and their corresponding sigma values
       summary_means <- tibble::tibble(
-        id_number = id_summary$mean, # Assuming id is the identifier
+        ID = id_summary$mean, # Assuming id is the identifier
         logSFR_pred = sfr_summary$mean,
         logSFR_pred_sigma = sfr_summary$sd,
         t_sf = t_sf_summary$mean,
@@ -267,7 +258,7 @@ tar_plan(
     joined_data,
     {
       # Join the data
-      joined_data <- dplyr::left_join(sfr_data, all_means, by = "id_number")
+      joined_data <- dplyr::left_join(sfr_data, all_means, by = "ID")
 
       # Return the joined data
       joined_data
