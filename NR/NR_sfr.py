@@ -1,9 +1,9 @@
-import numpy as np
-from scipy import optimize
-import matplotlib.pyplot as plt
 import astropy.units as u
+import matplotlib.pyplot as plt
+import numpy as np
 from astropy.table import QTable
 from joblib import Parallel, delayed
+from scipy import optimize
 
 # Read the data
 dt = QTable.read("../tables/filled.ecsv")

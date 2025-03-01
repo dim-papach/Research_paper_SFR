@@ -46,7 +46,7 @@ model {
   */
 
   // Priors: Uniform distributions for each parameter
-  tau ~ uniform(1, 20);                 // Prior for log10(tau)
+  tau ~ normal(4,1); //uniform(1, 20);                 // Prior for log10(tau)
   t_sf ~ uniform(1, 13.8);                // Prior for t_sf (time of star formation)
   zeta ~ normal(1.3, 0.01);
 
