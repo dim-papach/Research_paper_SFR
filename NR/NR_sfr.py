@@ -5,9 +5,13 @@ from astropy.table import QTable
 from joblib import Parallel, delayed
 from scipy import optimize
 
-# Read the data
-dt = QTable.read("../tables/filled.ecsv")
+#set working directory
+import os.path
+os.chdir("/home/dp/Documents/Research_paper_SFR/NR/")  # Replace with your directory
 
+# Read the data
+
+dt = QTable.read("filled.ecsv")
 # Define constants
 zeta = 1.3  # Mass-loss through stellar evolution
 t_sf = 13.6 * u.Gyr  # Star formation timescale
