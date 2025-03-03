@@ -13,6 +13,7 @@ stilts tpipe \
   cmd='addcol -units "Msol/yr" -desc "Total SFR in linear scale" SFR_total "exp10(logSFR_total)"'\
   cmd='addcol -units "log(Msol)" -desc "" logM_total "NULL_logM_HEC ? log10(0.82)+merge_logKLum: logM_HEC"'\
   cmd='addcol -units "Msol" -desc "Total M_* in linear scale" M_total "exp10(logM_total)"'\
+  cmd='addcol -units "1/yr" -desc "Specific SFR" sSFR "SFR_total/M_total"'\
   cmd='addcol -desc "ID column" ID "Index"'\
 
 
