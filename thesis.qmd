@@ -100,9 +100,9 @@ This expanded framework also embraces **early-type** and **late-type** galaxies 
 
 By offering extra designations for bar strength, ring features, and transitional morphologies, de Vaucouleurs’ system paints a more complete picture of galaxies and how they evolve. It allows researchers to quantify where a galaxy lies along the continuum, rather than forcing it into a single rigid label.
 
-| **Hubble** |  E  |   E-S0    |    S0     | S0/a | Sa  | Sa-b | Sb  | Sb-c |    Sc     | Sc-Irr |     Irr     |
+| **Hubble** | E | E-S0 | S0 | S0/a | Sa | Sa-b | Sb | Sb-c | Sc | Sc-Irr | Irr |
 |:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
-|   **T**    | -5  | \[-4,-3\] | \[-2,-1\] |  0   |  1  |  2   |  3  |  4   | \[5,6,7\] |   8    | \[9,10,11\] |
+| **T** | -5 | \[-4,-3\] | \[-2,-1\] | 0 | 1 | 2 | 3 | 4 | \[5,6,7\] | 8 | \[9,10,11\] |
 
 : This table was based on the \LaTeX files of [@RC3ThirdReference]
 
@@ -489,34 +489,57 @@ After the merging of the two catalogs we get a final sample of 3934 galaxies out
 
 # Calculating the parameters
 
-Using the merged catalog, we can use the SFR and $M_*$ data to calculate the parameters for the delayed-$tau$ model, for each individual galaxy. The parameters are going to be calculated using two different computational methods. 
+Using the merged catalog, we can use the SFR and $M_*$ data to calculate the parameters for the delayed-$\tau$ model, for each individual galaxy. The parameters are going to be calculated using two different computational methods.
 
-Firstly, using the Newton-Ramphson algorithm, the parameters $\tau$ and $A_{del}$ can be calculated from the equations @eq-delayed-current and @eq-delayed-current-averaged, assuming the same $t_{sf} = 13.6$ Gyr for every galaxy, meaning that all the galaxies start the star formation proccess around the same time, 13.6 Gyr ago, or 0.2 Gyr after the Big Bang. This is the same method used in @haslbauerCosmologicalStarFormation2023, but instead of using only the SFR from UNGC and adopting a mass-to-light ratio of 0.6 from the $L_K$, we use the merged catalog.
+Firstly, using the Newton-Ramphson algorithm, the parameters $\tau$ and $A_{del}$ can be calculated from the equations @eq-delayed-current and @eq-delayed-current-averaged, assuming the same $t_{sf} = 13.6$ Gyr for every galaxy, meaning that all the galaxies start the star formation process around the same time, 13.6 Gyr ago, or $t_\text{start} = 0.2$ Gyr after the Big Bang. Solving @eq-averaged-SFR-M and @eq-delayed-current-averaged , for $A_{del}$:
+
+$$
+A_{del}=\frac{\zeta M_*}{1-(1+x)e^{-x}}, \text{ where } x=\frac{t_sf}{\tau},
+$$ {#eq-A}
+
+and substituting in the model, the delayed-$\tau$ model takes the form:
+
+$$
+\text{SFR} = \frac{\zeta}{t_{sf}}M_*\frac{x^2}{e^x-x-1} \Leftrightarrow\text{sSFR}\frac{t_{sf}}{\zeta} = \frac{x^2}{e^x-x-1}, \text{ where sSFR}\equiv\frac{\text{SFR}}{M_*}\left[\frac{1}{yr}\right].
+$$
+
+The specific-SFR (sSFR) describes the rate of change of the stellar mass in a galaxy. Assuming a function $g(x)$ and its derivative $g'(x)$ for the Newton-Raphson algorithm:
+
+$$
+g(x) = \frac{\zeta}{t_{sf}\cdot sSFR}\cdot x^2-e^x+x+1\Leftrightarrow g'(x) = \frac{\zeta}{t_{sf}\cdot sSFR}\cdot 2x-e^x+1
+$$
+
+the root $x_0\Leftrightarrow g(x_0) = 0$, can be found, for each galaxy. From @eq-A we can calculate the normilization constant of the galaxies, as well as their charachteristic timescales $\tau = t_{sf}\cdot x$.
+
+![Alt text](NR/tau_A_double_plot.png){#fig-A-tau}
+
+In @fig-A-tau, two shapes are prominent. One in the range $\frac{A_{del}}{M_\odot}\in[10^{15},10^{29}]$ and one in the range $\frac{A_{del}}{M_\odot}\in[0,10^{15}]$. The second range does not have any negative $\tau$ values and $\overline{\tau} = 16.2$ Gyr, while the first range has 153 negative $\tau$ values and $\overline{\tau} = -2.7\cdot 10^9$ Gyr. It is obvious, from @fig-A-M, that the first range is subject to the instabilities of the method.
+
+From @eq-A, we expect a good linear correlation between $A_{del}$ and $M_*$ of a given galaxy, where the variance of the linear regression comes from $\frac{\zeta}{1-(x+1)e^{-x}}$. So, for the expected values of $x$, $2.7<x<3.4$ [@kroupaConstraintsStarFormation2020], and even for bigger $x$, there should not be a significant variance, since $\lim_{x\rightarrow\infty}\frac{\zeta}{1-(x+1)e^{-x}}=\zeta\approx1.3$. However, for $x\rightarrow 0$, the algorithm is not able to converge since $\lim_{x\rightarrow 0}\frac{\zeta}{1-(x+1)e^{-x}}=\infty$, and the linear regression of $A_{del}-M_*$ can not be successful, as it can be seen from @fig-A-M.
+
+![](/NR/A-M_*-c_x.png){#fig-A-M}
+
+Since convergence can not occur for $x\ll 1$, this method should not be used for galaxies in the begging phases of their star formation [^10]. If the assumption, $t_{sf}=13.6$ Gyr for all the galaxies is correct, then an inconstancy in the plot $A_{del}-\text{sSFR}$ should only be observed, for higher values of the sSFR, since, according to the delayed- $\tau$ model, higher sSFR values indicate a rising SFR, while lower SFR values indicate that the bulk of $M_*$ is already produced and the galaxy is in the declining SFR phase. However, as seen from @fig-A-sSFR, this inconsistency occurs in galaxies for both high and low sSFR's, meaning that the the model has convergence issues both for slow rising SFR and quenching galaxies, indicating an intrinsic problem with this approach.
+
+[^10]: For $x=1$ is the peak of the SFR, $x<1$ is the the rising phase and for $x>1$ the SFR declines exponentially ( @eq-delayed-current ).
+
+![Alt text](NR/A-sSFR.png){#fig-A-sSFR}
 
 The second method for the calclulation of the parameters is the MCMC method. Using the logarithmic form of the model
 
 $$
-\log(\text{SFR})= \log(A_{del})+\log(x)-\log(\tau)-x\cdot\log e,\text{ where } x=\frac{t_sf}{\tau},
-$${#eq-log-SFR}
-
-and by combining @eq-delayed-current-averaged and @eq-averaged-SFR-M:
-
-$$
-A_{del}=\frac{\zeta M_*}{1-(1+x)e^{-x}},
-$${#eq-A}
+\log(\text{SFR})= \log(A_{del})+\log(x)-\log(\tau)-x\cdot\log e,
+$$ {#eq-log-SFR}
 
 we can create a MCMC model to calculate the parameters, with the priors:
 
-- $\tau \sim \text{normal(mean=4 Gyr, }\sigma = 1 )$, within the limits $[1,20]$ Gyr,
-- $t_{sf}\sim \text{uniform(lower bound = 1 Gyr, upper bound = 13.8 Gyr)}$,
-- $\zeta \sim \text{normal(mean=1.3, }\sigma = 0.01)$, within the limits $[1,2]$,
+-   $\tau \sim \text{normal(mean=4 Gyr, }\sigma = 1 )$, within the limits $[1,20]$ Gyr,
+-   $t_{sf}\sim \text{uniform(lower bound = 1 Gyr, upper bound = 13.8 Gyr)}$,
+-   $\zeta \sim \text{normal(mean=1.3, }\sigma = 0.01)$, within the limits $[1,2]$,
 
 and the likelihood:
 
-- $\log(\text{SFR}_{obs}) \sim \text{normal}\left(\log(\text{SFR}_\text{MCMC}), \sigma = 0.1\right)$
-
-
-
+-   $\log(\text{SFR}_{obs}) \sim \text{normal}\left(\log(\text{SFR}_\text{MCMC}), \sigma = 0.1\right)$
 
 ## According to pre-existing bibliography
 
