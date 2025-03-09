@@ -1,7 +1,0 @@
-Running MCMC with 5 chains, at most 6 in parallel...
-
-Chain 1 Iteration:    1 / 7000 [  0%]  (Warmup) 
-Chain 2 Iteration:    1 / 7000 [  0%]  (Warmup) 
-Chain 3 Iteration:    1 / 7000 [  0%]  (Warmup) 
-Chain 4 Iteration:    1 / 7000 [  0%]  (Warmup) 
-Chain 5 Iteration:    1 / 7000 [  0%]  (Warmup) 
