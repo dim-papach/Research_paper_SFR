@@ -12,18 +12,18 @@ data_norm = pd.read_csv('r_mcmc_normal/joined_data.csv')
 data_nr = pd.read_csv('NR/filled_with_NR.csv')
 
 # Define the A and tau values for each dataset
-A_values_uni = data_uni['A'].values
-tau_values_uni = (data_uni['tau']*u.Gyr.to(u.yr)).values
-sigma_A_values_uni = data_uni['A_sigma'].values
-sigma_tau_values_uni = (data_uni['tau_sigma']*u.Gyr.to(u.yr)).values
+A_values_uni = data_uni['A_up'].values
+tau_values_uni = (data_uni['tau_up']*u.Gyr.to(u.yr)).values
+sigma_A_values_uni = data_uni['A_sigma_up'].values
+sigma_tau_values_uni = (data_uni['tau_sigma_up']*u.Gyr.to(u.yr)).values
 
-A_values_norm = data_norm['A'].values
-tau_values_norm = (data_norm['tau']*u.Gyr.to(u.yr)).values
-sigma_A_values_norm = data_norm['A_sigma'].values
-sigma_tau_values_norm = (data_norm['tau_sigma']*u.Gyr.to(u.yr)).values
+A_values_norm = data_norm['A_np'].values
+tau_values_norm = (data_norm['tau_np']*u.Gyr.to(u.yr)).values
+sigma_A_values_norm = data_norm['A_sigma_np'].values
+sigma_tau_values_norm = (data_norm['tau_sigma_np']*u.Gyr.to(u.yr)).values
 
 A_values_nr = data_nr['A_n'].values
-tau_values_nr = (data_nr['tau']*u.Gyr.to(u.yr)).values
+tau_values_nr = (data_nr['tau_n']*u.Gyr.to(u.yr)).values
 
 # Volume factor
 V = (4/3 * np.pi * 11**3)
@@ -135,7 +135,7 @@ ax3.set_xticklabels([f"{d:.1f}" for d in co_moving_distances])
 
 # Y-axis
 ax1.set_yscale('log')
-ax1.set_ylabel(r"$\log_{10}\left(\frac{\text{SFRD}}{\text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3}}\right)$")
+ax1.set_ylabel(r"$\text{SFRD}\ \left(\text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3}\right)$")
 ax1.legend()
 ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
 
@@ -143,6 +143,9 @@ ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
 ax1.invert_xaxis()
 ax2.invert_xaxis()
 ax3.invert_xaxis()
+
+# add line at y = 10^-0.9
+ax1.axhline(y=10**(-0.9+0.05), color='g', linestyle='--', label='y=10^-0.85')
 
 # Save
 plt.tight_layout()
