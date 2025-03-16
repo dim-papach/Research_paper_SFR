@@ -238,14 +238,14 @@ tar_plan(
         ID = id_summary$mean, # Assuming id is the identifier
         logSFR_pred = sfr_summary$mean,
         logSFR_pred_sigma = sfr_summary$sd,
-        t_sf = t_sf_summary$mean,
-        t_sf_sigma = t_sf_summary$sd,
-        tau = tau_summary$mean,
-        tau_sigma = tau_summary$sd,
-        A = A_summary$mean,
-        A_sigma = A_summary$sd,
-        x = x_summary$mean,
-        x_sigma = x_summary$sd
+        t_sf_np = t_sf_summary$mean,
+        t_sf_sigma_np = t_sf_summary$sd,
+        tau_np = tau_summary$mean,
+        tau_sigma_np = tau_summary$sd,
+        A_np = A_summary$mean,
+        A_sigma_np = A_summary$sd,
+        x_np = x_summary$mean,
+        x_sigma_np = x_summary$sd
       )
 
 

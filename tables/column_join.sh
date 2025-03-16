@@ -14,7 +14,13 @@ stilts tpipe \
   cmd='addcol -units "log(Msol)" -desc "" logM_total "NULL_logM_HEC ? log10(0.82)+merge_logKLum: logM_HEC"'\
   cmd='addcol -units "Msol" -desc "Total M_* in linear scale" M_total "exp10(logM_total)"'\
   cmd='addcol -units "1/yr" -desc "Specific SFR" sSFR "SFR_total/M_total"'\
+  cmd='addcol -units "log10(1/yr)" -desc "Specific SFR in logarithmic scale" logsSFR "log10(sSFR)"'\
   cmd='addcol -desc "ID column" ID "Index"'\
+  cmd='addcol -desc "g-r color" gr "g-r"'\
+  cmd='addcol -desc "b-v color" bv "bt-vt"'\
+  cmd='addcol -desc "b-u color" bu "bt-ut"'\
+  cmd='addcol -desc "absolute mag of B-Band" MB "merge_Bmag - 5*log10(merge_D)-25"'\
+  cmd='addcol -desc "absolute mag of r-Band" MR "r - 5*log10(r)-25"'\
 
 
 stilts tpipe \

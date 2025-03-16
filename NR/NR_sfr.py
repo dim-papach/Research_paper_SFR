@@ -56,30 +56,23 @@ A_n[~valid_x] = np.nan  # Keep NaNs consistent
 
 # Add results to the DataFrame (same as original)
 dt["x_n"] = x_n
-dt['tau'] = np.empty(len(dt))
-dt["tau"][valid_x] = (t_sf/dt["x_n"][valid_x])
-dt["tau"][~valid_x] = np.nan
+dt['tau_n'] = np.empty(len(dt))
+dt["tau_n"][valid_x] = (t_sf/dt["x_n"][valid_x])
+dt["tau_n"][~valid_x] = np.nan
 dt["A_n"] = A_n * u.solMass  # Add units to A_n
 
 # Print stats (same as original)
-print(dt["x_n", "A_n", "tau"].info("stats"))
+print(dt["x_n", "A_n", "tau_n"].info("stats"))
 
-#remove rows with NaN values in the tau and A_n columns
-dt=dt[~np.isnan(dt["tau"])]
+#remove rows with NaN values in the tau_n and A_n columns
+dt=dt[~np.isnan(dt["tau_n"])]
 dt=dt[~np.isnan(dt["A_n"])]
-
-# Save the updated table with NR results
-output_filename = "NR/filled_with_NR.csv"
-dt.write(output_filename, format="ascii.csv", overwrite=True)
-
-print(f"Results saved to {output_filename}")
-
 
 # Create a figure with two subplots
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
 # First subplot (without zoom)
-scatter1 = ax1.scatter(dt["tau"], dt['A_n'], c=dt["logM_total"].value, cmap="viridis", edgecolors="k")
+scatter1 = ax1.scatter(dt["tau_n"], dt['A_n'], c=dt["logM_total"].value, cmap="viridis", edgecolors="k")
 ax1.set_yscale("log")
 ax1.set_xlim(-1e10, 1e10)  # Adjust x-axis limits if needed
 ax1.set_ylim(0, 1e31)  # Adjust y-axis limits if needed
@@ -88,7 +81,7 @@ ax1.set_ylabel(r"$A_{del}\, [M_{\odot}]$")
 ax1.grid(True, linestyle="--", alpha=0.5)
 
 # Second subplot (with zoom)
-scatter2 = ax2.scatter(dt["tau"], dt['A_n'], c=dt["logM_total"].value, cmap="viridis", edgecolors="k")
+scatter2 = ax2.scatter(dt["tau_n"], dt['A_n'], c=dt["logM_total"].value, cmap="viridis", edgecolors="k")
 ax2.set_yscale("log")
 ax2.set_xlim(0, 16)  # Adjust x-axis limits for zoom if needed
 ax2.set_ylim(0, 10**13)  # Adjust y-axis limits for zoom
@@ -106,3 +99,10 @@ plt.savefig("NR/tau_A_double_plot.png")
 
 # Show the plot
 plt.close()
+
+# Save the updated table with NR results
+dt.keep_columns(["tau_n", "x_n", "A_n", "ID", "sSFR"])
+output_filename = "NR/filled_with_NR.csv"
+dt.write(output_filename, format="ascii.csv", overwrite=True)
+
+print(f"Results saved to {output_filename}")

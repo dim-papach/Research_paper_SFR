@@ -45,7 +45,7 @@ topcat -stilts plot2plane \
    auxclip=0,1 auxfunc=histolog auxmin=3 auxmax=5.123E13 \
    auxvisible=true auxlabel='\tau\, [Gyr]' \
    legend=true legpos=0.0091,0.984 \
-   in=/home/dp/Documents/Research_paper_SFR/NR/filled_with_NR.csv ifmt=CSV x=logM_total y=A_n aux=tau shading=aux size=2 auxnullcolor= antialias=true forcebitmap = true\
+   in=/home/dp/Documents/Research_paper_SFR/NR/filled_with_NR.csv ifmt=CSV x=logM_total y=A_n aux=tau_n shading=aux size=2 auxnullcolor= antialias=true forcebitmap = true\
    layer_1=Mark \
       icmd_1='select A_n>1e17' \
       leglabel_1='A_{del}>10^{15}\\ \log(A_{del})=0.58\cdot\log(M_*)+18.5\\Correlation = 55\% \\ \hline' \

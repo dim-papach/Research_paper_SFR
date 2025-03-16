@@ -14,7 +14,7 @@ import astropy.units as u
 # plt.style.use("ggplot")
 
 # Get data
-data = pd.read_csv("../tables/inner_join.csv")
+data = pd.read_csv("./tables/inner_join.csv")
 
 # Define the mass and luminosity thresholds
 mass_threshold = 9  # Log(Mass) threshold for dwarf vs massive
@@ -45,7 +45,7 @@ data[["mass_type", "classification_method"]] = data.apply(
     lambda row: pd.Series(classify_galaxy(row)), axis=1
 )
 
-cols = pd.read_csv("Reordered_Final_Comparison_Table.csv")
+cols = pd.read_csv("compare/Reordered_Final_Comparison_Table.csv")
 
 data["SFR_mean"] = data[["SFRFUV", "SFRHa"]].mean(axis=1)
 # log SFR_mean
@@ -126,10 +126,12 @@ def perform_linear_regression_analysis_fixed(
     # Scatter plot with fit
     for name, group in groups:
         marker_shape = marker_dict[name] if marker_dict and name in marker_dict else "o"
-        sample_size = len(group)  # Count the number of points in the group
-
+        sample_size = len(group.dropna(subset=[x,y]))  # Count the number of points in the group
+        
+        
         x_data_g = group[x] if log_transform_x is False else np.log10(group[x])
         y_data_g = group[y] if log_transform_y is False else np.log10(group[y])
+        
         x_err_data = group[x_error] if x_error in group.columns else None
         y_err_data = group[y_error] if y_error in group.columns else None
 
@@ -171,7 +173,7 @@ def perform_linear_regression_analysis_fixed(
     # Residuals plot
     for name, group in groups:
         marker_shape = marker_dict.get(name, "o") if marker_dict else "o"
-        sample_size = len(group)  # Count the number of points in the group
+        sample_size = len(group.dropna(subset=[x, y]))  # Count the number of points in the group
 
         x_data_g = group[x] if log_transform_x is False else np.log10(group[x])
         residuals_g = group[y] - (intercept + slope * group[x])
@@ -189,7 +191,13 @@ def perform_linear_regression_analysis_fixed(
     axs[1].legend()
     axs[1].grid(True)
 
-    # Residuals histogram plot
+    # Residuals histogram plot with on the mass category
+    for name, group in groups:
+        marker_shape = marker_dict.get(name, "o") if marker_dict else "o"
+        sample_size = len(group)  # Count the number of points in the group
+
+        residuals_g = group[y] - (intercept + slope * group[x])
+        residuals_g = residuals_g.replace([np.inf, -np.inf], np.nan).dropna()
     axs[2].hist(residuals, bins=30, label="Residuals", edgecolor="black")
     axs[2].axvline(0, color="red", linestyle="--", label="Zero Residual Line")
     axs[2].axvline(
@@ -203,9 +211,16 @@ def perform_linear_regression_analysis_fixed(
     axs[2].set_title("Histogram of Residuals")
     axs[2].legend()
     axs[2].grid(True)
+    axs[2].set_xlabel("Residuals")
+    axs[2].set_ylabel("Frequency")
+    axs[2].set_title("Histogram of Residuals by Mass Type")
+    axs[2].legend()
+    axs[2].grid(True)
+    
+
 
     plt.tight_layout()
-    plt.savefig("./quickplots/" + desc + ".png", dpi=300)
+    plt.savefig("./compare/quickplots/" + desc + ".png", dpi=300)
     plt.close()
 
 
