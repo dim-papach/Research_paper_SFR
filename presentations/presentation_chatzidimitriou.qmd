@@ -1,6 +1,5 @@
 ---
-title: "Τιτλος"
-subtitle: ""
+title: "Analysis of observational data, to calculate the Delayed-Tau model parameters"
 author: "Δημήτρης Παπαχριστόπουλος"
 format:
   revealjs:
@@ -10,7 +9,6 @@ format:
     slide-number: true 
     revealjs-plugin: 
       - PdfExport
-    bibliography: My_Library.bib
 editor: 
   markdown: 
     wrap: sentence
@@ -44,7 +42,7 @@ editor:
 Στόχος μας είναι να συγκρίνουμε τα αποτελέσματα από διαφορετικές μεθοδολογικές προσεγγίσεις, ώστε να διερευνήσουμε αν οι βελτιώσεις αυτές μπορούν να άρουν τις αναντιστοιχίες και να προσφέρουν μια πιο ακριβή περιγραφή της αστρογένεσης των γαλαξιών.
 :::
 
-# Τι ειναι το LCV
+# Τι ειναι το Local Cosmological Volume
 
 -   $D \leq 10 Mpc$
 -   Ακτινικές ταχύτητες $V_{lg} \le 500 \, km \cdot s^{-1}$
@@ -218,15 +216,15 @@ $$
 SFR_{mean}=\frac{SFR_{FUV}+SFR_{Ha}}{2}
 $$
 
-![](figure/log_SFR_FUV_Ha.png){fig-align="center" width="500"}
+![](../figure/log_SFR_FUV_Ha.png){fig-align="center" width="500"}
 
 ## Πως το ενωνουμε με το SFR\_{IR};
 
-![](figure/Screenshot%20from%202024-12-07%2021-49-48.png){fig-align="center"}
+![](../figure/Screenshot%20from%202024-12-07%2021-49-48.png){fig-align="center"}
 
 ## FUV → IR
 
-![](compare/quickplots/SFR.png){fig-align="center"}
+![](../compare/quickplots/SFR.png){fig-align="center"}
 
 # Delayed-$τ$ model
 

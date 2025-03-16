@@ -13,7 +13,6 @@ format:
     slide-number: true 
     revealjs-plugin: 
       - PdfExport
-    bibliography: My_Library.bib
 editor: 
   markdown: 
     wrap: sentence
