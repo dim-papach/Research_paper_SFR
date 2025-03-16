@@ -1,6 +1,6 @@
 #+title: Karachentsev List notes
 #+bibliography: "../My Library/My Library.bib"
-#+PROPERTY: header-args :lang python :eval python :exports results :tangle list.py :results value  :session main
+#+PROPERTY: header-args :lang python :eval python :exports results :results value  :session main
 
 
 This list contains measurements from the galaxies in the Local Cosmological Volume (LCV), and the last update of data is on <2023-11-22 Wed>. I downloaded the database from [cite:@karachentsevUPDATEDNEARBYGALAXY2013]

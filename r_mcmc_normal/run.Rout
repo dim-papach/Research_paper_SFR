@@ -1,0 +1,78 @@
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> #usr/bin/R
+> 
+> # This is a helper script to run the pipeline.
+> # Choose how to execute the pipeline below.
+> # See https://books.ropensci.org/targets/hpc.html
+> # to learn about your options.
+> 
+> targets::tar_make()
+Error:
+! Error running targets::tar_make()
+Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+Debugging guide: https://books.ropensci.org/targets/debugging.html
+How to ask for help: https://books.ropensci.org/targets/help.html
+Last error message:
+    Process ID 24Running MCMC with 5 parallel chains...
+
+Chain 1 Unrecoverable error evaluating the log probability at the initial value.
+Chain 1 Exception: mismatch in dimension declared and found in context; processing stage=parameter initialization; variable name=t_sf; position=0; dims declared=(1069); dims found=(1137) (in '/tmp/RtmpsLkgw6/model-607b6ad9e2cb.stan', line 21, column 2 to column 37)
+Chain 2 Unrecoverable error evaluating the log probability at the initial value.
+Chain 2 Exception: mismatch in dimension declared and found in context; processing stage=parameter initialization; variable name=t_sf; position=0; dims declared=(1069); dims found=(1137) (in '/tmp/RtmpsLkgw6/model-607b6ad9e2cb.stan', line 21, column 2 to column 37)
+Chain 3 Unrecoverable error evaluating the log probability at the initial value.
+Chain 3 Exception: mismatch in dimension declared and found in context; processing stage=parameter initialization; variable name=t_sf; position=0; dims declared=(1069); dims found=(1137) (in '/tmp/RtmpsLkgw6/model-607b6ad9e2cb.stan', line 21, column 2 to column 37)
+Chain 4 Unrecoverable error evaluating the log probability at the initial value.
+Chain 4 Exception: mismatch in dimension declared and found in context; processing stage=parameter initialization; variable name=t_sf; position=0; dims declared=(1069); dims found=(1137) (in '/tmp/RtmpsLkgw6/model-607b6ad9e2cb.stan', line 21, column 2 to column 37)
+Chain 5 Unrecoverable error evaluating the log probability at the initial value.
+Chain 5 Exception: mismatch in dimension declared and found in context; processing stage=parameter initialization; variable name=t_sf; position=0; dims declared=(1069); dims found=(1137) (in '/tmp/RtmpsLkgw6/model-607b6ad9e2cb.stan', line 21, column 2 to column 37)
+Warning: Chain 1 finished unexpectedly!
+
+Warning: Chain 2 finished unexpectedly!
+
+Warning: Chain 3 finished unexpectedly!
+
+Warning: Chain 4 finished unexpectedly!
+
+Warning: Chain 5 finished unexpectedly!
+
+Warning: Use read_cmdstan_csv() to read the results of the failed chains.
+✖ errored target stan_fit_mcmc_x
+✖ errored pipeline [15.015 seconds]
+Warning messages:
+1: All chains finished unexpectedly! Use the $output(chain_id) method for more information.
+ 
+2: No chains finished successfully. Unable to retrieve the fit. 
+3: 1 targets produced warnings. Run targets::tar_meta(fields = warnings, complete_only = TRUE) for the messages. 
+Error:
+! Error running targets::tar_make()
+Error messages: targets::tar_meta(fields = error, complete_only = TRUE)
+Debugging guide: https://books.ropensci.org/targets/debugging.html
+How to ask for help: https://books.ropensci.org/targets/help.html
+Last error message:
+    No chains finished successfully. Unable to retrieve the draws.
+Last error traceback:
+    stantargets::tar_stan_mcmc_run(stan_file = stan_fit_file_x, data = stan_...
+    fit$draws(variables = variables, inc_warmup = inc_warmup)
+    private$read_csv_(variables = to_read, sampler_diagnostics = "",      fo...
+    stop("No chains finished successfully. Unable to retrieve the draws.",  ...
+    .handleSimpleError(function (condition)  {     state$error <- build_mess...
+    h(simpleError(msg, call))
+Execution halted

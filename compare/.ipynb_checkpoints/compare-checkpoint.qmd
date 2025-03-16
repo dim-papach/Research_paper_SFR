@@ -1,0 +1,822 @@
+---
+title: "Comparison of Catalogs"
+format: 
+  html: 
+    code-fold: true
+    html-math-method: katex
+  pdf: default
+  arxiv-pdf:
+    keep-tex: true    
+toc: true
+toc-depth: 3
+theme: minti
+bibliography: ../My_Library.bib
+execute: 
+  echo: false
+  eval: true
+  warning: false
+---
+
+# The data
+
+In this script we will compare 2 catalogs @kovlakasHeraklionExtragalacticCatalogue2021 and [@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013a]
+
+-   The data have been joined based on their position in the sky (Ra, Dec).
+    -   We assume that every galaxy within 2 arc seconds of the initial coordinates is the same galaxy.
+-   We use TOPCAT to create two joins, an inner and an outer join
+-   We will use the inner join for 1-1 comparisons
+-   If we see that the data are similar we can use the outer join
+-   For the comparison we keep the parameters names exactly they are given in the catalogs
+
+```{python}
+#| echo: false
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score
+import astropy
+from astropy.io import ascii
+from astropy.coordinates import SkyCoord
+from astropy.table import Table, join, QTable
+import astropy.units as u
+from astropy.visualization import quantity_support, hist
+#quantity_support()
+from astropy.stats import sigma_clip, SigmaClip
+from astropy.modeling import models, fitting
+from scipy.stats import pearsonr
+import seaborn as sns
+import pandas as pd
+import glob
+import os
+from tabulate import tabulate
+
+plt.style.use('ggplot')
+pd.set_option('display.float_format', lambda x: '%.f' % x)
+
+dt = QTable(ascii.read("../tables/inner_join.ecsv"), masked=True)
+
+inner = dt
+outer = QTable(ascii.read("../tables/outer_join.ecsv"), masked=True)
+hec_not_lcv = QTable(ascii.read("../tables/HEC_not_LCV_join.ecsv"), masked=True)
+lcv_not_hec = QTable(ascii.read("../tables/LCV_not_HEC_join.ecsv"), masked=True)
+ 
+ 
+lcv = QTable(ascii.read("../tables/final_table.ecsv"), masked=True)
+hec = QTable(ascii.read("../tables/HECATE_LCV.ecsv"), masked=True)
+```
+
+The dataset we are going to use for the comparison (inner join) consists of `{python} len(dt)` galaxies and `{python} len(dt.colnames)` columns.
+
+# Catalog Completeness
+
+Checking for completeness in galaxy catalogs is essential to ensure that the data accurately represents the true population of galaxies. Incomplete catalogs can lead to biased results in statistical studies, such as the distribution of galaxy luminosity, mass, or star formation rates. Additionally, missing galaxies, especially those at faint magnitudes or large distances, can distort cosmological measurements and hinder our understanding of galaxy formation and evolution.
+
+Completeness checks are crucial for addressing selection biases, ensuring accurate redshift distributions, and validating galaxy simulations. They help identify gaps in the data and guide follow-up observations, ensuring that the catalog provides a reliable sample for scientific analysis. Without these checks, conclusions drawn from the data may be inaccurate or incomplete.
+
+------------------------------------------------------------------------
+
+Checking for completeness in galaxy catalogs is essential to ensure that the data accurately represents the true population of galaxies. Incomplete catalogs can lead to biased results in statistical studies, such as the distribution of galaxy luminosity, mass, or star formation rates. Additionally, missing galaxies, especially those at faint magnitudes or large distances, can distort cosmological measurements and hinder our understanding of galaxy formation and evolution. Completeness checks are crucial for addressing selection biases, ensuring accurate redshift distributions, and validating galaxy simulations.
+
+Distance-based corrections are applied to mitigate these biases by adjusting for the underrepresentation of galaxies at greater distances. As galaxies move farther away, they become fainter and harder to detect, leading to a drop in the number of detected galaxies. Methods like **volume corrections** (e.g., V/Vmax) and **luminosity function-based corrections** help account for these effects by estimating the true galaxy population based on the observed sample. These corrections ensure that statistical analyses, even in incomplete catalogs, more accurately reflect the full galaxy population.
+
+```{python}
+#| output: asis
+# Creating a dataframe with the lengths of each table
+data = {
+    "Table": ["Inner join", "Outer join", "LCV", "HECATE", "Unique galaxies in LCV", "Unique Galaxies in Hecate"],
+    "Number of galaxies": [len(dt), len(outer), len(lcv), len(hec), len(lcv_not_hec), len(hec_not_lcv)]
+}
+
+df_lengths = pd.DataFrame(data)
+
+# Pretty print the dataframe in markdown format
+df_lengths_md = df_lengths.to_markdown(index=False)
+print(df_lengths_md)
+
+```
+
+## Completeness of the Inner join
+
+$$
+\text{Completeness (X)}=\frac{\text{(Galaxies in Inner Join)}}{\text{(Galaxies in X)}}×100\%
+$$
+
+Completeness (HECATE)= `{python} round(len(dt)/len(hec) *100)` %
+
+Completeness (LCV)= `{python} round(len(dt)/len(lcv) *100)` %
+
+## Completeness in Outer join
+
+$$
+\text{Completeness (X)}=\frac{\text{(Galaxies in Outer Join form X)}}{\text{(Galaxies in X)}}×100\%
+$$
+
+Completeness (HECATE)= `{python} round(len(hec_not_lcv)/len(hec)*100)` %
+
+Completeness (LCV)= `{python} round(len(lcv_not_hec)/len(lcv)*100)` %
+
+Combined Completeness =$\frac{\text{Total galaxies in Outer}}{\text{Unique galaxies in HECATE + LCV}}$= `{python} round(len(outer)/(len(lcv_not_hec)+(len(hec_not_lcv))) * 100)` %
+
+## Completeness of the Catalogs, based on the Distance and the Morphological Type
+
+```{python}
+#| fig-cap: "Histograms showing the Completeness of the Catalogs"
+#| layout-ncol: 2
+#| fig-subcap: 
+#| - "HECATE"
+#| - "LCV"
+#| label: fig-dis-comp
+
+
+plt.close()
+# Using numpy's histogram function to get the bin edges automatically for the first dataset
+_, bin_edges = np.histogram(hec["D"].data, bins='auto')  # 'auto' decides the best number of bins for the data
+
+# Step 2: Use the same bin edges for all datasets
+sns.histplot(hec["D"].value, bins=bin_edges, kde=True, label="HECATE")
+sns.histplot(hec_not_lcv["D"].value, bins=bin_edges, kde=True, label="Unique for Hecate")
+sns.histplot(inner["D"].value, bins=bin_edges, kde=True, label="Inner join")
+
+plt.title("Completeness of Distance for HECATE")
+plt.xlabel("Distance [Mpc]")
+plt.ylabel("Number of galaxies")
+plt.legend()
+plt.show()
+plt.close()
+
+# Using numpy's histogram function to get the bin edges automatically for the first dataset
+_, bin_edges = np.histogram(lcv["Dis"].data, bins='auto')  # 'auto' decides the best number of bins for the data
+sns.histplot(lcv["Dis"].value, bins=bin_edges, kde = True, label = "LCV")
+sns.histplot(lcv_not_hec["Dis"].value, bins=bin_edges, kde = True, label = "Unique for LCV")
+sns.histplot(inner["Dis"].value, bins=bin_edges, kde = True, label = "Inner join")
+plt.title("Completeness of Distance for LCV")
+plt.xlabel("Distance [Mpc]")
+plt.ylabel("Number of galaxies")
+plt.legend()
+plt.show()
+plt.close()
+
+```
+
+```{python}
+#| layout-ncol: 2
+#| fig-cap: "Histograms showing the Completeness of the Catalogs"
+#| fig-subcap: 
+#| - "HECATE"
+#| - "LCV"
+#| label: fig-type-comp
+# Using numpy's histogram function to get the bin edges automatically for the first dataset
+bin_edges = 16
+
+sns.histplot(hec["T"], bins=bin_edges, kde = True, label = "HECATE")
+sns.histplot(hec_not_lcv["T"], bins=bin_edges, kde = True, label = "Unique for Hecate")
+sns.histplot(inner["T"].value, bins=bin_edges, kde = True, label = "Inner join")
+plt.title("Completeness of Types of galaxies for HECATE")
+plt.xlabel("Type")
+plt.ylabel("Number of galaxies")
+plt.legend()
+plt.show()
+plt.close()
+
+bin_edges = 14
+
+sns.histplot(lcv["TType"], bins=bin_edges, kde = True, label = "LCV")
+sns.histplot(lcv_not_hec["TType"], bins=bin_edges, kde = True, label = "Unique for LCV")
+sns.histplot(inner["TType"].value, bins=bin_edges, kde = True, label = "Inner join")
+plt.title("Completeness of Types of galaxies for LCV")
+plt.xlabel("Type")
+plt.ylabel("Number of galaxies")
+plt.legend()
+plt.show()
+plt.close()
+
+```
+
+As we can see from the histograms @fig-dis-comp and @fig-type-comp the sample of nique galaxies of each catalog, gets smaller by an almost constant proportion (Inner join).
+
+This means there is no bias in the selection of the galaxies.
+
+# How are we going to compare the data?
+
+## Scatter plots and $R^2$ calculation
+
+1.  $R^2$: Measures the proportion of variance explained by the linear model.
+2.  Slope of the Fitted Line: Should be close to 1 for a 1-1 correlation.[^1]
+
+[^1]: Some data seem to have a very good linear correlation but they have many outliers. This is why we will clip the outliers with $\sigma > 3$
+
+<!-- -->
+
+3.  Pearson Correlation $\rho$: Measures the strength and direction of the linear relationship between two variables, ranging from -1 to 1. [^2]
+
+[^2]: In simple linear regression, $R^2$ is the square of the Pearson correlation coefficient $\rho$.
+
+```{python}
+def compare_data(x, y, sigma = False):
+    """
+    Performs a linear comparison between two datasets.
+    
+    This function fits a linear model to the data, calculates the slope and intercept of the fitted line,
+    and computes the R-squared value and Pearson correlation coefficient to assess the fit quality.
+    
+    Parameters:
+    - x (array-like): The independent variable data.
+    - y (array-like): The dependent variable data.
+    - unc (array-like with units, optional): The uncertainties associated with the a variable data. Default is None.
+
+    Returns:
+    tuple: A tuple containing the following elements:
+        - slope (float): The slope of the fitted linear model.
+        - intercept (float): The intercept of the fitted linear model.
+        - r2 (float): The R-squared value, indicating the proportion of variance explained by the linear model.
+        - corr (float): The Pearson correlation coefficient, measuring the linear correlation between x and y.
+    """
+    try:
+        x_data = np.ma.array(x.value, mask=np.isnan(x.value))
+        y_data = np.ma.array(y.value, mask=np.isnan(y.value))
+        # initialize a linear fitter
+        fit = fitting.LinearLSQFitter()
+
+        # initialize a linear model
+        line_init = models.Linear1D()
+
+        # fit the data with the fitter
+        # check if sigma
+        if sigma is False:
+            fitted_line = fit(line_init, x_data, y_data)
+            outliers = None
+        else:
+            or_fit = fitting.FittingWithOutlierRemoval(fit, sigma_clip, niter =3, sigma=3)
+            fitted_line, outliers = or_fit(line_init, x_data, y_data)
+        slope = fitted_line.slope.value
+        intercept = fitted_line.intercept.value
+
+        # Predict values using the fitted model
+        y_pred = fitted_line(x_data)
+
+        # Remove NaN values
+        mask = ~np.isnan(y_data)
+        if outliers is not None:
+            mask = ~np.isnan(y_data) & ~outliers
+        y_data_clean = y_data[mask]
+        y_pred_clean = y_pred[mask]
+
+        # Calculate R-squared
+        r2 = r2_score(y_data_clean, y_pred_clean)
+
+        # Calculate Pearson correlation coefficient
+        corr = np.sqrt(np.abs(r2))
+
+        return slope, intercept, r2, corr, outliers
+    except Exception:
+        return 0,0,0,0,None
+```
+
+4.  [Plots]{.underline}: Plots are essential for visually assessing the relationship between two datasets, identifying correlations, trends, and outliers, and evaluating the fit of linear models.
+
+```{python}
+def scatter_plot(x, y, xerr = None, yerr = None, sigma = False, logscale = False):
+    """
+    Generates a scatter plot of two datasets with optional error bars, fits a linear model to the data, 
+    and displays the fitted line on the plot.
+
+    Parameters:
+    - x (array-like with units): Independent variable data.
+    - y (array-like with units): Dependent variable data.
+    - xerr (array-like, optional): Error in the independent variable data. Default is 0.
+    - yerr (array-like, optional): Error in the dependent variable data. Default is 0.
+
+    Returns:
+    None. The function displays a scatter plot with a fitted linear model.
+    """
+    # Convert data to masked arrays, masking NaN values
+    x_data = np.ma.array(x.value, mask=np.isnan(x.value))
+    y_data =  np.ma.array(y.value, mask=np.isnan(y.value))
+
+    # Handle default values for xerr and yerr
+    if xerr is None:
+        xerr_d = 0
+    else:
+        xerr_d = np.ma.array(xerr.value, mask=np.isnan(xerr))
+    if yerr is None:
+        yerr_d = 0
+    else:
+        yerr_d = np.ma.array(yerr.value, mask=np.isnan(yerr))
+
+    
+    # Perform linear comparison between the datasets
+    c, m, r2, corr, outliers = compare_data(x, y, sigma)
+
+    # Plot the data with error bars
+    # errorbar -> needs np.ma -> no units
+    if outliers is not None:
+        filtered_data = np.ma.masked_array(y.value , mask = outliers)
+        outlier_percentage = (np.sum(outliers) / len(outliers)) * 100
+
+        plt.errorbar(x.value, y.value, yerr=yerr_d, c = "black", label="Clipped Data, {} ({}%)".format(np.sum(outliers), round(outlier_percentage,1)), fmt = "o", fillstyle = "none")
+        plt.scatter(x[~outliers], y[~outliers],  label=f"Fitted Data, {np.sum(~filtered_data.mask)}", c = "blue")
+
+    else:
+        plt.errorbar(x_data, y_data, xerr = xerr_d, yerr = yerr_d, alpha = 0.3, c = "blue", label = "Data", fmt = ".")
+    
+    # Plot the fitted line 
+    if c!=0:
+        plt.plot(x, c*x.value+ m, c = "red", label = f"Fit: {y.info.name}$_H $= {c:.2f}$\cdot${x.info.name}$_L${m:+.2f}\n $R^2=$ {r2:.2f}")
+
+    # Set plot labels
+    plt.xlabel(f"LCV, {x.info.name} [{x.unit}]")
+    plt.ylabel(f"HECATE, {y.info.name} [{y.unit}]")
+
+    # Display legend
+    plt.legend()
+    
+    # Show the plot
+    plt.show()
+```
+
+-   Histograms: Because not all of our data have the same number of counts, the comparison with histograms between data that are not the same, doesn't help us right now.[^3] This is why we will only use histograms for comparing the distribution of same-data columns normalized by their maximum value
+
+[^3]: When we will use the outer join table we could use histograms due to the large number of counts.
+
+<!-- -->
+
+-   Correlation Heatmaps: A correlation heatmap is a graphical tool that displays the correlation between multiple variables as a color-coded matrix. It's like a color chart that shows us how closely related different variables are. In a correlation heatmap, each variable is represented by a row and a column, and the cells show the correlation between them. The color of each cell represents the strength and direction of the correlation, with darker colors indicating stronger correlations.
+
+```{python}
+
+# Define a function that creates a pairplot with correlation coefficients
+def pairplot_with_correlation(df, cmap="coolwarm", font_size=12, font_style='italic', font_weight='bold', box_color='white'):
+    """
+    Creates a Seaborn pairplot with correlation coefficients displayed on the upper triangle.
+    
+    Parameters:
+    df : pandas.DataFrame
+        The dataframe containing the data for the pairplot.
+    cmap : str, optional
+        The colormap to use for coloring the correlation coefficients (default is 'coolwarm_r').
+    font_size : int, optional
+        The font size for the correlation coefficient annotations (default is 12).
+    font_style : str, optional
+        The font style for the correlation coefficient annotations (default is 'italic').
+    font_weight : str, optional
+        The font weight for the correlation coefficient annotations (default is 'bold').
+    box_color : str, optional
+        The background color of the box around the correlation coefficients (default is 'white').
+    
+    Returns:
+    A Seaborn pairplot with correlation coefficients displayed in a heatmap style.
+    """
+    plt.close()
+    # Create Pairplot
+    pairplot = sns.pairplot(df, plot_kws={"color": "green"}, diag_kws = {"color" : "green"})
+
+    # Calculate Correlations
+    corr_matrix = df.corr()
+
+    # Define a colormap
+    colormap = plt.get_cmap(cmap)
+
+    # Overlay Correlation Coefficients with customized annotations
+    for i, j in zip(*np.triu_indices_from(corr_matrix, 1)):
+        # Get the correlation value
+        corr_value = corr_matrix.iloc[i, j]
+
+        # Get a color from the colormap based on the correlation value
+        color = colormap((corr_value + 1) / 2)  # Normalize between 0 and 1
+
+        # Annotate the plot with the correlation value, using a box, bold, and italic
+        pairplot.axes[i, j].annotate(f"{corr_value:.2f}", 
+                                     xy=(0.5, 0.5), 
+                                     xycoords='axes fraction',
+                                     ha='center', 
+                                     va='center', 
+                                     fontsize=font_size,  # Font size
+                                     fontstyle=font_style,  # Font style
+                                     fontweight=font_weight,  # Font weight
+                                     bbox=dict(facecolor=box_color, edgecolor=color, boxstyle='round,pad=0.5'),  # Box around the text
+                                     color=color)  # Use heatmap color for text
+
+    # Show the plot
+    plt.show()
+
+```
+
+-   Kernel Density Estimate (KDE) plot: The KDE plot visually represents the distribution of data, providing insights into its shape, central tendency, and spread.
+
+5.  Percentage change: We can calculate the percentage change of the data for each galaxy and then we can see if the data are similar, based on minimum, the maximum and the mean value of the difference.
+
+$$\text{Percentage change} = \frac{V_{Hecate} - V_{LCV}}{V_{Hecate}}\cdot 100 \%$$
+
+```{python}
+def relative_diff(hec, lcv):
+    """
+    Calculate the relative difference between two sets of values.
+
+    Parameters:
+    hec (numpy.ndarray): An array of values representing the HEC dataset.
+    lcv (numpy.ndarray): An array of values representing the LCV dataset.
+
+    Returns:
+    numpy.ndarray: An array of relative differences between the HEC and LCV datasets.
+    The relative difference is calculated as ((HEC - LCV) * 100) / |HEC|.
+    Any infinite values in the result are replaced with NaN.
+    """
+    diff = (hec - lcv) * 100 / np.abs(hec)
+    diff[np.isinf(diff)] = np.nan
+    return diff
+
+def percent_desc_histogram(x, sigmaclip = True, zoom = None):
+    """
+    This function creates a histogram of the given data and optionally applies a 3-sigma clip.
+    
+    Parameters:
+    - x (array-like): The input data to create the histogram.
+    - sigmaclip (bool, optional): Whether to apply a 3-sigma clip to the data. Default is True.
+    - zoom (tuple, optional): The range of values to display on the x-axis of the histogram. Default is None.
+    
+    Returns:
+    - t_pd (DataFrame): A pandas DataFrame containing statistical information about the input data.
+    
+    The function uses the seaborn library to create the histogram and applies a 3-sigma clip if `sigmaclip` is True.
+    The histogram is displayed with appropriate labels and titles.
+    The statistical information about the input data is returned as a pandas DataFrame.
+    """
+    plt.close()
+    temp_table = QTable()
+    temp_table["Percentage change [%]"]= x.copy()
+    
+    if sigmaclip is True:
+        temp_table["Percentage change [%], after 3 sigma clip"] = sigma_clip(temp_table["Percentage change [%]"],3)
+    
+    t_pd = temp_table.to_pandas()
+    
+    sns.histplot(temp_table["Percentage change [%]"], kde = True, label = "Percentage change [%]")
+    
+    if sigmaclip is True:
+        sns.histplot(temp_table["Percentage change [%], after 3 sigma clip"], kde = True, label = "Percentage change [%], after 3 sigma clip")
+    
+    plt.xlim(zoom)
+    plt.xlabel("Percentage change Distribution [%]")
+    plt.title("Types of Galaxies")
+    plt.legend()
+    plt.show()
+    
+    return t_pd.describe(percentiles=[]).map('{:,.0f}'.format).style.set_properties(**{'text-align': 'center'})
+```
+
+# Comparable data
+
+## Coordinates
+
+```{python}
+#| echo: false
+ra_corr = round(compare_data(dt["Ra_1"],dt["RA_2"])[3],3)
+dec_corr = round(compare_data(dt["Dec_1"],dt["DEC_2"])[3],3)
+d_corr = round(compare_data(dt["Dis"],dt["D"])[3],3)
+```
+
+|  LCV  | HECATE |   Description   | Pearson Correlation \[-1,1\] |
+|:-----:|:------:|:---------------:|:----------------------------:|
+| Ra_1  |  RA_2  | Right Ascension |      `{python} ra_corr`      |
+| Dec_1 | DEC_2  |   Declination   |     `{python} dec_corr`      |
+|  Dis  |   D    |    Distance     |      `{python} d_corr`       |
+
+::: panel-tabset
+### Right Ascension
+
+```{python}
+
+scatter_plot(dt["Ra_1"], dt["RA_2"])
+```
+
+### Declination
+
+```{python}
+scatter_plot(dt["Dec_1"], dt["DEC_2"]), 
+```
+
+### Distance
+
+```{python}
+scatter_plot(dt["Dis"], dt["D"])
+```
+:::
+
+## Velocities
+
+```{python}
+rvel_corr = round(compare_data(dt["RVel"],dt["V"])[3],3)
+rvel_corr_v = round(compare_data(dt["RVel"],dt["V_VIR"])[3],3)
+vlg_corr = round(compare_data(dt["VLG"],dt["V"])[3],3)
+vlg_corr_v = round(compare_data(dt["VLG"],dt["V_VIR"])[3],3)
+cz_corr = round(compare_data(dt["cz"],dt["V"])[3],3)
+cz_corr_v = round(compare_data(dt["cz"],dt["V_VIR"])[3],3)
+```
+
+|     LCV     |    HECATE    |              Description               |  Linear Correlation  |
+|:----------------:|:-----------------:|:----------------:|:----------------:|
+| RVel (km/s) |   V (km/s)   |      Heliocentric radial velocity      | `{python} rvel_corr` |
+| VLG (km/s)  |              |            Radial velocity             |                      |
+|  cz (km/s)  |              |         Heliocentric velocity          |                      |
+|             | V_VIR (km/s) | Virgo-infall corrected radial velocity |                      |
+
+```{python}
+scatter_plot(dt["RVel"], dt["V"], yerr = dt["E_V"])
+```
+
+```{python}
+vel_data = dt[["RVel", "V", "VLG", "cz", "V_VIR"]].to_pandas()
+```
+
+```{python}
+pairplot_with_correlation(vel_data)
+```
+
+\[?\] The close correlation between all of the velocities, could be due to the fact that all of them measure the velocity of each galaxy, but from a different frame of reference.
+
+## Morphology and Geometry
+
+```{python}
+dt["INCL"].mask = np.isnan(dt["INCL"])
+```
+
+```{python}
+#| echo: false
+ 
+ttype_corr = round(compare_data(dt["TType"], dt["T"])[3], 4)
+inc_corr = round(compare_data(dt["inc"], dt["INCL"], sigma = True)[3], 3)
+a26_corr = round(compare_data(dt["a26_1"], dt["R1"], sigma =False)[3], 3)
+```
+
+|      LCV      |        HECATE        |                        Description                        | Pearson Correlation \[-1,1\] |
+|:----------------:|:----------------:|:-----------------:|:----------------:|
+|     TType     |   T (with errors)    | Numerical Hubble type following the de Vaucouleurs system |    `{python} ttype_corr`     |
+|      inc      |         INCL         |                     Inclination (deg)                     |     `{python} inc_corr`      |
+| a26_1 (Major) | R1 (Semi-major axis) |                 angular diameter (arcmin)                 |     `{python} a26_corr`      |
+
+::: panel-tabset
+### Galaxy Types
+
+```{python}
+
+scatter_plot(dt["TType"], dt["T"], yerr = dt["E_T"])
+```
+
+**Percentage change:**
+
+```{python}
+
+dt["diff_T"] = relative_diff(hec = dt["T"], lcv = dt["TType"])
+percent_desc_histogram(dt["diff_T"], zoom = [-200,200])
+dt["diff_T_clip"] = sigma_clip(dt["diff_T"], sigma=3)
+dt[["diff_T", "diff_T_clip"]].to_pandas().describe()
+
+```
+
+\[?\] After the sigma clip we only lose 39 galaxies ($14\%$) and we can see that both the median and the mean of the percentage change are close to $0\%$.This is why we can assume that the Types of the galaxies are the same for the two catalogs
+
+#### Normalize the scale of galaxy types
+
+It is very possible that the two catalogs use different scaling methods, as indicated by the use of decimal numbers in HECATE.
+
+```{python}
+types = dt[["T", "TType"]].to_pandas()
+```
+
+```{python}
+def min_max_normalize(series):
+    return (series - series.min()) / (series.max() - series.min())
+
+types["T_norm"] = min_max_normalize(types["T"])
+types["T_norm"].mask = types["T"].mask
+types["TType_norm"] = min_max_normalize(types["TType"])
+types.describe()
+```
+
+Also, as we can see the minimum values are lower by 2 in HECATE, which complies with the linear fit.
+
+```{python}
+sns.histplot(types[["TType_norm", "T_norm"]], kde = True)
+plt.xlabel("Types of galaxies")
+plt.show()
+```
+
+```{python}
+types["norm_diff"] = (-types["TType_norm"] + types["T_norm"])
+sns.histplot(types["norm_diff"], kde = True)
+
+plt.xlabel(r"$T_{HECATE}-T_{LCV}$")
+plt.show()
+```
+
+```{python}
+types["norm_rel_diff"] = (-types["TType_norm"] + types["T_norm"])/types["T"]
+sns.histplot(types["norm_rel_diff"], kde = True)
+plt.xlim(-0.2,0.2)
+plt.xlabel(r"$(T_{HECATE}-T_{LCV})/T_{HECATE}$")
+plt.show()
+```
+
+### Inclination
+
+```{python}
+
+temp = dt[["inc", "INCL"]].to_pandas()
+
+sns.histplot(temp[["inc", "INCL"]], kde = True)
+plt.xlabel("Inclination of galaxies [deg]")
+plt.show()
+
+temp["Percentage Change [%]"] = (-temp["inc"] + temp["INCL"])/temp["INCL"]
+temp.loc[np.isinf(temp["Percentage Change [%]"]), "Percentage Change [%]"] = np.nan
+sns.histplot(temp["Percentage Change [%]"], kde = True)
+plt.show()
+temp.describe()
+```
+
+We can see that for values in the range $[\sim 30^\circ,\sim 80^\circ]$, the values of the LCV inclination are higher. However, since their means, median, min and maxes are similar and the percentage change is practically 0% (mean, median, $\sigma$ = 0 with a range $[-3\%,1\%]$), we can ignore the differences and assume they are the same values.
+
+### Major Axis
+
+```{python}
+scatter_plot(dt["a26_1"], dt["R1"])
+```
+
+it is not very clear if we truly have a correlation or not. We need to see the linear correlation of the decimal logarithms.
+
+```{python}
+dt["log_a26"] = np.log10(dt["a26_1"].data)
+dt["log_a26"].unit = u.arcmin
+dt["log_R1"] = np.log10(dt["R1"].data)
+dt["log_R1"].unit = u.arcmin
+```
+
+```{python}
+scatter_plot(dt["log_a26"], dt["log_R1"], sigma = True)
+```
+:::
+
+## Luminosities
+
+```{python}
+#| echo: false
+#| warning: false
+logKLum_corr = round(compare_data(dt["logKLum"], dt["logL_K"], sigma = True)[3], 3)
+
+```
+
+|   LCV   | HECATE | Description | Pearson Correlation \[-1,1\] |
+|:-------:|:------:|:-----------:|:----------------------------:|
+| logKLum | logL_K |             |   `{python} logKLum_corr`    |
+
+```{python}
+#| echo: false
+dt["diff_L_K"] = relative_diff(hec = dt["logL_K"].value, lcv = dt["logKLum"])
+temp = dt[["logKLum", "logL_K", "diff_L_K"]].to_pandas()
+sns.histplot(temp["diff_L_K"], kde = True)
+plt.xlabel("Percentage change [%]")
+plt.title("K-band Luminosities")
+plt.show()
+```
+
+```{python}
+temp.rename(columns = {"logKLum":"log(L_K)_{LCV}$", "logL_K":"log(L_K)_{HEC}", "diff_L_K":"Percentage Change [%]"}, inplace=True)
+```
+
+```{python}
+temp.describe(percentiles=[])
+```
+
+## Magnitudes
+
+```{python}
+#| echo: false
+#| warning: false
+mag_B_corr = round(compare_data(dt["mag_B"], dt["BT"], sigma = True)[3], 3)
+Kmag_corr = round(compare_data(dt["Kmag"], dt["K"], sigma = True)[3], 3)
+```
+
+|         LCV         |      HECATE      |         Description         | Pearson Correlation \[-1,1\] |
+|:----------------:|:----------------:|:----------------:|:-----------------:|
+| mag_B (with errors) | BT (with errors) |                             |    `{python} mag_B_corr`     |
+|        Kmag         |        K         | 2MASS band magnitude (both) |     `{python} Kmag_corr`     |
+
+::: panel-tabset
+### B mag
+
+```{python}
+scatter_plot(dt["mag_B"], dt["BT"], yerr = dt["E_BT"], sigma=True)
+```
+
+### K mag
+
+```{python}
+scatter_plot(dt["Kmag"], dt["K"], yerr = dt["E_K"], sigma = True)
+```
+
+```{python}
+dt["diff_K_mag"] = relative_diff(dt["Kmag"], dt["K"])
+
+temp = dt[["diff_K_mag"]].to_pandas()
+c = temp["diff_K_mag"]
+up_clip = c.mean() + 3*c.std()
+low_clip = c.mean() - 3*c.std()
+temp["Percentage Change, after 3 sigma clip [%]"] = temp["diff_K_mag"].clip(low_clip, up_clip)
+temp.rename(columns={"diff_K_mag":"Percentage Change [%]"}, inplace=True)
+temp.describe(percentiles=[])
+```
+
+```{python}
+sns.histplot(temp, kde = True)
+plt.title("Percentage change Distribution [%]")
+plt.xlabel(f"K band magnitude [{dt['K'].unit}]")
+plt.show()
+```
+
+\[?\]
+:::
+
+## SFR
+
+```{python}
+#| echo: false
+# Extract the relevant SFR columns
+sfr_columns = ["logSFR_TIR", "logSFR_FIR", "logSFR_60u", "logSFR_12u", "logSFR_22u", "logSFR_HEC", "logSFR_GSW", "logSFRFUV", "logSFRHa"]
+sfr_data = dt[sfr_columns].to_pandas()
+
+# Count the number of non-NaN cells for each column
+non_nan_counts = sfr_data.notna().sum()
+```
+
+|  LCV   |   HECATE   |                           Description                            |                  Count                  |
+|:----------------:|:----------------:|:-----------------:|:----------------:|
+|        | logSFR_TIR | Decimal logarithm of the total-infrared SFR estimate \[Msol/yr\] | `{python} non_nan_counts["logSFR_TIR"]` |
+|        | logSFR_FIR |  Decimal logarithm of the far-infrared SFR estimate \[Msol/yr\]  | `{python} non_nan_counts["logSFR_FIR"]` |
+|        | logSFR_60u |      Decimal logarithm of the 60um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_60u"]` |
+|        | logSFR_12u |      Decimal logarithm of the 12um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_12u"]` |
+|        | logSFR_22u |      Decimal logarithm of the 22um SFR estimate \[Msol/yr\]      | `{python} non_nan_counts["logSFR_22u"]` |
+|        | logSFR_HEC |  Decimal logarithm of the homogenised SFR estimate \[Msol/yr\]   | `{python} non_nan_counts["logSFR_HEC"]` |
+|        | logSFR_GSW |       Decimal logarithm of the SFR in GSWLC-2 \[Msol/yr\]        | `{python} non_nan_counts["logSFR_GSW"]` |
+| SFRFUV |            |             FUV derived integral star formation rate             | `{python} non_nan_counts["logSFRFUV"]`  |
+| SFRHa  |            |          H{alpha} derived integral star formation rate           |  `{python} non_nan_counts["logSFRHa"]`  |
+
+```{python}
+#| echo: false
+sfr_data.drop("logSFR_GSW", axis=1, inplace=True)
+
+# Example usage of the function
+pairplot_with_correlation(sfr_data)
+
+```
+
+## Masses
+
+```{python}
+#| echo: false
+# Extract the relevant mass columns
+mass_columns = ["logM26", "logMHI", "logM_HEC", "logM_GSW", "logStellarMass"]
+mass_data = dt[mass_columns].to_pandas()
+
+# Count the number of non-NaN cells for each column
+non_nan_counts = mass_data.notna().sum()
+```
+
+|      LCV       |  HECATE  |                        Description                        |                    Count                    |
+|:----------------:|:----------------:|:----------------:|:----------------:|
+|     logM26     |          |              Log mass within Holmberg radius              |     `{python} non_nan_counts["logM26"]`     |
+|     logMHI     |          |              Log mass within Holmberg radius              |     `{python} non_nan_counts["logMHI"]`     |
+|                | logM_HEC |      Decimal logarithm of the stellar mass \[Msol\]       |    `{python} non_nan_counts["logM_HEC"]`    |
+|                | logM_GSW | Decimal logarithm of the stellar mass in GSWLC-2 \[Msol\] |    `{python} non_nan_counts["logM_GSW"]`    |
+| logStellarMass |          |               Stellar Mass from $M_*/L=0.6$               | `{python} non_nan_counts["logStellarMass"]` |
+
+::: panel-tabset
+### Stellar Masses Comparison
+
+```{python}
+
+dt["diff_M"] =  relative_diff(hec = dt["logM_HEC"].data, lcv = dt["logStellarMass"])
+temp = dt[["diff_M"]].to_pandas()
+sns.histplot(temp, kde = True)
+plt.title("Percentage change Distribution [%]")
+plt.xlabel(r"$\log_{10}M_*$ "+f"[{dt['logM_HEC'].unit}]")
+plt.show()
+plt.close()
+
+```
+
+```{python}
+temp.rename(columns={"diff_M":"Percantage Change [%]"}, inplace = True)
+```
+
+```{python}
+temp.describe(percentiles=[])
+```
+
+### Heatmap
+
+```{python}
+mass_data.drop("logM_GSW", axis=1, inplace=True)
+# Compute the correlation matrix
+
+pairplot_with_correlation(mass_data)
+```
+:::

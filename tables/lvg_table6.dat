@@ -46,6 +46,7 @@ ESO409-015         29.70 0.11 TRGB 2016EDD...........S
 AGC748778          28.97 0.06 TRGB 2016EDD...........S
 And XX             24.52 0.49 TRGB 2008ApJ...688.1009M
 UGC00064           29.56      TRGB 2021AJ....162...80A
+UGC00063           29.81       NAM 2024A&A...684L..24K
 ESO349-031         27.53 0.04 TRGB 2016EDD...........S
 dw0009-25          29.32       mem 2021LVG.Distance..K
 NGC0024            29.32 0.02 TRGB 2016EDD...........S
@@ -68,30 +69,35 @@ ESO294-010         26.54 0.03 TRGB 2016EDD...........S
 UGC00288           29.17 0.05 TRGB 2016EDD...........S
 And XXV            24.55 0.12   HB 2011ApJ...732...76R
 ESO473-024         29.98        TF 2011LVG.Distance..K
+DoV                27.84       mem 2024LVG.Distance..K
 NGC0147            24.39 0.11 TRGB 2016EDD...........S
-ScuSR              31.39       mem 2024arXiv240114457M
+ScuSR              31.39       mem 2024ApJ...966..188M
+DoVI               27.84       mem 2024LVG.Distance..K
 And III            24.37 0.07 TRGB 2005MNRAS.356..979M
 Cas III            24.45 0.14 TRGB 2013ApJ...772...15M
-dw0036-2828        27.88 0.20 TRGB 2024arXiv240114457M
+dw0036-2828        27.88 0.20 TRGB 2024ApJ...966..188M
 And XXX            24.17 0.21 TRGB 2013MNRAS.430..971W
 And XVII           24.36 0.06   HB 2011ApJ...729...23B
 And XXVII          24.59 0.12   HB 2011ApJ...732...76R
+DoVII              27.84       mem 2024LVG.Distance..K
 KK7                30.18        TF 2017LVG.Distance..K
 NGC0185            24.11 0.02 TRGB 2016EDD...........S
 NGC0205            24.52 0.02 TRGB 2016EDD...........S
+DoVIII             27.84       mem 2024LVG.Distance..K
 And IV             29.28 0.10 TRGB 2016EDD...........S
 MESSIER032         24.50 0.01 TRGB 2016EDD...........S
+DoIX               27.84       mem 2024LVG.Distance..K
 MESSIER031         24.44 0.10  Cep 2000ApJS..128..431F
 DDO226             28.46 0.13 TRGB 2016EDD...........S
 And I              24.32      TRGB 2011ApJ...740...69C
 And XI             24.33 0.05   RR 2012MNRAS.419.1362Y
-DoIV               27.98 0.33 TRGB 2024arXiv240114457M
+DoIV               27.98 0.33 TRGB 2024ApJ...966..188M
 DoII               27.70 0.14 TRGB 2022ApJ...926...77M
 NGC0247            27.85 0.02 TRGB 2016EDD...........S
 And XII            24.60 0.13 TRGB 2007ApJ...662L..79C
 NGC0253            27.84 0.02 TRGB 2016EDD...........S
 Scl-MM-Dw1         27.98 0.32 TRGB 2014ApJ...793L...7S
-NGC253-SNFC-dw1    27.79 0.12 TRGB 2024arXiv240316011O
+NGC253-SNFC-dw1    27.79 0.12 TRGB 2024ApJ...967L..24O
 KDG002             27.76 0.04 TRGB 2016EDD...........S
 DDO006             27.68 0.09 TRGB 2016EDD...........S
 Scl-MM-Dw2         27.74 0.07 TRGB 2022ApJ...926...77M
@@ -105,6 +111,7 @@ And IX             24.48 0.20 TRGB 2004ApJ...612L.121Z
 Scl-MM-Dw4         28.07 0.14 TRGB 2022ApJ...926...77M
 NGC0300            26.60 0.06 TRGB 2016EDD...........S
 LV J0055-2310      27.79 0.10 TRGB 2021AJ....161..205K
+Sculptor C         26.55 0.12 TRGB 2024ApJ...977L...5S
 PAndAS-48          24.57 0.11   HB 2013ApJ...770L..17M
 And XVI            23.60 0.20 TRGB 2007ApJ...671.1591I
 Sculptor           19.77      TRGB 2000glg..book.....V
@@ -112,11 +119,13 @@ PAndAS-50          24.46       mem 2014LVG.Distance..K
 LGS 3              24.08 0.40 TRGB 2016EDD...........S
 IC1613             24.39 0.05 TRGB 2016EDD...........S
 And X              24.01 0.07   HB 2011ApJ...729...23B
+Sculptor B         26.98 0.20 TRGB 2024ApJ...977L...5S
 UGC00685           28.41 0.02 TRGB 2016EDD...........S
 KKH5               28.62      TRGB 2021AJ....162...80A
 PAndAS-C02         24.46       mem 2014LVG.Distance..K
 AM0106-382         29.57        TF 2011LVG.Distance..K
-DoIII              27.64 0.11 TRGB 2024arXiv240114457M
+Sculptor A         25.65 0.23 TRGB 2024ApJ...977L...5S
+DoIII              27.64 0.11 TRGB 2024ApJ...966..188M
 NGC0404            27.37 0.02 TRGB 2016EDD...........S
 And V              24.55 0.12 TRGB 1998AJ....116.2287A
 DoI                27.60 0.20 TRGB 2018LVG.Distance..K
@@ -129,6 +138,7 @@ Triangulum III     24.90 0.20   HB 2024MNRAS.528.2614C
 PAndAS-56          24.46       mem 2014LVG.Distance..K
 And XXII           24.50      TRGB 2009ApJ...705..758M
 PAndAS-57          24.46       mem 2014LVG.Distance..K
+Triangulum IV      24.85 0.11   HB 2024arXiv240707481O
 UGC01056           30.04       mem 2014LVG.Distance..K
 PAndAS-58          24.46       mem 2014LVG.Distance..K
 And XXIII          24.32      TRGB 2011ApJ...740...69C
@@ -141,10 +151,10 @@ dw0134+1544        30.11       SBF 2022ApJ...933...47C
 AGC114027          29.98       BTF 2017LVG.Distance..K
 KKH6               28.57       NAM 2018LVG.Distance..K
 NGC0625            28.02 0.03 TRGB 2016EDD...........S
-dw0136+1628        29.88       SBF 2022ApJ...933...47C
+dw0136+1628        29.80       NAM 2025MNRAS.537L..21K
 NGC628dwB          30.04       mem 2020LVG.Distance..K
 NGC0628            30.04 0.12 TRGB 2014ApJ...792...52J
-NGC628dwA          30.03       SBF 2022ApJ...933...47C
+NGC628dwA          29.65       NAM 2025MNRAS.537L..21K
 dw0137+1607        29.78       SBF 2022ApJ...933...47C
 AGC112503          29.68       SBF 2022ApJ...933...47C
 UGC01171           30.03       SBF 2022ApJ...933...47C
@@ -185,7 +195,7 @@ NGC0891            29.99 0.07 TRGB 2016EDD...........S
 Eridanus 3         19.70 0.15   HB 2015ApJ...805..130K
 [TT2009] 30        30.06       SBF 2022ApJ...933...47C
 SMDG0223-02        30.00       txt 2024Ap.....66..441K
-KKH11              28.69       NAM 2019LVG.Distance..K
+KKH11              28.93       NAM 2025MNRAS.537L..21K
 [KK2000] 03        26.50 0.09 TRGB 2016EDD...........S
 DDO019             29.90       mem 2016LVG.Distance..K
 d0226+3325         29.90       mem 2016LVG.Distance..K
@@ -198,6 +208,7 @@ DDO025             29.90       mem 2016LVG.Distance..K
 DDO024             29.99       mem 2016LVG.Distance..K
 MB1                29.33       NAM 2018LVG.Distance..K
 Maffei1            28.74       NAM 2018LVG.Distance..K
+FASHI0237+38       29.95       NAM 2024A&A...684L..24K
 ESO115-021         28.53 0.02 TRGB 2016EDD...........S
 Fornax             20.73      TRGB 2000glg..book.....V
 Maffei2            28.79 0.17 TRGB 2019ApJ...872L...4A
@@ -206,6 +217,7 @@ AGC122226          29.44      TRGB 2021AJ....162...80A
 AGC124635          29.84       BTF 2018LVG.Distance..K
 AGC123352          29.94 0.05 TRGB 2021ApJ...918...23M
 [KKS2000]05        30.00       txt 2022AstBu..77..372K
+FASHI0252+40       29.81       NAM 2024A&A...684L..24K
 Dw2                28.89       NAM 2018LVG.Distance..K
 Horologium 1       19.50 0.15   HB 2015ApJ...805..130K
 PGC2807172         30.06       BTF 2018LVG.Distance..K
@@ -221,6 +233,7 @@ N1156dw2           29.46       mem 2015AstBu..70..379K
 LV J0300+2546      29.46       mem 2011LVG.Distance..K
 Perseus I          24.49 0.18 TRGB 2013ApJ...779L..10M
 dw0301+2446        29.46       mem 2019LVG.Distance..K
+FASHI0302+43       29.56       NAM 2024A&A...684L..24K
 KKH18              28.40 0.13 TRGB 2016EDD...........S
 PGC1166738         30.09       NAM 2024LVG.Distance..K
 N1291-DW9          29.71       SBF 2022ApJ...933...47C
@@ -228,6 +241,7 @@ ESO300-014         29.96        TF 2011LVG.Distance..K
 ESO300-016         29.85      TRGB 2021AJ....162...80A
 N1291-DW11         29.79       mem 2020LVG.Distance..K
 N1291-DW2          29.46       SBF 2022ApJ...933...47C
+dw0315-4112        29.79       mem 2024LVG.Distance..K
 Horologium 2       19.46 0.20   HB 2015ApJ...808L..39K
 N1291-DW8          29.78       SBF 2022ApJ...933...47C
 NGC1291            29.79 0.05 TRGB 2017AJ....154...51M
@@ -237,13 +251,13 @@ NGC1313            28.17 0.03 TRGB 2016EDD...........S
 N1291-DW6          29.54       SBF 2022ApJ...933...47C
 N1291-DW12         29.32       SBF 2022ApJ...933...47C
 N1291-DW1          29.79       mem 2020LVG.Distance..K
-N1291-DW15         29.79       mem 2020LVG.Distance..K
 N1291-DW4          29.60       SBF 2022ApJ...933...47C
 NGC1311            28.72 0.02 TRGB 2016EDD...........S
 UGC02684           29.25      TRGB 2021AJ....162...80A
 N1291-DW13         29.24       SBF 2022ApJ...933...47C
 KK27               28.13 0.05 TRGB 2016EDD...........S
 [KK2000] 08        29.72       SBF 2022ApJ...933...47C
+dw0321-4149        29.79       mem 2024LVG.Distance..K
 ESO301-010         29.43       SBF 2022ApJ...933...47C
 UGC02716           29.12      TRGB 2021AJ....162...80A
 N1291-DW10         29.70       SBF 2022ApJ...933...47C
@@ -274,6 +288,7 @@ Pictoris 1         20.30 0.15   HB 2015ApJ...805..130K
 CamB               27.72 0.16 TRGB 2016EDD...........S
 NGC1705            28.79 0.04 TRGB 2016EDD...........S
 HIPASS J0457-42    29.21 0.08 TRGB 2016EDD...........S
+LV J0459-2529      29.86       NAM 2020LVG.Distance..K
 NGC1744            30.00        TF 2011LVG.Distance..K
 ESO486-021         30.00       mem 2011LVG.Distance..K
 NGC1800            29.52        TF 2011LVG.Distance..K
@@ -319,7 +334,6 @@ HIZSS003           29.11 0.16 TRGB 2019ApJ...880...52A
 FG202              28.62 0.11 TRGB 2016EDD...........S
 HIPASS J0705-20    30.39       NAM 2018LVG.Distance..K
 ESO558-011         29.28 0.16 TRGB 2019ApJ...880...52A
-NGC2337dwTBG1      30.38       mem 2020LVG.Distance..K
 UGC03698           30.26 0.43 TRGB 2016EDD...........S
 NGC2337            30.37 0.49 TRGB 2016EDD...........S
 UGC03755           29.43 0.05 TRGB 2016EDD...........S
@@ -390,7 +404,7 @@ KSP-DW3            29.96       mem 2017LVG.Distance..K
 KSP-DW4            29.96       mem 2017LVG.Distance..K
 UGC04704           30.91        TF 2011LVG.Distance..K
 LV J0859+3923      29.87        TF 2016LVG.Distance..K
-PGC025409          29.38       mem 2022AstBu..77..372K
+PGC025409          30.17       NAM 2025MNRAS.537L..21K
 LSBC D564-08       29.73 0.07 TRGB 2016EDD...........S
 ESO497-004         30.24        TF 2017LVG.Distance..K
 KSP-DW6            29.96       mem 2017LVG.Distance..K
@@ -430,7 +444,7 @@ KSP-DW28           29.96       mem 2017LVG.Distance..K
 NGC2835            30.44 0.16 TRGB 2021MNRAS.501.3621A
 Dw0918+6935        29.38       mem 2022AstBu..77..372K
 Dw0919+6932        29.38       mem 2022AstBu..77..372K
-UGC04918           29.38       mem 2022AstBu..77..372K
+UGC04918           30.87       NAM 2025MNRAS.537L..21K
 NGC2787            29.37 0.36  SBF 2001ApJ...546..681T
 LSBC D565-06       29.84 0.11 TRGB 2016EDD...........S
 Dw0919+6955        29.38       mem 2022AstBu..77..372K
@@ -440,6 +454,7 @@ KSP-DW30           29.96       mem 2017LVG.Distance..K
 Dw0920+7017        29.38       mem 2022AstBu..77..372K
 KJ78               30.18       NAM 2018LVG.Distance..K
 DDO062             30.18       BTF 2017LVG.Distance..K
+Dw0921+75          30.65       NAM 2025MNRAS.537L..21K
 AGC198508          29.96 0.08 TRGB 2021ApJ...918...23M
 ESO565-003         30.14       NAM 2018LVG.Distance..K
 MCG +09-16-010     30.24       NAM 2018LVG.Distance..K
@@ -460,6 +475,7 @@ UGC05086           29.65      TRGB 2021AJ....162...80A
 LSBC D565-09       29.86       SBF 2022ApJ...933...47C
 ESO373-008         29.93 0.36   TF 2008ApJ...676..184T
 [CKT2009]d0934+70  27.40 0.38 TRGB 2016EDD...........S
+Dw0934+0628        30.57       mem 2024LVG.Distance..K
 CGCG 035-007       30.57        TF 2011LVG.Distance..K
 LeoT               23.10 0.10 TRGB 2007ApJ...656L..13I
 LV J0935-1348      29.79        TF 2016LVG.Distance..K
@@ -496,7 +512,7 @@ KKSG15             29.93       mem 2011LVG.Distance..K
 MESSIER081         27.84 0.09 TRGB 2016EDD...........S
 JKB83              27.84       mem 2016LVG.Distance..K
 MESSIER082         27.79 0.02 TRGB 2016EDD...........S
-SMDG0956+82        30.00       txt 2024Ap.....66..441K
+SMDG0956+82        27.08       NAM 2025MNRAS.537L..21K
 LV J0956-0929      29.86 0.11 TRGB 2016EDD...........S
 DDO068C            30.52       mem 2014LVG.Distance..K
 DDO068             30.53 0.05 TRGB 2014ApJ...787L...1C
@@ -565,7 +581,7 @@ AGC208477          30.05      TRGB 2022AstBu..77..388T
 PGC1099440         30.09 0.15 TRGB 2022AJ....163..234K
 [CKT2009]d1009+70  29.77      TRGB 2012AAS...22042801C
 SexA               25.80 0.08 TRGB 2016EDD...........S
-Dw1012+4259        30.23       mem 2022AstBu..77..372K
+Dw1012+4259        32.85       NAM 2025MNRAS.537L..21K
 UGC05497           27.86 0.06 TRGB 2016EDD...........S
 SexDSph            19.77      TRGB 2000glg..book.....V
 [CKT2009]d1014+68  27.92 0.19 TRGB 2016EDD...........S
@@ -717,10 +733,11 @@ Dw1100+1125        30.17       mem 2023LVG.Distance..K
 LeG33              30.09       mem 2011LVG.Distance..K
 LSBC D640-08       30.09       mem 2011LVG.Distance..K
 dw1101+11          30.09       mem 2018LVG.Distance..K
-KDG74              27.84       mem 2022AstBu..77..372K
+KDG74              29.35       NAM 2025MNRAS.537L..21K
 SMDG1103517+284120 29.65       BTF 2020LVG.Distance..K
 SMDG1103+60        30.00       txt 2024Ap.....66..441K
 CGCG 066-109       30.06        TF 2014LVG.Distance..K
+FASHI1104+38       29.92       NAM 2024A&A...684L..24K
 Dw1104+0004        30.34       SBF 2022ApJ...933...47C
 KKSG20             30.04       SBF 2022ApJ...933...47C
 Dw1104+0005        30.53       SBF 2022ApJ...933...47C
@@ -751,6 +768,7 @@ AGC202256          30.21        TF 2011LVG.Distance..K
 dw1114+1307        30.23       mem 2022ApJ...933...47C
 AGC740666          29.18       NAM 2018LVG.Distance..K
 dw1116+5551        29.98       mem 2022ApJ...933...47C
+dw1116+5537        29.98       mem 2024LVG.Distance..K
 IC2684             30.06       mem 2011LVG.Distance..K
 dw1117+1250        30.23       mem 2022ApJ...933...47C
 dw1118+1330        30.23       mem 2022ApJ...933...47C
@@ -762,7 +780,7 @@ AGC215286          30.34        TF 2022LVG.Distance..K
 AGC202257          30.34       BTF 2022LVG.Distance..K
 AGC215354          30.06       mem 2018LVG.Distance..K
 dw1119+1404        29.88       SBF 2022ApJ...933...47C
-Dw1119+1011        30.23       mem 2022AstBu..77..372K
+Dw1119+1011        30.06       NAM 2025MNRAS.537L..21K
 PGC034671          29.98       mem 2017LVG.Distance..K
 NGC3627            30.23 0.10 TRGB 2019ApJ...882..150H
 dw1120+1332        30.29       SBF 2022ApJ...933...47C
@@ -778,11 +796,12 @@ AGC215414          30.23       mem 2022ApJ...933...47C
 IC2787             30.22       SBF 2022ApJ...933...47C
 IC2791             29.99       SBF 2022ApJ...933...47C
 dw1123+1346        30.23       mem 2022ApJ...933...47C
+LeoVI              20.23 0.10   HB 2024arXiv240800865T
 AGC215415          30.23       mem 2022ApJ...933...47C
 dw1125+1316        30.23       mem 2022ApJ...933...47C
 Dw1127+1346        30.23       mem 2022AstBu..77..372K
 UGC06456           28.33 0.04 TRGB 2016EDD...........S
-UGC06451           27.84       mem 2022AstBu..77..372K
+UGC06451           27.78       NAM 2025MNRAS.537L..21K
 AGC213091          30.23       mem 2022LVG.Distance..K
 KDG078             29.98       mem 2017LVG.Distance..K
 KKH68              30.48 1.52 TRGB 2023Ap.....66....1K
@@ -793,6 +812,8 @@ HIPASS J1133-32    28.74 0.06 TRGB 2016EDD...........S
 UGC06541           28.13 0.12 TRGB 2016EDD...........S
 AGC215248          29.98        TF 2023LVG.Distance..K
 KKH69              29.35        TF 2014LVG.Distance..K
+Dw1135+5433        28.62       mem 2024LVG.Distance..K
+Dw1135+5428        28.62       mem 2024LVG.Distance..K
 NGC3738            28.62 0.02 TRGB 2016EDD...........S
 NGC3741            27.54 0.11 TRGB 2016EDD...........S
 Crater             21.15 0.12  CMD 2014MNRAS.441.2124B
@@ -832,18 +853,20 @@ NGC4080            30.88        TF 2011LVG.Distance..K
 ESO379-024         28.69      TRGB 2021AJ....162...80A
 IC2992             30.52        TF 2011LVG.Distance..K
 KUG 1202+286       29.28        TF 2017LVG.Distance..K
-[KK98]121          30.00       txt 2022AstBu..77..372K
+[KK98]121          30.06       NAM 2025MNRAS.537L..21K
 PGC4310323         29.04       NAM 2018LVG.Distance..K
 LV J1205+2813      30.31 0.05 TRGB 2021ApJ...918...23M
 PGC4560429         28.69       NAM 2018LVG.Distance..K
 MAPS1206+31        29.04       NAM 2018LVG.Distance..K
+FASHI1206+45       29.93       NAM 2024A&A...684L..24K
 LV J1207+3133      30.40 0.15 TRGB 2020AstL...45..750T
 UGC07131           31.13        TF 2011LVG.Distance..K
 NGC4136            29.12       NAM 2018LVG.Distance..K
-MCG +06-27-017     28.43 0.13 TRGB 2016EDD...........S
+MCG +06-27-017     28.15       NAM 2024A&A...684L..24K
 NGC4144            29.19 0.03 TRGB 2016EDD...........S
 IC3023             31.15 0.24 TRGB 2014ApJ...782....4K
 MADCASH-2          27.39 0.10 TRGB 2021ApJ...909..211C
+FASHI1210+47       29.24       NAM 2024A&A...684L..24K
 N4258dwC           29.42       mem 2016LVG.Distance..K
 NGC4150            30.69 0.24  SBF 2001ApJ...546..681T
 NGC4163            27.38 0.02 TRGB 2016EDD...........S
@@ -856,6 +879,7 @@ UGC07242           28.68 0.03 TRGB 2016EDD...........S
 Dw1214+2101        29.23       mem 2022AstBu..77..372K
 Dw1214+2945        29.13       mem 2022AstBu..77..372K
 VCC0114            29.57        TF 2011LVG.Distance..K
+Corvus A           27.71 0.15 TRGB 2024ApJ...971L..37J
 KDG090             27.37 0.08 TRGB 2016EDD...........S
 UGC7257            30.47 0.40   TF 2009AJ....138..323T
 NGC4204            29.52       txt 2011LVG.Distance..K
@@ -878,7 +902,7 @@ LV J1217+3231      30.50      TRGB 2018ApJ...858...62K
 UGC7321            31.18        TF 2011LVG.Distance..K
 KKH78              28.36       mem 2011LVG.Distance..K
 NGC4248            29.35        TF 2011LVG.Distance..K
-LV J1218+4655      29.59 0.09 TRGB 2018ApJ...858...62K
+LV J1218+4655      29.17       NAM 2024A&A...684L..24K
 AGC229053          30.48 0.04 TRGB 2021ApJ...918...23M
 KDG098             29.77       txt 2011LVG.Distance..K
 PGC4555586         29.18       NAM 2018LVG.Distance..K
@@ -888,14 +912,18 @@ NGC4258            29.42 0.04 TRGB 2016EDD...........S
 KK132              29.32 0.06 TRGB 2018ApJ...868...96C
 KDG101             29.31 0.02 TRGB 2016EDD...........S
 PGC039646          28.56        TF 2017LVG.Distance..K
+FASHI1219+46a      29.19       NAM 2024A&A...684L..24K
 KK133              29.60       NAM 2018LVG.Distance..K
 KK134              30.52       SBF 2020ApJ...891..144C
 KK135              28.69      TRGB 2021AJ....162...80A
 d1219+4705         30.48 0.33  SBF 2018ApJ...868...96C
 IC 779             31.11 0.08  SBF 2007ApJ...668..130C
 PGC213976          29.00       NAM 2018LVG.Distance..K
+FASHI1219+46b      29.09       NAM 2024A&A...684L..24K
+FASHI1219+46c      29.08       NAM 2024A&A...684L..24K
 VCC0381            31.09       mem 2020LVG.Distance..K
 PGC39764           31.03 0.20  SBF 2001ApJ...546..681T
+FASHI1220+40       29.31       NAM 2024A&A...684L..24K
 [KKH2011]S11       29.83       SBF 2022ApJ...933...47C
 NGC4288            29.58       NAM 2018LVG.Distance..K
 KK136              30.97 0.32  SBF 2018ApJ...868...96C
@@ -935,7 +963,7 @@ NGC4395            28.39 0.01 TRGB 2016EDD...........S
 DDO123             30.11        TF 2012LVG.Distance..K
 UGCA281            28.78 0.05 TRGB 2016EDD...........S
 IC3341             30.33 0.04 TRGB 2014ApJ...785....3M
-SBS 1224+533       28.93      TRGB 2021AJ....162...80A
+SBS 1224+533       29.02       NAM 2024A&A...684L..24K
 ComaI              18.13 0.08   HB 2009ApJ...695L..83M
 DDO126             28.48 0.07 TRGB 2016EDD...........S
 DDO125             27.08 0.05 TRGB 2016EDD...........S
@@ -962,6 +990,7 @@ AGC229379          29.38 0.08 TRGB 2021ApJ...918...23M
 NGC4490            29.75       mem 2016LVG.Distance..K
 AGC724906          29.39        TF 2017LVG.Distance..K
 CGCG 014-054       29.87      TRGB 2021AJ....162...80A
+FASHI1231+41       29.80       NAM 2024A&A...684L..24K
 MAPS1231+42        29.55      TRGB 2022AstBu..77..388T
 DDO131             29.33       mem 2018LVG.Distance..K
 UGC07678           29.79 0.07 TRGB 2018ApJ...858...62K
@@ -975,16 +1004,17 @@ DDO133             28.44 0.05 TRGB 2016EDD...........S
 NGC4509            30.02        TF 2011LVG.Distance..K
 BTS142             30.00       BTF 2017LVG.Distance..K
 KDG155             29.55       BTF 2017LVG.Distance..K
+FASHI1233+35       30.07       NAM 2024A&A...684L..24K
 KK152              29.95 0.08 TRGB 2018ApJ...858...62K
 PGC041749          29.99      TRGB 2021AJ....162...80A
 UGC7719            29.82        TF 2012LVG.Distance..K
 NGC4534            29.96        TF 2011LVG.Distance..K
-Dw1234+76          30.00       txt 2024Ap.....66..441K
+Dw1234+76          29.29       NAM 2025MNRAS.537L..21K
 Dw1234+4116        29.63       NAM 2022AstBu..77..372K
 UGC07748           29.70        TF 2018LVG.Distance..K
 dw1234-1142        29.90       mem 2024LVG.Distance..K
 dw1234-1238        29.90       mem 2024LVG.Distance..K
-KDG162             30.00       txt 2022AstBu..77..372K
+KDG162             27.24       NAM 2025MNRAS.537L..21K
 UGC7751            29.49        TF 2012LVG.Distance..K
 LV J1235-1104      30.00        TF 2012LVG.Distance..K
 dw1235-1216        29.90       mem 2024LVG.Distance..K
@@ -1008,14 +1038,16 @@ VCC1713            29.29        TF 2011LVG.Distance..K
 KKSG30             29.94 0.10 TRGB 2020A&A...643A.124K
 VCC1725            29.65        TF 2011LVG.Distance..K
 dw1238+0028        29.82       SBF 2022ApJ...933...47C
-Dw1238+3337        30.32       SBF 2022AstBu..77..372K
+Dw1238+3337        31.36       NAM 2025MNRAS.537L..21K
 AGC724993          29.82        TF 2022AstBu..77..372K
+FASHI1238+40       29.82       NAM 2024A&A...684L..24K
 KKSG31             29.90       mem 2017LVG.Distance..K
 dw1238-1122        29.90       mem 2024LVG.Distance..K
 UGCA292            27.93 0.18 TRGB 2016EDD...........S
 dw1238-1043        29.90       mem 2024LVG.Distance..K
 dw1238-0035        29.82       SBF 2022ApJ...933...47C
 dw1238-0105        29.31       SBF 2022ApJ...933...47C
+dw1238-1102        29.90       mem 2024LVG.Distance..K
 KDG171             29.61       SBF 2022ApJ...933...47C
 dw1239+3230        29.32       SBF 2022ApJ...933...47C
 dw1239-1227        29.90       mem 2024LVG.Distance..K
@@ -1045,13 +1077,13 @@ VCC1822            29.54        TF 2011LVG.Distance..K
 NGC4597            30.02        TF 2012LVG.Distance..K
 dw1240-1140        29.90       mem 2020LVG.Distance..K
 NGC4600            29.84 0.06 TRGB 2016EDD...........S
-PGC4074723         29.41      TRGB 2021AJ....162...80A
+PGC4074723         29.66       NAM 2024A&A...684L..24K
 Dw1240+3037        29.33       mem 2022AstBu..77..372K
 HSC-9              29.24 0.10  SBF 2020ApJ...891..144C
 NGC 4631dw1        29.26       SBF 2022ApJ...933...47C
 Dw1241+4103        29.43       mem 2022AstBu..77..372K
 dw1241-1131        29.30       SBF 2022ApJ...933...47C
-SMDG1241+35        30.00       txt 2024Ap.....66..441K
+SMDG1241+35        29.46       NAM 2025MNRAS.537L..21K
 Sombrero DwB       30.24       SBF 2022ApJ...933...47C
 KKSG34             29.78       SBF 2022ApJ...933...47C
 Dw1241-0427        30.02       mem 2022AstBu..77..372K
@@ -1078,6 +1110,7 @@ dw1242-1010        29.90       mem 2024LVG.Distance..K
 PGC42772           29.52        TF 2017LVG.Distance..K
 dw1243-42b         27.78       mem 2016LVG.Distance..K
 dw1243-42          27.78       mem 2016LVG.Distance..K
+FASHI1243+32       29.29       NAM 2024A&A...684L..24K
 BTS151             29.40      TRGB 2021AJ....162...80A
 HSC-5              30.21       SBF 2020ApJ...891..144C
 KDG192             29.93      TRGB 2021AJ....162...80A
@@ -1097,7 +1130,7 @@ dw1244-1238        29.90       mem 2024LVG.Distance..K
 dw1245-1041        29.90       mem 2024LVG.Distance..K
 UGC07929           28.22       mem 2021LVG.Distance..K
 [KK98]162          30.00       txt 2022AstBu..77..372K
-Dw1245+6158        28.74       mem 2022AstBu..77..372K
+Dw1245+6158        27.16       NAM 2025MNRAS.537L..21K
 SMDG1245+01        30.00       txt 2024Ap.....66..441K
 ESO381-020         28.69 0.05 TRGB 2016EDD...........S
 AGC227970          29.75        TF 2018LVG.Distance..K
@@ -1125,11 +1158,16 @@ MAPS1249+44        29.40       NAM 2018LVG.Distance..K
 LV J1249+2155      29.22 0.05 TRGB 2021ApJ...918...23M
 UGC07983           31.09      TRGB 2023Ap.....66....1K
 EVCC2232           28.89       NAM 2022AstBu..77..372K
+FASHI1250+41       28.21       NAM 2024A&A...684L..24K
 SMDG1250+07        30.00       txt 2024Ap.....66..441K
 UGC07990           31.55        TF 2011LVG.Distance..K
 NGC4736            28.22 0.04 TRGB 2016EDD...........S
 M94-Dw2            28.36 0.13 TRGB 2018ApJ...863..152S
+FASHI1251+57       29.78       NAM 2024A&A...684L..24K
 BTS157             29.78       mem 2016LVG.Distance..K
+FASHI1251+41       27.51       NAM 2024A&A...684L..24K
+dw1251+2324        28.22       mem 2024LVG.Distance..K
+FASHI1251+32       30.03       NAM 2024A&A...684L..24K
 KK167              29.82        TF 2011LVG.Distance..K
 IC3840             28.88 0.08 TRGB 2018ApJ...858...62K
 M94-HIn9           28.22       mem 2023LVG.Distance..K
@@ -1173,11 +1211,12 @@ dw1301-30          28.45       mem 2016LVG.Distance..K
 UGCA319            28.80 0.07 TRGB 2018ApJ...858...62K
 KK177              28.42 0.07 TRGB 2018ApJ...858...62K
 dw1302-40          27.78       mem 2016LVG.Distance..K
-dw1303+42          29.78       mem 2017A&A...602A.119M
+dw1303+42          29.06       NAM 2024A&A...684L..24K
 DDO161             28.90 0.09 TRGB 2018ApJ...858...62K
 ESO269-037         27.49 0.06 TRGB 2016EDD...........S
 KK180              28.22       mem 2011LVG.Distance..K
 KK182              28.87 0.13 TRGB 2016EDD...........S
+PGC886203          28.61       NAM 2024LVG.Distance..K
 NGC4945            27.70 0.02 TRGB 2016EDD...........S
 dw1305+41          29.78       mem 2017A&A...602A.119M
 KDG218             30.50      TRGB 2018ApJ...858...62K
@@ -1193,7 +1232,7 @@ MCG -04-31-038     29.46        TF 2011LVG.Distance..K
 ESO269-058         27.87 0.01 TRGB 2016EDD...........S
 dw1310+4153        29.34       SBF 2022ApJ...933...47C
 [KK2000] 53        27.33 0.07 TRGB 2016EDD...........S
-Dw1311+4051        29.77       mem 2022AstBu..77..372K
+Dw1311+4051        29.85       NAM 2024A&A...684L..24K
 Dw1311+4317        29.77       mem 2022AstBu..77..372K
 dw1312-4244        27.84       mem 2018LVG.Distance..K
 NGC5023            28.91 0.05 TRGB 2016EDD...........S
@@ -1201,11 +1240,12 @@ NGC5055dwTBG1      29.83       SBF 2022ApJ...933...47C
 dw1312-4218        27.84       mem 2018LVG.Distance..K
 dw1313-4246        27.84       mem 2018LVG.Distance..K
 KK189              28.13 0.09 TRGB 2016EDD...........S
-CGCG 217-018       29.77      TRGB 2022AstBu..77..388T
+CGCG 217-018       29.77       NAM 2024A&A...684L..24K
 KKH82              29.40       SBF 2022ApJ...933...47C
-dw1313+46          29.62       mem 2017A&A...602A.119M
+dw1313+46          28.97       NAM 2024A&A...684L..24K
 ESO269-066         27.87 0.02 TRGB 2016EDD...........S
 NGC5011C           27.86 0.02 TRGB 2016EDD...........S
+FASHI1313+31       29.93       NAM 2024A&A...684L..24K
 DDO167             28.14 0.16 TRGB 2016EDD...........S
 dw1313-4211        27.84       mem 2018LVG.Distance..K
 dw1313-4214        27.84       mem 2018LVG.Distance..K
@@ -1224,7 +1264,7 @@ KK193              29.92       SBF 2022ApJ...933...47C
 dw1315-4309        27.84       mem 2018LVG.Distance..K
 NGC5055            29.78 0.02 TRGB 2016EDD...........S
 dw1316-4224        27.84       mem 2018LVG.Distance..K
-CGCG 189-050       27.97       NAM 2018LVG.Distance..K
+CGCG 189-050       28.12       NAM 2024A&A...684L..24K
 KK194              29.78       mem 2016LVG.Distance..K
 AGC239141          27.87       NAM 2018LVG.Distance..K
 CenA-MM-Dw11       27.73 0.22 TRGB 2019ApJ...872...80C
@@ -1244,6 +1284,7 @@ KK197              27.92 0.02 TRGB 2016EDD...........S
 dw1322-27          28.45       mem 2016LVG.Distance..K
 [KK2000] 55        27.93 0.04 TRGB 2016EDD...........S
 dw1322-39          27.35 0.04 TRGB 2019A&A...629A..18M
+Hedgehog           26.90 0.13  SBF 2024ApJ...975L..23L
 PGC725719          28.22       NAM 2018LVG.Distance..K
 CenA-MM-Dw4        28.06 0.14 TRGB 2019ApJ...872...80C
 KV19-212           27.83       mem 2020LVG.Distance..K
@@ -1266,10 +1307,11 @@ IC4247             28.57 0.03 TRGB 2016EDD...........S
 dw1327+51          29.62       mem 2017A&A...602A.119M
 KK203              27.88 0.14 TRGB 2016EDD...........S
 ESO324-024         27.89 0.05 TRGB 2016EDD...........S
-PGC2229803         29.09       NAM 2018LVG.Distance..K
+PGC2229803         29.08       NAM 2024A&A...684L..24K
 CVnI               21.75 0.20 TRGB 2006ApJ...643L.103Z
 dw1328+4703        29.61       SBF 2022ApJ...933...47C
 LV J1328+4937      29.44      TRGB 2022AstBu..77..388T
+FASHI1328+33       29.91       NAM 2024A&A...684L..24K
 dw1329-45          27.31 0.09 TRGB 2019A&A...629A..18M
 PGC170257          28.45       mem 2017LVG.Distance..K
 NGC5204            28.31 0.23 TRGB 2016EDD...........S
@@ -1279,8 +1321,10 @@ CenA-MM-Dw2        28.09 0.12 TRGB 2019ApJ...872...80C
 NGC5195            29.42 0.27  SBF 2001ApJ...546..681T
 dw1330-34          28.45       mem 2015A&A...583A..79M
 dw1330-33          28.45       mem 2015A&A...583A..79M
+FASHI1330+32       29.86       NAM 2024A&A...684L..24K
 CenA-MM-Dw1        27.96 0.07 TRGB 2019ApJ...872...80C
 CenA-MM-Dw3        27.94 0.09 TRGB 2019ApJ...872...80C
+DSC_M51            29.62       mem 2024LVG.Distance..K
 dw1330+4731        30.30       SBF 2022ApJ...933...47C
 dw1330-38          27.78       mem 2016LVG.Distance..K
 UGC08508           27.13 0.08 TRGB 2016EDD...........S
@@ -1293,35 +1337,39 @@ KK207              29.21       mem 2023LVG.Distance..K
 CenA-MM-Dw8        27.70 0.20 TRGB 2016ApJ...823...19C
 NGC5206            27.53 0.01 TRGB 2016EDD...........S
 NGC5229            29.76      TRGB 2021AJ....162...80A
+FASHI1334+62       29.98       NAM 2024A&A...684L..24K
 NGC5238            28.27 0.02 TRGB 2016EDD...........S
 ESO270-017         29.21 0.05 TRGB 2016EDD...........S
 dw1335-29          28.50 0.21 TRGB 2016AAS...22713625C
+FASHI1335+54       29.36       NAM 2024A&A...684L..24K
 UGCA365            28.67 0.03 TRGB 2016EDD...........S
 KK208              28.50 0.08 TRGB 2016EDD...........S
 dw1336-44          27.72 0.17 TRGB 2019A&A...629A..18M
-MCG +08-25-028     29.64      TRGB 2022AstBu..77..388T
+MCG +08-25-028     29.48       NAM 2024A&A...684L..24K
 NGC5236            28.45 0.03 TRGB 2016EDD...........S
 HIDEEP J1337-33    28.29 0.15 TRGB 2016EDD...........S
 ESO444-084         28.32 0.19 TRGB 2002A&A...385...21K
 HIPASS J1337-39    28.53 0.11 TRGB 2016EDD...........S
 NGC5237            27.61 0.01 TRGB 2016EDD...........S
 dw1337-41          27.78       mem 2016LVG.Distance..K
+ESO577-016         28.59        TF 2024LVG.Distance..K
 dw1338+50          29.62       mem 2017A&A...602A.119M
 UGC08638           28.16 0.03 TRGB 2016EDD...........S
-Dw1339+39          30.00       txt 2024Ap.....66..441K
+FASHI1339+39       29.99       NAM 2024A&A...684L..24K
+Dw1339+39          29.96       NAM 2025MNRAS.537L..21K
 UGC08647           29.67        TF 2015LVG.Distance..K
 DDO181             27.46 0.04 TRGB 2016EDD...........S
 NGC5253            27.68 0.02 TRGB 2016EDD...........S
 IC4316             28.19 0.03 TRGB 2016EDD...........S
 dw1340-30          28.52 0.03 TRGB 2018A&A...615A..96M
-dw1340+45          29.62       mem 2017A&A...602A.119M
+dw1340+45          31.99       NAM 2024LVG.Distance..K
 dw1341-33          28.45       mem 2015A&A...583A..79M
 NGC5264            28.40 0.07 TRGB 2016EDD...........S
 dw1341-43          27.74 0.02 TRGB 2019A&A...629A..18M
 [KK2000] 57        27.92 0.25 TRGB 2016EDD...........S
 Dw1341+4204        29.62       mem 2023A&A...678A..16K
 KK211              27.83 0.08 TRGB 2016EDD...........S
-LV J1342+4840      29.62       mem 2016LVG.Distance..K
+LV J1342+4840      29.40       NAM 2024A&A...684L..24K
 DDO182             29.75        TF 2011LVG.Distance..K
 dw1342-43          27.31 0.12 TRGB 2019A&A...629A..18M
 dw1343+58          28.74      TRGB 2021AJ....162...80A
@@ -1346,6 +1394,7 @@ HIPASS J1351-47    28.79 0.12 TRGB 2016EDD...........S
 Dw1351+5014        29.21       mem 2023LVG.Distance..K
 HIZOA J1353-58     26.61       BTF 2016LVG.Distance..K
 KDG229             30.88      TRGB 2016LVG.Distance..K
+FASHI1354+53       29.04       NAM 2024A&A...684L..24K
 KKH86              27.08 0.26 TRGB 2016EDD...........S
 HolmIV             29.30 0.01 TRGB 2016EDD...........S
 UGC08833           27.56 0.06 TRGB 2016EDD...........S
@@ -1385,7 +1434,7 @@ M101-df2           29.19 0.09 TRGB 2016arXiv.........D
 dw1408+56          32.23       mem 2019Ap.....62..293K
 M101dwB            32.23       mem 2019Ap.....62..293K
 dw1409-33          28.45       mem 2016LVG.Distance..K
-Dw1409+5113        29.21       mem 2023LVG.Distance..K
+Dw1409+5113        32.50       NAM 2024LVG.Distance..K
 M101Dw11           32.23       mem 2019Ap.....62..293K
 dw1410-34          28.45       mem 2016LVG.Distance..K
 M101Dw14           32.23       mem 2019Ap.....62..293K
@@ -1395,10 +1444,11 @@ CIRCINUS           28.12        TF 2011LVG.Distance..K
 KKH87              29.74 0.03 TRGB 2016EDD...........S
 dw1415-32          28.45       mem 2016LVG.Distance..K
 DDO187             26.81 0.04 TRGB 2016EDD...........S
-Dw1416-0212        30.00       txt 2024Ap.....66..441K
+Dw1416-0212        31.45       NAM 2024LVG.Distance..K
 dw1416+57          29.21       mem 2017A&A...602A.119M
 KKR08              30.88      TRGB 2016LVG.Distance..K
 NGC5585            29.23      TRGB 2021AJ....162...80A
+FASHI1420+43       30.18       NAM 2024A&A...684L..24K
 DDO190             27.26 0.03 TRGB 2016EDD...........S
 PGC051659          27.79 0.23 TRGB 2016EDD...........S
 Centaurus A-dE5    29.77       txt 2011LVG.Distance..K
@@ -1424,17 +1474,18 @@ UGC09893           30.04        TF 2018LVG.Distance..K
 Dw1533+67          30.00       txt 2024Ap.....66..441K
 BootesIV           21.60 0.20   HB 2019PASJ...71...94H
 UGC09992           30.26 0.10 TRGB 2016EDD...........S
-Dw1559+46          30.00       txt 2024Ap.....66..441K
+Dw1558+67          27.46       NAM 2025MNRAS.537L..21K
+Dw1559+46          27.66       NAM 2025MNRAS.537L..21K
 PGC057323          30.15        TF 2018LVG.Distance..K
 KKR25              26.40 0.07 TRGB 2016EDD...........S
 HIZOA J1616-55     29.97       BTF 2017LVG.Distance..K
 ESO137-018         28.84 0.08 TRGB 2016EDD...........S
 Hercules           20.84 0.12   HB 2009A&A...506.1147A
-Dw1645+46          30.00       txt 2024Ap.....66..441K
+Dw1645+46          27.31       NAM 2025MNRAS.537L..21K
 KDG235             30.13        TF 2011LVG.Distance..K
-Dw1709+74          30.00       txt 2024Ap.....66..441K
+Dw1709+74          31.71       NAM 2025MNRAS.537L..21K
 Draco              19.52      TRGB 2000glg..book.....V
-Dw1735+57          30.00       txt 2024Ap.....66..441K
+Dw1735+57          28.31       NAM 2025MNRAS.537L..21K
 HIPASS J1738-57    29.64       NAM 2024LVG.Distance..K
 Milky Way          14.50 0.11 geom 2003ApJ...597L.121E
 IC4662             27.03 0.02 TRGB 2016EDD...........S
@@ -1444,11 +1495,16 @@ IC4710             29.34 0.06 TRGB 2016EDD...........S
 NGC6684            30.05 1.50 TRGB 2023Ap.....66....1K
 Sag dSph           16.51      TRGB 2000glg..book.....V
 ESO104-022         29.76 0.06 TRGB 2016EDD...........S
+dw1859-6402        29.89       mem 2024LVG.Distance..K
+dw1901-6315        29.89       mem 2024LVG.Distance..K
+Dw1905+65          30.82       NAM 2025MNRAS.537L..21K
 NGC6744dwTBGa      29.41       SBF 2022ApJ...933...47C
 [KK2000] 70        29.32       SBF 2022ApJ...933...47C
+Dw1907+63          26.90       NAM 2025MNRAS.537L..21K
 dw1907-6342        29.51       SBF 2022ApJ...933...47C
 UGC11411           29.09 0.04 TRGB 2016EDD...........S
 [KK2000] 71        28.63       SBF 2022ApJ...933...47C
+EDwC1              29.89       mem 2024LVG.Distance..K
 NGC6744            29.89 0.14 TRGB 2016EDD...........S
 Bedin I            29.70 0.13 TRGB 2019MNRAS.484L..54B
 ESO104-044         29.94 0.18 TRGB 2016EDD...........S
@@ -1459,6 +1515,7 @@ HIZOAJ1914+10      29.19       BTF 2018LVG.Distance..K
 NGC6789            27.75 0.04 TRGB 2016EDD...........S
 Sag dIr            25.17 0.08 TRGB 2016EDD...........S
 IC4870             29.65 0.05 TRGB 2016EDD...........S
+Dw1940+64          27.90       NAM 2025MNRAS.537L..21K
 NGC6822            23.58 0.07 TRGB 2016EDD...........S
 LV J1952+1428      29.62 0.14 TRGB 2017ApJ...835...78R
 Sgr II             19.20 0.20   HB 2018LVG.Distance..K
@@ -1479,13 +1536,15 @@ KKR59              29.44 0.13  mem 2018AJ....156..105A
 KKR60              29.44 0.13  mem 2018AJ....156..105A
 PGC129680          29.91       NAM 2024LVG.Distance..K
 Kim2               20.00 0.15   HB 2015ApJ...805..130K
-EZOA J2120+45      29.44       NAM 2019MNRAS.489.2907S
+EZOA J2120+45      29.49       NAM 2025MNRAS.537L..21K
 Segue 3            16.10       CMD 2010ApJ...712L.103B
+EZOAJ2129+52       29.03       NAM 2024LVG.Distance..K
 NGC7090            29.89 0.06 TRGB 2016EDD...........S
 IC5152             26.46 0.04 TRGB 2016EDD...........S
 Dw2215-4528        30.09       mem 2022AstBu..77..372K
 Dw2216-4539        30.09       mem 2022AstBu..77..372K
 Dw2217-4633        30.09       mem 2022AstBu..77..372K
+LV J2218-4613      30.09       mem 2022AstBu..77..372K
 IC5201             30.16      TRGB 2021AJ....162...80A
 Dw2221-4608        30.09       mem 2022AstBu..77..372K
 ESO289-020         30.09       mem 2022AstBu..77..372K
