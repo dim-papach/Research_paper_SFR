@@ -51,6 +51,9 @@ topcat -stilts plot2plane \
       in_1=/home/dp/Documents/Research_paper_SFR/r_mcmc_uni/joined_data.csv \
       x_1=t_sf_up\
       leglabel_1="MCMC\ with\ t_{sf}\ \sim uniform(1,20)" color_1=blue\
+   layer_2=Function \
+      axis_2=Vertical fexpr_2=13.6 \
+      leglabel_2="N-R\ constant\ t_{sf}=13.6\ Gyr" \
    layer_3=Histogram \
       in_3=/home/dp/Documents/Research_paper_SFR/r_mcmc_normal/joined_data.csv \
       x_3=t_sf_np\

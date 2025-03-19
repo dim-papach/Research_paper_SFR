@@ -36,10 +36,11 @@ def solve_x_n(i):
     try:
     # Define the function and its derivative for the Newton-Raphson method
         def f(x):
-            return (k*x**2-np.exp(x)+x+1)
+           return (k*x**2-np.exp(x)+x+1)
 
         def f_prime(x):
-            return (2*k*x -np.exp(x)+1)
+           return (2*k*x -np.exp(x)+1)
+
         sol = optimize.root_scalar(f, x0=3, fprime=f_prime, method="newton")
         return sol.root if sol.converged else np.nan
     except ValueError:
@@ -101,7 +102,7 @@ plt.savefig("NR/tau_A_double_plot.png")
 plt.close()
 
 # Save the updated table with NR results
-dt.keep_columns(["tau_n", "x_n", "A_n", "ID", "sSFR"])
+dt.keep_columns(["tau_n", "x_n", "A_n", "ID", "sSFR", "logM_total"])
 output_filename = "NR/filled_with_NR.csv"
 dt.write(output_filename, format="ascii.csv", overwrite=True)
 
