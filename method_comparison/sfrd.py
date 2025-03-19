@@ -36,14 +36,15 @@ def sfr_function(t, A, tau):
 
 # Define the error propagation function (only for datasets with sigmas)
 
-
 def sfr_error(t, A, tau, sigma_A, sigma_tau):
     dSFR_dA = (t / tau**2) * np.exp(-t / tau) / V
     dSFR_dtau = A * np.exp(-t / tau) * ((2 * t / tau**3) - (t**2 / tau**4)) / V
     sigma_SFR = np.sqrt((dSFR_dA * sigma_A)**2 + (dSFR_dtau * sigma_tau)**2)
     return sigma_SFR
 
-
+def lilly_madau(z):
+    """Lilly-Madau SFRD function from Madau & Dickinson (2014)."""
+    return 0.015 * ((1 + z)**2.7) / (1 + ((1 + z)/2.9)**5.6)
 # Define custom time steps and corresponding redshifts
 custom_times = np.array([0, 10.5, 12.3, 12.9, 13.2, 13.3])  # Gyr
 redshifts = np.array([0, 2, 4, 6, 8, 10])  # Corresponding redshifts
@@ -79,6 +80,16 @@ total_sfr_norm, total_sfr_error_norm = compute_total_sfr_and_error(
 total_sfr_nr, _ = compute_total_sfr_and_error(
     time_steps, A_values_nr, tau_values_nr)  # No sigmas for NR
 
+# Compute log10 of SFR and propagate errors
+def compute_log_sfr_and_error(total_sfr, total_sfr_error):
+    log_sfr = np.log10(total_sfr)
+    log_sfr_error = (total_sfr_error / total_sfr) / np.log(10)
+    return log_sfr, log_sfr_error
+
+log_sfr_uni, log_sfr_error_uni = compute_log_sfr_and_error(total_sfr_uni, total_sfr_error_uni)
+log_sfr_norm, log_sfr_error_norm = compute_log_sfr_and_error(total_sfr_norm, total_sfr_error_norm)
+log_sfr_nr = np.log10(total_sfr_nr)
+
 # Function to compute co-moving radial distance from redshift
 
 
@@ -95,6 +106,10 @@ co_moving_distances = comoving_distance(redshifts) / 1000  # Convert to Gpc
 redshifts_interp = np.linspace(0, 10, len(total_sfr_uni))
 lookback_interp = cosmo.lookback_time(redshifts_interp).value
 comoving_interp = comoving_distance(redshifts_interp) / 1000  # Convert to Gpc
+# Calculate Lilly-Madau SFRD at interpolated redshifts
+sfrd_lilly_madau = lilly_madau(redshifts_interp)
+log_sfrd_lm = np.log10(sfrd_lilly_madau)
+
 
 # Plot
 fig, ax1 = plt.subplots(figsize=(8, 6))
@@ -104,20 +119,20 @@ ax3 = ax1.twiny()
 # Adjust position of third axis
 ax3.spines['top'].set_position(('outward', 40))  # Move it slightly upward
 
-# Plot data
-ax1.errorbar(redshifts_interp, total_sfr_uni,
-             yerr=total_sfr_error_uni, fmt='o-', capsize=3, label=r"MCMC, Uniform Prior for $\tau$", 
-             markersize=3)
-ax1.errorbar(redshifts_interp, total_sfr_norm, yerr=total_sfr_error_norm,
+# Plot data with log values on linear y-axis
+ax1.errorbar(redshifts_interp, log_sfr_uni, yerr=log_sfr_error_uni,
+             fmt='o-', capsize=3, label=r"MCMC, Uniform Prior for $\tau$", markersize=3)
+ax1.errorbar(redshifts_interp, log_sfr_norm, yerr=log_sfr_error_norm,
              fmt='s-', capsize=3, label=r"MCMC, Normal Prior for $\tau$", markersize=3)
-ax1.plot(redshifts_interp, total_sfr_nr, '^-', label="Newton-Raphson", markersize=3)
+ax1.plot(redshifts_interp, log_sfr_nr, '^-', label="Newton-Raphson", markersize=3)
+# Add Lilly-Madau theoretical curve
+ax1.plot(redshifts_interp, log_sfrd_lm, 'k--', linewidth=2, label="Lilly-Madau (2014)")
 
 # Primary x-axis (Redshift)
 ax1.set_xlabel("Redshift $z$")
 ax1.set_xlim(0, 10)
 ax1.set_xticks(redshifts)
-# add a vertical line at z=1.85
-ax1.axvline(x=1.85, color='r', linestyle='--', label='z=1.85')
+ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
 ax1.legend()
 ax1.invert_xaxis()  # Match direction in the image
 
@@ -133,21 +148,20 @@ ax3.set_xlim(ax1.get_xlim())
 ax3.set_xticks(redshifts)
 ax3.set_xticklabels([f"{d:.1f}" for d in co_moving_distances])
 
-# Y-axis
-ax1.set_yscale('log')
-ax1.set_ylabel(r"$\text{SFRD}\ \left(\text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3}\right)$")
+# Y-axis (Linear scale with log values)
+ax1.set_ylabel(r"$\log_{10}\left(\text{SFRD}\ \left[\text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3}\right]\right)$")
+ax1.axhline(y=-0.88, color='g', linestyle='--', label='log(SFRD) = -0.88')
 ax1.legend()
 ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
 
-# invert x-axis for all three
+# Invert x-axis for all three
 ax1.invert_xaxis()
 ax2.invert_xaxis()
 ax3.invert_xaxis()
 
-# add line at y = 10^-0.9
-ax1.axhline(y=10**(-0.9+0.05), color='g', linestyle='--', label='y=10^-0.85')
-
 # Save
 plt.tight_layout()
-plt.savefig('method_comparison/sfrd_comparison_custom_axes.png', dpi=300)
+plt.savefig('method_comparison/sfrd_comparison_custom_axes_log_values.png', dpi=300)
 plt.close()
+#-----------------------------------
+

@@ -15,6 +15,8 @@ stilts tpipe \
   cmd='addcol -units "Msol" -desc "Total M_* in linear scale" M_total "exp10(logM_total)"'\
   cmd='addcol -units "1/yr" -desc "Specific SFR" sSFR "SFR_total/M_total"'\
   cmd='addcol -units "log10(1/yr)" -desc "Specific SFR in logarithmic scale" logsSFR "log10(sSFR)"'\
+  cmd='addcol -desc "Mass ratio (reservouar of the galaxy)" M_ratio "1.33*MHI/M_total"'\
+  cmd='addcol -desc "log Mass ratio" logM_ratio "log10(M_ratio)"'\
   cmd='addcol -desc "ID column" ID "Index"'\
   cmd='addcol -desc "g-r color" gr "g-r"'\
   cmd='addcol -desc "b-v color" bv "bt-vt"'\
