@@ -164,4 +164,63 @@ plt.tight_layout()
 plt.savefig('method_comparison/sfrd_comparison_custom_axes_log_values.png', dpi=300)
 plt.close()
 #-----------------------------------
+# Compute residuals (difference in log space)
+residual_uni = log_sfr_uni - log_sfrd_lm
+residual_norm = log_sfr_norm - log_sfrd_lm
+residual_nr = log_sfr_nr - log_sfrd_lm
+
+# Propagate errors (same as original errors since LM is a fixed theoretical curve)
+residual_error_uni = log_sfr_error_uni
+residual_error_norm = log_sfr_error_norm
+
+# Create figure
+fig, ax1 = plt.subplots(figsize=(8, 6))
+ax2 = ax1.twiny()
+ax3 = ax1.twiny()
+
+ax3.spines['top'].set_position(('outward', 40))
+
+# Plot residuals
+ax1.errorbar(redshifts_interp, residual_uni, yerr=residual_error_uni,
+             fmt='o-', capsize=3, label=r"Uniform Prior", markersize=3)
+ax1.errorbar(redshifts_interp, residual_norm, yerr=residual_error_norm,
+             fmt='s-', capsize=3, label=r"Normal Prior", markersize=3)
+ax1.plot(redshifts_interp, residual_nr, '^-', label="Newton-Raphson", markersize=3)
+
+# Add reference line at zero
+ax1.axhline(0, color='k', linestyle='--', alpha=0.7, label="Lilly-Madau")
+
+# Axes configuration
+ax1.set_xlabel("Redshift $z$")
+ax1.set_ylabel(r"$\Delta \log_{10}(\text{SFRD})$" + "\n(Data $-$ Lilly-Madau)")
+ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
+ax1.set_xlim(0, 10)
+ax1.set_xticks(redshifts)
+ax1.legend()
+ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
+ax1.invert_xaxis()
+
+# Secondary x-axis (Lookback Time)
+ax2.set_xlabel("Lookback time [Gyr]")
+ax2.set_xlim(ax1.get_xlim())
+ax2.set_xticks(redshifts)
+ax2.set_xticklabels([f"{t:.1f}" for t in lookback_times])
+
+# Tertiary x-axis (Co-moving Radial Distance)
+ax3.set_xlabel("Co-moving radial distance [cGpc]")
+ax3.set_xlim(ax1.get_xlim())
+ax3.set_xticks(redshifts)
+ax3.set_xticklabels([f"{d:.1f}" for d in co_moving_distances])
+
+# Invert all x-axes
+ax1.invert_xaxis()
+ax2.invert_xaxis()
+ax3.invert_xaxis()
+
+# Adjust y-axis limits for better visualization
+ax1.set_ylim(-1.2, 1.2)
+
+plt.tight_layout()
+plt.savefig('method_comparison/sfrd_residuals_vs_lm.png', dpi=300)
+plt.close()
 
