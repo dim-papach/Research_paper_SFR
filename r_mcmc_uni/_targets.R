@@ -87,7 +87,7 @@ tar_plan(
     parallel_chains = 8,
     iter_sampling = 5500,
     iter_warmup = 2500,
-    init = init_function(6, 1761),
+    init = init_function(6, 1691),
   ),
 
   ######## summaries#######
