@@ -112,6 +112,11 @@ log_sfrd_lm = np.log10(sfrd_lilly_madau)
 
 
 # Plot
+## set theme for the plot
+plt.style.use('bmh')
+# Reset color cycle to default
+plt.rcParams["axes.prop_cycle"] = plt.matplotlib.rcParamsDefault["axes.prop_cycle"]
+
 fig, ax1 = plt.subplots(figsize=(8, 6))
 ax2 = ax1.twiny()
 ax3 = ax1.twiny()
