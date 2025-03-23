@@ -41,13 +41,13 @@ def solve_x_n(i):
         def f_prime(x):
            return (2*k*x -np.exp(x)+1)
 
-        sol = optimize.root_scalar(f, x0=3, fprime=f_prime, method="newton")
+        sol = optimize.root_scalar(f, x0=4, fprime=f_prime, method="newton")
         return sol.root if sol.converged else np.nan
     except ValueError:
         return np.nan
 
 # Run the solver in parallel
-num_cores = 4  # Use all CPU cores
+num_cores = 8  # Use all CPU cores
 x_n[:] = Parallel(n_jobs=num_cores)(delayed(solve_x_n)(i) for i in range(len(dt)))
 
 # Compute A_n for all valid x_n (same as original, but vectorized)
@@ -61,6 +61,20 @@ dt['tau_n'] = np.empty(len(dt))
 dt["tau_n"][valid_x] = (t_sf/dt["x_n"][valid_x])
 dt["tau_n"][~valid_x] = np.nan
 dt["A_n"] = A_n * u.solMass  # Add units to A_n
+
+#Calculate the SFR based on the delayed tau model
+dt["SFR"] = dt["A_n"]*tsf/(dt["tau_n"]*10**9)**2*np.exp(-dt['x_n'])
+#calculate the total SFRD
+sum_SFR = np.sum(dt["SFR"][~np.isnan(dt["SFR"])].value)
+V = (4/3 * np.pi * 11**3)
+SFRD = sum_SFR/V
+logSFRD = np.log10(SFRD)
+print(f"\nTotal SFRD: {logSFRD:.2e} M_sun/yr/Mpc^3\n")
+#calculate the total SFRD for the original SFR
+sum_SFR_total = np.sum(dt["SFR_total"][~np.isnan(dt["SFR_total"])].value)
+SFRD_total = sum_SFR_total/V
+logSFRD_total = np.log10(SFRD_total)
+print(f"\nTotal SFRD: {logSFRD_total:.2e} M_sun/yr/Mpc^3\n")
 
 # Print stats (same as original)
 print(dt["x_n", "A_n", "tau_n"].info("stats"))
@@ -101,9 +115,28 @@ plt.savefig("NR/tau_A_double_plot.png")
 # Show the plot
 plt.close()
 
+# Plot the original SFR vs. the new SFR
+plt.scatter(dt["SFR_total"], dt["SFR"])
+plt.xscale("log")
+plt.yscale("log")
+plt.xlabel(r"SFR [M$_\odot$/yr] (Original)")
+plt.ylabel(r"SFR [M$_\odot$/yr] (New)")
+plt.grid(True, linestyle="--", alpha=0.5)
+
+# Tight layout for better spacing
+plt.tight_layout()
+
+# Save the figure
+plt.savefig("NR/SFR_comparison.png")
+plt.close()
+
 # Save the updated table with NR results
-dt.keep_columns(["tau_n", "x_n", "A_n", "ID", "sSFR", "logM_total"])
+dt.keep_columns(["tau_n", "x_n", "A_n", "ID", "sSFR", "logM_total", "SFR", "SFR_total"])
 output_filename = "NR/filled_with_NR.csv"
 dt.write(output_filename, format="ascii.csv", overwrite=True)
 
 print(f"Results saved to {output_filename}")
+
+print("Min, Max, Mean k:", np.min(k_arr), np.max(k_arr), np.mean(k_arr))
+print("Min, Max, Mean SFR:", np.min(SFR_arr), np.max(SFR_arr), np.mean(SFR_arr))
+print("Min, Max, Mean M:", np.min(M_arr), np.max(M_arr), np.mean(M_arr))
