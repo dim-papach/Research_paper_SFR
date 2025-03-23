@@ -511,15 +511,14 @@ $$
 
 the root $x_0\Leftrightarrow g(x_0) = 0$, can be found, for each galaxy. From @eq-A we can calculate the normalization constant of the galaxies, as well as their characteristic timescales $\tau = t_{sf}\cdot x$.
 
-![Alt text](NR/tau_A_double_plot.png){#fig-A-tau}
+![Paramater distribution of the delayed-$\tau$ SFH for the galaxies of the LCV. The colourbar represents the present-day stellar mass of the galaxies. The left plot shows the whole parameter range of the model, including negative timescales and $A_{del}$ values that occur by instabilities. In the right plot, the region $\tau \in [0,16]$ and $A_{del}\in[0,10^{13}]$ is depicted. The majority of the galaxies have a timescale of about 3.5-4.5 Gyr as expected from @speagleHighlyConsistentFramework2014](NR/tau_A_double_plot.png){#fig-A-tau}
 
 In @fig-A-tau, two shapes are prominent. One in the range $\frac{A_{del}}{M_\odot}\in[10^{15},10^{29}]$ and one in the range $\frac{A_{del}}{M_\odot}\in[0,10^{15}]$. The second range does not have any negative $\tau$ values and $\overline{\tau} = 16.2$ Gyr, while the first range has 153 negative $\tau$ values and $\overline{\tau} = -2.7\cdot 10^9$ Gyr. It is obvious, from @fig-A-M, that the first range is subject to the instabilities of the method.
 
 From @eq-A, we expect a good linear correlation between $A_{del}$ and $M_*$ of a given galaxy, where the variance of the linear regression comes from $\frac{\zeta}{1-(x+1)e^{-x}}$. So, for the expected values of $x$, $2.7<x<3.4$ [@kroupaConstraintsStarFormation2020], and even for bigger $x$, there should not be a significant variance, since $\lim_{x\rightarrow\infty}\frac{\zeta}{1-(x+1)e^{-x}}=\zeta\approx1.3$. However, for $x\rightarrow 0$, the algorithm is not able to converge since $\lim_{x\rightarrow 0}\frac{\zeta}{1-(x+1)e^{-x}}=\infty$, and the linear regression of $A_{del}-M_*$ can not be successful, as it can be seen from @fig-A-M.
 
-![](/NR/A-M_*-c_x.png){#fig-A-M}
 
-Since convergence can not occur for $x\ll 1$, this method should not be used for galaxies in the begging phases of their star formation [^10]. If the assumption, $t_{sf}=13.6$ Gyr for all the galaxies is correct, then an inconstancy in the plot $A_{del}-\text{sSFR}$ should only be observed, for higher values of the sSFR, since, according to the delayed- $\tau$ model, higher sSFR values indicate a rising SFR, while lower SFR values indicate that the bulk of $M_*$ is already produced and the galaxy is in the declining SFR phase. However, as seen from @fig-A-sSFR, this inconsistency occurs in galaxies for both high and low sSFR's, meaning that the the model has convergence issues both for slow rising SFR and quenching galaxies, indicating an intrinsic problem with this approach.
+Since convergence can not occur for $x\ll 1$, this method should not be used for galaxies in the begging phases of their star formation [^10]. If the assumption, $t_{sf}=13.6$ Gyr for all the galaxies is correct, then an inconstancy in the plot $A_{del}-\text{sSFR}$ should only be observed, for higher values of the sSFR, since, according to the delayed- $\tau$ model, higher sSFR values indicate a rising SFR, while lower SFR values indicate that the bulk of $M_*$ is already produced and the galaxy is in the declining SFR phase. However, as seen from @fig-sSFR-A, this inconsistency occurs in galaxies for both high and low sSFR's, meaning that the the model has convergence issues both for slow rising SFR and quenching galaxies, indicating an intrinsic problem with this approach.
 
 [^10]: For $x=1$ is the peak of the SFR, $x<1$ is the the rising phase and for $x>1$ the SFR declines exponentially ( @eq-delayed-current ).
 
@@ -540,22 +539,17 @@ and the likelihood $\log(\text{SFR}_{obs}) \sim \text{normal}\left(\log(\text{SF
 
 The prior of the $\tau$ and $t_{sf}$ follow a uniform distribution, since we do not want to introduce any unwanted bias in the value selection of the MCMC sampler. However, there is bibliography that could justify using a normal distribution for $\tau$, for example @speagleHighlyConsistentFramework2014 and @kroupaConstraintsStarFormation2020 explain that the galaxies of the Main Sequence are expected to have $3.5\lesssim\tau/\text{Gyr}\lesssim4.5$. The same prior will not apply for $t_{sf}$ since it could significatly effect the results, especially of younger galaxies.
 
-Using these priors, the metrics of the Stan programm give good results ($\hat{R}<1.001$ and $\text{ESS} >1000$), while the calculated values correspond to the data of the catalog. Specifically, we use the data to recalculate the SFR from the predicted parameters, using the delayed-$\tau$ model and compare it to the observational data (@fig-comp-sfr-obs-pred), and also compare the normalization constant to the stellar masses of the galaxies (@fig-A-M-mcmc).
+Using these priors, the metrics of the Stan programm give good results ($\hat{R}<1.001$ and $\text{ESS} >1000$), while the calculated values correspond to the data of the catalog. Specifically, we use the data to recalculate the SFR from the predicted parameters, using the delayed-$\tau$ model and compare the normalization constant to the stellar masses of the galaxies (@fig-A-M-mcmc).
 
-::: {#fig-comp-sfr-obs-pred layout-ncol="2"}
-![MCMC run for $\tau \sim \text{uniform}$ prior.](r_mcmc_uni/plots/sfr_diff_plot.png){#fig-comp-sfr-obs-pred-uni}
 
-![MCMC run $\tau \sim \text{normal}$ prior.](r_mcmc_normal/plots/sfr_diff_plot.png){#fig-comp-sfr-obs-pred-norm}
-
-Comparison of the observed SFR with the predicted by the parameters given by the MCMC run.
-:::
-
-::: {#fig-A-M-mcmc layout-ncol="2"}
+::: {#fig-A-M-mcmc layout="[[50,50],[70]]"}
 ![Uniform $\tau$ prior](method_comparison/A_M_MCMC_uni.png){#fig-A-M-mcmc-uni}
 
 ![Normal $\tau$ prior](method_comparison/A_M_MCMC_norm.png){#fig-A-M-mcmc-norm}
 
-Linear regression for $A_{del}-M_*$ for the $A_{del}$ values from the two MCMC runs. The black dashed line represents the regresion weighted by $x$. For the left plot, the regression yields a correlation of 94%, while the weighted regression is the fit $\log(A_{del}) = 0.95\cdot\log(M_*)+0.60$, with a correlation of 98%. For the right plot, the correlation is higher, at 99%, with a weighted regression of $\log(A_{del}) = 0.97\cdot\log(M_*)+0.44$, with a correlation of 99.5%.
+![Newton-Raphson Method](/NR/A-M_*-c_x.png){#fig-A-M}
+
+Linear regression for $A_{del}-M_*$ for the $A_{del}$ values from the two MCMC runs and the Newton-Raphson method, with the colorbar repressenting the ratio $x=t_{sf}/\tau$. For the MCMC runs, the black dashed line represents the regresion weighted by $x$. For the upper left plot, the regression yields a correlation of 94%, while the weighted regression is the fit $\log(A_{del}) = 0.95\cdot\log(M_*)+0.60$, with a correlation of 98%. For the upper right plot, the correlation is higher, at 99%, with a weighted regression of $\log(A_{del}) = 0.97\cdot\log(M_*)+0.44$, with a correlation of 99.5%. For the N-R plot, we do two different regressions for the two distinct regions of $A_{del}$, with the upper region only having a correlation of 55\%, while the lower region closely relating the normalization constant with the Stellar Masses of the galaxies, as described in the MCMC plots.
 :::
 
 In @fig-sSFR-A, it can be seen that the MCMC run does not have the same inconsistancies with the NR method, and @fig-tau-hist-both shows that the MCMC method captures better both the galaxies with small timescales, and the galaxies with slow rising SFR's.
