@@ -29,7 +29,7 @@ abstract: |
 
   In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
   
-  **Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Markov Chain Monte Carlo (MCMC).
+  **Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Newton-Ramphson, Markov Chain Monte Carlo (MCMC).
 ---
 
 # Galaxy Morphology and Star-Forming Regions
@@ -146,7 +146,7 @@ It is also important to define the Star Formation Density (SFRD):
 
 $$
 \text{SFRD} = \frac{1}{V}\sum^N_{i=1}\text{SFR}_{o,i},
-$$
+$$ {#eq-SFRD}
 
 where $V$ is the comoving volume [^2] of a region of the universe, $N$ is the number of galaxies of the regions and SFR$_{0,i}$ is the current SFR of each galaxy $i$.
 
@@ -318,7 +318,7 @@ The best-fit function of the comoving SFRD($z$):
 $$
 SFRD(z) = 0.015 \, \frac{(1+z)^{2.7}}{1 + \left(\frac{1+z}{2.9}\right)^{5.6}}
 \quad \left[M_\odot \,\mathrm{yr}^{-1}\,\mathrm{Mpc}^{-3}\right],
-$$
+$$ {#eq-lilly-madau}
 
 ## Delayed-$\tau$ model
 
@@ -523,7 +523,7 @@ Since convergence can not occur for $x\ll 1$, this method should not be used for
 
 [^10]: For $x=1$ is the peak of the SFR, $x<1$ is the the rising phase and for $x>1$ the SFR declines exponentially ( @eq-delayed-current ).
 
-![Alt text](NR/A-sSFR.png){#fig-A-sSFR}
+![$A_{del}-\text{sSFR}$ plot, where $A_{del}$ is calculated with different methods. In blue and green are the normalization constant values as they calculated by the MCMC method with different priors, while in red are results from Newton-Raphson.](method_comparison/sSFR_A.png){#fig-sSFR-A}
 
 The second method for the calculation of the parameters is the MCMC method. Using the logarithmic form of the model
 
@@ -538,14 +538,11 @@ we can create a MCMC model to calculate the parameters, with the priors:
 
 and the likelihood $\log(\text{SFR}_{obs}) \sim \text{normal}\left(\log(\text{SFR}_\text{MCMC}), \sigma = 0.1\right)$, while taking the Stellar Masses of the galaxies as they are, without any variance, and $A_{del}$ is calculated by @eq-A. For the $\tau$ we will consider two different priors, $\tau \sim \text{uniform(lower bound = 1 Gyr, upper bound = 13.8 Gyr)}$ and $\tau \sim \text{normal(mean = 4 Gyr, }\sigma  = 13.8 \text{Gyr)}$. The MCMC run consists of 6 chains with 8000 iterations each (2500 iterations for the burn-in phase). Using this method, the galaxies can have different $t_{sf}$, while only taking positive values for their timescales.
 
-
-The prior of the $\tau$ and $t_{sf}$ follow a uniform distribution, since we do not want to introduce any unwanted bias in the value selection of the MCMC sampler. However, there is bibliography that could justify using a normal distribution for $\tau$, for example @speagleHighlyConsistentFramework2014 and @kroupaConstraintsStarFormation2020 explain that the galaxies of the Main Sequence are expected to have $3.5\lesssim\tau/\text{Gyr}\lesssim4.5$. The same prior will not apply for $t_{sf}$ since it could significatly effect the results, especially of younger galaxies. 
+The prior of the $\tau$ and $t_{sf}$ follow a uniform distribution, since we do not want to introduce any unwanted bias in the value selection of the MCMC sampler. However, there is bibliography that could justify using a normal distribution for $\tau$, for example @speagleHighlyConsistentFramework2014 and @kroupaConstraintsStarFormation2020 explain that the galaxies of the Main Sequence are expected to have $3.5\lesssim\tau/\text{Gyr}\lesssim4.5$. The same prior will not apply for $t_{sf}$ since it could significatly effect the results, especially of younger galaxies.
 
 Using these priors, the metrics of the Stan programm give good results ($\hat{R}<1.001$ and $\text{ESS} >1000$), while the calculated values correspond to the data of the catalog. Specifically, we use the data to recalculate the SFR from the predicted parameters, using the delayed-$\tau$ model and compare it to the observational data (@fig-comp-sfr-obs-pred), and also compare the normalization constant to the stellar masses of the galaxies (@fig-A-M-mcmc).
 
-
 ::: {#fig-comp-sfr-obs-pred layout-ncol="2"}
-
 ![MCMC run for $\tau \sim \text{uniform}$ prior.](r_mcmc_uni/plots/sfr_diff_plot.png){#fig-comp-sfr-obs-pred-uni}
 
 ![MCMC run $\tau \sim \text{normal}$ prior.](r_mcmc_normal/plots/sfr_diff_plot.png){#fig-comp-sfr-obs-pred-norm}
@@ -553,18 +550,39 @@ Using these priors, the metrics of the Stan programm give good results ($\hat{R}
 Comparison of the observed SFR with the predicted by the parameters given by the MCMC run.
 :::
 
-::: {#fig-A-M-mcmc layout-nrow="2"}
+::: {#fig-A-M-mcmc layout-ncol="2"}
+![Uniform $\tau$ prior](method_comparison/A_M_MCMC_uni.png){#fig-A-M-mcmc-uni}
 
-![Linear fit for $A_{del}\sim M_*$, with a correlation of 94%. The black dashed line is the linear regression weighted by $x$, with a fit $\log(A_{del}) = 0.95\cdot\log(M_*)+0.60, with a corralation of 98\%$](method_comparison/A_M_MCMC_uni.png){#fig-A-M-mcmc-uni}
+![Normal $\tau$ prior](method_comparison/A_M_MCMC_norm.png){#fig-A-M-mcmc-norm}
 
-![Linear fit for $A_{del}\sim M_*$, with a correlation of 99%. The black dashed line is the linear regression weighted by $x$, with a fit $\log(A_{del}) = 0.97\cdot\log(M_*)+0.44, with a corralation of 99.5\%$](method_comparison/A_M_MCMC_norm.png){#fig-A-M-mcmc-norm}
+Linear regression for $A_{del}-M_*$ for the $A_{del}$ values from the two MCMC runs. The black dashed line represents the regresion weighted by $x$. For the left plot, the regression yields a correlation of 94%, while the weighted regression is the fit $\log(A_{del}) = 0.95\cdot\log(M_*)+0.60$, with a correlation of 98%. For the right plot, the correlation is higher, at 99%, with a weighted regression of $\log(A_{del}) = 0.97\cdot\log(M_*)+0.44$, with a correlation of 99.5%.
 :::
 
-In @fig-sSFR-A-both-methods, it can be seen that the MCMC run does not have the same inconsistancies with the NR method, and in @fig-tau-hist-both it seems that the MCMC method captures better both the galaxies with small timescales, and the galaxies with slow rising SFR's.
+In @fig-sSFR-A, it can be seen that the MCMC run does not have the same inconsistancies with the NR method, and @fig-tau-hist-both shows that the MCMC method captures better both the galaxies with small timescales, and the galaxies with slow rising SFR's.
 
-![$A_{del}-\text{sSFR}$ plot, where $A_{del}$ is calculated with different methods. In blue and green are the normalization constant values as they calculated by the MCMC method with different priors, while in red are results from Newton-Raphson.](method_comparison/sSFR_A.png){#fig-sSFR-A-both-methods}
+::: {#fig-distr-comparison layout-ncol="2"}
+![Distribution of $\tau$ values.](method_comparison/tau_hist.png){#fig-tau-hist-both}
 
-![Distribution of $\tau$ values, from the two methods. In blue is the timescale distribution as it is calculated by the MCMC method, while in red are results from Newton-Raphson.](method_comparison/tau_hist.png){#fig-tau-hist-both}
+![Distribution of $t_{sf}$ values.](method_comparison/tsf_hist.png){#fig-tsf-hist-both}
+
+Distribution of the results of $\tau$ and $t_{sf}$ from all the methods. In blue are the distributions as they are calculated by the MCMC method with the uniform $\tau$ prior, in green are the results from the MCMC run with the normal prior, while in red are results from Newton-Raphson.
+:::
+
+In @fig-tau-hist-both, the distribution of the $\tau$ from the MCMC run with the uniform prior, has two peaks, the first peak at $\sim 2$ Gyr and one at $\sim 12$ Gyr. As shown in @fig-MS-tau, the galaxies contributing in the two peaks are in different parts of the Main Sequence, while the MCMC run with the normal prior depicts the galaxies of the MS as they are predicted by @speagleHighlyConsistentFramework2014, since every galaxy reaches its peak SFR at the a timescale $\tau < 5$. Additionaly the MCMC run with the normal prior, predicts a peak of the $t_{sf}$ distribution around 12-12.5 Gyr, closer to assumed values in @kroupaConstraintsStarFormation2020 and @haslbauerCosmologicalStarFormation2023 (@fig-tsf-hist-both).
+
+![Main Sequence of of the galaxies, color coded by the timescale $\tau$, from the MCMC run from with the uniform prior for $\tau$. The galaxies with slow rising SFR's are the galaxies above the center of the MS, while galaxies with $\tau$ predicted from @speagleHighlyConsistentFramework2014 are in the lower part of the MS. In the center of the MS are the rest of the galaxies](method_comparison/ms_plots/ms_tau_up.png){#fig-MS-tau}
+
+Having calculated the model parameters, it is possible to recunstruct the SFH of the galaxies, and from the @eq-SFRD, it is possible to calculate the SFRD of the LCV and recreate the Lilly-Madau Plot. As seen from @fig-lilly-madau, the results from the MCMC method are more consistent with the theoretical line give by the [@eq-lilly-madau; @madauCosmicStarFormation2014], while the NR method underastimates the SFRD of the LCV, by a factor[^11] greater than $\sim 3$, up until $z \approx 3$. From the three methods, the MCMC with the prior $\tau\sim \text{normal}$ is systematicaly closer to universal SFRD, indicating that the assumption for the prior is better than the uniform prior, while the NR line can not approximate the expected line. Eventhough the MCMC method could approximate the SFRD for small redshifts, at greater $z$ the model can overestimate the SFRD by a factor of $\sim 2-3.2$.
+
+[^11]: The factor is calculated by the residuals, $\log(SFRD_\text{data})-\log(SFRD_{LM})=\log\left(\frac{SFRD_\text{data}}{SFRD_{LM}}\right)\Leftrightarrow \frac{SFRD_\text{data}}{SFRD_{LM}} = 10^{\log(SFRD_\text{data})-\log(SFRD_{LM})}$
+
+::: {#fig-lilly-madau layout-ncol="2"}
+![SFH Reconstruction of the Local Cosmological Volume](method_comparison/sfrd_comparison_custom_axes_log_values.png)
+
+![Residuals of the SFH reconstruction of the LCV based on the theoritical line given by @madauCosmicStarFormation2014](method_comparison/sfrd_residuals_vs_lm.png)
+
+SFH Reconstructions of the Local Cosmological Volume, based on the three different methods
+:::
 
 {{<pagebreak>}}
 
