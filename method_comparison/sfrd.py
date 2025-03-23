@@ -10,20 +10,36 @@ import astropy.units as u
 data_uni = pd.read_csv('r_mcmc_uni/joined_data.csv')
 data_norm = pd.read_csv('r_mcmc_normal/joined_data.csv')
 data_nr = pd.read_csv('NR/filled_with_NR.csv')
+T0 = 13.8*1e9  # Age of the Universe in years
 
 # Define the A and tau values for each dataset
 A_values_uni = data_uni['A_up'].values
 tau_values_uni = (data_uni['tau_up']*u.Gyr.to(u.yr)).values
+tsf_values_uni = (data_uni['t_sf_up']*u.Gyr.to(u.yr)).values
+tstart_values_uni = T0 - tsf_values_uni
 sigma_A_values_uni = data_uni['A_sigma_up'].values
 sigma_tau_values_uni = (data_uni['tau_sigma_up']*u.Gyr.to(u.yr)).values
+sigma_tsf_values_uni = (data_uni['t_sf_sigma_up']*u.Gyr.to(u.yr)).values
+sigma_tstart_values_uni = sigma_tsf_values_uni
+
 
 A_values_norm = data_norm['A_np'].values
 tau_values_norm = (data_norm['tau_np']*u.Gyr.to(u.yr)).values
+tsf_values_norm = (data_norm['t_sf_np']*u.Gyr.to(u.yr)).values
+tstart_values_norm = T0 - tsf_values_norm
 sigma_A_values_norm = data_norm['A_sigma_np'].values
 sigma_tau_values_norm = (data_norm['tau_sigma_np']*u.Gyr.to(u.yr)).values
+sigma_tsf_values_norm = (data_norm['t_sf_sigma_np']*u.Gyr.to(u.yr)).values
+sigma_tstart_values_norm = sigma_tsf_values_norm
 
 A_values_nr = data_nr['A_n'].values
 tau_values_nr = (data_nr['tau_n']*u.Gyr.to(u.yr)).values
+tsf_values_nr = 13.6*1e9  # Fixed value for NR
+tstart_values_nr = T0 - tsf_values_nr  # This is a scalar (e.g. 0.2 Gyr)
+# For NR, we want t_start to be an array with one value per galaxy:
+tstart_values_nr = np.full_like(A_values_nr, tstart_values_nr)
+# Similarly, we assume no uncertainty for t_start in NR:
+sigma_tstart_values_nr = np.zeros_like(A_values_nr)
 
 # Volume factor
 V = (4/3 * np.pi * 11**3)
@@ -32,55 +48,137 @@ V = (4/3 * np.pi * 11**3)
 
 
 def sfr_function(t, A, tau):
+    """
+    Computes the SFR for a given time (in years), normalization A, and timescale tau (in years).
+    """
     return A * (t / tau**2) * np.exp(-t / tau) / V
 
 # Define the error propagation function (only for datasets with sigmas)
 
-def sfr_error(t, A, tau, sigma_A, sigma_tau):
-    dSFR_dA = (t / tau**2) * np.exp(-t / tau) / V
-    dSFR_dtau = A * np.exp(-t / tau) * ((2 * t / tau**3) - (t**2 / tau**4)) / V
-    sigma_SFR = np.sqrt((dSFR_dA * sigma_A)**2 + (dSFR_dtau * sigma_tau)**2)
+# New sfr_error including uncertainty in t_start.
+def sfr_error(T_current, t_start, A, tau, sigma_A, sigma_tau, sigma_t_start):
+    """
+    Compute SFR uncertainty with time defined as t = T_current - t_start.
+    
+    Parameters:
+        T_current (float): Age of the Universe at redshift z (in Gyr).
+        t_start (array): Formation start times of galaxies (in Gyr).
+        A (array): Star formation amplitude values.
+        tau (array): Star formation timescales (in years).
+        sigma_A (array): Uncertainties in A.
+        sigma_tau (array): Uncertainties in tau.
+        sigma_t_start (array): Uncertainties in t_start (in Gyr).
+    
+    Returns:
+        sigma_SFR (array): Uncertainty in the SFR.
+    """
+    # Compute the galaxy age (in Gyr) at this redshift:
+    t_Gyr = T_current - t_start
+    # Convert t to years (1 Gyr = 1e9 years)
+    t_years = t_Gyr * 1e9
+
+    # Partial derivatives
+    dSFR_dA = (t_years / tau**2) * np.exp(-t_years / tau) / V
+    dSFR_dtau = A * np.exp(-t_years / tau) * ((2 * t_years / tau**3) - (t_years**2 / tau**4)) / V
+    # Derivative with respect to t (and chain rule: dt/dt_start = -1)
+    dSFR_dt = -A * np.exp(-t_years / tau) * ((1 / tau) - (t_years / tau**2)) / V
+
+    # Convert sigma_t_start from Gyr to years:
+    sigma_t_start_years = sigma_t_start * 1e9
+
+    sigma_SFR = np.sqrt((dSFR_dA * sigma_A)**2 +
+                        (dSFR_dtau * sigma_tau)**2 +
+                        (dSFR_dt * sigma_t_start_years)**2)
     return sigma_SFR
 
-def lilly_madau(z):
-    """Lilly-Madau SFRD function from Madau & Dickinson (2014)."""
-    return 0.015 * ((1 + z)**2.7) / (1 + ((1 + z)/2.9)**5.6)
-# Define custom time steps and corresponding redshifts
-custom_times = np.array([0, 10.5, 12.3, 12.9, 13.2, 13.3])  # Gyr
-redshifts = np.array([0, 2, 4, 6, 8, 10])  # Corresponding redshifts
 
-# Interpolate time steps for smooth plotting
-time_steps = np.linspace(0, 13.3, 100)  # 100 points for smooth curve
+def compute_total_sfr_and_error(z_array, t_start, sigma_t_start, A_values, tau_values, sigma_A_values=None, sigma_tau_values=None):
+    """
+    Compute total SFR and its uncertainty for an array of redshifts.
+    
+    For each redshift, we compute the current age of the Universe (T_current) using cosmo.age(z)
+    and then compute the galaxy age as t = T_current - t_start.
+    
+    Parameters:
+        z_array (array): Array of redshifts.
+        t_start (array): Formation start times of galaxies (in Gyr) for each galaxy.
+        sigma_t_start (array): Uncertainty in t_start (in Gyr) for each galaxy.
+        A_values (array): A values for galaxies.
+        tau_values (array): Tau values for galaxies (in years).
+        sigma_A_values (array, optional): Uncertainty in A.
+        sigma_tau_values (array, optional): Uncertainty in tau.
+        
+    Returns:
+        total_sfr (array): Total SFR (summed over galaxies) at each redshift.
+        total_sfr_error (array): Combined uncertainty at each redshift.
+    """
 
-# Function to compute total SFR and its uncertainty (if sigmas are available)
+    total_sfr = np.zeros_like(z_array)
+    total_sfr_error = np.zeros_like(z_array)
 
-
-def compute_total_sfr_and_error(time_steps, A_values, tau_values, sigma_A_values=None, 
-                                sigma_tau_values=None):
-    total_sfr = np.zeros_like(time_steps)
-    total_sfr_error = np.zeros_like(time_steps)
-
-    for i, t in enumerate(time_steps):
-        sfr_i = sfr_function(t*u.Gyr.to(u.yr), A_values, tau_values)
+    for i, z in enumerate(z_array):
+        # Get the current age of the Universe at redshift z (in Gyr)
+        T_current = cosmo.age(z).value  # in Gyr
+        # Compute galaxy age for each galaxy: t = T_current - t_start (in yr)
+        t = T_current*10**9 - t_start 
+        # Create mask for galaxies with positive age
+        valid = t > 0
+        
+        # Only for valid galaxies, convert t to years
+        t_years = t[valid] 
+        
+        # Compute SFR for valid galaxies
+        sfr_i = np.zeros_like(t)
+        if np.any(valid):
+            sfr_i[valid] = sfr_function(t_years, A_values[valid], tau_values[valid])
         total_sfr[i] = np.sum(sfr_i)
-
+        
         if sigma_A_values is not None and sigma_tau_values is not None:
-            sigma_sfr_i = sfr_error(
-                t*u.Gyr.to(u.yr), A_values, tau_values, sigma_A_values, sigma_tau_values)
+            sigma_sfr_i = np.zeros_like(t)
+            if np.any(valid):
+                sigma_sfr_i[valid] = sfr_error(T_current, t_start[valid], A_values[valid],
+                                                tau_values[valid], sigma_A_values[valid],
+                                                sigma_tau_values[valid], sigma_t_start[valid])
             total_sfr_error[i] = np.sqrt(np.sum(sigma_sfr_i**2))
+    return total_sfr, total_sfr_error   
+# ------------------------------
 
-    return total_sfr, total_sfr_error
+# Define redshift grid for plotting
+redshifts = np.linspace(0, 10, 100)
 
-
-# Compute SFR and errors for each dataset
+# Compute SFR and errors for each dataset:
+# Uniform Prior Dataset
 total_sfr_uni, total_sfr_error_uni = compute_total_sfr_and_error(
-    time_steps, A_values_uni, tau_values_uni, sigma_A_values_uni, sigma_tau_values_uni)
-total_sfr_norm, total_sfr_error_norm = compute_total_sfr_and_error(
-    time_steps, A_values_norm, tau_values_norm, sigma_A_values_norm, sigma_tau_values_norm)
-total_sfr_nr, _ = compute_total_sfr_and_error(
-    time_steps, A_values_nr, tau_values_nr)  # No sigmas for NR
+    z_array=redshifts,
+    t_start=tstart_values_uni,
+    sigma_t_start=sigma_tstart_values_uni,
+    A_values=A_values_uni,
+    tau_values=tau_values_uni,
+    sigma_A_values=sigma_A_values_uni,
+    sigma_tau_values=sigma_tau_values_uni
+)
 
-# Compute log10 of SFR and propagate errors
+# Normal Prior Dataset
+total_sfr_norm, total_sfr_error_norm = compute_total_sfr_and_error(
+    z_array=redshifts,
+    t_start=tstart_values_norm,
+    sigma_t_start=sigma_tstart_values_norm,
+    A_values=A_values_norm,
+    tau_values=tau_values_norm,
+    sigma_A_values=sigma_A_values_norm,
+    sigma_tau_values=sigma_tau_values_norm
+)
+
+# NR Dataset (no uncertainties available)
+total_sfr_nr, _ = compute_total_sfr_and_error(
+    z_array=redshifts,
+    t_start=tstart_values_nr,            # Already an array of shape (n_gal,) for NR
+    sigma_t_start=sigma_tstart_values_nr,  # Zero uncertainties for NR
+    A_values=A_values_nr,
+    tau_values=tau_values_nr
+)
+
+# Compute log10 of SFR (and propagate errors)
 def compute_log_sfr_and_error(total_sfr, total_sfr_error):
     log_sfr = np.log10(total_sfr)
     log_sfr_error = (total_sfr_error / total_sfr) / np.log(10)
@@ -89,6 +187,15 @@ def compute_log_sfr_and_error(total_sfr, total_sfr_error):
 log_sfr_uni, log_sfr_error_uni = compute_log_sfr_and_error(total_sfr_uni, total_sfr_error_uni)
 log_sfr_norm, log_sfr_error_norm = compute_log_sfr_and_error(total_sfr_norm, total_sfr_error_norm)
 log_sfr_nr = np.log10(total_sfr_nr)
+
+# Define Lilly-Madau SFRD function for comparison
+def lilly_madau(z):
+    """Lilly-Madau SFRD function from Madau & Dickinson (2014)."""
+    return 0.015 * ((1 + z)**2.7) / (1 + ((1 + z)/2.9)**5.6)
+
+# Calculate Lilly-Madau SFRD at the redshifts
+sfrd_lilly_madau = lilly_madau(redshifts)
+log_sfrd_lm = np.log10(sfrd_lilly_madau)
 
 # Function to compute co-moving radial distance from redshift
 
