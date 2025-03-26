@@ -30,10 +30,10 @@ ggplot(data, aes(x = t, y = SFR, color = Model)) +
   labs(
     title = "Star Formation Rate Models",
     x = TeX("Star Formation time ( $t_{sf}$ ) [Gyr]"),
-    y = TeX("SFR($t_{sf}$) [ M$_*$/yr ]" ),
-    color = "Model"
+    y = TeX("SFR($t_{sf}$) [ M$_*$/yr ]"),
+    color = "Model",
   ) +
   scale_x_continuous(limits = c(0, 12)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
-ggsave("figure/sfr-models.png")
+ggsave("./images/sfr-models.png", width = 10, height = 6, dpi = 300)

@@ -6,8 +6,11 @@ def delayed_tau_sfr(t_sf, A_del, tau):
 
 def plot_delayed_tau(A_del=1, taus=[1, 2, 3, 4, 5], t_max=10, num_points=1000):
     t_sf = np.linspace(0, t_max, num_points)  # Avoid t_sf = 0 for numerical stability
-    
-    plt.figure(figsize=(8, 6))
+    ## set theme for the plot
+    plt.style.use('bmh')
+    # Reset color cycle to default
+    plt.rcParams["axes.prop_cycle"] = plt.matplotlib.rcParamsDefault["axes.prop_cycle"]
+    plt.figure(figsize=(10, 6))
     for tau in taus:
         sfr = delayed_tau_sfr(t_sf, A_del, tau)
         plt.plot(t_sf, sfr, label=r"$\tau$ ="+f"{tau} Gyr")
@@ -18,7 +21,8 @@ def plot_delayed_tau(A_del=1, taus=[1, 2, 3, 4, 5], t_max=10, num_points=1000):
     plt.ylabel(r"$\text{SFR}_{del}(t_{sf})\ [M_\odot \cdot yr^{-1}]$")
     plt.title(r"Delayed-$\tau$ Model, for $A_{del} = 1\ M_\odot$")
     plt.legend()
-    plt.grid()
+    plt.tight_layout()
+    #plt.grid()
     plt.savefig("images/delayed_tau_sfr.png")
     plt.close()
 

@@ -23,22 +23,22 @@ execute:
 #editor: visual
 
 abstract: |
-  The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the Star Formation Rates (SFR) of galaxies as a function with a rising SFR at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
+  The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the star formation of galaxies as a function with a rising Star Formation Rate (SFR) at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
 
-  @haslbauerCosmologicalStarFormation2023 argue that the use of Delayed-$\tau$ model for the galaxies of the Local Cosmological Volume (LCV) is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observatory data for SFR and Stellar Masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life of each galaxy and so we can find the expected time of peak of the SFR.
+  @haslbauerCosmologicalStarFormation2023 argue that the use of Delayed-$\tau$ model for the galaxies of the Local Cosmological Volume (LCV) is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observational data for SFR and galaxy masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life of each galaxy and so we can find the expected time of peak of the SFR.
 
   In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
   
   **Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Newton-Ramphson, Markov Chain Monte Carlo (MCMC).
 ---
 
-# Galaxy Morphology and Star-Forming Regions
+# Galaxies and Galaxy Morphology
 
 This thesis will focus on how a specific parametric model tries to explain the Star-Formation Histories of galaxies, but to do that, we first need to understand what a galaxy is, what it is made of, the mechanisms of its evolution, and how we can distinguish them.
 
 The study of galaxies is a very active field of astronomy since it is a relatively young discipline. Until 1920, astronomers who observed spiral nebulae were not certain what they were. In 1921, two papers were published: one argued that the Milky Way constituted the whole Universe and that the spiral nebulae were part of it, while the second argued that each spiral nebula was, in fact, a distinct "island universe" [@shapleyScaleUniverse1921]. This debate became known as the Great Debate[^1].
 
-[^1]: The chain is homogeneous if $T \forall x^{(i)}$ remains invariant (the probability of moving from $x^{(i−1)}$ to $x^{(i)}$ does not depend on the iteration number $i$.) and $\sum_{x^{(i)}} T\bigl(x^{(j)} \mid x^{(i-1)}\bigr) = 1$.
+[^1]: For more information about the Great Debate, visit <https://apod.nasa.gov/debate/1920/cs_real.html>
 
 In 1925, Edwin Hubble put an end to the debate by showing that the distances to the spiral nebulae were far too great compared to other objects within the Milky Way. The method he used involved observing Cepheid variable stars in these nebulae. By applying the period-luminosity relationship, which had been discovered by Henrietta Swan Leavitt [@leavitt1777VariablesMagellanic1907], Hubble was able to determine their distances. This groundbreaking discovery confirmed that spiral nebulae were indeed separate galaxies, marking the beginning of extragalactic astronomy and revolutionizing our understanding of the Universe.
 
@@ -96,7 +96,7 @@ This expanded framework also embraces **early-type** and **late-type** galaxies 
 
     -   Smaller bulges and more open arms from Sa/SBa to Sc/SBc.
 
-    -   Assigned positive T-values , extending to +11 for extreme irregulars.
+    -   Assigned positive Numerical Morphological T-Types, extending to +11 for extreme irregulars.
 
 By offering extra designations for bar strength, ring features, and transitional morphologies, de Vaucouleurs’ system paints a more complete picture of galaxies and how they evolve. It allows researchers to quantify where a galaxy lies along the continuum, rather than forcing it into a single rigid label.
 
@@ -112,6 +112,12 @@ Despite the usefulness of de Vaucouleurs’ numerical T-type system , we run int
 
 To address this, van den Bergh suggested dividing dwarf galaxies by luminosity class, which prevents them from leaping between extreme categories. This refined approach better reflects the intrinsic diversity of dwarf systems, ensuring that subtle morphological differences are more accurately captured and reducing the risk of placing galaxies at the wrong end of the classification scale [@karachentsevUPDATEDNEARBYGALAXY2013]
 
+# Star Formation
+
+The SFH of a galaxy describes the evolution of its star formation rate over time. By selecting an appropriate model for SFH, we can analyze stellar production, predict periods of active or quiescent star formation, and determine when SFR stabilizes.
+
+Understanding SFH models is crucial for interpreting internal and external processes affecting galaxies and identifying conditions for intense star formation in their early stages.
+
 ## Star-Forming Regions
 
 One of the main ingredients of the galaxies are large scale molecular clouds, rich in hydrogen, with masses of order $10^5\ M_\odot$, typical dimensions of $\sim 10$ parsec, temperatures of 10-100 K and densities of 10-300 molecules/cm$^3$ [@polsStellarStructureEvolution2009]. Stars are created inside these clouds when a perturbation disturbs them, and thus their pressure equilibrium, and they start to collapse into smaller clouds under their self-gravity.
@@ -124,12 +130,6 @@ In elliptical galaxies, on the other hand, star formation is minimal because the
 
 A special case are the starburst galaxies, which have extremely active star-forming regions, and seem to convert the gas into stars extremely fast (even 100 times faster than the Milky Way). These starbursts often concentrate their intense star-formation activity in compact regions about 1 kpc in size (typically in galaxy nuclei). Due to their high star-formation rates, starbursts host large numbers of young stars.
 
-# Star Formation History (SFH)
-
-The SFH of a galaxy describes the evolution of its star formation rate over time. By selecting an appropriate model for SFH, we can analyze stellar production, predict periods of active or quiescent star formation, and determine when SFR stabilizes.
-
-Understanding SFH models is crucial for interpreting internal and external processes affecting galaxies and identifying conditions for intense star formation in their early stages.
-
 ## Star Formation Rate
 
 The star formation rate (SFR) is defined as the total gas mass of a galaxy converted into stars over a specific time interval. It is typically expressed in solar masses per year ($M_\odot \cdot \text{yr}^{-1}$).
@@ -137,7 +137,7 @@ The star formation rate (SFR) is defined as the total gas mass of a galaxy conve
 The SFR varies significantly over time, and its integration over time provides the total stellar mass formed during the galaxy’s history of star formation. Specifically:
 
 $$
-\int_0^{t_{sf}} \text{SFR}(t)dt = \zeta M_*(t_{sf}),\ t_{sf}=\text{Time of Star Formation,} 
+\int_{t_\text{start}}^{t_\text{final}} \text{SFR}(t)dt = \zeta M_*(t_{sf}),\ t_{sf}=\text{Time of Star Formation,} 
 $$ {#eq-sfr_int}
 
 where $\zeta$ accounts for mass loss during the Star Formation and is approximately $\zeta \approx 1.3$ (@kroupaConstraintsStarFormation2020).
@@ -160,15 +160,11 @@ SFR can be estimated using various photometric or spectroscopic methods based on
 
 [^3]: @calzettiStarFormationRate2012, @mushotzkyASTR620GalaxiesFall2017
 
--   **H**\boldmath$\alpha$ **Emission**: Young, hot, massive stars (O-type stars, \~10 Myr, \~20 $M_\odot$) produce a number of ionizing photons, which they ionize the surrounding hydrogen rich gas. The hydrogen undergoes recombination cascades which produce Balmer emission lines of $H\alpha$ (0.6563 $\mu m$) and $H\beta$ (0.4861 $\mu m$). Dust can significantly affect observations.
+-   **H**\boldmath$\alpha$ **Emission**: Young, hot, massive stars (O-type stars, \~10 Myr, \~20 $M_\odot$) produce a number of ionizing photons, which they ionize the surrounding hydrogen rich gas. The hydrogen undergoes recombination cascades which produce Balmer emission lines of $H\alpha$ (0.6563 $\mu m$) and $H\beta$ (0.4861 $\mu m$). Dust can significantly affect observations. Since this estimator depends on young stars, it gives us information about the present day star formation (\~10 Myr).
 
--   **Far-Ultraviolet (FUV) Flux**: Mainly emitted by young, hot stars ( B-type stars, \~100 Myr). Dust presence can also significantly affect observations.
+-   **Far-Ultraviolet (FUV) Flux**: Mainly emitted by young, hot stars ( B-type stars, \~100 Myr). Dust presence can also significantly affect observations. Since this estimator depends on young stars, it gives us information about the present day star formation (\~100 Myr).
 
--   **Infrared (IR) Flux**: The stars in a galaxy can heat up the dust in different ways, which then emits radiation in different parts of the IR spectrum. For example, young and massive, short-lived stars, emit UV radiation which then the heated dust emits in a wavelength of $\approx 60 \mu m$, whereas dust heated by UV-faint old or low-mass stars will emit at $\approx 100-150\mu m$. As a result, the total IR emission is age-agnostic and provides a more accurate approximation of the SFR because it accounts for contributions from both young and old stellar populations.
-
--   **Radio Continuum Emission**: Strongly correlated with IR. Its origin is complex, involving synchrotron radiation from relativistic electrons and thermal Bremsstrahlung from hot gas.
-
--   **X-Ray Emission**: In star-forming galaxies, X-rays arise from high-mass binary systems (neutron star or black hole with massive stellar companion) and hot gas from supernovae, correlating with SFR up to redshift $z \sim 4$. X-rays are dust-insensitive, enabling accurate high-redshift observations.
+-   **Infrared (IR) Flux**: The stars in a galaxy can heat up the dust in different ways, which then emits radiation in different parts of the IR spectrum. For example, young and massive, short-lived stars, emit UV radiation which then the heated dust emits in a wavelength of $\approx 60 \mu m$, whereas dust heated by UV-faint old or low-mass stars will emit at $\approx 100-150\mu m$. As a result, the total IR emission is age-agnostic and provides a more accurate approximation of the SFR because it accounts for contributions from both young and old stellar populations. Since this estimator is somewhat age agnostic, but is derived from the radiaton of heated dust, it is an estimator for the current star formation rate and not the present SFR (\~ 300 Myr).
 
 SFR for different luminosities $L_i$ can be calculated as:
 
@@ -176,7 +172,9 @@ $$
 \text{SFR}_i = \mathcal{K}_i\times L_i
 $$ {#eq-sfr-spectra}
 
-where $\mathcal{K}_i$ is a constant specific to each $L_i$ ($i =$ H$\alpha$, IR, radio, FUV, X). In our analysis, we lack radio and X-ray data.
+where $\mathcal{K}_i$ is a constant specific to each $L_i$ ($i =$ H$\alpha$, IR, radio, FUV, X).
+
+![Plot showing the linear relation $\log\text{SFR}_{FUV} = \log\text{SFR}_{H\alpha}$, as well as their distributions, based on the data from UNGC](figure/log_SFR_FUV_Ha.png){#fig-SFR-Ha-FUV fig-align="center" width="400" fig-pos="t"}
 
 Since the luminosities $L_{\text{FUV}}$ and $L_{\text{H}\alpha}$ originate from young stars and are highly sensitive to dust, we either directly observe stars unaffected by dust or use correction models to account for dust absorption. It is crucial to ensure that these models neither underestimate nor overestimate the luminosities by overlooking or double-counting the same sources.
 
@@ -187,8 +185,6 @@ SFR_{\text{FUV},H\alpha} = \text{mean}(SFR_{\text{FUV}}, SFR_{\text{H}\alpha})
 $$ {#eq-SFR_comb}
 
 where $L_{\text{FUV}}$ and $L_{\text{H}\alpha}$ are corrected for dust attenuation.
-
-![Plot showing the linear relation $\log\text{SFR}_{FUV} = \log\text{SFR}_{H\alpha}$, as well as their distributions, based on the data from UNGC](figure/log_SFR_FUV_Ha.png){#fig-SFR-Ha-FUV fig-align="center" width="500"}
 
 According to [@madauCosmicStarFormation2014], this method often underestimates the SFR, since different galaxy populations may systematically follow distinct absorption mechanisms depending on their characteristics.
 
@@ -215,13 +211,14 @@ $$
 \log(\text{SFR}) = \alpha \log(M_*)+\beta
 $$
 
-where $\alpha(t)$ and $\beta(t)$ depend on time and redshift $z$ (@speagleHighlyConsistentFramework2014):
+where $\alpha(t)$ and $\beta(t)$ depend on time and redshift $z$ (@speagleHighlyConsistentFramework2014).
 
-### Star Formation History Models
+![The Main Sequence of the galaxies within the radius of 10 Mpc, with the colorbar representing their morphological type. From the linear fit we get $\alpha(T_0) = 0.86$ and $\beta(T_0)= 9.83$. Early types have lower Stellar Masses and SFR, while spiral galaxies have more intense SF](method_comparison/ms_plots/ms_morph.png){#fig-ms-Type width="60%"}
 
-![Star Formation Rate over the time of star formation, for different parametric models](images/sfr-models.png){fig-align="center" width="300"}
+## Star Formation History Models
 
 Parameterized SFH models are commonly used, offering simplicity through a few parameters [@carnallHowMeasureGalaxy2019a]:
+
 
 -   **Exponential Decline (Tau Model):** The star formation rate (SFR) decreases exponentially over time, following the equation:
 
@@ -239,6 +236,8 @@ $$
 
 This accounts for an initial growth phase followed by a decline. In this case, $\tau$ represents the time it takes for the galaxy to reach $\text{SFR}_{\text{max}}$.
 
+![Star Formation Rate over the time of star formation, for different parametric models](images/sfr-models.png){fig-align="center" width="500" fig-pos="ht"}
+
 -   **Log-Normal Distribution Model:** The SFR follows a normalized log-normal distribution, which can accurately model the star formation rate density ($\text{SFRD} = \text{SFR}/M_*$) in individual galaxies. The general form of the equation is:
 
 $$
@@ -246,6 +245,7 @@ $$
 $$
 
 where $\tau$ and $T_0$ are free parameters of the distribution that lack physical significance, as the SFR does not necessarily peak at $t = e^{T_0}$.
+
 
 -   **Double Power Law:** This model describes a scenario where the SFR rises and then falls sharply, useful for modeling galaxies experiencing rapid changes in star formation. The equation is:
 
@@ -303,8 +303,6 @@ $$
 
 ## Lilly-Madau Plot
 
-![The history of cosmic star formation as shown in @madauCosmicStarFormation2014](images/lily-madau.png){fig-align="center" width="450"}
-
 Using observational data from UV and IR traces for the SFR for galaxies of different redshifts ($z$) @madauCosmicStarFormation2014 where able to calculate the cosmic SFRD, at different ages of the universe, and reveals three periods of the universe.
 
 -   **Rising Era** (SFRD$\propto(1+z)^{-2.9},\ 3\lesssim z \lesssim 8$): The SFRD is relatively low at very high redshifts (e.g., $z>6$) and then rises as we move closer to $z \sim 2$. This indicates that early galaxies were ramping up their star-forming activity.
@@ -320,6 +318,8 @@ SFRD(z) = 0.015 \, \frac{(1+z)^{2.7}}{1 + \left(\frac{1+z}{2.9}\right)^{5.6}}
 \quad \left[M_\odot \,\mathrm{yr}^{-1}\,\mathrm{Mpc}^{-3}\right],
 $$ {#eq-lilly-madau}
 
+![The history of cosmic star formation as shown in @madauCosmicStarFormation2014](images/lily-madau.png){fig-align="center" width="450" fig-pos="t"}
+
 ## Delayed-$\tau$ model
 
 The delayed $τ$ model is widely used for describing an initial starburst followed by a gradual decline in SFR. This places galaxies on the main sequence. It is particularly effective for massive galaxies (@haslbauerCosmologicalStarFormation2023). However, it assumes smooth SFR evolution and may overestimate peak SFR in high-redshift galaxies.
@@ -330,7 +330,9 @@ $$
 \text{SFR}_0 = \text{SFR}(t_{sf}) = A_{del}\frac{t_{sf}}{\tau^2}e^{-t_{sf}/\tau},\ t_{sf} = T_0-t_\text{start}
 $$ {#eq-delayed-current}
 
-where $\text{SFR}_0$ is given in the catalogs. According to these model the timescale, at which the SFR peaks, is around $3.5\lessapprox\tau\lessapprox 4.5$ [@speagleHighlyConsistentFramework2014]. If we intergrate the SFR(t), we can calculate the present day averaged SFR:
+![The evolution of the SFR of a galaxy over the time of star formation, according to the delayed-$\tau$. The time need for the galaxy to reach the peak of its star formation is the timescale $\tau$ of the model](images/delayed_tau_sfr.png)
+
+where the current $\text{SFR}_0$ of the galaxies, at the current age of the universe $T_0=13.8$ Gyr, is given in the catalogs. According to these model the timescale, at which the SFR peaks, is around $3.5\lessapprox\tau\lessapprox 4.5$ [@speagleHighlyConsistentFramework2014]. If we intergrate the SFR(t), we can calculate the present day averaged SFR:
 
 $$
 \overline{\text{SFR}_\text{del}} = \frac{1}{t_{sf}}\int^{t_\text{end}}_{t_\text{start}}\text{SFR}_{del}(t)dt = \frac{A_{del}}{t_{sf}}\left[1-\left(1+\frac{t_{sf}}{\tau}\right)\exp\left(-\frac{t_{sf}}{\tau}\right)\right]
@@ -339,7 +341,7 @@ $$ {#eq-delayed-current-averaged}
 Where $\overline{\text{SFR}}$ can be calculated by the stellar masses of the galaxy of interest:
 
 $$
-\overline{\text{SFR}_\text{del}} = \frac{\zeta M_*}{t_sf}
+\overline{\text{SFR}_\text{del}} = \frac{\zeta M_*}{t_{sf}}
 $$ {#eq-averaged-SFR-M}
 
 and $\zeta$ accounts for the mass-loss through stellar evolution, and is $\zeta \approx 1.3$ [@kroupaConstraintsStarFormation2020].
@@ -421,7 +423,7 @@ To calculate these, the algorithm firstly initializes some chains in the paramet
 
 # Data of the Local Cosmological Volume
 
-In our current analysis, we will use two different catalogs of galaxies, containing galaxies within the Local Cosmological Volume (LV), which is defined as a sphere with a radius of 11 Mpc centred around the Milky Way, to remain consistent with with the analysis of @kroupaConstraintsStarFormation2020 and @haslbauerCosmologicalStarFormation2023. The reason we focus on the LV and thus only at small distances is because we want to understand the SFR of the galaxies as they are today and since the redshift depends on distance, we can assume that the redshift of our galaxy sample is $z = 0 \Rightarrow t_\text{emitted}=T_0 = 13.8$ Gyr.
+In our current analysis, we will use two different catalogs of galaxies, containing galaxies within the Local Cosmological Volume (LV), which is defined as a sphere with a radius of 11 Mpc centred around the Milky Way, to remain consistent with with the analysis of @kroupaConstraintsStarFormation2020 and @haslbauerCosmologicalStarFormation2023. The reason we focus on the LV and thus only at small distances is because we want to understand the SFR of the galaxies as they are today $z = 0 \Rightarrow t_\text{emitted}=T_0 = 13.8$ Gyr.
 
 The observational data of galaxies located inside the LV are extracted from the catalogs:
 
@@ -440,10 +442,9 @@ The Completeness of a catalog refers to the extent to which a catalog includes a
 The *HECATE* catalog is designed to be a more comprehensive resource, covering a broader range of distances and luminosities.
 
 -   **Luminosity and Distance Dependence:** The HECATE catalog is more complete for brighter galaxies (with luminosities above $10^{9.5} L_{B,\odot}$) and distances within 33 Mpc, which includes the LV. For galaxies with luminosities around $10^{10} L_{B,\odot}$, the catalog remains complete up to distances of 100 Mpc.
--   **Luminosity Density:** The catalog's completeness is also estimated based on the luminosity density in the B-band. Within 30 Mpc, the catalog is over 100% complete due to the high density of galaxies around the Milky Way. However, at distances around 170 Mpc, the completeness drops to approximately 50%, indicating that many galaxies are missing.
--   **Star Formation Rate and Stellar Mass:** The completeness of SFR is around 50% for distances between 30 and 150 Mpc, primarily due to limitations in the WISE survey coverage. Similarly, the completeness of stellar mass estimates is comparable to that of the B-band luminosity, with overdensities at short distances and a sharp cutoff at larger distances.
+-   **Star Formation Rate and Stellar Mass:** The percentage of the galaxies with measured SFR is around 50% for distances between 30 and 150 Mpc, primarily due to limitations in the WISE survey coverage. Similarly, the completeness of stellar mass estimates is comparable to that of the B-band luminosity, with overdensities at short distances and a sharp cutoff at larger distances.
 
-The *UNGC* catalog focuses on galaxies within the LV, specifically those with radial velocities less than 600 km/s and distances within 11 Mpc. It is around $40\%-60\%$ complete for galaxies with B-band magnitude $M_B^c < -11^m$. In the Local Group ($D \leq 10 \, \text{Mpc}$) only half the galaxies have $M_B^c > -11^m$ and it is expected that for distances $\sim 9 \, \text{Mpc}$ more than half of the ultra-faint galaxies are missing. Specifically, it is estimated that around $10^3–10^4$ galaxies of the LV are not included in UNGC.
+The *UNGC* catalog focuses on galaxies within the LV, specifically those with radial velocities less than 600 km/s and distances within 11 Mpc. It is around $40\%-60\%$ complete for galaxies with B-band magnitude $M_B^c < -11^m$. In the Local Group ($D \leq 10 \, \text{Mpc}$) only half the galaxies have $M_B^c > -11^m$ and it is expected that for distances $\sim 9 \, \text{Mpc}$ more than half of the ultra-faint galaxies are missing. Specifically, it is estimated that around $10^3–10^4$ galaxies of the LV are not included in UNG.
 
 The incompleteness for ultra-faint galaxies is primarily due to their low surface brightness, making them difficult to detect beyond the Local Group. This limitation is particularly significant for studies of dwarf galaxies and the faint end of the galaxy luminosity function.
 
@@ -517,7 +518,7 @@ In @fig-A-tau, two shapes are prominent. One in the range $\frac{A_{del}}{M_\odo
 
 From @eq-A, we expect a good linear correlation between $A_{del}$ and $M_*$ of a given galaxy, where the variance of the linear regression comes from $\frac{\zeta}{1-(x+1)e^{-x}}$. So, for the expected values of $x$, $2.7<x<3.4$ [@kroupaConstraintsStarFormation2020], and even for bigger $x$, there should not be a significant variance, since $\lim_{x\rightarrow\infty}\frac{\zeta}{1-(x+1)e^{-x}}=\zeta\approx1.3$. However, for $x\rightarrow 0$, the algorithm is not able to converge since $\lim_{x\rightarrow 0}\frac{\zeta}{1-(x+1)e^{-x}}=\infty$, and the linear regression of $A_{del}-M_*$ can not be successful, as it can be seen from @fig-A-M.
 
-Since convergence can not occur for $x\ll 1$, this method should not be used for galaxies in the begging phases of their star formation [^10]. If the assumption, $t_{sf}=13.6$ Gyr for all the galaxies is correct, then an inconstancy in the plot $A_{del}-\text{sSFR}$ should only be observed, for higher values of the sSFR, since, according to the delayed- $\tau$ model, higher sSFR values indicate a rising SFR, while lower SFR values indicate that the bulk of $M_*$ is already produced and the galaxy is in the declining SFR phase. However, as seen from @fig-sSFR-A, this inconsistency occurs in galaxies for both high and low sSFR's, meaning that the the model has convergence issues both for slow rising SFR and quenching galaxies, indicating an intrinsic problem with this approach.
+Since convergence can not occur for $x\ll 1$, this method should not be used for galaxies in the begining phases of their star formation [^10]. If the assumption, $t_{sf}=13.6$ Gyr for all the galaxies is correct, then an inconstancy in the plot $A_{del}-\text{sSFR}$ should only be observed, for higher values of the sSFR, since, according to the delayed- $\tau$ model, higher sSFR values indicate a rising SFR, while lower SFR values indicate that the bulk of $M_*$ is already produced and the galaxy is in the declining SFR phase. However, as seen from @fig-sSFR-A, this inconsistency occurs in galaxies for both high and low sSFR's, meaning that the the model has convergence issues both for slow rising SFR and quenching galaxies, indicating an intrinsic problem with this approach.
 
 [^10]: For $x=1$ is the peak of the SFR, $x<1$ is the the rising phase and for $x>1$ the SFR declines exponentially ( @eq-delayed-current ).
 
@@ -533,9 +534,9 @@ we can create a MCMC model to calculate the parameters, with the priors $t_{sf}\
 
 The prior of the $\tau$ and $t_{sf}$ follow a uniform distribution, since we do not want to introduce any unwanted bias in the value selection of the MCMC sampler. However, there is bibliography that could justify using a normal distribution for $\tau$, for example @speagleHighlyConsistentFramework2014 and @kroupaConstraintsStarFormation2020 explain that the galaxies of the Main Sequence are expected to have $3.5\lesssim\tau/\text{Gyr}\lesssim4.5$. The same prior will not apply for $t_{sf}$ since it could significantly effect the results, especially of younger galaxies.
 
-Using these priors, the metrics of the Stan program give good results ($\hat{R}<1.001$ and $\text{ESS} >1000$), while the calculated values correspond to the data of the catalog. Specifically, we use the data to recalculate the SFR from the predicted parameters, using the delayed-$\tau$ model and compare the normalization constant to the stellar masses of the galaxies (@fig-A-M-mcmc).
+[^11]: For more information about the usage of Stan and its metrics can be found here: <https://mc-stan.org/>
 
-::: {#fig-distr-comparison layout-ncol="2" fig-pos="b"}
+::: {#fig-distr-comparison layout-ncol="2" fig-pos="h"}
 ![Distribution of $\tau$ values.](method_comparison/tau_hist.png){#fig-tau-hist-both}
 
 ![Distribution of $t_{sf}$ values.](method_comparison/tsf_hist.png){#fig-tsf-hist-both}
@@ -543,11 +544,15 @@ Using these priors, the metrics of the Stan program give good results ($\hat{R}<
 Distribution of the results of $\tau$ and $t_{sf}$ from all the methods.
 :::
 
+Using these priors, the metrics of the Stan software[^11] give good results ($\hat{R}<1.001$ and $\text{ESS} >1000$), while the calculated values correspond to the data of the catalog. Specifically, we use the data to recalculate the SFR from the predicted parameters, using the delayed-$\tau$ model and compare the normalization constant to the stellar masses of the galaxies (@fig-A-M-mcmc).
+
 In @fig-sSFR-A, it can be seen that the MCMC run does not have the same inconsistencies with the N-R method, and @fig-tau-hist-both shows that the MCMC method captures better both the galaxies with small timescales, and the galaxies with slow rising SFR's.
+
+![Main Sequence of of the galaxies, color coded by the timescale $\tau$, from the MCMC run from with the uniform prior for $\tau$. The galaxies with slow rising SFR's are the galaxies above the center of the MS, while galaxies with $\tau$ predicted from @speagleHighlyConsistentFramework2014 are in the lower part of the MS. In the center of the MS are the rest of the galaxies](method_comparison/ms_plots/ms_tau_up.png){#fig-MS-tau width="60%" fig-pos="h"}
 
 In @fig-tau-hist-both, the distribution of the $\tau$ from the MCMC run with the uniform prior, has two peaks, the first peak at $\sim 2$ Gyr and one at $\sim 12$ Gyr. As shown in @fig-MS-tau, the galaxies contributing in the two peaks are in different parts of the Main Sequence, while the MCMC run with the normal prior depicts the galaxies of the MS as they are predicted by @speagleHighlyConsistentFramework2014, since every galaxy reaches its peak SFR at the a timescale $\tau < 5$. Additionaly the MCMC run with the normal prior, predicts a peak of the $t_{sf}$ distribution around 12-12.5 Gyr, closer to assumed values in @kroupaConstraintsStarFormation2020 and @haslbauerCosmologicalStarFormation2023 (@fig-tsf-hist-both).
 
-::: {#fig-A-M-mcmc layout="[[50,50],[1]]" fig-pos="hb"}
+::: {#fig-A-M-mcmc layout="[[50,50],[1]]" fig-pos="h"}
 ![Uniform $\tau$ prior](method_comparison/A_M_MCMC_uni.png){#fig-A-M-mcmc-uni}
 
 ![Normal $\tau$ prior](method_comparison/A_M_MCMC_norm.png){#fig-A-M-mcmc-norm}
@@ -557,7 +562,6 @@ In @fig-tau-hist-both, the distribution of the $\tau$ from the MCMC run with the
 Linear regression for $A_{del}-M_*$ for the $A_{del}$ values from the two MCMC runs and the Newton-Raphson method, with the colorbar representing the ratio $x=t_{sf}/\tau$. For the MCMC runs, the black dashed line represents the regression weighted by $x$. For the upper left plot, the regression yields a correlation of 94%, while the weighted regression is the fit $\log(A_{del}) = 0.95\cdot\log(M_*)+0.60$, with a correlation of 98%. For the upper right plot, the correlation is higher, at 99%, with a weighted regression of $\log(A_{del}) = 0.97\cdot\log(M_*)+0.44$, with a correlation of 99.5%. For the N-R plot, we do two different regressions for the two distinct regions of $A_{del}$, with the upper region only having a correlation of 55%, while the lower region closely relating the normalization constant with the Stellar Masses of the galaxies, as described in the MCMC plots.
 :::
 
-![Main Sequence of of the galaxies, color coded by the timescale $\tau$, from the MCMC run from with the uniform prior for $\tau$. The galaxies with slow rising SFR's are the galaxies above the center of the MS, while galaxies with $\tau$ predicted from @speagleHighlyConsistentFramework2014 are in the lower part of the MS. In the center of the MS are the rest of the galaxies](method_comparison/ms_plots/ms_tau_up.png){#fig-MS-tau}
 
 Having calculated the model parameters, it is possible to reconstruct the SFH of the galaxies, and from the @eq-SFRD, it is possible to calculate the SFRD of the LCV and recreate the Lilly-Madau Plot. Using the equations @eq-delayed-current and @eq-SFRD, we get the equation:
 
@@ -574,7 +578,7 @@ where $t_\text{start}$, is calculated by the computed $t_{sf}=T_0-t_\text{start}
 
 ![Ratio between the cosmic SFRD measured by @madauCosmicStarFormation2014 and the SFRD of the LCV](method_comparison/sfrd_ratio_vs_lm.png)
 
-SFH Reconstructions of the Local Cosmological Volume, based on the three different methods
+SFH Reconstructions of the Local Cosmological Volume, based on the three different methods. Ignore the Skew prior (Red), is a proof of concept.
 :::
 
 As seen from @fig-lilly-madau-rec, the MCMC method can approximate better the SFRD of the LCV up until $z\sim 2$ with a factor less than 2. At the peak of the cosmic SFRD, at $z=1.86$, the uniform and normal priors underestimate the SFRD by a factor of 1.82 and 1.53 respectively, while the N-R underestimates it by a factor of 3.6. In the paper, @haslbauerCosmologicalStarFormation2023, they estimate a factor of 2.16 at the peak, using the SFR's from the UNGC catalogs. However, the ratio of the MCMC grows with $z$, since many galaxies start forming stars at a lookback time of $\sim 12$ Gyr, as seen in @fig-tsf-hist-both (the mean value of the $t_{sf}$ of the galaxies is 10 Gyr for the uniform prior and 9.8 Gyr for the normal prior), resulting in extreme deviations from the cosmic SFRD.
@@ -591,7 +595,7 @@ Based on our results, we cannot safely assume that the model works for the galax
 
 In summary, the use of the MCMC and the data from the HECATE catalog proves that the delayed-$\tau$ model a better approximation of the SFH, as originally argued by @haslbauerCosmologicalStarFormation2023. However, more fine-tuning of the model is needed to be certain if the delayed-$\tau$ model is a robust approximation of the SFH of the galaxies of the Local Cosmological Volume.
 
-{{<pagebreak>}}
+<!-- {{<pagebreak>}} -->
 
 # Appendix A: Scatter plots of the comparisons {#sec-regressions .appendix}
 
@@ -612,6 +616,7 @@ In summary, the use of the MCMC and the data from the HECATE catalog proves that
 :::
 
 {{<pagebreak>}}
+
 
 # References {.unnumbered}
 

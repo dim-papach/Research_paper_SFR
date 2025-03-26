@@ -20,7 +20,7 @@ plt.style.use('ggplot')
 
 # Define function to create and save CMD plots
 def plot_cmd(df, x_col, y_col, xlabel, ylabel, title, filename, folder, hue=None, cmap=False, invert_y=True, clabel = "Morphological Type"):
-    plt.figure(figsize=(8, 6), dpi=350)
+    plt.figure(figsize=(11, 6), dpi=350)
     if hue:
         if cmap:
             scatter = plt.scatter(df[x_col], df[y_col], c=df[hue], cmap="viridis", alpha=0.7, marker=".")
@@ -38,6 +38,7 @@ def plot_cmd(df, x_col, y_col, xlabel, ylabel, title, filename, folder, hue=None
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(title)
+    plt.tight_layout()
     plt.savefig(os.path.join(folder, filename), dpi = 350)
     plt.close()
 
