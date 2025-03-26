@@ -9,6 +9,7 @@ import astropy.units as u
 # Import data
 data_uni = pd.read_csv('r_mcmc_uni/joined_data.csv')
 data_norm = pd.read_csv('r_mcmc_normal/joined_data.csv')
+data_skew = pd.read_csv('r_mcmc_skew/joined_data.csv')
 data_nr = pd.read_csv('NR/filled_with_NR.csv')
 T0 = 13.8*1e9  # Age of the Universe in years
 
@@ -31,6 +32,16 @@ sigma_A_values_norm = data_norm['A_sigma_np'].values
 sigma_tau_values_norm = (data_norm['tau_sigma_np']*u.Gyr.to(u.yr)).values
 sigma_tsf_values_norm = (data_norm['t_sf_sigma_np']*u.Gyr.to(u.yr)).values
 sigma_tstart_values_norm = sigma_tsf_values_norm
+
+#for skew
+A_values_skew = data_skew['A_np'].values
+tau_values_skew = (data_skew['tau_np']*u.Gyr.to(u.yr)).values
+tsf_values_skew = (data_skew['t_sf_np']*u.Gyr.to(u.yr)).values
+tstart_values_skew = T0 - tsf_values_skew
+sigma_A_values_skew = data_skew['A_sigma_np'].values
+sigma_tau_values_skew = (data_skew['tau_sigma_np']*u.Gyr.to(u.yr)).values
+sigma_tsf_values_skew = (data_skew['t_sf_sigma_np']*u.Gyr.to(u.yr)).values
+sigma_tstart_values_skew = sigma_tsf_values_skew
 
 A_values_nr = data_nr['A_n'].values
 tau_values_nr = (data_nr['tau_n']*u.Gyr.to(u.yr)).values
@@ -169,6 +180,17 @@ total_sfr_norm, total_sfr_error_norm = compute_total_sfr_and_error(
     sigma_tau_values=sigma_tau_values_norm
 )
 
+#Skew Prior Dataset
+total_sfr_skew, total_sfr_error_skew = compute_total_sfr_and_error(
+    z_array=redshifts,
+    t_start=tstart_values_skew,
+    sigma_t_start=sigma_tstart_values_skew,
+    A_values=A_values_skew,
+    tau_values=tau_values_skew,
+    sigma_A_values=sigma_A_values_skew,
+    sigma_tau_values=sigma_tau_values_skew
+)
+
 # NR Dataset (no uncertainties available)
 total_sfr_nr, _ = compute_total_sfr_and_error(
     z_array=redshifts,
@@ -186,6 +208,7 @@ def compute_log_sfr_and_error(total_sfr, total_sfr_error):
 
 log_sfr_uni, log_sfr_error_uni = compute_log_sfr_and_error(total_sfr_uni, total_sfr_error_uni)
 log_sfr_norm, log_sfr_error_norm = compute_log_sfr_and_error(total_sfr_norm, total_sfr_error_norm)
+log_sfr_skew, log_sfr_error_skew = compute_log_sfr_and_error(total_sfr_skew, total_sfr_error_skew)
 log_sfr_nr = np.log10(total_sfr_nr)
 
 # Define Lilly-Madau SFRD function for comparison
@@ -236,6 +259,8 @@ ax1.errorbar(redshifts_interp, log_sfr_uni, yerr=log_sfr_error_uni,
              fmt='o-', capsize=3, label=r"MCMC, Uniform Prior for $\tau$", markersize=3)
 ax1.errorbar(redshifts_interp, log_sfr_norm, yerr=log_sfr_error_norm,
              fmt='s-', capsize=3, label=r"MCMC, Normal Prior for $\tau$", markersize=3)
+ax1.errorbar(redshifts_interp, log_sfr_skew, yerr=log_sfr_error_skew,
+             fmt='v-', capsize=3, label=r"MCMC, Skew Prior for $t_{sf}$, Normal $\tau$", markersize=3)
 ax1.plot(redshifts_interp, log_sfr_nr, '^-', label="Newton-Raphson", markersize=3)
 # Add Lilly-Madau theoretical curve
 ax1.plot(redshifts_interp, log_sfrd_lm, 'k--', linewidth=2, label="Lilly-Madau (2014)")
@@ -277,13 +302,15 @@ plt.savefig('method_comparison/sfrd_comparison_custom_axes_log_values.png', dpi=
 plt.close()
 #-----------------------------------
 # Compute residuals (difference in log space)
-residual_uni = log_sfr_uni - log_sfrd_lm
-residual_norm = log_sfr_norm - log_sfrd_lm
-residual_nr = log_sfr_nr - log_sfrd_lm
+residual_uni = log_sfrd_lm-log_sfr_uni 
+residual_norm =  + log_sfrd_lm-log_sfr_norm
+residual_skew =  + log_sfrd_lm-log_sfr_skew
+residual_nr =  + log_sfrd_lm-log_sfr_nr
 
 # Propagate errors (same as original errors since LM is a fixed theoretical curve)
 residual_error_uni = log_sfr_error_uni
 residual_error_norm = log_sfr_error_norm
+residual_error_skew = log_sfr_error_skew
 
 # Create figure
 fig, ax1 = plt.subplots(figsize=(8, 6))
@@ -297,6 +324,8 @@ ax1.errorbar(redshifts_interp, residual_uni, yerr=residual_error_uni,
              fmt='o-', capsize=3, label=r"Uniform Prior", markersize=3)
 ax1.errorbar(redshifts_interp, residual_norm, yerr=residual_error_norm,
              fmt='s-', capsize=3, label=r"Normal Prior", markersize=3)
+ax1.errorbar(redshifts_interp, residual_skew, yerr=residual_error_skew,
+             fmt='v-', capsize=3, label=r"Skew Prior", markersize=3)
 ax1.plot(redshifts_interp, residual_nr, '^-', label="Newton-Raphson", markersize=3)
 
 # Add reference line at zero
@@ -304,7 +333,7 @@ ax1.axhline(0, color='k', linestyle='--', alpha=0.7, label="Lilly-Madau")
 
 # Axes configuration
 ax1.set_xlabel("Redshift $z$")
-ax1.set_ylabel(r"$\Delta \log_{10}(\text{SFRD})$" + "\n(Data $-$ Lilly-Madau)")
+ax1.set_ylabel(r"$\Delta \log_{10}(\text{SFRD})$" + "\n(Lilly-Madau $-$ Data)")
 ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
 ax1.set_xlim(0, 10)
 ax1.set_xticks(redshifts)
@@ -336,3 +365,113 @@ plt.tight_layout()
 plt.savefig('method_comparison/sfrd_residuals_vs_lm.png', dpi=300)
 plt.close()
 
+# add plot of the ratio data/LM
+# Compute ratio of data to LM
+ratio_uni = sfrd_lilly_madau/total_sfr_uni  
+ratio_norm =  sfrd_lilly_madau/total_sfr_norm
+ratio_skew =  sfrd_lilly_madau/total_sfr_skew
+ratio_nr =  sfrd_lilly_madau/total_sfr_nr
+
+# Compute error propagation for ratios
+def ratio_error(total_sfr,total_sfr_error, sfrd_lilly_madau):
+    return np.sqrt(np.abs(sfrd_lilly_madau/total_sfr**2*total_sfr_error**2))
+
+ratio_error_uni = ratio_error(total_sfr_uni,total_sfr_error_uni, sfrd_lilly_madau)
+ratio_error_norm = ratio_error(total_sfr_norm,total_sfr_error_norm, sfrd_lilly_madau)
+ration_error_skew = ratio_error(total_sfr_skew,total_sfr_error_skew, sfrd_lilly_madau)
+
+# Create figure
+fig, ax1 = plt.subplots(figsize=(8, 6))
+ax2 = ax1.twiny()
+ax3 = ax1.twiny()
+
+ax3.spines['top'].set_position(('outward', 40))
+
+# Plot ratios
+ax1.errorbar(redshifts_interp, ratio_uni, yerr=ratio_error_uni,
+             fmt='o-', capsize=3, label=r"Uniform Prior", markersize=3)
+ax1.errorbar(redshifts_interp, ratio_norm, yerr=ratio_error_norm,
+                fmt='s-', capsize=3, label=r"Normal Prior", markersize=3)
+ax1.errorbar(redshifts_interp, ratio_skew, yerr=ration_error_skew,
+                fmt='v-', capsize=3, label=r"Skew Prior", markersize=3)
+ax1.plot(redshifts_interp, ratio_nr, '^-', label="Newton-Raphson", markersize=3)
+
+# Add reference line at unity
+ax1.axhline(1, color='k', linestyle='--', alpha=0.7, label="Lilly-Madau")
+
+# Axes configuration
+ax1.set_xlabel("Redshift $z$")
+ax1.set_ylabel(r"$\frac{\text{SFRD}_{\text{LM}}}{\text{SFRD}_{\text{Data}}}$")
+ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
+ax1.set_xlim(0, 10)
+ax1.set_xticks(redshifts)
+ax1.legend()
+ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
+ax1.invert_xaxis()
+
+# Secondary x-axis (Lookback Time)
+ax2.set_xlabel("Lookback time [Gyr]")
+ax2.set_xlim(ax1.get_xlim())
+ax2.set_xticks(redshifts)
+ax2.set_xticklabels([f"{t:.1f}" for t in lookback_times])
+
+# Tertiary x-axis (Co-moving Radial Distance)
+ax3.set_xlabel("Co-moving radial distance [cGpc]")
+ax3.set_xlim(ax1.get_xlim())
+ax3.set_xticks(redshifts)
+ax3.set_xticklabels([f"{d:.1f}" for d in co_moving_distances])
+
+# Invert all x-axes
+ax1.invert_xaxis()
+ax2.invert_xaxis()  
+ax3.invert_xaxis()
+
+plt.tight_layout()
+plt.savefig('method_comparison/sfrd_ratio_vs_lm.png', dpi=300)
+plt.close()
+
+#calculate again and print the ratio for z=1.86
+sfrd_uni_186, sfrd_uni_186_error = compute_total_sfr_and_error(
+    z_array=[1.86],
+    t_start=tstart_values_uni,
+    sigma_t_start=sigma_tstart_values_uni,
+    A_values=A_values_uni,
+    tau_values=tau_values_uni,
+    sigma_A_values=sigma_A_values_uni,
+    sigma_tau_values=sigma_tau_values_uni
+)
+sfrd_norm_186, sfrd_norm_186_error  = compute_total_sfr_and_error(
+    z_array=[1.86],
+    t_start=tstart_values_norm,
+    sigma_t_start=sigma_tstart_values_norm,
+    A_values=A_values_norm,
+    tau_values=tau_values_norm,
+    sigma_A_values=sigma_A_values_norm,
+    sigma_tau_values=sigma_tau_values_norm
+)
+sfrd_skew_186, sfrd_skew_186_error  = compute_total_sfr_and_error(
+    z_array=[1.86],
+    t_start=tstart_values_skew,
+    sigma_t_start=sigma_tstart_values_skew,
+    A_values=A_values_skew,
+    tau_values=tau_values_skew,
+    sigma_A_values=sigma_A_values_skew,
+    sigma_tau_values=sigma_tau_values_skew
+)
+sfrd_nr_186,_ = compute_total_sfr_and_error(
+    z_array=[1.86],
+    t_start=tstart_values_nr,            # Already an array of shape (n_gal,) for NR
+    sigma_t_start=sigma_tstart_values_nr,  # Zero uncertainties for NR
+    A_values=A_values_nr,
+    tau_values=tau_values_nr
+)
+sfrd_lilly_madau_186 = lilly_madau(1.86)
+ratio_uni_186 = sfrd_lilly_madau_186/sfrd_uni_186
+ratio_norm_186 = sfrd_lilly_madau_186/sfrd_norm_186
+ratio_skew_186 = sfrd_lilly_madau_186/sfrd_skew_186
+ratio_nr_186 = sfrd_lilly_madau_186/sfrd_nr_186
+print(f"Ratio of SFRD at z=1.86 for Uniform Prior: {ratio_uni_186[0]:.2f}")
+print(f"Ratio of SFRD at z=1.86 for Normal Prior: {ratio_norm_186[0]:.2f}")
+print(f"Ratio of SFRD at z=1.86 for Skew Prior: {ratio_skew_186[0]:.2f}")
+print(f"Ratio of SFRD at z=1.86 for Newton-Raphson: {ratio_nr_186[0]:.2f}")
+#-----------------------------------
