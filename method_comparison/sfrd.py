@@ -259,8 +259,8 @@ ax1.errorbar(redshifts_interp, log_sfr_uni, yerr=log_sfr_error_uni,
              fmt='o-', capsize=3, label=r"MCMC, Uniform Prior for $\tau$", markersize=3)
 ax1.errorbar(redshifts_interp, log_sfr_norm, yerr=log_sfr_error_norm,
              fmt='s-', capsize=3, label=r"MCMC, Normal Prior for $\tau$", markersize=3)
-ax1.errorbar(redshifts_interp, log_sfr_skew, yerr=log_sfr_error_skew,
-             fmt='v-', capsize=3, label=r"MCMC, Skew Prior for $t_{sf}$, Normal $\tau$", markersize=3)
+# ax1.errorbar(redshifts_interp, log_sfr_skew, yerr=log_sfr_error_skew,
+#              fmt='v-', capsize=3, label=r"MCMC, Skew Prior for $t_{sf}$, Normal $\tau$", markersize=3)
 ax1.plot(redshifts_interp, log_sfr_nr, '^-', label="Newton-Raphson", markersize=3)
 # Add Lilly-Madau theoretical curve
 ax1.plot(redshifts_interp, log_sfrd_lm, 'k--', linewidth=2, label="Lilly-Madau (2014)")
@@ -269,7 +269,7 @@ ax1.plot(redshifts_interp, log_sfrd_lm, 'k--', linewidth=2, label="Lilly-Madau (
 ax1.set_xlabel("Redshift $z$")
 ax1.set_xlim(0, 10)
 ax1.set_xticks(redshifts)
-ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
+ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86', alpha=0.5)
 ax1.legend()
 ax1.invert_xaxis()  # Match direction in the image
 
@@ -287,7 +287,6 @@ ax3.set_xticklabels([f"{d:.1f}" for d in co_moving_distances])
 
 # Y-axis (Linear scale with log values)
 ax1.set_ylabel(r"$\log_{10}\left(\text{SFRD}\ \left[\text{M}_\odot \text{yr}^{-1} \text{Mpc}^{-3}\right]\right)$")
-ax1.axhline(y=-0.88, color='g', linestyle='--', label='log(SFRD) = -0.88')
 ax1.legend()
 ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
 
@@ -324,8 +323,8 @@ ax1.errorbar(redshifts_interp, residual_uni, yerr=residual_error_uni,
              fmt='o-', capsize=3, label=r"Uniform Prior", markersize=3)
 ax1.errorbar(redshifts_interp, residual_norm, yerr=residual_error_norm,
              fmt='s-', capsize=3, label=r"Normal Prior", markersize=3)
-ax1.errorbar(redshifts_interp, residual_skew, yerr=residual_error_skew,
-             fmt='v-', capsize=3, label=r"Skew Prior", markersize=3)
+# ax1.errorbar(redshifts_interp, residual_skew, yerr=residual_error_skew,
+#              fmt='v-', capsize=3, label=r"Skew Prior", markersize=3)
 ax1.plot(redshifts_interp, residual_nr, '^-', label="Newton-Raphson", markersize=3)
 
 # Add reference line at zero
@@ -334,7 +333,7 @@ ax1.axhline(0, color='k', linestyle='--', alpha=0.7, label="Lilly-Madau")
 # Axes configuration
 ax1.set_xlabel("Redshift $z$")
 ax1.set_ylabel(r"$\Delta \log_{10}(\text{SFRD})$" + "\n(Lilly-Madau $-$ Data)")
-ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
+ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86', alpha=0.5)
 ax1.set_xlim(0, 10)
 ax1.set_xticks(redshifts)
 ax1.legend()
@@ -392,8 +391,8 @@ ax1.errorbar(redshifts_interp, ratio_uni, yerr=ratio_error_uni,
              fmt='o-', capsize=3, label=r"Uniform Prior", markersize=3)
 ax1.errorbar(redshifts_interp, ratio_norm, yerr=ratio_error_norm,
                 fmt='s-', capsize=3, label=r"Normal Prior", markersize=3)
-ax1.errorbar(redshifts_interp, ratio_skew, yerr=ration_error_skew,
-                fmt='v-', capsize=3, label=r"Skew Prior", markersize=3)
+# ax1.errorbar(redshifts_interp, ratio_skew, yerr=ration_error_skew,
+#                 fmt='v-', capsize=3, label=r"Skew Prior", markersize=3)
 ax1.plot(redshifts_interp, ratio_nr, '^-', label="Newton-Raphson", markersize=3)
 
 # Add reference line at unity
@@ -402,7 +401,7 @@ ax1.axhline(1, color='k', linestyle='--', alpha=0.7, label="Lilly-Madau")
 # Axes configuration
 ax1.set_xlabel("Redshift $z$")
 ax1.set_ylabel(r"$\frac{\text{SFRD}_{\text{LM}}}{\text{SFRD}_{\text{Data}}}$")
-ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86')
+ax1.axvline(x=1.86, color='r', linestyle='--', label='z=1.86', alpha=0.5)
 ax1.set_xlim(0, 10)
 ax1.set_xticks(redshifts)
 ax1.legend()
