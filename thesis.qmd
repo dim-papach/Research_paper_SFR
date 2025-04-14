@@ -1,36 +1,77 @@
 ---
-title: "Analysis of observational data, to calculate the Delayed-Tau model parameters"
-author: "Dimitrios Papachristopoulos"
-fontfamily: fontenc
-format: 
-  pdf: default  
-  # arxiv-pdf:
-  #    keep-tex: true    
-  #    link-citations: true
-  #    link-bibliography: true
-  #    runninghead: ""
-toc: true
-toc-expand: true
-toc-depth: 3
-number-sections: true
-appendix-style: plain
-bibliography: ./My_Library.bib
+  title: "Analysis of observational data, to calculate the Delayed-Tau model parameters"
+  subtitle: "Undergraduate thesis"
+  author: 
+  - name: Dimitrios Papachristopoulos
+    role: sdf
+    affiliations:
+      - id: undgdt
+        department: ID number 1110 2018 00142 
+        name: Undergraduate student
+  - name: Despina Hatzidimitriou 
+    affiliations:
+      - id: sprvsr
+        name: Supervising professor 
+        department: National and Kapodistrian University of Athens
+  fontfamily: fontenc
+  mainfont: "Times New Roman"
+  format: 
+    titlepage-pdf: 
+      titlepage: vline
+      titlepage-logo: "template/uoa_new_logo_red.png"
+      titlepage-footer: | # text
+        National and Kapodistrian University of Athens\
+        School of Science\
+        Faculty of Physics\
+        Department of Astrophysics, Astronomy and Mechanics\
+        April 2025
+      author-style: plain
+      author-sep: "\ --\ "
+      number-sections: true  
+      documentclass: scrartcl
+      classoption: ["oneside", "open=any"]
 
-execute: 
-  echo: false
-  eval: true
-  warning: false
-#editor: visual
+    #pdf: default  
+    # arxiv-pdf:
+    #    keep-tex: true    
+    #    link-citations: true
+    #    link-bibliography: true
+    #    runninghead: ""
+  toc: true
+  toc-expand: true
+  toc-depth: 3
+  number-sections: true
+  appendix-style: plain
+  bibliography: ./My_Library.bib
 
-abstract: |
-  The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the star formation of galaxies as a function with a rising Star Formation Rate (SFR) at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
+  execute: 
+    echo: false
+    eval: true
+    warning: false
+  #editor: visual
 
-  @haslbauerCosmologicalStarFormation2023 argue that the use of Delayed-$\tau$ model for the galaxies of the Local Cosmological Volume (LCV) is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observational data for SFR and galaxy masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life of each galaxy and so we can find the expected time of peak of the SFR.
-
-  In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
-  
-  **Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Newton-Ramphson, Markov Chain Monte Carlo (MCMC).
 ---
+{{<pagebreak>}}
+
+# Abstract
+
+## English 
+
+The Star Formation History (SFH) of a galaxy can offer many insights not only for the evolution and the future of the galaxy, but also for the evolution of the Universe. This is why there are various theoretical models trying to describe the SFH of galaxies. One of those models is the Delayed-Tau model, which approximates the star formation of galaxies as a function with a rising Star Formation Rate (SFR) at the beginning, until it reaches a peak at a time $\tau$, unique for each galaxy, and then it drops at an exponential rate.
+
+@haslbauerCosmologicalStarFormation2023 argue that the use of Delayed-$\tau$ model for the galaxies of the Local Cosmological Volume (LCV) is opposed to the Lilly-Madau plot ([@madauCosmicStarFormation2014]), which plots the observed SFR's of galaxies with the corresponding redshifts ($z$) and calculates a cosmic SFR peak at $z\approx 2$. The way they calculated this inconsistency is by using observational data for SFR and galaxy masses from the UNGC catalog (@karachentsevUPDATEDNEARBYGALAXY2013, @karachentsevSTARFORMATIONPROPERTIES2013) for calculating the parameters (the timescale $\tau$ and the normalization constant $A_{del}$) of the model. This calculation for the galaxies of the Local Cosmological Volume (LV), allows the investigation of the SFR throughout the life of each galaxy and so we can find the expected time of peak of the SFR.
+
+In this thesis project, we will try to calculate the same parameters, by using a bigger sample size and the method Markov Chain Monte Carlo, to examine if the inconsistencies of the model derive from the results of the previous analysis, or if it is an intrinsic problem of the model
+
+**Keywords:** Galaxies, Galaxy Evolution, Star Formation History (SFH), Star Formation Rate (SFR), Delayed-$\tau$, Local Cosmological Volume, Lilly-Madau Plot, Redshift, Newton-Ramphson, Markov Chain Monte Carlo (MCMC).
+
+## Greek
+
+Οι γαλαξίες είναι τεράστια συστήματα από αστέρια, πλανήτες, αέρια και σκόνη που συγκρατούνται μαζί λόγω της βαρύτητας. Κάθε γαλαξίας αποτελεί ένα «κοσμικό νησί» με δισεκατομμύρια ή ακόμα και τρισεκατομμύρια αστέρια, πλανήτες, μαύρες τρύπες και άλλα αστρονομικά αντικείμενα. Κάθε γαλαξίας διαφέρει τόσο στο πόσο μαζικός είναι όσο και στην μορφολογία του. Συνεχώς, εντώς των γαλαξιών, νεφελώματα τα οποία αποτελούνται από αέρια και σκόνη, καταρρέουν λόγω της βαρύτητας τους και παράγουν αστέρια. Η παραγωγή των άστρων επιρρεάζεται από τα χαρακτηριστικά του εκάστοτε γαλαξία και μέσω της μελέτης της ιστορίας της αστρογέννεσης των γαλαξιών, μπορούμε να καταλάβουμε την προέλευση των αστρικών και πλανητικών συστημάτων αλλά και την εξέλιξη τόσο των γαλαξιών όσο και του σύμπαντος.
+
+Μέσω φασματοσκοπικών και φωτομετρικών μεθόδων μπορούμε να υπολογίσουμε των ρυθμό αστρογέννεσης (Star Formation Rate, SFR) των γαλαξίων σε διάφορες ηλικίες του γαλαξία (διαφορετικά φάσματα που χρησιμοποιούνται για τον υπολογισμό διαφορετικών αστρικών πληθυσμών), και με αυτών των τρόπο είναι δυνατόν να μάθουμε την ιστορία αστρογένεσης του κάθε γαλαξία (Star Formation History, SFH). Κάποια μοντέλα προσπαθούν να παραμετροποιήσουν την SFH, χρησιμοποιούντας συναρτήσεις της μορφής $\text{SFR} = f(t)$, προσπαθώντας να προσεγγίσουν την πραγματική SFH με μία ομαλή και εξιδινακευμένη εξίσωση που αγνοεί την ποικιλομορφία των γαλαξιών.
+
+{{<pagebreak>}}
 
 # Galaxies and Galaxy Morphology
 
@@ -113,8 +154,8 @@ Despite the usefulness of de Vaucouleurs’ numerical T-type system , we run int
 To address this, van den Bergh suggested dividing dwarf galaxies by luminosity class, which prevents them from leaping between extreme categories. This refined approach better reflects the intrinsic diversity of dwarf systems, ensuring that subtle morphological differences are more accurately captured and reducing the risk of placing galaxies at the wrong end of the classification scale [@karachentsevUPDATEDNEARBYGALAXY2013]
 
 # Star Formation
-
-The SFH of a galaxy describes the evolution of its star formation rate over time. By selecting an appropriate model for SFH, we can analyze stellar production, predict periods of active or quiescent star formation, and determine when SFR stabilizes.
+ing professor
+The SFH of a galaxy describesution of its star formation rate over time. By selecting an appropriate model for SFH, we can analyze stellar production, predict periods of active or quiescent star formation, and determine when SFR stabilizes.
 
 Understanding SFH models is crucial for interpreting internal and external processes affecting galaxies and identifying conditions for intense star formation in their early stages.
 
@@ -595,7 +636,7 @@ Based on our results, we cannot safely assume that the model works for the galax
 
 In summary, the use of the MCMC and the data from the HECATE catalog proves that the delayed-$\tau$ model a better approximation of the SFH, as originally argued by @haslbauerCosmologicalStarFormation2023. However, more fine-tuning of the model is needed to be certain if the delayed-$\tau$ model is a robust approximation of the SFH of the galaxies of the Local Cosmological Volume.
 
-<!-- {{<pagebreak>}} -->
+{{<pagebreak>}}
 
 # Appendix A: Scatter plots of the comparisons {#sec-regressions .appendix}
 
